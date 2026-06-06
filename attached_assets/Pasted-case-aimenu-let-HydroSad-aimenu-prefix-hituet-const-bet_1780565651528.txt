@@ -1,0 +1,183 @@
+case 'aimenu': {
+   let HydroSad = `${aimenu(prefix, hituet)}`
+const bet = {
+  title: "LIST MENU",
+  sections: [
+    {
+      title: `List menu yang sering dipakai`, 
+      highlight_label: `Populer`,
+      rows: [
+        {
+          title: "All Menu",
+          description: "📌 Menampilkan All Menu",
+          id: `allmenu`, 
+        },
+        {
+          title: "🏠 Kembali ke Menu Utama",
+          description: "↩️ Balik ke halaman menu awal",
+          id: `menu`,
+        },
+      ]
+    },
+    {
+      title: `List menu yang dipisahkan`, 
+      highlight_label: ``,
+      rows: [
+        {
+          title: "Baca Peraturan",
+          description: "🎉 Menampilkan peraturan",
+          id: `bacaperaturan`, 
+        },
+        {
+          title: "Donasi",
+          description: "💸 Menampilkan menu donasi",
+          id: `donasi`, 
+        },
+        {
+          title: "Owner Menu",
+          description: "👤 Menampilkan Owner Menu",
+          id: `ownermenu`, 
+        },
+        {
+          title: "Group Menu",
+          description: "👥 Menampilkan Group Menu",
+          id: `groupmenu`, 
+        },
+        {
+          title: "ғɪᴛᴜʀ ᴊᴀꜱʜᴇʀ",
+          description: "⚡ ᴍᴇᴍᴜɴᴄᴜʟᴋᴀɴ ғɪᴛᴜʀ ᴊᴀꜱʜᴇʀ",
+          id: `jashermenu`, 
+        },
+        {
+          title: "Games Menu",
+          description: "🎮 Menampilkan Games Menu",
+          id: `gamemenu`, 
+        },
+        {
+          title: "Store Menu",
+          description: "🛍️ Menampilkan Store Menu",
+          id: `storemenu`, 
+        },
+        {
+          title: "Berita Menu",
+          description: "📮 Menampilkan Berita Menu",
+          id: `beritamenu`, 
+        },
+        {
+          title: "Cpanel Menu",
+          description: "🛠️ Menampilkan Cpanel Menu",
+          id: `cpanelmenu`, 
+        },
+        {
+          title: "Ngepush Menu", 
+          description: "💾 Menampilkan Ngepush Menu",
+          id: `pushmenu`, 
+        },
+        {
+          title: "Primbon Menu",
+          description: "💰 Menampilkan Primbon Menu",
+          id: `primbonmenu`, 
+        },
+        {
+          title: "Download Menu",
+          description: "📂 Menampilkan Download Menu",
+          id: `downloadmenu`, 
+        },
+        {
+          title: "AI Menu",
+          description: "🤖 Menampilkan AI Menu",
+          id: `aimenu`, 
+        },
+        {
+          title: "NSFW Menu",
+          description: "🔞 Menampilkan NSFW Menu",
+          id: `nsfwmenu`, 
+        },
+        {
+          title: "Anime Menu",
+          description: "🤍 Menampilkan NSFW Menu",
+          id: `animemenu`, 
+        },
+        {
+          title: "Ephoto360 Menu",
+          description: "🖼️ Menampilkan Ephoto360 Menu",
+          id: `ephoto360menu`, 
+        },
+        {
+          title: "Fun Menu",
+          description: "🥳 Menampilkan Fun Menu",
+          id: `funmenu`, 
+        },
+        {
+          title: "Islamic Menu",
+          description: "🕌 Menampilkan Islamic Menu",
+          id: `islamimenu`, 
+        },
+        {
+          title: "Database Menu",
+          description: "🖥️ Menampilkan Database Menu",
+          id: `databasemenu`, 
+        },
+        {
+          title: "Others Menu",
+          description: "📪 Menampilkan Others Menu",
+          id: `othermenu`, 
+        },
+        {
+          title: "RPG Menu",
+          description: "🧰 Menampilkan RPG Menu",
+          id: `rpgmenu`, 
+        },
+        {
+          title: "Domain Menu",
+          description: "🌐 Menampilkan Domain Menu",
+          id: `domainmenu`, 
+        },
+        {
+          title: "Anonymous Menu",
+          description: "👤 Menampilkan Anonymous Menu",
+          id: `anonymousmenu`, 
+        },
+        {
+          title: "Random Video Menu",
+          description: "🎥 Menampilkan Random Video Menu",
+          id: `randomvideomenu`, 
+        },
+        {
+          title: "Random Photo Menu",
+          description: "📷 Menampilkan Photo Video Menu",
+          id: `randomphotomenu`, 
+        },
+        {
+          title: "Sticker Menu",
+          description: "📝 Menampilkan Sticker Menu",
+          id: `stickermenu`, 
+        },
+        {
+          title: "Quotes Menu",
+          description: "💬 Menampilkan Quotes Menu",
+          id: `quotesmenu`, 
+        },
+        {
+          title: "Stalker Menu",
+          description: "🔍 Menampilkan Stalker Menu",
+          id: `stalkermenu`, 
+        },
+        {
+          title: "Bug Menu",
+          description: "🐛 Menampilkan Bug Menu",
+          id: `bugmenu`, 
+        },
+        {
+          title: "Digital Ocean Menu",
+          description: "🌐 Menampilkan Digital Ocean Menu",
+          id: `digitaloceanmenu`, 
+        },
+        {
+          title: "Pyterodactyle Menu",
+          description: "⚙️ Menampilkan Pyterodactyle Menu",
+          id: `pyterodactylemenu`, 
+        },
+      ]
+    },
+    {

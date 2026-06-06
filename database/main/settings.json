@@ -1,0 +1,165 @@
+{
+  "selfMode": false,
+  "ownerNumbers": [],
+  "ownerType": 2,
+  "welcomeType": 5,
+  "replyVariant": 1,
+  "menuVariant": 4,
+  "botAfk": {
+    "active": false
+  },
+  "cmdVn": false,
+  "autoSholatKota": {
+    "id": "1301",
+    "nama": "KOTA JAKARTA"
+  },
+  "onlyGc": false,
+  "onlyPc": false,
+  "giveaways": {},
+  "botMode": "public",
+  "audioMenu": true,
+  "transactionSessions": {},
+  "premiumUsers": [],
+  "similarity": true,
+  "botRules": null,
+  "goodbyeType": 6,
+  "onlyAdmin": false,
+  "selfAdmin": false,
+  "publicAdmin": false,
+  "_lastEnergiDefault": 99999,
+  "_lastEnergiPremium": 99999999,
+  "lastLimitReset": "2026-05-16T17:00:00.018Z",
+  "onlyThisGroup": false,
+  "autoJpm": {
+    "enabled": false,
+    "intervalMs": 900000,
+    "message": {},
+    "lastRun": 1774157878673,
+    "nextRun": 1774158778673
+  },
+  "jedaJpm": 10000,
+  "globalCustomReplies": [],
+  "panelCreateLastUsed": 1775377733441,
+  "autoJoinGc": false,
+  "autoSholat": false,
+  "errorLog": [
+    {
+      "cmd": "unknown",
+      "err": "getAssetBuffer is not defined",
+      "at": 1780587322479
+    },
+    {
+      "cmd": "unknown",
+      "err": "getAssetBuffer is not defined",
+      "at": 1780587278662
+    },
+    {
+      "cmd": "unknown",
+      "err": "getAssetBuffer is not defined",
+      "at": 1780587262482
+    }
+  ],
+  "jpmBlacklist": [],
+  "bannedUsers": [],
+  "allmenuVariant": 2,
+  "menucatVariant": 2,
+  "notifMakan": {},
+  "storeProducts": [],
+  "storeTrxCounter": 3,
+  "storeTransactions": {},
+  "storeLists": [],
+  "autoReadSW": {
+    "enabled": true
+  },
+  "autoReactSW": {
+    "enabled": true,
+    "emoji": "🔥"
+  },
+  "customPaymentText": "",
+  "bcgcEnabled": false,
+  "scheduledMessages": [],
+  "pushAutoVcf": false,
+  "selfGroups": [],
+  "ownerNames": {},
+  "publicGroups": [],
+  "autoRead": true,
+  "contacts": {
+    "6289688206739@s.whatsapp.net": {
+      "jid": "6289688206739@s.whatsapp.net",
+      "name": "Wily"
+    },
+    "6289667923162@s.whatsapp.net": {
+      "jid": "6289667923162@s.whatsapp.net",
+      "name": "Hen V2"
+    },
+    "6282139672290@s.whatsapp.net": {
+      "jid": "6282139672290@s.whatsapp.net",
+      "name": "Nixel"
+    },
+    "6282388417118@s.whatsapp.net": {
+      "jid": "6282388417118@s.whatsapp.net",
+      "name": "Kaguya"
+    },
+    "6281368074650@s.whatsapp.net": {
+      "jid": "6281368074650@s.whatsapp.net",
+      "name": "⚔️"
+    },
+    "6281393564657@s.whatsapp.net": {
+      "jid": "6281393564657@s.whatsapp.net",
+      "name": "γυς ρου"
+    },
+    "6283134844523@s.whatsapp.net": {
+      "jid": "6283134844523@s.whatsapp.net",
+      "name": "Anda Siapa?"
+    },
+    "6281319859673@s.whatsapp.net": {
+      "jid": "6281319859673@s.whatsapp.net",
+      "name": "Galang Purnama"
+    },
+    "6288226654518@s.whatsapp.net": {
+      "jid": "6288226654518@s.whatsapp.net",
+      "name": "TanGZ`𝖋𝖙 𝐍𝐒𝐂᭄"
+    },
+    "6282178071400@s.whatsapp.net": {
+      "jid": "6282178071400@s.whatsapp.net",
+      "name": "rih"
+    },
+    "6285700996045@s.whatsapp.net": {
+      "jid": "6285700996045@s.whatsapp.net",
+      "name": "yaeeeeeeeeeeeeeeeeeeeeeee"
+    },
+    "6283123405940@s.whatsapp.net": {
+      "jid": "6283123405940@s.whatsapp.net",
+      "name": "rawrrrr yayaya saya setuju"
+    },
+    "6285175463174@s.whatsapp.net": {
+      "jid": "6285175463174@s.whatsapp.net",
+      "name": "sunshine.jpeg"
+    },
+    "6282374607191@s.whatsapp.net": {
+      "jid": "6282374607191@s.whatsapp.net",
+      "name": "Nasution"
+    },
+    "18258961472@s.whatsapp.net": {
+      "jid": "18258961472@s.whatsapp.net",
+      "name": "Anda Siapa??"
+    },
+    "6287860371877@s.whatsapp.net": {
+      "jid": "6287860371877@s.whatsapp.net",
+      "name": "Fuma Kotaro"
+    },
+    "6281353726941@s.whatsapp.net": {
+      "jid": "6281353726941@s.whatsapp.net",
+      "name": "Ikell ♪"
+    },
+    "6288279119895@s.whatsapp.net": {
+      "jid": "6288279119895@s.whatsapp.net",
+      "name": "~ Fiora Sylvie"
+    }
+  },
+  "notiflimit": true,
+  "pgTopups": {},
+  "pgPayments": {},
+  "storeAutoProducts": [],
+  "allmenuAudioStyle": 3
+}

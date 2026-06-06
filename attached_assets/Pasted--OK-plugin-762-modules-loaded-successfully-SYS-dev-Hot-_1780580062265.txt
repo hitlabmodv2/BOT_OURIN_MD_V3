@@ -1,0 +1,40 @@
+
+[   OK ] plugin 762 modules loaded successfully
+[  SYS ] dev Hot-Reload watcher active for plugins
+[  DBG ] dev Monitoring directory: /home/runner/workspace/plugins
+[ INFO ] Scheduler Daily limit reset enabled at 00:00 (Asia/Jakarta)
+[   OK ] Scheduler Scheduler initialized
+[   OK ] boot System initialized in 1262ms
+
+[   OK ] Opening WhatsApp connection tunnel...
+[ WAIT ] Connecting — Establishing session and handshake protocol
+
+[ INFO ] bot 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜 (6289681008411) · WA v2.3000.1035194821
+[   OK ] watchdog aktif, batas waktu 30 menit
+[   OK ] whatsapp siap menerima pesan
+[ INFO ] AutoBackup Auto backup is disabled
+[   OK ] Connected — Hen V1
+[ INFO ] Scheduler Loaded 0 scheduled messages
+[ INFO ] Scheduler Group schedule checker started (CronJob, every minute)
+[ INFO ] Scheduler Sewa checker enabled (CronJob, every 10 minutes)
+[ INFO ] Scheduler Daily limit reset enabled at 00:00 (Asia/Jakarta)
+[ INFO ] Scheduler Loaded 0 scheduled messages
+[   OK ] Scheduler Scheduler initialized
+[ INFO ] SholatScheduler Prayer time scheduler started (CronJob, precise per-prayer)
+[ INFO ] NotifScheduler 0 notification CronJobs active (Asia/Jakarta)
+[ INFO ] NotifScheduler Meal & sleep notification scheduler started (CronJob, precise per-time)
+[   OK ] memory monitoring active, limit 1024.0MB, check every 5m
+[   OK ] temp auto-clean every 30m
+[   OK ] pruner auto-prune >14d inactive, every 6h
+[   OK ] ready All subsystems are fully operational • dev
+
+[  SYS ] memory rss 484.9MB · heap 256.0MB/304.9MB
+[  OUT ] 20:28:53 Hen V1 · Private Botz Tempat uji coba fitur › .s [Text]
+[ GC ] 20:28:53 Hen V1 · Private Botz Tempat uji coba fitur › .s
+[  OUT ] 20:29:04 Hen V1 · Private Botz Tempat uji coba fitur › .s [Text]
+[ GC ] 20:29:04 Hen V1 · Private Botz Tempat uji coba fitur › .s
+[  OUT ] 20:29:33 Hen V1 · Private Botz Tempat uji coba fitur › .setreply [Text]
+[ GC ] 20:29:33 Hen V1 · Private Botz Tempat uji coba fitur › .setreply
+[  OUT ] 20:29:43 Hen V1 · Private Botz Tempat uji coba fitur › .setreply v1 [Button]
+[ GC ] 20:29:43 Hen V1 · Private Botz Tempat uji coba fitur › .setreply v1
+[  SYS ] memory rss 516.1MB · heap 271.5MB/325.3MB

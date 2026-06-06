@@ -1,0 +1,77 @@
+const bet = {
+  title: "🌊 MENU BOT",
+  sections: [
+    {
+      title: "━━━ 🌟 POPULER ━━━",
+      highlight_label: "Populer",
+      rows: [
+        { title: "📌 Semua Fitur",       description: "Tampilkan daftar lengkap semua fitur bot",          id: "allmenu" },
+        { title: "📖 Peraturan",          description: "Baca peraturan penggunaan bot sebelum pakai",       id: "bacaperaturan" },
+        { title: "💸 Donasi",             description: "Support bot agar terus berkembang via QRIS",        id: "donasi" },
+        { title: "📋 Info Bot",           description: "Informasi lengkap bot, versi, dan statistik",       id: "infobot" },
+        { title: "👥 Info Grup",          description: "Link grup WhatsApp resmi bot untuk bergabung",       id: "infogrup" },
+      ]
+    },
+    {
+      title: "━━━ 🎮 HIBURAN & GAME ━━━",
+      highlight_label: "",
+      rows: [
+        { title: "🎮 Game Menu",          description: "Tebak gambar, truth or dare, dan game seru lainnya", id: "gamemenu" },
+        { title: "🥳 Fun Menu",           description: "Fitur lucu dan menghibur, bikin senyum",            id: "funmenu" },
+        { title: "🎥 Random Video",       description: "Video random acak dari berbagai kategori",          id: "randomvideomenu" },
+        { title: "📷 Random Photo",       description: "Foto random acak berbagai tema",                   id: "randomphotomenu" },
+        { title: "💬 Quotes",             description: "Kata-kata motivasi, lucu, dan bijak",               id: "quotesmenu" },
+        { title: "🧰 RPG Menu",           description: "Game RPG lengkap: kerja, rampok, gacha, pet",      id: "rpgmenu" },
+      ]
+    },
+    {
+      title: "━━━ 🛠️ TOOLS & UTILITAS ━━━",
+      highlight_label: "",
+      rows: [
+        { title: "📂 Downloader",         description: "Download video/foto dari IG, TikTok, YouTube, dll", id: "downloadmenu" },
+        { title: "📝 Sticker",            description: "Buat sticker, convert foto/video jadi sticker",     id: "stickermenu" },
+        { title: "🔍 Stalker",            description: "Cek profil WA, status, dan info pengguna",         id: "stalkermenu" },
+        { title: "🖼️ Edit Foto",          description: "Edit foto dengan efek keren dari Ephoto360",       id: "ephoto360menu" },
+        { title: "🤖 AI Menu",            description: "ChatGPT, Gemini, dan berbagai fitur AI canggih",   id: "aimenu" },
+        { title: "🛍️ Store Menu",         description: "Cek harga, produk, dan layanan di store",         id: "storemenu" },
+      ]
+    },
+    {
+      title: "━━━ 📰 INFO & RELIGI ━━━",
+      highlight_label: "",
+      rows: [
+        { title: "📮 Berita",             description: "Berita terkini dan terpercaya setiap hari",        id: "beritamenu" },
+        { title: "🕌 Islami",             description: "Jadwal sholat, doa harian, Al-Quran, hadits",      id: "islamimenu" },
+        { title: "💰 Primbon",            description: "Ramal nasib, zodiak, dan ramalan unik (fake fun)", id: "primbonmenu" },
+      ]
+    },
+    {
+      title: "━━━ 👥 GROUP & SOSIAL ━━━",
+      highlight_label: "",
+      rows: [
+        { title: "👥 Group Menu",         description: "Manajemen grup: kick, promote, welcome, dll",      id: "groupmenu" },
+        { title: "👤 Anonymous",          description: "Chat anonim tanpa diketahui identitas kamu",       id: "anonymousmenu" },
+        { title: "🔞 NSFW",              description: "Konten dewasa 18+ (aktifkan di grup khusus)",       id: "nsfwmenu" },
+        { title: "🤍 Anime",             description: "Gambar dan konten anime pilihan",                   id: "animemenu" },
+      ]
+    },
+    {
+      title: "━━━ 🔧 PANEL & SERVER ━━━",
+      highlight_label: "",
+      rows: [
+        { title: "🛠️ CPanel",            description: "Buat dan kelola server panel Pterodactyl",         id: "cpanelmenu" },
+        { title: "💾 Push / Deploy",      description: "Push file dan deploy server panel dengan mudah",   id: "pushmenu" },
+        { title: "🌊 Digital Ocean",      description: "Kelola VPS dan droplet Digital Ocean",             id: "digitaloceanmenu" },
+        { title: "⚙️ Pterodactyl",        description: "Fitur lengkap manajemen Pterodactyl panel",        id: "pyterodactylemenu" },
+        { title: "🌐 Domain / Subdo",     description: "Buat subdomain gratis dengan cepat",               id: "domainmenu" },
+      ]
+    },
+    {
+      title: "━━━ 🗄️ DATABASE & OWNER ━━━",
+      highlight_label: "",
+      rows: [
+        { title: "🖥️ Database",           description: "Kelola database pengguna, saldo, dan data bot",   id: "databasemenu" },
+        { title: "📪 Lainnya",            description: "Fitur lain yang tidak masuk kategori manapun",    id: "othermenu" },
+        { title: "👑 Owner Menu",         description: "Fitur khusus pemilik bot, akses penuh",            id: "ownermenu" },
+        { title: "🐛 Bug WA",             description: "Fitur bug dan crash WhatsApp (gunakan bijak!)",    id: "bugmenu" },
+      ]

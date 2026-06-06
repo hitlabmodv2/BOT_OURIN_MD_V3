@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-06-04T15:34:22.482Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] ReferenceError: getAssetBuffer is not defined\n    at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:435:9)",
+    "stack": "Error: [Handler Stack] ReferenceError: getAssetBuffer is not defined |     at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29) |     at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-04T15:34:38.662Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] ReferenceError: getAssetBuffer is not defined\n    at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:435:9)",
+    "stack": "Error: [Handler Stack] ReferenceError: getAssetBuffer is not defined |     at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29) |     at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-04T15:35:22.479Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] ReferenceError: getAssetBuffer is not defined\n    at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:435:9)",
+    "stack": "Error: [Handler Stack] ReferenceError: getAssetBuffer is not defined |     at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29) |     at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  }
+]

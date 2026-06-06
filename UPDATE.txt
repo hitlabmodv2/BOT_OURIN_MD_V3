@@ -1,0 +1,40 @@
+*OURIN MD * - 3
+
+🌾 Apa aja yang di update?
+
+[ 🌾 *UPDATE* ]
+- pengoptimalan fitur *dungeon*
+- perombakan pada assets, di *versi 3* dan seterusnya, ourin akan memakai url yang bisa kalian lihat di *config.js* bagian object *assets*
+- *.sc* - ambil script
+- penambahan variant audiomenu, jadi per menu, audio nya berbeda beda tampilannya
+- perubahan pada menu, allmenu, menucat, reply kini hanya tersedia 2/3/4 versi, tapi dalam versi terbaik
+- mengoptimalkan fitur tqto dan getplugin, biar minim lag
+- mengubah owner variant ke 2 ke style baru
+- memperbaiki command *gita, flux-pro, gpt4o, ai* 
+- memperbaiki command *hdvid*
+- *.smemevid* - Ini mirip kayak smeme, cuman versi video
+- memperbaiki *ourinbanana, text2img, to3d dan semacamnya*
+- memperbaiki *spotifydl*
+- memperbaiki *totalchat* yang asblumnya ghoib
+- memperbaiki *igstalk, ytstalk, tiktokstalk, githubstalk*
+- *.npmstalk* - stalk npm
+- memperbaiki *getpaste*
+- memperbaiki *hd*
+- *upch* dan *playch* kini ada wavefrom nya
+- *.gsmarena* - cek info hp
+- *.movieku* - cari movie
+- *.cekxl* - cek nomor xl
+- penambahan sekitar 7 provider di *tourl*
+- improve *carbon*
+- penambahan *welcometype dan goodbyetype versi 6*
+- memperbaiki *welcometype v5* yang enggak ngetag
+- sedikit mengubah response dari *autosholat*
+- *.autosambut* - buat nyambut owner dari offline lama
+- menambahkan *kyubigame*, game mirip dungeon
+- *.notifenergi* - kalau on, setiap user pakai command yang pakai limit/energi, user tersebut akan dapet notif pengurangan limit/energi
+- *similarity* dengan tampilan berbeda
+- tambahan *10+* RPG
+- *.setaudioallmenu* - ini mirip kayak setaudiomenu, tapi versi allmenu, kalau di on in, allmenu nya ada audio nya
+- memperbaiki command *neko, loli, waifu dan semacamnya* dan kita di set biar ada button "Lanjut Cari Lagi"
+- tambahan variant brat *bratgojo, bratvermeilvid, bratgojovid*
+- *.topixel* - burikkan gambar
