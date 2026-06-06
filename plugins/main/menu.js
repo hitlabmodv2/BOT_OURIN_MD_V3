@@ -523,6 +523,9 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
   const greeting = getTimeGreeting();
   const uptimeFormatted = formatUptime(uptime);
   const user = await db.getUser(m.sender) || {}
+  const _timeHelper = await import("../../src/lib/ourin-time.js");
+  const timeStr = _timeHelper.formatTime("HH:mm");
+  const dateStr = _timeHelper.formatFull("dddd, DD MMMM YYYY");
   try {
     const categories = getSortedCategories(m, botMode);
     const zann_pengin_rehat = categories.sorted.map(({ cat, cmds, emoji }) => {
@@ -668,31 +671,34 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
             image: getAssetBuffer("ourin") || {
               url: "https://gimita.id/ourin.png",
             },
-            caption: ``,
-            footer: `Hai @${m.pushName} 👋
-            
-🌿 Selamat datang di assistant ${config.bot?.name}
+            caption: `${greeting}, *${m.pushName}* 👋
+🌿 Selamat datang di *${config.bot?.name}*
 
-╭┈┈⫹⫺ *INFORMASI BOT* ⫹⫺┈┈╮
-│ ◈ *Nama Bot* : *${config.bot?.name}*
-│ ◈ *Versi* : *${config.bot.version}*  
-│ ◈ *Pengembang* : *${config.bot.developer}*  
-│ ◈ *Pustaka* : \`ourin-baileys\`
-╰┈┈┈┈┈┈┈┈
+╭─〔 🤖 *ɪɴꜰᴏ ʙᴏᴛ* 〕
+*│* 🖐 ɴᴀᴍᴀ       : *${config.bot?.name}*
+*│* 🔑 ᴠᴇʀsɪ      : *v${config.bot?.version}*
+*│* 👨‍💻 ᴅᴇᴠ        : *${config.bot?.developer}*
+*│* 🧩 ʟɪʙʀᴀʀʏ    : \`ourin-baileys\`
+*│* ⏱️ ᴜᴘᴛɪᴍᴇ     : *${uptimeFormatted}*
+*│* ⚙️ ʀᴜɴᴛɪᴍᴇ    : *${process.version}*
+╰────────────────⬣
 
-╭┈┈⫹⫺ *INFORMASI PENGGUNA* ⫹⫺┈┈╮
-│ ◈ *Nama* : *${m.pushName}*
-│ ◈ *Member?* : *${m?.isOwner ? "Bukan, tapi Owner" : m?.isPremium ? "Bukan, tapi Premium" : "Iyapp"}*
-│ ◈ *Level* : *${user.level || 0}*
-│ ◈ *Exp* : *${user.exp || 0}* 
-│ ◈ *Energi* : *${user.energi || 0}*
-│ ◈ *Koin* : *${user.koin || 0}*
-│ ◈ *Register* : *${user.isRegistered ? "Sudah" : "Belum"}*
-│ ◈ *Energi* : *${user.energi || 0}*
-╰┈┈┈┈┈┈┈┈
+╭─〔 👤 *ɪɴꜰᴏ ᴘᴇɴɢɢᴜɴᴀ* 〕
+*│* 🙋 ɴᴀᴍᴀ       : *${m.pushName}*
+*│* 🎭 ʀᴏʟᴇ       : *${m?.isOwner ? "👑 Owner" : m?.isPremium ? "💎 Premium" : "👤 Member"}*
+*│* ⚡ ʟᴇᴠᴇʟ      : *${Math.floor((user?.exp || 0) / 20000) + 1}*
+*│* ✨ ᴇxᴘ         : *${(user?.exp ?? 0).toLocaleString()}*
+*│* 🎟️ ᴇɴᴇʀɢɪ     : *${m.isOwner || m.isPremium ? "∞ Unlimited" : (user?.energi ?? 25)}*
+*│* 💰 ᴋᴏɪɴ        : *${(user?.koin ?? 0).toLocaleString()}*
+*│* 📋 ʀᴇɢɪsᴛᴇʀ   : *${user?.isRegistered ? "✅ Sudah" : "❌ Belum"}*
+╰────────────────⬣
 
-Tekan tombol dibawah untuk info lebih lanjut dan untuk memilih kategori
-`,
+╭─〔 🕒 *ᴡᴀᴋᴛᴜ & ᴛᴀɴɢɢᴀʟ* 〕
+*│* 🕐 ᴊᴀᴍ         : *${timeStr} WIB*
+*│* 📅 ᴛᴀɴɢɢᴀʟ    : *${dateStr}*
+╰────────────────⬣
+
+_Tekan tombol di bawah untuk memilih kategori_ 👇`,
             interactiveButtons: [
               {
                 name: "single_select",
