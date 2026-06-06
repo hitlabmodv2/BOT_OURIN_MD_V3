@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2337,
+  "commandsExecuted": 2342,
   "command_totalchat": 3,
   "command_menu": 213,
   "command_fb": 4,
@@ -42,7 +42,7 @@
   "command_stopdandeletejadibot": 3,
   "command_buat": 2,
   "command_bot": 1,
-  "command_allmenu": 28,
+  "command_allmenu": 29,
   "command_eval": 17,
   "command_getplugin": 27,
   "command_tourl": 12,
@@ -404,5 +404,7 @@
   "command_zodiak": 1,
   "command_leaderboard": 1,
   "command_setmsg": 1,
-  "command_wm": 2
+  "command_wm": 2,
+  "command_tebakgambar": 3,
+  "command_tebakbendera": 1
 }
