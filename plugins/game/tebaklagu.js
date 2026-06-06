@@ -16,8 +16,9 @@ import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
 import botConfig from '../../config.js'
 
 // ─── Surrender map ─────────────────────────────────────────────────────────────
-if (!global.tebaklaguSurrendered) global.tebaklaguSurrendered = new Set()
-const surrenderedSet = global.tebaklaguSurrendered
+// key: "chatId:senderId"  →  value: nama display (pushName)
+if (!global.tebaklaguSurrendered) global.tebaklaguSurrendered = new Map()
+const surrenderedMap = global.tebaklaguSurrendered
 
 const GAME_TYPE  = 'tebaklagu'
 const TIMEOUT_MS = 90000
@@ -26,13 +27,28 @@ const MAX_HINTS  = 3
 function getPrefix() { return botConfig.command?.prefix || '.' }
 
 // ─── Surrender helpers ─────────────────────────────────────────────────────────
-function surrenderKey(chatId, senderId) { return `${chatId}:${senderId}` }
-function isSurrendered(chatId, senderId) { return surrenderedSet.has(surrenderKey(chatId, senderId)) }
-function markSurrendered(chatId, senderId) { surrenderedSet.add(surrenderKey(chatId, senderId)) }
+function surrenderKey(chatId, senderId)       { return `${chatId}:${senderId}` }
+function isSurrendered(chatId, senderId)      { return surrenderedMap.has(surrenderKey(chatId, senderId)) }
+function markSurrendered(chatId, senderId, name) {
+    surrenderedMap.set(surrenderKey(chatId, senderId), name || senderId.split('@')[0])
+}
 function clearChatSurrenders(chatId) {
-    for (const key of surrenderedSet) {
-        if (key.startsWith(`${chatId}:`)) surrenderedSet.delete(key)
+    for (const key of surrenderedMap.keys()) {
+        if (key.startsWith(`${chatId}:`)) surrenderedMap.delete(key)
     }
+}
+// Ambil daftar nama yang sudah nyerah di chat ini
+function getSurrenderedNames(chatId) {
+    const names = []
+    for (const [key, name] of surrenderedMap.entries()) {
+        if (key.startsWith(`${chatId}:`)) names.push(name)
+    }
+    return names
+}
+
+// Nama tampil: pakai pushName kalau ada, fallback nomor
+function displayName(m) {
+    return m.pushName || m.sender.split('@')[0]
 }
 
 // ─── Hint per-user helpers ─────────────────────────────────────────────────────
@@ -193,11 +209,11 @@ async function handler(m, { sock }) {
     // Cek penalty nyerah
     if (isSurrendered(chatId, senderId)) {
         const session = getSession(chatId)
-        const tag     = `@${senderId.split('@')[0]}`
+        const nama    = displayName(m)
         if (session && session.gameType === GAME_TYPE) {
             const remaining = getRemainingTime(chatId)
             return await sendBtn(sock, chatId,
-                `😅 *${tag}*, kamu udah nyerah tadi!\n\n` +
+                `😅 *${nama}*, kamu udah nyerah tadi!\n\n` +
                 `Tunggu sampai game ini selesai dulu ya~\n` +
                 `Bisa selesai kalau ada yang jawab bener,\n` +
                 `atau waktu habis *(${formatRemainingTime(remaining)} lagi)*\n\n` +
@@ -291,31 +307,37 @@ async function answerHandler(m, sock) {
 
     // ── Button: NYERAH ────────────────────────────────────────────────────────
     if (body === 'tebaklagu_nyerah') {
-        const tag = `@${senderId.split('@')[0]}`
+        const nama = displayName(m)
 
         if (isSurrendered(chatId, senderId)) {
-            const remaining = getRemainingTime(chatId)
+            const remaining     = getRemainingTime(chatId)
+            const nyerahList    = getSurrenderedNames(chatId)
+            const listTeks      = nyerahList.map((n, i) => `  ${i + 1}. ${n}`).join('\n')
             return await sendBtn(sock, chatId,
-                `🏳️ *${tag}*, kamu udah nyerah dari tadi~\n\n` +
+                `🏳️ *${nama}*, kamu udah nyerah dari tadi~\n\n` +
                 `Sabar aja, tunggu game selesai dulu ya 😄\n` +
-                `⏱️ Sisa: *${formatRemainingTime(remaining)}*`,
+                `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
+                `👥 *Yang udah nyerah:*\n${listTeks}`,
                 [BTN_CEK], m, [senderId]
             )
         }
 
-        markSurrendered(chatId, senderId)
+        markSurrendered(chatId, senderId, displayName(m))
         const remaining  = getRemainingTime(chatId)
         const polaPublic = buildHintDisplay(session.question.judul)
         const wordInfo   = buildWordInfo(session.question.judul)
+        const nyerahList = getSurrenderedNames(chatId)
+        const listTeks   = nyerahList.map((n, i) => `  ${i + 1}. ${n}`).join('\n')
 
         await sendBtn(sock, chatId,
-            `🏳️ *${tag} nyerah!*\n\n` +
+            `🏳️ *${nama} nyerah!*\n\n` +
             `Kamu gak bisa main lagi sampai:\n` +
             `• Ada yang jawab soal ini bener, atau\n` +
             `• Waktu game habis *(sisa ${formatRemainingTime(remaining)})*\n\n` +
             `📝 *Pola buat yang lain:*\n` +
             `┃ \`${polaPublic}\`\n` +
-            `┗ _${wordInfo}_\n` +
+            `┗ _${wordInfo}_\n\n` +
+            `👥 *Daftar nyerah:*\n${listTeks}\n` +
             `_Orang lain masih bisa jawab ya~_`,
             [BTN_CEK], m, [senderId]
         )
@@ -325,12 +347,12 @@ async function answerHandler(m, sock) {
     // ── Button: BANTUAN (per-user, max 3x) ───────────────────────────────────
     if (body === 'tebaklagu_bantuan') {
         const hintCount = getUserHintCount(session, senderId)
-        const tag       = `@${senderId.split('@')[0]}`
+        const nama      = displayName(m)
 
         if (hintCount >= MAX_HINTS) {
             const remaining = getRemainingTime(chatId)
             await sendBtn(sock, chatId,
-                `❌ *${tag}*, kamu udah pakai bantuan *${MAX_HINTS}x* — udah maksimal!\n` +
+                `❌ *${nama}*, kamu udah pakai bantuan *${MAX_HINTS}x* — udah maksimal!\n` +
                 `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
                 `_Coba tebak sendiri deh 😄_`,
                 [BTN_NYERAH], m, [senderId]
@@ -363,7 +385,7 @@ async function answerHandler(m, sock) {
             : [BTN_NYERAH]
 
         await sendBtn(sock, chatId,
-            `💡 *Bantuan ${usedNow}/${MAX_HINTS} — ${tag}*\n` +
+            `💡 *Bantuan ${usedNow}/${MAX_HINTS} — ${nama}*\n` +
             `━━━━━━━━━━━━━━━━━━\n\n` +
             `📝 *Pola terbaru:*\n` +
             `┃ \`${polaBaru}\`\n` +
@@ -408,9 +430,9 @@ async function answerHandler(m, sock) {
         }
         db.save()
 
-        const tag = `@${m.sender.split('@')[0]}`
+        const nama = displayName(m)
         await sendGameOver(sock, chatId,
-            `🎉 *${tag} BENAR!*\n\n` +
+            `🎉 *${nama} BENAR!*\n\n` +
             `Judul : *${judul}*\n` +
             `Artis : *${artis}*\n` +
             `🎁 Reward: +${reward.limit} Limit, +${reward.koin} Koin, +${reward.exp} EXP\n\n` +
