@@ -228,7 +228,7 @@ function isReplyToGame(m, session) {
     if (!m.quoted || !session || !session.messageKey) return false;
     if (m.quoted.id === session.messageKey.id) return true;
     if (m.quoted.stanzaId === session.messageKey.id) return true;
-    if (m.quoted.fromMe || m.quoted.isBaileys) return true;
+    if (m.quoted.key?.fromMe || m.quoted.fromMe || m.quoted.isBaileys) return true;
     return false;
 }
 
