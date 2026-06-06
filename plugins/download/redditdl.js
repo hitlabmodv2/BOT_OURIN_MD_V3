@@ -65,6 +65,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     m.react("✅");
   } catch (e) {
+    skipDeduct?.()
     console.error(e);
     m.react("☢");
     m.reply("❌ Gagal mengambil data Reddit, coba lagi nanti");

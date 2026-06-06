@@ -91,6 +91,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     m.react("✅");
   } catch (e) {
+    skipDeduct?.()
     m.react("☢");
     m.reply(`❌ Gagal membuka view once: ${e.message}`);
   }

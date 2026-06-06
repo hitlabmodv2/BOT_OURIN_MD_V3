@@ -40,6 +40,7 @@ async function handler(m, { sock, skipDeduct }) {
       type: "image",
     });
   } catch (error) {
+    skipDeduct?.()
     console.error(error);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

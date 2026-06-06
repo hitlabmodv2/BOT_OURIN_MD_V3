@@ -127,6 +127,7 @@ async function handler(m, { sock, skipDeduct }) {
     // cleanup
     cleanupTempFiles();
   } catch (err) {
+    skipDeduct?.()
     cleanupTempFiles();
     console.error("[TikTokDL] Error:", err);
     m.react("❌");

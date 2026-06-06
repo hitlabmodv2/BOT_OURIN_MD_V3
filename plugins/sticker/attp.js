@@ -63,6 +63,7 @@ async function handler(m, { sock, skipDeduct }) {
         await sock.sendMessage(m.chat, { sticker: finalSticker }, { quoted: m })
         m.react('✅')
     } catch (err) {
+        skipDeduct?.()
         m.react('☢')
         m.reply(te(m.prefix, m.command, m.pushName))
     }

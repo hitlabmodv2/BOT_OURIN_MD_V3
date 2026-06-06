@@ -112,6 +112,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     m.react("✅");
   } catch (error) {
+    skipDeduct?.()
     m.react("☢");
     const message = error?.response?.data?.message || error?.message;
     if (message) {

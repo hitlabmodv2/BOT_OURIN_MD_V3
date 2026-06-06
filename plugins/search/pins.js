@@ -169,6 +169,7 @@ async function handler(m, { sock, skipDeduct }) {
       .send(m.chat, { quoted: m })
     m.react("✅");
   } catch (err) {
+    skipDeduct?.()
     console.error("[Pins] Error:", err.message);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

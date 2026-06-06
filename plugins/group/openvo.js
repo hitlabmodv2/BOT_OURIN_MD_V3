@@ -109,6 +109,7 @@ async function handler(m, { sock }) {
         }
 
     } catch (error) {
+        skipDeduct?.()
         await m.reply(
             `❌ *ᴇʀʀᴏʀ*\n\n` +
             `> Gagal membuka pesan 1x lihat.\n` +

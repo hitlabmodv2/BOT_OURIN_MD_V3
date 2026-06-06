@@ -109,6 +109,7 @@ async function handler(m, { sock, skipDeduct }) {
       { type: "image", contextInfo: saluranCtx() },
     );
   } catch (error) {
+    skipDeduct?.()
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

@@ -52,6 +52,7 @@ async function handler(m, { sock, skipDeduct }) {
       type: "image",
     });
   } catch (error) {
+    skipDeduct?.()
     console.log(error);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

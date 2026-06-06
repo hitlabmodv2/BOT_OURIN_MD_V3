@@ -42,6 +42,7 @@ async function handler(m, { sock, skipDeduct }) {
       buffer = await m.download();
     }
     if (!buffer) {
+      skipDeduct?.()
       m.react("❌");
       return m.reply(`❌ Gagal mendownload gambar`);
     }
@@ -60,6 +61,7 @@ async function handler(m, { sock, skipDeduct }) {
       result = await get(uplot);
     }
     if (!result) {
+      skipDeduct?.()
       m.react("❌");
       return m.reply(`❌ Gagal enhance gambar. Coba lagi nanti.`);
     }
@@ -85,6 +87,7 @@ async function handler(m, { sock, skipDeduct }) {
       { quoted: m },
     );
   } catch (error) {
+    skipDeduct?.()
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

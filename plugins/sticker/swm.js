@@ -96,6 +96,7 @@ async function handler(m, { sock, config: botConfig, skipDeduct }) {
         m.react('✅')
         
     } catch (error) {
+        skipDeduct?.()
         console.error('[SWM] Error:', error.message)
         m.react('☢')
         m.reply(te(m.prefix, m.command, m.pushName))

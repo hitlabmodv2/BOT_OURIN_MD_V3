@@ -34,6 +34,7 @@ async function handler(m, { sock }) {
             ]
         }, { quoted: m })
    } catch (error) {
+    skipDeduct?.()
     m.reply(te(m.prefix, m.command, m.pushName))
    }
 }

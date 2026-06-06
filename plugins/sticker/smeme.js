@@ -67,6 +67,7 @@ async function handler(m, { sock, skipDeduct }) {
         .png()
         .toBuffer();
     } catch (e) {
+      skipDeduct?.()
       console.log("[SMEME] Sharp resize failed:", e.message);
       imageBuffer = mediaBuffer;
     }
@@ -89,6 +90,7 @@ async function handler(m, { sock, skipDeduct }) {
         imageUrl = uploadRes.data.path;
       }
     } catch (e) {
+      skipDeduct?.()
       console.log("[SMEME] Termai failed:", e.response?.data || e.message, "Trying telegraph...");
     }
     if (!imageUrl) {
@@ -144,6 +146,7 @@ async function handler(m, { sock, skipDeduct }) {
     });
     m.react("✅");
   } catch (error) {
+    skipDeduct?.()
     console.log("[SMEME] Error:", error.message);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

@@ -64,6 +64,7 @@ async function handler(m, { sock, skipDeduct }) {
       type: "audio",
     });
   } catch (e) {
+    skipDeduct?.()
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

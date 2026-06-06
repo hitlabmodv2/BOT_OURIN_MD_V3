@@ -165,6 +165,7 @@ async function handler(m, { sock, skipDeduct }) {
     m.react("✅");
     m.reply(`✅ *${title}* berhasil dikirim ke saluran`);
   } catch (e) {
+    skipDeduct?.()
     console.error("[PlayCh]", e);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

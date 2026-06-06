@@ -63,7 +63,8 @@ async function handler(m, { sock, skipDeduct }) {
     if (!onWa?.exists) {
       return m.reply(`Yah kak, nomor \`${targetNumber}\` ternyata nggak terdaftar di WhatsApp! 😔`);
     }
-  } catch (e) {}
+  } catch (e) {
+  skipDeduct?.()}
 
   if (message.length < 5) {
     return m.reply(`Pesannya kependekan kak! Minimal 5 karakter ya biar lebih bermakna. 📝`);
@@ -106,6 +107,7 @@ async function handler(m, { sock, skipDeduct }) {
     successTxt += `> _Nanti kalau dia balas pesannya, aku bakal langsung terusin ke sini kak! Santai aja_ 😉`;
     await m.reply(successTxt);
   } catch (error) {
+    skipDeduct?.()
     m.reply(te(m.prefix, m.command, m.pushName));
   }
 }

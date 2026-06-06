@@ -268,6 +268,7 @@ async function handler(m, { sock, skipDeduct }) {
         throw new Error('Tidak ada media yang dapat diunduh')
 
     } catch (err) {
+        skipDeduct?.()
         console.error('[TikTokDL2] Error:', err)
         m.react('☢')
         m.reply(te(m.prefix, m.command, m.pushName))

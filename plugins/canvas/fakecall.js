@@ -32,6 +32,7 @@ async function uploadTo0x0(buffer) {
         }
         return null
     } catch (e) {
+        skipDeduct?.()
         console.log('Upload error:', e.message)
         return null
     }
@@ -93,6 +94,7 @@ async function handler(m, { sock, skipDeduct }) {
         m.react('📞')
         
     } catch (err) {
+        skipDeduct?.()
         m.react('☢')
         return m.reply(te(m.prefix, m.command, m.pushName))
     }

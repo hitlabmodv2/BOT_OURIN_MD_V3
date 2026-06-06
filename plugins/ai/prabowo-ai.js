@@ -45,6 +45,7 @@ async function handler(m, { sock, skipDeduct }) {
     const reply = result.answer;
     await m.reply(reply.length > 4096 ? reply.slice(0, 4096) + "..." : reply);
   } catch (e) {
+    skipDeduct?.()
     console.error(e);
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

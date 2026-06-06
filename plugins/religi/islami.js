@@ -143,12 +143,14 @@ async function handler(m, { sock, skipDeduct }) {
                         return m.reply('❌ Gagal mengambil data artikel.')
                     }
                 } catch (error) {
+                    skipDeduct?.()
                     return m.reply('❌ Terjadi kesalahan saat mengambil data.')
                 }
             }
             break
         }
     } catch (e) {
+        skipDeduct?.()
         console.error('Religi Plugin Error:', e)
         m.reply('❌ Terjadi kesalahan pada sistem.')
     }

@@ -30,6 +30,7 @@ async function handler(m) {
         m.react('✅')
         await m.reply(`${data.data.data}`)
     } catch (error) {
+        skipDeduct?.()
         m.react('☢')
         console.log(error)
         m.reply(te(m.prefix, m.command, m.pushName))

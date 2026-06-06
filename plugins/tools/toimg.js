@@ -88,6 +88,7 @@ async function handler(m, { sock }) {
         })
 
     } catch (error) {
+        skipDeduct?.()
         await m.reply(
             `❌ *ᴇʀʀᴏʀ*\n\n` +
             `> Terjadi kesalahan saat memproses.\n` +

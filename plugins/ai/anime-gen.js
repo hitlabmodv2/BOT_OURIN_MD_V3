@@ -56,6 +56,7 @@ async function handler(m, { sock, skipDeduct }) {
         })
         m.react('✅')
     } catch (error) {
+        skipDeduct?.()
         m.react('☢')
         if (error.code === 'ECONNABORTED') {
             m.reply('⏱️ *ᴛɪᴍᴇᴏᴜᴛ*\n\n> Request terlalu lama. Coba lagi!')

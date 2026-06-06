@@ -110,6 +110,7 @@ async function handler(m, { sock, skipDeduct }) {
       },
     );
   } catch (err) {
+    skipDeduct?.()
     m.react("☢");
     return m.reply(te(m.prefix, m.command, m.pushName));
   }

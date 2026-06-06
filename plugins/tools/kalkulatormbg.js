@@ -134,6 +134,7 @@ async function handler(m, { args, skipDeduct }) {
     await m.reply(txt);
     await m.react("✅");
   } catch (e) {
+    skipDeduct?.()
     m.reply(`❌ Maaf kak, terjadi kesalahan saat menghitung! 😭\nError: ${e.message}`);
   }
 }

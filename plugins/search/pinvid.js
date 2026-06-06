@@ -105,6 +105,7 @@ async function handler(m, { sock, skipDeduct }) {
               fs.unlinkSync(outputPath);
             }
           } catch (ffmpegErr) {
+            skipDeduct?.()
             console.log(
               `[PinVid] FFmpeg error for video ${i + 1}:`,
               ffmpegErr.message,
@@ -125,6 +126,7 @@ async function handler(m, { sock, skipDeduct }) {
           });
         }
       } catch (vidErr) {
+        skipDeduct?.()
         console.log(
           `[PinVid] Failed to process video ${i + 1}:`,
           vidErr.message,
@@ -180,6 +182,7 @@ async function handler(m, { sock, skipDeduct }) {
 
       m.react("✅");
     } catch (albumErr) {
+      skipDeduct?.()
       console.log(
         "[PinVid] Album message failed, sending individually:",
         albumErr.message,
@@ -212,6 +215,7 @@ async function handler(m, { sock, skipDeduct }) {
       m.react("✅");
     }
   } catch (error) {
+    skipDeduct?.()
     console.error("[PinVid] Error:", error.message);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

@@ -65,6 +65,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     await m.react("✅");
   } catch (err) {
+    skipDeduct?.()
     console.log(err);
     await m.react("❌");
     await m.reply(`❌ Proses Wink enhance gagal! Coba lagi nanti ya 😭`);

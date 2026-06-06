@@ -75,6 +75,7 @@ async function handler(m, { sock, skipDeduct }) {
               },
             });
           } catch (gifErr) {
+            skipDeduct?.()
             console.error("[PinDL] GIF convert error:", gifErr.message);
             await sock.sendMedia(m.chat, media.url, null, m, {
               type: "image",
@@ -97,6 +98,7 @@ async function handler(m, { sock, skipDeduct }) {
     }
     m.react("✅");
   } catch (error) {
+    skipDeduct?.()
     console.error("[PinDL] Error:", error);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

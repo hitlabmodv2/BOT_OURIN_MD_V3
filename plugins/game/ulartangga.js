@@ -429,6 +429,7 @@ async function handler(m, { sock }) {
   try {
     await commands[action]();
   } catch (error) {
+    skipDeduct?.()
     console.error("[ULARTANGGA ERROR]", error);
     m.reply(te(m.prefix, m.command, m.pushName));
   }
@@ -477,6 +478,7 @@ async function answerHandler(m, sock) {
       { quoted: m },
     );
   } catch (e) {
+    skipDeduct?.()
     // Fallback: just react with dice emoji
     await m.react(DICE_EMOJI[dadu - 1]);
   }

@@ -57,6 +57,7 @@ async function handler(m, { args, sock, skipDeduct }) {
 
     await m.react("✅");
   } catch (e) {
+    skipDeduct?.()
     m.reply(`❌ Gagal mendownload lagu kak! 😭\nError: ${e.message}`);
   }
 }

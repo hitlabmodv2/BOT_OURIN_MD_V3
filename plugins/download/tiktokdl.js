@@ -180,6 +180,7 @@ async function handler(m, { sock, skipDeduct }) {
     }
     m.react("✅");
   } catch (e) {
+    skipDeduct?.()
     console.error(e);
     m.react("❌");
     m.reply("Coba lagi nanti, atau bisa coba " + m.prefix + "tt2");

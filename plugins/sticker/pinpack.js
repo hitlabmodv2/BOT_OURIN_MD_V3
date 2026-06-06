@@ -114,6 +114,7 @@ async function handler(m, { sock, skipDeduct }) {
       });
       await m.react("✓");
     } catch (packErr) {
+      skipDeduct?.()
       console.error("[PinPack] Pack send failed:", packErr.message);
       await m.reply(
         `── .✦ ──\n\n> Pack gagal, mengirim satu per satu... .☘︎ ݁˖`,
@@ -156,6 +157,7 @@ async function handler(m, { sock, skipDeduct }) {
       }
     }
   } catch (error) {
+    skipDeduct?.()
     console.error("[PinPack] Error:", error.message);
     await m.react("✘");
     m.reply(te(m.prefix, m.command, m.pushName));

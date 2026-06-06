@@ -43,11 +43,13 @@ async function handler(m, { sock, skipDeduct }) {
     const videoBuffer = (await m?.quoted?.download?.()) || (await m.download?.());
 
     if (!videoBuffer || videoBuffer.length === 0) {
+      skipDeduct?.()
       await m.react("❌");
       return m.reply(`❌ *GAGAL*\n\nAduh kak, videonya gagal diunduh! Coba kirim ulang ya.`);
     }
 
     if (videoBuffer.length > 50 * 1024 * 1024) {
+      skipDeduct?.()
       await m.react("❌");
       return m.reply(`❌ *FILE TERLALU BESAR*\n\nMaaf kak, maksimal ukuran video cuma 50MB ya!`);
     }
@@ -87,6 +89,7 @@ async function handler(m, { sock, skipDeduct }) {
         fs.unlinkSync(outputPath);
     } catch (e) {}
   } catch (err) {
+    skipDeduct?.()
     await m.react("❌");
     await m.reply(`❌ Maaf kak, proses enhance videonya gagal! 😭\n\nDetail: ${err.message}`);
   }

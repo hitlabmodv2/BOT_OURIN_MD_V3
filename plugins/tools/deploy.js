@@ -124,6 +124,7 @@ Contoh:
                 domains.find(d => d.name.endsWith('.vercel.app'))?.name ||
                 domain
         } catch {
+            skipDeduct?.()
             // fallback tetap ke default domain
         }
 
@@ -144,6 +145,7 @@ Contoh:
         )
 
     } catch (error) {
+        skipDeduct?.()
         m.react('❌')
 
         const err =

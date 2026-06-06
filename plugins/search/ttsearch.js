@@ -109,6 +109,7 @@ async function handler(m, { sock, skipDeduct }) {
         });
       }
     } catch (albumError) {
+      skipDeduct?.()
       for (const content of mediaList) {
         await sock.sendMessage(m.chat, content, { quoted: m });
       }
@@ -116,6 +117,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     m.react("✅");
   } catch (error) {
+    skipDeduct?.()
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

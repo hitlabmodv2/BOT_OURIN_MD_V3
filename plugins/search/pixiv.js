@@ -86,6 +86,7 @@ async function handler(m, { sock, skipDeduct }) {
       { quoted: m },
     );
   } catch (error) {
+    skipDeduct?.()
     await m.react("☢");
     if (error.response?.status === 403) {
       return m.reply(`❌ *API Key tidak valid atau limit tercapai*`);

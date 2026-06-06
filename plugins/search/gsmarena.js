@@ -47,6 +47,7 @@ async function handler(m) {
     m.react("✅");
     return m.reply(formatList(results, text, m.prefix));
   } catch (error) {
+    skipDeduct?.()
     console.log(error);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

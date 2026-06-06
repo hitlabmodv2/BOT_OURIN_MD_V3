@@ -91,6 +91,7 @@ async function handler(m, { sock, skipDeduct }) {
         });
         
     } catch (error) {
+        skipDeduct?.()
         await m.reply(
             `❌ *ᴇʀʀᴏʀ*\n\n` +
             `> Gagal membuat poll.\n` +

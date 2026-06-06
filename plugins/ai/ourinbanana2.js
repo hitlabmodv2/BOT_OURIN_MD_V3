@@ -39,6 +39,7 @@ async function handler(m, { sock, skipDeduct }) {
       type: "image",
     });
   } catch (error) {
+    skipDeduct?.()
     console.log(error);
     m.react("❌");
     const msg =

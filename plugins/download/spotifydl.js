@@ -58,6 +58,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     m.react("✅");
   } catch (e) {
+    skipDeduct?.()
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

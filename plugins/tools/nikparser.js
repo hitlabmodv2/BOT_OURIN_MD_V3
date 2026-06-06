@@ -111,6 +111,7 @@ async function handler(m, { sock, skipDeduct }) {
         `- *Kode Unik* → \`${data.uniqcode}\``,
     );
   } catch (e) {
+    skipDeduct?.()
     console.log(e);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
