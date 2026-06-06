@@ -25,20 +25,19 @@ const GAME_TYPE  = 'tebakgambar'
 const TIMEOUT_MS = 90000
 const PENALTY_MS = 10 * 60 * 1000
 
-// ─── Fake quoted (sama persis pola menu.js) ───────────────────────────────────
-// Ini yang membuat button render di WA tanpa saluran context
+// ─── Quoted builder ───────────────────────────────────────────────────────────
+// Pakai key pesan asli agar WA tampilkan bubble reply ke pesan user
+// message.conversation diisi body asli supaya preview quoted akurat
 function makeQuoted(m) {
     return {
         key: {
-            participant: `${m.sender}`,
-            remoteJid: `status@broadcast`,
+            remoteJid: m.chat,
+            id: m.id,
+            fromMe: false,
+            participant: m.sender,
         },
         message: {
-            contactMessage: {
-                displayName: `${botConfig.bot?.name || 'Ourin-AI'}`,
-                vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:${botConfig.bot?.name || 'Ourin-AI'}\nEND:VCARD`,
-                sendEphemeral: true,
-            },
+            conversation: m.body || '.tebakgambar',
         },
     }
 }
