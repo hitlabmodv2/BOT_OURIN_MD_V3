@@ -13,8 +13,8 @@ const config = {
   },
 
   owner: {
-    name: "Zann", // Nama owner
-    number: ["6289681008411"], // Format: 628xxx (tanpa + atau 0)
+    name: "W I L Y", // Nama owner
+    number: ["6289688206739"], // Format: 628xxx (tanpa + atau 0)
   },
 
   session: {

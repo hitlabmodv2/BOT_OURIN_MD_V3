@@ -2,10 +2,9 @@ import config from "../../config.js";
 import * as timeHelper from "./ourin-time.js";
 import { getDatabase } from "./ourin-database.js";
 
-// Cooldown per USER per COMMAND — biar tiap orang dapat notifnya masing-masing
-// Key: "command::senderNumber" → beda user = beda notif
+// Cooldown per USER per COMMAND — beda user = notif terpisah
 const _cooldown = new Map();
-const COOLDOWN_MS = 20_000; // 20 detik per user per command (anti double-tap)
+const COOLDOWN_MS = 20_000;
 const MAX_LOG = 200;
 const _errorLog = [];
 
@@ -13,28 +12,70 @@ export function getErrorLog() {
   return [..._errorLog];
 }
 
+/**
+ * Kumpulkan SEMUA nomor owner dari semua sumber:
+ * 1. config.owner.number (config.js)
+ * 2. db.data.owner (tambahan via .addowner)
+ * Return array JID unik: ["628xxx@s.whatsapp.net", ...]
+ */
+function getAllOwnerJids() {
+  const seen = new Set();
+  const jids = [];
+
+  const addNum = (raw) => {
+    if (!raw) return;
+    const clean = String(raw).replace(/[^0-9]/g, "");
+    if (!clean || seen.has(clean)) return;
+    seen.add(clean);
+    jids.push(`${clean}@s.whatsapp.net`);
+  };
+
+  // Sumber 1: config.owner.number
+  if (Array.isArray(config.owner?.number)) {
+    for (const n of config.owner.number) addNum(n);
+  } else if (config.owner?.number) {
+    addNum(config.owner.number);
+  }
+
+  // Sumber 2: db.data.owner (tambahan via .addowner)
+  try {
+    const db = getDatabase();
+    if (Array.isArray(db?.data?.owner)) {
+      for (const n of db.data.owner) addNum(n);
+    }
+    // Sumber 3: db.setting("ownerNumbers") jika ada
+    const extraOwners = db?.setting("ownerNumbers");
+    if (Array.isArray(extraOwners)) {
+      for (const n of extraOwners) addNum(n);
+    }
+  } catch {}
+
+  return jids;
+}
+
 export async function notifyOwnerError(sock, m, error, command) {
   if (!sock || !m) return;
 
   try {
-    const ownerNumbers = config.owner?.number || [];
-    if (!ownerNumbers.length) return;
-
+    // Cek apakah fitur aktif
     try {
       const db = getDatabase();
       if (db?.setting("errorNotif") === false) return;
     } catch {}
 
+    const ownerJids = getAllOwnerJids();
+    if (!ownerJids.length) return;
+
     const cmd = command || m?.command || "?";
     const senderNum = m.sender?.split("@")[0] || "anon";
 
-    // Key unik per USER per COMMAND — beda user = notif terpisah
+    // Cooldown per USER per COMMAND — beda user = notif beda
     const key = `${cmd}::${senderNum}`;
     const now = Date.now();
     if (_cooldown.has(key) && now - _cooldown.get(key) < COOLDOWN_MS) return;
     _cooldown.set(key, now);
 
-    // Bersihkan cooldown lama (>5 menit) biar tidak numpuk di memori
+    // Bersihkan cooldown lama (>5 menit) agar tidak numpuk di memori
     if (_cooldown.size > 500) {
       for (const [k, t] of _cooldown) {
         if (now - t > 300_000) _cooldown.delete(k);
@@ -46,8 +87,7 @@ export async function notifyOwnerError(sock, m, error, command) {
       ? error.stack.split("\n").slice(1, 4).join("\n").trim()
       : "";
 
-    let timeStr = "";
-    let dateStr = "";
+    let timeStr, dateStr;
     try {
       timeStr = timeHelper.formatTime("HH:mm:ss");
       dateStr = timeHelper.formatFull("dddd, DD MMMM YYYY");
@@ -58,32 +98,33 @@ export async function notifyOwnerError(sock, m, error, command) {
       });
     }
 
-    // Ambil nama grup dari database jika ada
+    // Nama grup dari database (bukan ID angka)
     let chatLabel = "-";
     if (m.isGroup) {
       try {
         const db = getDatabase();
         const groupData = db?.getGroup(m.chat);
-        const groupName = groupData?.name;
-        chatLabel = groupName && groupName !== "Unknown" && groupName !== "Unknown Group"
-          ? groupName
-          : m.chat?.replace("@g.us", "") || "-";
+        const gname = groupData?.name;
+        chatLabel =
+          gname && gname !== "Unknown" && gname !== "Unknown Group"
+            ? gname
+            : m.chat?.replace("@g.us", "") || "-";
       } catch {
         chatLabel = m.chat?.replace("@g.us", "") || "-";
       }
     } else {
-      chatLabel = `PM (${senderNum})`;
+      chatLabel = `Private (${senderNum})`;
     }
 
     const chatType = m.isGroup ? "👥 Grup" : "📱 PM";
     const cmdFull = `${m.prefix || "."}${cmd}`;
     const userName = m.pushName || "Unknown";
-    const userNum = senderNum;
 
+    // Simpan ke log internal
     _errorLog.unshift({
       cmd: cmdFull,
       user: userName,
-      num: userNum,
+      num: senderNum,
       chat: chatLabel,
       isGroup: !!m.isGroup,
       err: errMsg.substring(0, 200),
@@ -96,7 +137,7 @@ export async function notifyOwnerError(sock, m, error, command) {
       `╭─〔 🐛 *ᴅᴇᴛᴀɪʟ ᴇʀʀᴏʀ* 〕\n` +
       `*│* 📌 ᴄᴏᴍᴍᴀɴᴅ   : \`${cmdFull}\`\n` +
       `*│* 👤 ᴘᴇɴɢɢᴜɴᴀ  : ${userName}\n` +
-      `*│* 📞 ɴᴜᴍʙᴇʀ    : +${userNum}\n` +
+      `*│* 📞 ɴᴜᴍʙᴇʀ    : +${senderNum}\n` +
       `*│* ${chatType}        : ${chatLabel}\n` +
       `*│* 🕒 ᴡᴀᴋᴛᴜ     : ${timeStr}\n` +
       `*│* 📅 ᴛᴀɴɢɢᴀʟ   : ${dateStr}\n` +
@@ -105,11 +146,14 @@ export async function notifyOwnerError(sock, m, error, command) {
       `*│* ${errMsg.substring(0, 350)}\n` +
       (stack ? `*│*\n*│* \`\`\`${stack.substring(0, 300)}\`\`\`\n` : "") +
       `╰────────────────⬣\n\n` +
-      `> Matikan notif: \`${config.command?.prefix || "."}errornotif off\``;
+      `> Matikan: \`${config.command?.prefix || "."}errornotif off\``;
 
-    const ownerJid = `${String(ownerNumbers[0]).replace(/[^0-9]/g, "")}@s.whatsapp.net`;
-    await sock.sendMessage(ownerJid, { text });
+    // Kirim ke SEMUA owner sekaligus
+    const sends = ownerJids.map((jid) =>
+      sock.sendMessage(jid, { text }).catch(() => {})
+    );
+    await Promise.all(sends);
   } catch {
-    // Silent — jangan sampai notifier malah crash bot
+    // Silent — jangan sampai notifier crash bot
   }
 }
