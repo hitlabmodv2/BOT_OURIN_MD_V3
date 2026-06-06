@@ -161,18 +161,18 @@ async function sendGameMessage(sock, chatId, question, m) {
         interactiveButtons: [BTN_BANTUAN, BTN_NYERAH],
     }, { quoted: makeQuoted(m) })
 
-    // Kirim audio sebagai voice note (ptt) via sendMedia
+    // Kirim audio sebagai voice note (ptt) — reply ke pesan .tebaklagu
+    const quotedRef = makeQuoted(m)
     try {
-        await sock.sendMedia(chatId, question.preview, null, m, {
+        await sock.sendMedia(chatId, question.preview, null, quotedRef, {
             type: 'audio',
             mimetype: 'audio/mp4',
             ptt: true,
         })
     } catch (e) {
         console.error('[tebaklagu] gagal kirim audio vn:', e?.message)
-        // Fallback: audio attachment biasa
         try {
-            await sock.sendMedia(chatId, question.preview, null, m, {
+            await sock.sendMedia(chatId, question.preview, null, quotedRef, {
                 type: 'audio',
                 mimetype: 'audio/mp4',
                 ptt: false,
