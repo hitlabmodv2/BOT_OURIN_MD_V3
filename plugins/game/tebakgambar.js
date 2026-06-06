@@ -106,29 +106,27 @@ function btnMainLagi() {
 }
 
 // ─── Tampilan pola jawaban (tiap huruf dipisah spasi, kata dipisah "  ·  ") ──
-// Contoh: "SARUNG BANTAL" → "S _ _ _ _ _  ·  _ _ _ _ _ _"
-// revealFirst: kalau true, huruf pertama tiap kata ditampilkan
-function buildHintDisplay(answer, revealFirst = true) {
+// Selalu tampilkan huruf pertama tiap kata, lalu buka revealCount huruf tambahan.
+// revealCount = 0  → hanya huruf pertama tiap kata (sama seperti tampilan awal)
+// revealCount > 0  → huruf pertama tiap kata + N huruf ekstra dari kiri
+// Contoh: "SARUNG BANTAL", revealCount=0 → "S _ _ _ _ _  ·  B _ _ _ _ _"
+//         "SARUNG BANTAL", revealCount=3 → "S A R U _ _  ·  B _ _ _ _ _"
+function buildHintDisplayRevealed(answer, revealCount = 0) {
     if (!answer) return ''
-    return answer.split(' ').map(word => {
-        return word.split('').map((ch, i) => {
-            if (i === 0 && revealFirst) return ch
-            return '_'
-        }).join(' ')
-    }).join('  ·  ')
-}
-
-// Versi dengan jumlah huruf tertentu yang dibuka (dari kiri, skip spasi)
-function buildHintDisplayRevealed(answer, revealCount) {
-    if (!answer) return ''
-    let revealed = 0
+    let extra = 0
     const parts = answer.split(' ').map(word => {
-        return word.split('').map(ch => {
-            if (revealed < revealCount) { revealed++; return ch }
+        return word.split('').map((ch, i) => {
+            if (i === 0) return ch          // huruf pertama tiap kata selalu muncul
+            if (extra < revealCount) { extra++; return ch }
             return '_'
         }).join(' ')
     })
     return parts.join('  ·  ')
+}
+
+// Alias untuk keterbacaan — awal game tidak perlu argumen extra
+function buildHintDisplay(answer) {
+    return buildHintDisplayRevealed(answer, 0)
 }
 
 // Info kata & huruf: "2 kata · 13 huruf" (tidak hitung spasi)
