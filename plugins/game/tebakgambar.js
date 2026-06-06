@@ -1,4 +1,3 @@
-import { Button } from '../../src/lib/ourin-builder.js'
 import {
     getRandomItem,
     createSession,
@@ -26,9 +25,25 @@ const GAME_TYPE  = 'tebakgambar'
 const TIMEOUT_MS = 90000
 const PENALTY_MS = 10 * 60 * 1000
 
+// ─── Fake quoted (sama persis pola menu.js) ───────────────────────────────────
+// Ini yang membuat button render di WA tanpa saluran context
+function makeQuoted(m) {
+    return {
+        key: {
+            participant: `${m.sender}`,
+            remoteJid: `status@broadcast`,
+        },
+        message: {
+            contactMessage: {
+                displayName: `${botConfig.bot?.name || 'Ourin-AI'}`,
+                vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:${botConfig.bot?.name || 'Ourin-AI'}\nEND:VCARD`,
+                sendEphemeral: true,
+            },
+        },
+    }
+}
+
 // ─── Helper: kirim teks TANPA saluran ─────────────────────────────────────────
-// sock.sendMessage langsung — bypass sendReplyVariant & _saluranCtx()
-// TANPA quoted karena m (serialized) != raw msg yang dibutuhkan Baileys quoted
 async function send(sock, chatId, text, mentions = []) {
     try {
         return await sock.sendMessage(chatId, { text, mentions })
@@ -61,8 +76,8 @@ function getPrefix() {
 }
 
 // ─── Kirim gambar game + button Nyerah & Bantuan ─────────────────────────────
-// { quoted: quotedMsg } di Button.send() TERBUKTI jalan (bukan sock.sendMessage)
-async function sendGameMessage(sock, chatId, question, quotedMsg) {
+// Pakai pola menu.js: interactiveButtons di sock.sendMessage + fake quoted
+async function sendGameMessage(sock, chatId, question, m) {
     const answer  = question.jawaban
     const hint    = getHint(answer, 2)
     const caption =
@@ -74,30 +89,47 @@ async function sendGameMessage(sock, chatId, question, quotedMsg) {
 
     const imgBuffer = await fetchBuffer(question.img)
 
-    const msg = new Button(sock)
-        .setImage(imgBuffer)
-        .setBody(caption)
-        .setFooter(botConfig.bot?.name || 'Ourin-AI')
-        .setContextInfo({})
-        .addReply('🏳️ Nyerah', 'tebakgambar_nyerah')
-        .addReply('💡 Bantuan', 'tebakgambar_bantuan')
-
-    return await msg.send(chatId, { quoted: quotedMsg })
+    return await sock.sendMessage(chatId, {
+        image: imgBuffer,
+        caption,
+        interactiveButtons: [
+            {
+                name: 'quick_reply',
+                buttonParamsJson: JSON.stringify({
+                    display_text: '🏳️ Nyerah',
+                    id: 'tebakgambar_nyerah',
+                }),
+            },
+            {
+                name: 'quick_reply',
+                buttonParamsJson: JSON.stringify({
+                    display_text: '💡 Bantuan',
+                    id: 'tebakgambar_bantuan',
+                }),
+            },
+        ],
+    }, { quoted: makeQuoted(m) })
 }
 
 // ─── Kirim hasil game + button Main Lagi ─────────────────────────────────────
-async function sendGameOver(sock, chatId, resultText, mentions = []) {
+async function sendGameOver(sock, chatId, resultText, m, mentions = []) {
     const prefix = getPrefix()
     try {
-        const msg = new Button(sock)
-            .setBody(resultText)
-            .setFooter(botConfig.bot?.name || 'Ourin-AI')
-            .setContextInfo({})
-            .addReply('🔄 Main Lagi!', `${prefix}tebakgambar`)
-
-        await msg.send(chatId)
+        await sock.sendMessage(chatId, {
+            text: resultText,
+            mentions,
+            interactiveButtons: [
+                {
+                    name: 'quick_reply',
+                    buttonParamsJson: JSON.stringify({
+                        display_text: '🔄 Main Lagi!',
+                        id: `${prefix}tebakgambar`,
+                    }),
+                },
+            ],
+        }, { quoted: makeQuoted(m) })
     } catch (btnErr) {
-        console.error('[tebakgambar] sendGameOver button error:', btnErr?.message)
+        console.error('[tebakgambar] sendGameOver error:', btnErr?.message)
         try {
             await sock.sendMessage(chatId, {
                 text: resultText + `\n\n> Ketik *${prefix}tebakgambar* untuk main lagi`,
@@ -114,7 +146,6 @@ async function handler(m, { sock }) {
     const chatId   = m.chat
     const senderId = m.sender
 
-    // Cek penalty nyerah
     if (isSurrenderedPenalty(chatId, senderId)) {
         const expiresAt = surrenderedMap.get(`${chatId}:${senderId}`)
         const sisamenit = Math.ceil((expiresAt - Date.now()) / 60000)
@@ -125,7 +156,6 @@ async function handler(m, { sock }) {
         )
     }
 
-    // Cek game aktif
     if (hasActiveSession(chatId)) {
         const session = getSession(chatId)
         if (session && session.gameType === GAME_TYPE) {
@@ -140,7 +170,6 @@ async function handler(m, { sock }) {
         }
     }
 
-    // Ambil soal acak
     const question = getRandomItem('tebakgambar.json')
     if (!question) {
         return await send(sock, chatId, '❌ *Data tidak tersedia!*\n\n> Tidak ada soal tebak gambar saat ini.')
@@ -154,22 +183,20 @@ async function handler(m, { sock }) {
         return await send(sock, chatId, '❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
     }
 
-    // Buat session
     const session = createSession(chatId, GAME_TYPE, question, sentMsg.key, TIMEOUT_MS)
     session.hintLevel = 0
     session.startedBy = senderId
 
-    // Timer timeout
     setSessionTimer(chatId, () => {
         const ans  = question.jawaban
         const text = `⏱️ *WAKTU HABIS!*\n\nJawaban: *${ans}*\n\n_Gak ada yang bisa jawab nih~_`
-        sendGameOver(sock, chatId, text).catch(e =>
+        sendGameOver(sock, chatId, text, m).catch(e =>
             console.error('[tebakgambar] timeout sendGameOver error:', e?.message)
         )
     })
 }
 
-// ─── Answer handler: tangani button click & jawaban teks ─────────────────────
+// ─── Answer handler ───────────────────────────────────────────────────────────
 async function answerHandler(m, sock) {
     const chatId  = m.chat
     const session = getSession(chatId)
@@ -179,7 +206,6 @@ async function answerHandler(m, sock) {
     const body = (m.body || '').trim()
     if (!body) return false
 
-    // Abaikan command
     if (['.', '/', '!', '#'].some(p => body.startsWith(p))) return false
 
     // ── Button: NYERAH ───────────────────────────────────────────────────────
@@ -194,7 +220,7 @@ async function answerHandler(m, sock) {
             `Jawaban: *${ans}*\n\n` +
             `_Kamu kena penalty 10 menit, tidak bisa mulai game baru 😅_`
 
-        await sendGameOver(sock, chatId, text, [m.sender])
+        await sendGameOver(sock, chatId, text, m, [m.sender])
         return true
     }
 
@@ -243,7 +269,7 @@ async function answerHandler(m, sock) {
             `🎁 Reward: +${reward.limit} Limit, +${reward.koin} Koin, +${reward.exp} EXP\n\n` +
             `_GG WP! Otak lu encer!_ 🧠`
 
-        await sendGameOver(sock, chatId, text, [m.sender])
+        await sendGameOver(sock, chatId, text, m, [m.sender])
         return true
     }
 
@@ -258,7 +284,6 @@ async function answerHandler(m, sock) {
         return false
     }
 
-    // Salah
     const remaining = getRemainingTime(chatId)
     if (remaining > 0 && session.attempts <= 10) {
         await sock.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
