@@ -1,15 +1,274 @@
-import { games } from '../../src/lib/ourin-games.js'
+import { Button } from '../../src/lib/ourin-builder.js'
+import {
+    getRandomItem,
+    createSession,
+    getSession,
+    endSession,
+    checkAnswerAdvanced,
+    getProgressiveHint,
+    getHint,
+    hasActiveSession,
+    setSessionTimer,
+    getRemainingTime,
+    formatRemainingTime,
+    getRandomReward,
+} from '../../src/lib/ourin-game-data.js'
+import { getDatabase } from '../../src/lib/ourin-database.js'
+import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
+import { fetchBuffer } from '../../src/lib/ourin-utils.js'
+import { getGameContextInfo } from '../../src/lib/ourin-context.js'
+import botConfig from '../../config.js'
 
-games.register('tebakgambar', {
+// ─── Penalty map: siapa yang nyerah dan kapan expire-nya ─────────────────────
+if (!global.tebakgambarSurrendered) global.tebakgambarSurrendered = new Map()
+const surrenderedMap = global.tebakgambarSurrendered
+
+const GAME_TYPE    = 'tebakgambar'
+const TIMEOUT_MS   = 90000          // 90 detik
+const PENALTY_MS   = 10 * 60 * 1000 // 10 menit penalty setelah nyerah
+
+// ─── Helpers penalty ─────────────────────────────────────────────────────────
+function isSurrenderedPenalty(chatId, senderId) {
+    const key = `${chatId}:${senderId}`
+    const expiresAt = surrenderedMap.get(key)
+    if (!expiresAt) return false
+    if (Date.now() > expiresAt) {
+        surrenderedMap.delete(key)
+        return false
+    }
+    return true
+}
+
+function addSurrenderPenalty(chatId, senderId) {
+    surrenderedMap.set(`${chatId}:${senderId}`, Date.now() + PENALTY_MS)
+}
+
+function clearChatPenalties(chatId) {
+    for (const key of surrenderedMap.keys()) {
+        if (key.startsWith(`${chatId}:`)) surrenderedMap.delete(key)
+    }
+}
+
+function getPrefix() {
+    return botConfig.command?.prefix || '.'
+}
+
+// ─── Kirim pesan game (gambar + button Nyerah & Bantuan) ─────────────────────
+async function sendGameMessage(sock, chatId, question, quotedMsg) {
+    const answer  = question.jawaban
+    const hint    = getHint(answer, 2)
+    const caption =
+        `🖼️ *TEBAK GAMBAR*\n\n` +
+        `💡 Hint: *${hint}*\n` +
+        `⏱️ Waktu: *${TIMEOUT_MS / 1000} detik*\n` +
+        `🎁 Hadiah: *Limit, Koin, EXP*\n\n` +
+        `_Jawab langsung di chat atau tekan tombol di bawah_`
+
+    const imgBuffer = await fetchBuffer(question.img)
+
+    const msg = new Button(sock)
+        .setImage(imgBuffer)
+        .setBody(caption)
+        .setFooter(botConfig.bot?.name || 'Ourin-AI')
+        .setContextInfo(getGameContextInfo())
+        .addReply('🏳️ Nyerah', 'tebakgambar_nyerah')
+        .addReply('💡 Bantuan', 'tebakgambar_bantuan')
+
+    return await msg.send(chatId, { quoted: quotedMsg })
+}
+
+// ─── Kirim pesan game selesai + button Main Lagi ─────────────────────────────
+async function sendGameOver(sock, chatId, resultText, mentions = []) {
+    const prefix = getPrefix()
+    try {
+        const msg = new Button(sock)
+            .setBody(resultText)
+            .setFooter(botConfig.bot?.name || 'Ourin-AI')
+            .setContextInfo(getGameContextInfo())
+            .addReply('🔄 Main Lagi!', `${prefix}tebakgambar`)
+
+        await msg.send(chatId)
+    } catch {
+        await sock.sendMessage(chatId, { text: resultText, mentions })
+    }
+}
+
+// ─── Handler utama: .tebakgambar ─────────────────────────────────────────────
+async function handler(m, { sock }) {
+    const chatId   = m.chat
+    const senderId = m.sender
+
+    // Cek penalty nyerah
+    if (isSurrenderedPenalty(chatId, senderId)) {
+        const expiresAt = surrenderedMap.get(`${chatId}:${senderId}`)
+        const sisamenit = Math.ceil((expiresAt - Date.now()) / 60000)
+        return m.reply(
+            `❌ *Kamu habis nyerah!*\n\n` +
+            `Tunggu sekitar *${sisamenit} menit* lagi atau tunggu ` +
+            `seseorang menjawab game berikutnya dulu ya 😄`
+        )
+    }
+
+    // Cek kalau sudah ada game aktif di chat ini
+    if (hasActiveSession(chatId)) {
+        const session = getSession(chatId)
+        if (session && session.gameType === GAME_TYPE) {
+            const remaining = getRemainingTime(chatId)
+            const hint = getHint(session.question.jawaban, 2 + (session.hintLevel || 0))
+            return m.reply(
+                `⚠️ *Ada game yang sedang berjalan!*\n\n` +
+                `💡 Hint: *${hint}*\n` +
+                `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
+                `_Jawab atau tekan tombol Nyerah dulu_`
+            )
+        }
+    }
+
+    // Ambil soal acak
+    const question = getRandomItem('tebakgambar.json')
+    if (!question) {
+        return m.reply('❌ *Data tidak tersedia!*\n\n> Tidak ada soal tebak gambar saat ini.')
+    }
+
+    let sentMsg
+    try {
+        sentMsg = await sendGameMessage(sock, chatId, question, m)
+    } catch (e) {
+        return m.reply('❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
+    }
+
+    // Buat session
+    const session = createSession(chatId, GAME_TYPE, question, sentMsg.key, TIMEOUT_MS)
+    session.hintLevel  = 0
+    session.startedBy  = senderId
+
+    // Timer timeout
+    setSessionTimer(chatId, async () => {
+        const ans  = question.jawaban
+        const text = `⏱️ *WAKTU HABIS!*\n\nJawaban: *${ans}*\n\n_Gak ada yang bisa jawab nih~_`
+        await sendGameOver(sock, chatId, text)
+    })
+}
+
+// ─── Answer handler: tangani balasan + button click ──────────────────────────
+async function answerHandler(m, sock) {
+    const chatId  = m.chat
+    const session = getSession(chatId)
+
+    if (!session || session.gameType !== GAME_TYPE) return false
+
+    const body = (m.body || '').trim()
+    if (!body) return false
+
+    // Abaikan pesan yang dimulai prefix (command)
+    const prefix = getPrefix()
+    if (['.', '/', '!', '#'].some(p => body.startsWith(p))) return false
+
+    // ── Button: NYERAH ───────────────────────────────────────────────────────
+    if (body === 'tebakgambar_nyerah') {
+        endSession(chatId)
+        addSurrenderPenalty(chatId, m.sender)
+
+        const ans  = session.question.jawaban
+        const tag  = `@${m.sender.split('@')[0]}`
+        const text =
+            `🏳️ *${tag} menyerah!*\n\n` +
+            `Jawaban: *${ans}*\n\n` +
+            `_Kamu kena penalty 10 menit tidak bisa mulai game baru 😅_`
+
+        await sendGameOver(sock, chatId, text, [m.sender])
+        return true
+    }
+
+    // ── Button: BANTUAN ──────────────────────────────────────────────────────
+    if (body === 'tebakgambar_bantuan') {
+        session.hintLevel = (session.hintLevel || 0) + 2
+        const ans       = session.question.jawaban
+        const hint      = getProgressiveHint(ans, session.hintLevel + 2)
+        const remaining = getRemainingTime(chatId)
+
+        await m.reply(
+            `💡 *Bantuan!*\n\n` +
+            `Hint: *${hint}*\n` +
+            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`
+        )
+        return true
+    }
+
+    // ── Cek jawaban teks ─────────────────────────────────────────────────────
+    session.attempts = (session.attempts || 0) + 1
+
+    const ans    = session.question.jawaban
+    const result = checkAnswerAdvanced(ans, body)
+
+    if (result.status === 'correct') {
+        endSession(chatId)
+        clearChatPenalties(chatId) // Bebaskan semua yang kena penalty di chat ini
+
+        const db     = getDatabase()
+        const reward = getRandomReward()
+
+        db.updateEnergi(m.sender, reward.limit)
+        db.updateKoin(m.sender, reward.koin)
+
+        const user = db.getUser(m.sender)
+        if (reward.exp > 0) {
+            if (!user.rpg) user.rpg = {}
+            await addExpWithLevelCheck(sock, m, db, user, reward.exp)
+        }
+        db.save()
+
+        const tag  = `@${m.sender.split('@')[0]}`
+        const text =
+            `🎉 *${tag} BENAR!*\n\n` +
+            `Jawaban: *${ans}*\n` +
+            `🎁 Reward: +${reward.limit} Limit, +${reward.koin} Koin, +${reward.exp} EXP\n\n` +
+            `_GG WP! Otak lu encer!_ 🧠`
+
+        await sendGameOver(sock, chatId, text, [m.sender])
+        return true
+    }
+
+    if (result.status === 'close') {
+        const persen    = Math.round(result.similarity * 100)
+        const remaining = getRemainingTime(chatId)
+        await m.react('🔥')
+        await m.reply(
+            `🔥 *Hampir!* Jawabanmu *${persen}%* mirip!\n` +
+            `_Sisa: *${formatRemainingTime(remaining)}*_`
+        )
+        return false
+    }
+
+    // Salah — kasih hint progressive
+    const remaining = getRemainingTime(chatId)
+    if (remaining > 0 && session.attempts <= 10) {
+        await m.react('❌')
+        const hint = getProgressiveHint(ans, session.attempts)
+        await m.reply(
+            `❌ Belum bener! Hint: *${hint}*\n` +
+            `_Sisa: *${formatRemainingTime(remaining)}*_`
+        )
+    }
+
+    return false
+}
+
+// ─── Exports ─────────────────────────────────────────────────────────────────
+const pluginConfig = {
+    name: 'tebakgambar',
     alias: ['tg', 'guessimage'],
-    emoji: '🖼️',
-    title: 'TEBAK GAMBAR',
-    description: 'Tebak kata dari gambar',
-    timeout: 90000,
-    hasImage: true,
-    questionField: null,
-    hintCount: 3
-})
+    category: 'game',
+    description: 'Tebak kata dari gambar (dengan button Nyerah & Bantuan)',
+    usage: '.tebakgambar',
+    example: '.tebakgambar',
+    isOwner: false,
+    isPremium: false,
+    isGroup: false,
+    isPrivate: false,
+    cooldown: 5,
+    energi: 0,
+    isEnabled: true,
+}
 
-const { config: pluginConfig, handler, answerHandler } = games.createPlugin('tebakgambar')
 export { pluginConfig as config, handler, answerHandler }
