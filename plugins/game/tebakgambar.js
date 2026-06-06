@@ -16,16 +16,15 @@ import {
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
 import { fetchBuffer } from '../../src/lib/ourin-utils.js'
-import { getGameContextInfo } from '../../src/lib/ourin-context.js'
 import botConfig from '../../config.js'
 
 // ─── Penalty map: siapa yang nyerah dan kapan expire-nya ─────────────────────
 if (!global.tebakgambarSurrendered) global.tebakgambarSurrendered = new Map()
 const surrenderedMap = global.tebakgambarSurrendered
 
-const GAME_TYPE    = 'tebakgambar'
-const TIMEOUT_MS   = 90000          // 90 detik
-const PENALTY_MS   = 10 * 60 * 1000 // 10 menit penalty setelah nyerah
+const GAME_TYPE  = 'tebakgambar'
+const TIMEOUT_MS = 90000          // 90 detik
+const PENALTY_MS = 10 * 60 * 1000 // 10 menit penalty setelah nyerah
 
 // ─── Helpers penalty ─────────────────────────────────────────────────────────
 function isSurrenderedPenalty(chatId, senderId) {
@@ -53,7 +52,7 @@ function getPrefix() {
     return botConfig.command?.prefix || '.'
 }
 
-// ─── Kirim pesan game (gambar + button Nyerah & Bantuan) ─────────────────────
+// ─── Kirim gambar game + button Nyerah & Bantuan ─────────────────────────────
 async function sendGameMessage(sock, chatId, question, quotedMsg) {
     const answer  = question.jawaban
     const hint    = getHint(answer, 2)
@@ -62,34 +61,43 @@ async function sendGameMessage(sock, chatId, question, quotedMsg) {
         `💡 Hint: *${hint}*\n` +
         `⏱️ Waktu: *${TIMEOUT_MS / 1000} detik*\n` +
         `🎁 Hadiah: *Limit, Koin, EXP*\n\n` +
-        `_Jawab langsung di chat atau tekan tombol di bawah_`
+        `_Jawab langsung atau tekan tombol di bawah_`
 
     const imgBuffer = await fetchBuffer(question.img)
 
+    // TANPA getGameContextInfo() — contextInfo saluran tidak kompatibel
+    // dengan interactive button message dan menyebabkan tampil seperti forward
     const msg = new Button(sock)
         .setImage(imgBuffer)
         .setBody(caption)
         .setFooter(botConfig.bot?.name || 'Ourin-AI')
-        .setContextInfo(getGameContextInfo())
         .addReply('🏳️ Nyerah', 'tebakgambar_nyerah')
         .addReply('💡 Bantuan', 'tebakgambar_bantuan')
 
     return await msg.send(chatId, { quoted: quotedMsg })
 }
 
-// ─── Kirim pesan game selesai + button Main Lagi ─────────────────────────────
+// ─── Kirim hasil game + button Main Lagi ─────────────────────────────────────
 async function sendGameOver(sock, chatId, resultText, mentions = []) {
     const prefix = getPrefix()
     try {
+        // Coba kirim sebagai interactive button
         const msg = new Button(sock)
             .setBody(resultText)
             .setFooter(botConfig.bot?.name || 'Ourin-AI')
-            .setContextInfo(getGameContextInfo())
             .addReply('🔄 Main Lagi!', `${prefix}tebakgambar`)
 
         await msg.send(chatId)
-    } catch {
-        await sock.sendMessage(chatId, { text: resultText, mentions })
+    } catch (btnErr) {
+        // Fallback: kirim teks biasa + instruksi manual
+        try {
+            await sock.sendMessage(chatId, {
+                text: resultText + `\n\n> Ketik *${prefix}tebakgambar* untuk main lagi`,
+                mentions,
+            })
+        } catch (textErr) {
+            console.error('[tebakgambar] sendGameOver gagal total:', textErr?.message)
+        }
     }
 }
 
@@ -134,23 +142,26 @@ async function handler(m, { sock }) {
     try {
         sentMsg = await sendGameMessage(sock, chatId, question, m)
     } catch (e) {
+        console.error('[tebakgambar] gagal kirim gambar:', e?.message)
         return m.reply('❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
     }
 
     // Buat session
     const session = createSession(chatId, GAME_TYPE, question, sentMsg.key, TIMEOUT_MS)
-    session.hintLevel  = 0
-    session.startedBy  = senderId
+    session.hintLevel = 0
+    session.startedBy = senderId
 
-    // Timer timeout
-    setSessionTimer(chatId, async () => {
+    // Timer timeout — pakai IIFE untuk avoid unhandled rejection
+    setSessionTimer(chatId, () => {
         const ans  = question.jawaban
         const text = `⏱️ *WAKTU HABIS!*\n\nJawaban: *${ans}*\n\n_Gak ada yang bisa jawab nih~_`
-        await sendGameOver(sock, chatId, text)
+        sendGameOver(sock, chatId, text).catch(e =>
+            console.error('[tebakgambar] timeout sendGameOver error:', e?.message)
+        )
     })
 }
 
-// ─── Answer handler: tangani balasan + button click ──────────────────────────
+// ─── Answer handler: tangani button click & jawaban teks ─────────────────────
 async function answerHandler(m, sock) {
     const chatId  = m.chat
     const session = getSession(chatId)
@@ -160,8 +171,7 @@ async function answerHandler(m, sock) {
     const body = (m.body || '').trim()
     if (!body) return false
 
-    // Abaikan pesan yang dimulai prefix (command)
-    const prefix = getPrefix()
+    // Abaikan pesan command (dimulai prefix)
     if (['.', '/', '!', '#'].some(p => body.startsWith(p))) return false
 
     // ── Button: NYERAH ───────────────────────────────────────────────────────
@@ -169,12 +179,12 @@ async function answerHandler(m, sock) {
         endSession(chatId)
         addSurrenderPenalty(chatId, m.sender)
 
-        const ans  = session.question.jawaban
-        const tag  = `@${m.sender.split('@')[0]}`
+        const ans = session.question.jawaban
+        const tag = `@${m.sender.split('@')[0]}`
         const text =
             `🏳️ *${tag} menyerah!*\n\n` +
             `Jawaban: *${ans}*\n\n` +
-            `_Kamu kena penalty 10 menit tidak bisa mulai game baru 😅_`
+            `_Kamu kena penalty 10 menit, tidak bisa mulai game baru 😅_`
 
         await sendGameOver(sock, chatId, text, [m.sender])
         return true
@@ -203,7 +213,7 @@ async function answerHandler(m, sock) {
 
     if (result.status === 'correct') {
         endSession(chatId)
-        clearChatPenalties(chatId) // Bebaskan semua yang kena penalty di chat ini
+        clearChatPenalties(chatId)
 
         const db     = getDatabase()
         const reward = getRandomReward()
@@ -259,7 +269,7 @@ const pluginConfig = {
     name: 'tebakgambar',
     alias: ['tg', 'guessimage'],
     category: 'game',
-    description: 'Tebak kata dari gambar (dengan button Nyerah & Bantuan)',
+    description: 'Tebak kata dari gambar dengan button interaktif',
     usage: '.tebakgambar',
     example: '.tebakgambar',
     isOwner: false,
