@@ -46,5 +46,6 @@ sessions/**
 .token.secret
 .repo.last
 
-# node_modules — exclude semua (install ulang via npm install)
-node_modules/
+# node_modules — sekarang boleh di-upload ke GitHub jika diperlukan
+# Jika ingin tetap ignore, aktifkan kembali baris berikut:
+# node_modules/

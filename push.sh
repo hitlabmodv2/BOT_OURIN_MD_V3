@@ -1750,11 +1750,8 @@ prepare_stage() {
     esac
   done
 
-  # node_modules: SELALU untrack penuh — tidak pernah di-upload ke GitHub.
-  # User cukup jalankan `npm install` setelah clone.
-  if git ls-files --error-unmatch node_modules/ >/dev/null 2>&1; then
-    git rm -r --cached -q node_modules/ 2>>"$err_log" || true
-  fi
+  # node_modules: tidak lagi di-untrack secara otomatis.
+  # Jika folder node_modules ingin di-upload ke GitHub, cukup commit seperti file biasa.
 
   # sessions/hisoka: untrack file JUNK saja (bukan file penting koneksi bot).
   # File penting: creds, contacts, groups, settings, app-state-sync-*, identity-key-*, device-list-*, lid-mapping-*
