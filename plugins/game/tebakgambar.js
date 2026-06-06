@@ -11,7 +11,6 @@ import {
     getRemainingTime,
     formatRemainingTime,
     getRandomReward,
-    isReplyToGame,
 } from '../../src/lib/ourin-game-data.js'
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
@@ -332,8 +331,10 @@ async function answerHandler(m, sock) {
         return true
     }
 
-    // ── Wajib reply ke pesan soal bot — cegah spam di GC ─────────────────────
-    if (!isReplyToGame(m, session)) return false
+    // ── Wajib reply (quoted) — cegah spam di GC ──────────────────────────────
+    // Handler utama (handler.js) sudah mensyaratkan m.quoted sebelum memanggil
+    // answerHandler, jadi cukup cek di sini sebagai guard tambahan.
+    if (!m.quoted) return false
 
     // ── Tolak jawaban kalau sudah nyerah ──────────────────────────────────────
     if (isSurrendered(chatId, senderId)) {
