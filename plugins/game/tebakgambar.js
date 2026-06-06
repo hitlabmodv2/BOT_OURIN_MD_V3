@@ -11,6 +11,7 @@ import {
     getRemainingTime,
     formatRemainingTime,
     getRandomReward,
+    isReplyToGame,
 } from '../../src/lib/ourin-game-data.js'
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
@@ -330,6 +331,9 @@ async function answerHandler(m, sock) {
         )
         return true
     }
+
+    // ── Wajib reply ke pesan soal bot — cegah spam di GC ─────────────────────
+    if (!isReplyToGame(m, session)) return false
 
     // ── Tolak jawaban kalau sudah nyerah ──────────────────────────────────────
     if (isSurrendered(chatId, senderId)) {
