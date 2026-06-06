@@ -74,7 +74,7 @@ async function handler(m, { sock, skipDeduct }) {
         m.react('✅')
         
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.react('☢')
         m.reply(`Yah, server liriknya lagi ngambek nih kak 😭 Coba lagi nanti ya! 🛠️✨`)
     }

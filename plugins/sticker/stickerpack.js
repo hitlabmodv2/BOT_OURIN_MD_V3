@@ -208,7 +208,7 @@ async function handler(m, { sock, skipDeduct }) {
       }
     }
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     console.error("[StickerPack] Error:", error.message);
     await m.react("✘");
     m.reply(te(m.prefix, m.command, m.pushName));

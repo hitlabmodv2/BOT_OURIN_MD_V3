@@ -60,7 +60,7 @@ async function handler(m, { sock, skipDeduct }) {
         await m.react('✅')
         
     } catch (err) {
-        skipDeduct?.()
+        skipDeduct?.(err)
         return m.reply(te(m.prefix, m.command, m.pushName))
     }
 }

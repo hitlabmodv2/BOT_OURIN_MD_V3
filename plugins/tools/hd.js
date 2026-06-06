@@ -46,7 +46,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     await sock.sendMedia(m.chat, upscaled, null, m, { type: "image" });
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     console.log(e);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

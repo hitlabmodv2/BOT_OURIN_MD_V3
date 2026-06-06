@@ -97,7 +97,7 @@ async function handler(m, { args, sock, skipDeduct }) {
     }
     await m.react("✅");
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     m.reply(`❌ Maaf kak, terjadi kesalahan sistem!\nError: ${e.message}`);
   }
 }

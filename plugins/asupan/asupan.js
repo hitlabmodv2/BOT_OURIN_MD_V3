@@ -58,7 +58,7 @@ async function handler(m, { sock, skipDeduct }) {
         })
         
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.react('❌')
         m.reply(`❌ *ᴇʀʀᴏʀ*\n\n> Video asupan tidak ditemukan`)
     }

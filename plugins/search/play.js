@@ -110,7 +110,7 @@ async function handler(m, { sock, text, skipDeduct }) {
 
     m.react("✅");
   } catch (err) {
-    skipDeduct?.()
+    skipDeduct?.(err)
     console.error("[Play]", err);
     m.react("😭");
     m.reply(

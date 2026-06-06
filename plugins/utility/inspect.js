@@ -111,7 +111,7 @@ async function handler(m, { sock, skipDeduct }) {
         }
 
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.react('❌')
         
         if (error.data) {

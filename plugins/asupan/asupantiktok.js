@@ -107,7 +107,7 @@ async function handler(m, { sock, skipDeduct }) {
       contextInfo: saluranCtx(),
     });
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     m.react("❌");
     m.reply(`🚩 *Username Tidak Ditemukan*\n\n> Username: ${query}`);
   }

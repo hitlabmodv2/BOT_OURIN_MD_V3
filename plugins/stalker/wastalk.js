@@ -66,7 +66,7 @@ async function handler(m, { sock, skipDeduct }) {
             }
             country = regionNames.of(format.getRegionCode('mobile'));
         } catch (e) {
-            skipDeduct?.()
+            skipDeduct?.(e)
             format = null;
             country = 'Unknown';
         }
@@ -102,7 +102,7 @@ async function handler(m, { sock, skipDeduct }) {
         }, { quoted: m });
 
     } catch (e) {
-        skipDeduct?.()
+        skipDeduct?.(e)
         console.error('WaStalk Error:', e);
         m.reply('❌ Failed to stalk user.');
     }

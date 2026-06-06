@@ -70,7 +70,7 @@ async function handler(m, { sock, skipDeduct }) {
   try {
     groupMeta = m.groupMetadata;
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     return m.reply("❌ *ɢᴀɢᴀʟ*\n\n> Tidak bisa mengambil data grup!");
   }
 

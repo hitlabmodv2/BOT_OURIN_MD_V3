@@ -89,7 +89,7 @@ async function handler(m, { sock, skipDeduct }) {
         fs.unlinkSync(outputPath);
     } catch (e) {}
   } catch (err) {
-    skipDeduct?.()
+    skipDeduct?.(err)
     await m.react("❌");
     await m.reply(`❌ Maaf kak, proses enhance videonya gagal! 😭\n\nDetail: ${err.message}`);
   }

@@ -110,7 +110,7 @@ async function handler(m, { sock }) {
             break;
         }
     } catch (e) {
-        skipDeduct?.()
+        skipDeduct?.(e)
         console.error('System Plugin Error:', e);
         m.reply('❌ Terjadi kesalahan mengambil data sistem.');
     }

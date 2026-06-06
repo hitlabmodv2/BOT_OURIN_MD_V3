@@ -22,14 +22,14 @@ async function handler(m, { sock, skipDeduct }) {
         try {
             video = await m.quoted.download()
         } catch (e) {
-            skipDeduct?.()
+            skipDeduct?.(e)
             return m.reply(`❌ Gagal download video dari quoted.`)
         }
     } else if (m.isVideo) {
         try {
             video = await m.download()
         } catch (e) {
-            skipDeduct?.()
+            skipDeduct?.(e)
             return m.reply(`❌ Gagal download video.`)
         }
     }
@@ -56,7 +56,7 @@ async function handler(m, { sock, skipDeduct }) {
         m.react('✅')
         
     } catch (err) {
-        skipDeduct?.()
+        skipDeduct?.(err)
         return m.reply(te(m.prefix, m.command, m.pushName))
     }
 }

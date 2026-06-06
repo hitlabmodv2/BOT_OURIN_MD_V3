@@ -35,7 +35,7 @@ async function handler(m, { sock, skipDeduct }) {
       type: "image"
     })
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     m.react("☢");
     const message = error?.response?.data?.message || error?.message;
     if (message) {

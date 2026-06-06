@@ -125,7 +125,7 @@ async function handler(m, { sock, skipDeduct }) {
 
         await m.react('✅')
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         console.error("Error QWA:", error)
         await m.react('❌')
         m.reply(`❌ *GAGAL MEMBUAT QUOTE*\n\n> Terjadi kesalahan atau API sedang bermasalah.`)

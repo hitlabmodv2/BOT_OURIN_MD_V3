@@ -49,7 +49,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     m.react("✅");
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     console.error(e);
     m.react("☢");
     m.reply("❌ Gagal generate gambar, coba lagi nanti");

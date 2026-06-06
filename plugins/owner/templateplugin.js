@@ -38,7 +38,7 @@ async function handler(m, { sock }) {
     try {
         await m.reply('This is an example plugin!')
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         console.error('Example Plugin Error:', error)
         await m.reply('❌ *GAGAL*\\n\\n> ' + error.message)
     }

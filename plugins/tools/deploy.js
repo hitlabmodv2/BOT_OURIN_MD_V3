@@ -145,7 +145,7 @@ Contoh:
         )
 
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.react('❌')
 
         const err =

@@ -130,7 +130,7 @@ async function handler(m, { sock, skipDeduct }) {
         const converted = await convertCjsToEsm(code)
         await sock.sendCodeBlock(m.chat, converted, m)
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.reply(te(m.prefix, m.command, m.pushName))
     }
 }

@@ -124,7 +124,7 @@ async function handler(m, { sock }) {
         await m.react('✅')
 
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         await m.react('❌')
         await m.reply(
             `❌ *ᴇʀʀᴏʀ*\n\n` +

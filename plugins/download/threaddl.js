@@ -96,7 +96,7 @@ async function handler(m, { sock, skipDeduct }) {
         m.react('✅')
 
     } catch (err) {
-        skipDeduct?.()
+        skipDeduct?.(err)
         console.error('[ThreadsDL]', err.message)
         m.react('☢')
         m.reply(te(m.prefix, m.command, m.pushName))

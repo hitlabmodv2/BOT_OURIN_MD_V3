@@ -54,7 +54,7 @@ async function handler(m, { sock, skipDeduct }) {
       contextInfo: saluranCtx(),
     });
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     console.error(e);
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

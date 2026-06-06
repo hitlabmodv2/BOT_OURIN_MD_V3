@@ -143,7 +143,7 @@ async function handler(m, { sock, skipDeduct }) {
         } catch (e) {}
 
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.react('☢')
         m.reply(`❌ *ɢᴀɢᴀʟ*\n\n> Terjadi kesalahan saat memproses video`)
     }

@@ -67,7 +67,7 @@ async function handler(m, { sock, skipDeduct }) {
     }
     m.react("✅");
   } catch (err) {
-    skipDeduct?.()
+    skipDeduct?.(err)
     console.error("[YTMP4]", err);
     m.react("❌");
     m.reply("Gagal mengunduh video.");

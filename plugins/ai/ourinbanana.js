@@ -60,7 +60,7 @@ async function handler(m, { sock, skipDeduct }) {
       type: "image",
     });
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     console.log(error);
     m.react("❌");
     m.reply(`🍀 *Waduhh, sepertinya ini ada kendala*

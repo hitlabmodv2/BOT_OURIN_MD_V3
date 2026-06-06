@@ -43,14 +43,14 @@ async function handler(m, { sock, skipDeduct }) {
     try {
       buffer = await m.quoted.download();
     } catch (e) {
-      skipDeduct?.()
+      skipDeduct?.(e)
       m.reply(te(m.prefix, m.command, m.pushName));
     }
   } else if (m.isMedia && m.type === "imageMessage") {
     try {
       buffer = await m.download();
     } catch (e) {
-      skipDeduct?.()
+      skipDeduct?.(e)
       m.reply(te(m.prefix, m.command, m.pushName));
     }
   } else {
@@ -84,7 +84,7 @@ async function handler(m, { sock, skipDeduct }) {
     );
     m.react("✅");
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     m.react("❌");
     m.reply(`Coba lagi`);
   }

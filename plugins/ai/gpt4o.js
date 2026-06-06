@@ -35,7 +35,7 @@ async function handler(m, { sock, skipDeduct }) {
     m.react("✅");
     await m.reply(`${json.data.data}`);
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     console.log(error);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

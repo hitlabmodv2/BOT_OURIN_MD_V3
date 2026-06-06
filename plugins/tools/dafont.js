@@ -97,7 +97,7 @@ async function handler(m, { sock, skipDeduct }) {
     await m.reply(txt);
     m.react("✅");
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     console.error(e);
     m.react("☢");
     m.reply("❌ Gagal mencari font, coba lagi nanti");

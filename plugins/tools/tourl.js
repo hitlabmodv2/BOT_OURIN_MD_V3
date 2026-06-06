@@ -526,7 +526,7 @@ async function handler(m, { sock, skipDeduct }) {
       mimetype = content?.mimetype || "application/octet-stream";
       filename = content?.fileName || `file.${getFileExtension(mimetype)}`;
     } catch (e) {
-      skipDeduct?.()
+      skipDeduct?.(e)
       return m.reply(te(m.prefix, m.command, m.pushName));
     }
   } else if (m.message) {
@@ -550,7 +550,7 @@ async function handler(m, { sock, skipDeduct }) {
       mimetype = content?.mimetype || "application/octet-stream";
       filename = content?.fileName || `file.${getFileExtension(mimetype)}`;
     } catch (e) {
-      skipDeduct?.()
+      skipDeduct?.(e)
       return m.reply(te(m.prefix, m.command, m.pushName));
     }
   }
@@ -569,7 +569,7 @@ async function handler(m, { sock, skipDeduct }) {
       const result = await uploader.fn(media, filename);
       results.push(result);
     } catch (e) {
-      skipDeduct?.()
+      skipDeduct?.(e)
       failed.push(uploader.name);
     }
   }
@@ -641,7 +641,7 @@ async function handler(m, { sock, skipDeduct }) {
 
     await sock.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
   } catch (err) {
-    skipDeduct?.()
+    skipDeduct?.(err)
     await m.reply(text);
   }
 

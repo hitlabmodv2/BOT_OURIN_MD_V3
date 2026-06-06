@@ -1,5 +1,6 @@
 import config from "../config.js";
 import { isSelf } from "../config.js";
+import { notifyOwnerError } from "./lib/ourin-error-notifier.js";
 import { preloadAssets, getAssetBuffer } from "./lib/ourin-asset-manager.js";
 preloadAssets(config.assets);
 
@@ -1647,7 +1648,12 @@ async function messageHandler(msg, sock, options = {}) {
       },
       jadibotId: jadibotId,
       isJadibot: isJadibot,
-      skipDeduct: () => { _shouldDeductEnergi = false; },
+      skipDeduct: (err) => {
+        _shouldDeductEnergi = false;
+        if (err instanceof Error || (err && typeof err === "object" && err.message)) {
+          notifyOwnerError(sock, m, err, m.command).catch(() => {});
+        }
+      },
     };
 
     // Log command usage: GC = green, PM = cyan — mobile-friendly (no bg color)
@@ -1674,7 +1680,18 @@ async function messageHandler(msg, sock, options = {}) {
       }
     } catch {}
 
-    await plugin.handler(m, context);
+    try {
+      await plugin.handler(m, context);
+    } catch (pluginErr) {
+      context.skipDeduct(pluginErr);
+      logger.error("Plugin", `[${m.command}] ${pluginErr.message}`);
+      try { await m.react("☢"); } catch {}
+      try {
+        const te = (await import("./lib/ourin-error.js")).default;
+        await m.reply(te(m.prefix, m.command, m.pushName));
+      } catch {}
+      return;
+    }
 
     // Command sukses — baru deduct limit & kirim notif
     if (_shouldDeductEnergi) {

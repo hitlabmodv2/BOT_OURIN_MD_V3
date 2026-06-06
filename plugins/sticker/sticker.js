@@ -218,7 +218,7 @@ async function handler(m, { sock, config: botConfig, skipDeduct }) {
         await m.react('✅')
         
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         replyHydro(sock, m, te(m.prefix, m.command, m.pushName))
         await m.react('❌')
     }

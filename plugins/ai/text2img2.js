@@ -39,7 +39,7 @@ async function handler(m, { sock, skipDeduct }) {
     await sock.sendMedia(m.chat, response.data, m.fullArgs, m, { type: 'image' })
     await m.react('✅')
   } catch (e) {
-    skipDeduct?.()
+    skipDeduct?.(e)
     console.error(e)
     await m.react('❌')
     return m.reply(te(m.prefix, m.command, m.pushName))

@@ -51,7 +51,7 @@ async function handler(m, { sock }) {
             fs.unlinkSync(pathnya);
         } catch (e) {}
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         console.error('[RemoveBG Error]', error);
         m.reply(te(m.prefix, m.command, m.pushName));
     }

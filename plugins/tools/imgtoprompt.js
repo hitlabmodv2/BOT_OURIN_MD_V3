@@ -62,7 +62,7 @@ async function handler(m, { sock }) {
             `> _Generated at: ${result.generatedAt || new Date().toISOString()}_`;
         await m.reply(responseText);
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         console.error('[ImgToPrompt Error]', error);
         m.reply(te(m.prefix, m.command, m.pushName));
     }

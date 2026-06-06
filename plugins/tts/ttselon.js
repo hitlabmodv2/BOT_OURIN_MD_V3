@@ -90,7 +90,7 @@ async function handler(m, { sock, skipDeduct }) {
     fs.unlinkSync(opusPath);
     m.react("✅");
   } catch (err) {
-    skipDeduct?.()
+    skipDeduct?.(err)
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

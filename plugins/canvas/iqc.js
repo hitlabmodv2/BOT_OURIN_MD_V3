@@ -45,7 +45,7 @@ async function handler(m, { sock, skipDeduct }) {
     m.react("✅");
     await sock.sendMedia(m.chat, result.image, null, m, { type: "image" });
   } catch (error) {
-    skipDeduct?.()
+    skipDeduct?.(error)
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
   }

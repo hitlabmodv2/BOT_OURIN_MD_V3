@@ -98,7 +98,7 @@ async function handler(m, { sock, skipDeduct }) {
         );
         m.react('✅');
     } catch (error) {
-        skipDeduct?.()
+        skipDeduct?.(error)
         m.react('❌');
         if (error.response?.status === 401) {
             return m.reply('❌ API Key Groq invalid. Cek config.js → APIkey.groq');

@@ -92,7 +92,7 @@ async function handler(m, { sock, skipDeduct }) {
       m.react("⚠️");
     }
   } catch (err) {
-    skipDeduct?.()
+    skipDeduct?.(err)
     console.log(err);
     m.react("☢");
     return m.reply(te(m.prefix, m.command, m.pushName));
