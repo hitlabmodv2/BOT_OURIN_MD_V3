@@ -293,15 +293,29 @@ async function handleGameAnswer(m, sock) {
       if (handled) return true;
     }
 
-    if (!hasActiveSession(m.chat)) return false;
+    const body = (m.body || "").trim();
+    // Tombol game (quick_reply id) tidak punya prefix — tetap proses meski tidak ada session aktif
+    const isGameButton = body && body.includes("_") && !/^[.\/!#]/.test(body);
 
-    const session = getSession(m.chat);
-    if (!session) return false;
-
-    const targeted = cachedGamePlugins.get(session.gameType);
-    if (targeted) {
-      const handled = await targeted.answerHandler(m, sock);
-      if (handled) return true;
+    if (hasActiveSession(m.chat)) {
+      const session = getSession(m.chat);
+      if (!session) return false;
+      const targeted = cachedGamePlugins.get(session.gameType);
+      if (targeted) {
+        const handled = await targeted.answerHandler(m, sock);
+        if (handled) return true;
+      }
+    } else if (isGameButton) {
+      // Tidak ada session aktif tapi tombol ditekan (misal: game baru saja selesai)
+      // Coba semua game plugin agar bisa merespon dengan tepat
+      for (const [, plugin] of cachedGamePlugins) {
+        try {
+          const handled = await plugin.answerHandler(m, sock);
+          if (handled) return true;
+        } catch { }
+      }
+    } else {
+      return false;
     }
   } catch { }
   return false;
