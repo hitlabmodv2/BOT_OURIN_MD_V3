@@ -18,23 +18,29 @@ import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
 import { fetchBuffer } from '../../src/lib/ourin-utils.js'
 import botConfig from '../../config.js'
 
-// ─── Penalty map: siapa yang nyerah dan kapan expire-nya ─────────────────────
+// ─── Penalty map ──────────────────────────────────────────────────────────────
 if (!global.tebakgambarSurrendered) global.tebakgambarSurrendered = new Map()
 const surrenderedMap = global.tebakgambarSurrendered
 
 const GAME_TYPE  = 'tebakgambar'
-const TIMEOUT_MS = 90000          // 90 detik
-const PENALTY_MS = 10 * 60 * 1000 // 10 menit penalty setelah nyerah
+const TIMEOUT_MS = 90000
+const PENALTY_MS = 10 * 60 * 1000
 
-// ─── Helpers penalty ─────────────────────────────────────────────────────────
+// ─── Helper: kirim teks TANPA saluran (bypass m.reply / sendReplyVariant) ─────
+async function send(sock, chatId, text, quotedMsg, mentions = []) {
+    return sock.sendMessage(
+        chatId,
+        { text, mentions },
+        quotedMsg ? { quoted: quotedMsg } : {}
+    )
+}
+
+// ─── Helpers penalty ──────────────────────────────────────────────────────────
 function isSurrenderedPenalty(chatId, senderId) {
     const key = `${chatId}:${senderId}`
     const expiresAt = surrenderedMap.get(key)
     if (!expiresAt) return false
-    if (Date.now() > expiresAt) {
-        surrenderedMap.delete(key)
-        return false
-    }
+    if (Date.now() > expiresAt) { surrenderedMap.delete(key); return false }
     return true
 }
 
@@ -65,8 +71,8 @@ async function sendGameMessage(sock, chatId, question, quotedMsg) {
 
     const imgBuffer = await fetchBuffer(question.img)
 
-    // setContextInfo({}) → paksa bersih, tidak ada forwardedNewsletterMessageInfo
-    // quoted tetap diperlukan agar WA merender button chips
+    // setContextInfo({}) → tidak ada forwardedNewsletterMessageInfo
+    // { quoted: quotedMsg } → dibutuhkan agar WA merender button chips
     const msg = new Button(sock)
         .setImage(imgBuffer)
         .setBody(caption)
@@ -82,7 +88,6 @@ async function sendGameMessage(sock, chatId, question, quotedMsg) {
 async function sendGameOver(sock, chatId, resultText, mentions = []) {
     const prefix = getPrefix()
     try {
-        // Coba kirim sebagai interactive button
         const msg = new Button(sock)
             .setBody(resultText)
             .setFooter(botConfig.bot?.name || 'Ourin-AI')
@@ -91,7 +96,6 @@ async function sendGameOver(sock, chatId, resultText, mentions = []) {
 
         await msg.send(chatId)
     } catch (btnErr) {
-        // Fallback: kirim teks biasa + instruksi manual
         try {
             await sock.sendMessage(chatId, {
                 text: resultText + `\n\n> Ketik *${prefix}tebakgambar* untuk main lagi`,
@@ -108,28 +112,30 @@ async function handler(m, { sock }) {
     const chatId   = m.chat
     const senderId = m.sender
 
-    // Cek penalty nyerah
+    // Cek penalty nyerah — kirim langsung tanpa m.reply
     if (isSurrenderedPenalty(chatId, senderId)) {
         const expiresAt = surrenderedMap.get(`${chatId}:${senderId}`)
         const sisamenit = Math.ceil((expiresAt - Date.now()) / 60000)
-        return m.reply(
+        return send(sock, chatId,
             `❌ *Kamu habis nyerah!*\n\n` +
             `Tunggu sekitar *${sisamenit} menit* lagi atau tunggu ` +
-            `seseorang menjawab game berikutnya dulu ya 😄`
+            `seseorang menjawab game berikutnya dulu ya 😄`,
+            m
         )
     }
 
-    // Cek kalau sudah ada game aktif di chat ini
+    // Cek game aktif — kirim langsung tanpa m.reply
     if (hasActiveSession(chatId)) {
         const session = getSession(chatId)
         if (session && session.gameType === GAME_TYPE) {
             const remaining = getRemainingTime(chatId)
             const hint = getHint(session.question.jawaban, 2 + (session.hintLevel || 0))
-            return m.reply(
+            return send(sock, chatId,
                 `⚠️ *Ada game yang sedang berjalan!*\n\n` +
                 `💡 Hint: *${hint}*\n` +
                 `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
-                `_Jawab atau tekan tombol Nyerah dulu_`
+                `_Jawab atau tekan tombol Nyerah dulu_`,
+                m
             )
         }
     }
@@ -137,7 +143,7 @@ async function handler(m, { sock }) {
     // Ambil soal acak
     const question = getRandomItem('tebakgambar.json')
     if (!question) {
-        return m.reply('❌ *Data tidak tersedia!*\n\n> Tidak ada soal tebak gambar saat ini.')
+        return send(sock, chatId, '❌ *Data tidak tersedia!*\n\n> Tidak ada soal tebak gambar saat ini.', m)
     }
 
     let sentMsg
@@ -145,7 +151,7 @@ async function handler(m, { sock }) {
         sentMsg = await sendGameMessage(sock, chatId, question, m)
     } catch (e) {
         console.error('[tebakgambar] gagal kirim gambar:', e?.message)
-        return m.reply('❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
+        return send(sock, chatId, '❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.', m)
     }
 
     // Buat session
@@ -153,7 +159,7 @@ async function handler(m, { sock }) {
     session.hintLevel = 0
     session.startedBy = senderId
 
-    // Timer timeout — pakai IIFE untuk avoid unhandled rejection
+    // Timer timeout
     setSessionTimer(chatId, () => {
         const ans  = question.jawaban
         const text = `⏱️ *WAKTU HABIS!*\n\nJawaban: *${ans}*\n\n_Gak ada yang bisa jawab nih~_`
@@ -173,7 +179,7 @@ async function answerHandler(m, sock) {
     const body = (m.body || '').trim()
     if (!body) return false
 
-    // Abaikan pesan command (dimulai prefix)
+    // Abaikan pesan command
     if (['.', '/', '!', '#'].some(p => body.startsWith(p))) return false
 
     // ── Button: NYERAH ───────────────────────────────────────────────────────
@@ -199,10 +205,12 @@ async function answerHandler(m, sock) {
         const hint      = getProgressiveHint(ans, session.hintLevel + 2)
         const remaining = getRemainingTime(chatId)
 
-        await m.reply(
+        // Langsung sock.sendMessage — tanpa saluran
+        await send(sock, chatId,
             `💡 *Bantuan!*\n\n` +
             `Hint: *${hint}*\n` +
-            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`
+            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`,
+            m
         )
         return true
     }
@@ -244,29 +252,31 @@ async function answerHandler(m, sock) {
     if (result.status === 'close') {
         const persen    = Math.round(result.similarity * 100)
         const remaining = getRemainingTime(chatId)
-        await m.react('🔥')
-        await m.reply(
+        await sock.sendMessage(m.chat, { react: { text: '🔥', key: m.key } })
+        await send(sock, chatId,
             `🔥 *Hampir!* Jawabanmu *${persen}%* mirip!\n` +
-            `_Sisa: *${formatRemainingTime(remaining)}*_`
+            `_Sisa: *${formatRemainingTime(remaining)}*_`,
+            m
         )
         return false
     }
 
-    // Salah — kasih hint progressive
+    // Salah — hint progressive
     const remaining = getRemainingTime(chatId)
     if (remaining > 0 && session.attempts <= 10) {
-        await m.react('❌')
+        await sock.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
         const hint = getProgressiveHint(ans, session.attempts)
-        await m.reply(
+        await send(sock, chatId,
             `❌ Belum bener! Hint: *${hint}*\n` +
-            `_Sisa: *${formatRemainingTime(remaining)}*_`
+            `_Sisa: *${formatRemainingTime(remaining)}*_`,
+            m
         )
     }
 
     return false
 }
 
-// ─── Exports ─────────────────────────────────────────────────────────────────
+// ─── Exports ──────────────────────────────────────────────────────────────────
 const pluginConfig = {
     name: 'tebakgambar',
     alias: ['tg', 'guessimage'],
