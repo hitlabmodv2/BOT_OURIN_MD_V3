@@ -124,18 +124,30 @@ async function sendGameMessage(sock, chatId, question, m) {
     }, { quoted: makeQuoted(m) })
 }
 
-// ─── Kirim game over ───────────────────────────────────────────────────────────
+// ─── Kirim game over (1 pesan, button Main Lagi) ──────────────────────────────
+// m opsional — kalau ada, pakai quoted; kalau null (misal timeout), tanpa quoted
 async function sendGameOver(sock, chatId, text, m, mentions = []) {
-    // Gunakan plain send dulu agar pasti terkirim, lalu coba dengan button
-    await send(sock, chatId, text, mentions)
-    // Coba juga dengan button "Main Lagi" (opsional, tidak bloking)
-    const p = getPrefix()
+    const p    = getPrefix()
+    const opts = m ? { quoted: makeQuoted(m) } : {}
     try {
+        // Satu pesan dengan button
         await sock.sendMessage(chatId, {
-            text: `> Ketik *${p}tebakgambar* untuk main lagi`,
+            text,
+            mentions,
             interactiveButtons: [btnMainLagi()],
-        })
-    } catch { /* button opsional, tidak masalah kalau gagal */ }
+        }, opts)
+    } catch (e) {
+        console.error('[tebakgambar] sendGameOver btn fail:', e?.message)
+        // Fallback: satu pesan plain text + petunjuk teks
+        try {
+            await sock.sendMessage(chatId, {
+                text: text + `\n\n> Ketik *${p}tebakgambar* untuk main lagi`,
+                mentions,
+            })
+        } catch (e2) {
+            console.error('[tebakgambar] sendGameOver plain fail:', e2?.message)
+        }
+    }
 }
 
 // ─── Handler utama: .tebakgambar ──────────────────────────────────────────────
@@ -199,16 +211,14 @@ async function handler(m, { sock }) {
     setSessionTimer(chatId, () => {
         // Game habis waktu — bebaskan semua yang nyerah
         clearChatSurrenders(chatId)
-        const ans = question.jawaban
-        const p   = getPrefix()
-        // Kirim plain text langsung — TANPA interactiveButtons agar pasti terkirim
-        sock.sendMessage(chatId, {
-            text:
-                `⏱️ *WAKTU HABIS!*\n\n` +
-                `Jawaban: *${ans}*\n\n` +
-                `_Gak ada yang bisa jawab nih~_\n\n` +
-                `> Ketik *${p}tebakgambar* untuk main lagi`
-        }).catch(e => console.error('[tebakgambar] timeout send error:', e?.message))
+        const ans  = question.jawaban
+        const text =
+            `⏱️ *WAKTU HABIS!*\n\n` +
+            `Jawaban: *${ans}*\n\n` +
+            `_Gak ada yang bisa jawab nih~_`
+        // null = tanpa quoted (pesan trigger sudah lama), tapi tetap ada button Main Lagi
+        sendGameOver(sock, chatId, text, null)
+            .catch(e => console.error('[tebakgambar] timeout sendGameOver error:', e?.message))
     })
 }
 
