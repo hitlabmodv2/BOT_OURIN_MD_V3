@@ -46,7 +46,7 @@ IGNORE_BRANCHES="replit-agent HEAD"
 # File log riwayat push (disimpan lokal, tidak ke-upload ke GitHub)
 PUSH_LOG_FILE=".push_history.log"
 
-# Batas ukuran folder node_modules (MB) — folder >= nilai ini akan di-skip saat push.
+# Batas ukuran file (MB) — file > limit akan di-skip kecuali berada di node_modules.
 # Ubah angka ini kalau mau lebih ketat atau lebih longgar.
 NM_SKIP_MB=5
 
@@ -1708,7 +1708,7 @@ preview_staged_confirm() {
 
 # ===== Scan staged area, unstage file yang terlalu besar (>50MB default) =====
 # Dipanggil setelah git add -A, sebelum commit.
-# Mencegah GitHub reject (max 100MB per file).
+# Mencegah GitHub reject (max 100MB per file) kecuali file berada di node_modules.
 _skip_large_staged_files() {
   local limit_mb="${LARGE_FILE_LIMIT_MB:-50}"
   local limit_bytes=$(( limit_mb * 1024 * 1024 ))
@@ -1717,6 +1717,10 @@ _skip_large_staged_files() {
   while IFS= read -r _sf; do
     [ -z "$_sf" ] && continue
     [ -f "$_sf" ] || continue
+    # Node_modules tetap dipush meskipun file besar.
+    case "$_sf" in
+      node_modules/*) continue ;; 
+    esac
     local _fsize
     _fsize=$(stat -c%s "$_sf" 2>/dev/null || stat -f%z "$_sf" 2>/dev/null || echo 0)
     if [ "$_fsize" -gt "$limit_bytes" ]; then
@@ -1779,6 +1783,11 @@ prepare_stage() {
     return 1
   fi
 
+  # Pastikan node_modules ikut masuk stage jika ada — paksa walau ter-ignore.
+  if [ -d node_modules ]; then
+    git add -f node_modules 2>>"$err_log" || true
+  fi
+
   # Pastikan .token.secret TIDAK pernah masuk stage — blokir paksa setelah git add -A.
   git rm --cached -q .token.secret 2>/dev/null || true
 
@@ -1826,14 +1835,8 @@ prepare_stage() {
   # Simpan ke global agar bisa ditampilkan di summary/banner
   _PUSH_SESSION_NEW="$_new_count"
 
-  # node_modules TIDAK di-upload — sudah di-exclude penuh via .gitignore.
-  # Pastikan tidak ada sisa tracking dari commit lama.
-  if git ls-files --error-unmatch node_modules/ >/dev/null 2>&1; then
-    git rm -r --cached -q node_modules/ 2>/dev/null || true
-    echo -e "  ${C_YELLOW}📦 node_modules di-untrack dari git (tidak di-upload). Jalankan npm install setelah clone.${C_RESET}"
-  else
-    echo -e "  ${C_DIM}   node_modules: tidak di-upload (excluded via .gitignore) ✓${C_RESET}"
-  fi
+  # node_modules sekarang boleh di-upload dan tidak di-untrack otomatis.
+  # Biarkan file node_modules tetap staged jika sudah ditambahkan.
 
   # Kalau ada error non-fatal, tampilkan singkat (tapi jangan stop).
   if [ -s "$err_log" ]; then
