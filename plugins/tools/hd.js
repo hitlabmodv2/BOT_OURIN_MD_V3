@@ -1,6 +1,5 @@
 import axios from "axios";
 import te from "../../src/lib/ourin-error.js";
-import cfg from "../../config.js";
 import { ImageUploadService } from "node-upload-images";
 
 const config = {
@@ -25,7 +24,7 @@ async function handler(m, { sock, skipDeduct }) {
   const img = m.isImage || (m.quoted && m.quoted.type === "imageMessage");
 
   if (!img) {
-    skipDeduct?.()
+    skipDeduct?.();
     return m.reply(
       `*🪁 HD IMAGE*\n> Reply gambar\n\n\`\`\`${m.prefix}remini\`\`\``,
     );
@@ -37,16 +36,20 @@ async function handler(m, { sock, skipDeduct }) {
     let b = m.quoted?.isMedia ? await m.quoted.download() : await m.download();
 
     const u = await ul(b);
-    const res = await axios.get(`https://api-faa.my.id/faa/hdv4?image=${u}`);
+    const res = await axios.get(
+      `https://archive.lick.eu.org/api/tools/upscale?url=${encodeURIComponent(u)}`,
+      { responseType: "arraybuffer", timeout: 60000 }
+    );
 
-    const upscaled = res.data?.result?.image_upscaled;
-    if (!upscaled) throw new Error('Gagal mendapatkan hasil HD dari API');
+    if (!res.data || res.data.byteLength < 1000) throw new Error("Gagal mendapatkan hasil HD dari API");
+
+    const upscaledBuf = Buffer.from(res.data);
 
     m.react("✅");
 
-    await sock.sendMedia(m.chat, upscaled, null, m, { type: "image" });
+    await sock.sendMedia(m.chat, upscaledBuf, null, m, { type: "image" });
   } catch (e) {
-    skipDeduct?.(e)
+    skipDeduct?.(e);
     console.log(e);
     m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));
