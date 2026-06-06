@@ -46,6 +46,11 @@ function clearChatSurrenders(chatId) {
     }
 }
 
+// Nama tampil: pakai pushName kalau ada, fallback nomor
+function displayName(m) {
+    return m.pushName || m.sender.split('@')[0]
+}
+
 // ─── Hint per-user helpers ─────────────────────────────────────────────────────
 // session.hintUsers = { senderId: count } — tidak saling bentrok antar user
 function getUserHintCount(session, senderId) {
@@ -391,7 +396,20 @@ async function answerHandler(m, sock) {
     // ── Tolak jawaban kalau sudah nyerah ──────────────────────────────────────
     if (isSurrendered(chatId, senderId)) {
         await sock.sendMessage(m.chat, { react: { text: '🚫', key: m.key } })
-        return true   // tolak tapi jangan respon panjang supaya tidak spam
+        const nama = displayName(m)
+        const ejek = [
+            `💀 *${nama}* udah nyerah tapi masih jawab juga?? Malu dong malu~ 😭`,
+            `🤣 Eh *${nama}*, udah kibarin bendera putih kok masih perang?? Konsisten kek!`,
+            `😂 *${nama}* nyerah doang gabisa, masih ngeyel jawab 💀`,
+            `🏳️ Lah *${nama}*, tadi nyerah sekarang nekat — pilih satu kek bro 😭`,
+            `💅 *${nama}* udah nyerah tapi tetep jawab, namanya bukan nyerah dong, namanya drama 🎭`,
+            `😅 Wkwkwk *${nama}* bilangnya nyerah tapi jarinya masih gerak sendiri ya~`,
+            `🤡 *${nama}* : "nyerah ah" juga *${nama}* : *jawab*. Classic.`,
+            `🫡 Semangat *${nama}*, tapi kamu udah nyerah bro. Bot gak bisa bantu 🚫`,
+        ]
+        const teks = ejek[Math.floor(Math.random() * ejek.length)]
+        await send(sock, chatId, teks, [senderId])
+        return true
     }
 
     // ── Proses jawaban teks ───────────────────────────────────────────────────
