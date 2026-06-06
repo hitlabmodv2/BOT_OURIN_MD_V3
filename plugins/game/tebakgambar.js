@@ -5,7 +5,6 @@ import {
     endSession,
     checkAnswerAdvanced,
     getProgressiveHint,
-    getHint,
     hasActiveSession,
     setSessionTimer,
     getRemainingTime,
@@ -225,10 +224,13 @@ async function handler(m, { sock }) {
         const session = getSession(chatId)
         if (session && session.gameType === GAME_TYPE) {
             const remaining = getRemainingTime(chatId)
-            const hint      = getHint(session.question.jawaban, 2)
+            const pola      = buildHintDisplay(session.question.jawaban, true)
+            const wordInfo  = buildWordInfo(session.question.jawaban)
             return await sendBtn(sock, chatId,
                 `⚠️ *Ada game yang lagi jalan!*\n\n` +
-                `💡 Hint: *${hint}*\n` +
+                `📝 *Pola:*\n` +
+                `┃ \`${pola}\`\n` +
+                `┗ _${wordInfo}_\n\n` +
                 `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
                 `_Jawab dulu atau tekan Nyerah_`,
                 [BTN_BANTUAN, BTN_NYERAH], m
@@ -320,14 +322,17 @@ async function answerHandler(m, sock) {
         markSurrendered(chatId, senderId)
 
         const remaining = getRemainingTime(chatId)
-        const hint      = getHint(session.question.jawaban, 2)
+        const polaPublic = buildHintDisplay(session.question.jawaban, true)
+        const wordInfo   = buildWordInfo(session.question.jawaban)
 
         await sendBtn(sock, chatId,
             `🏳️ *${tag} nyerah!*\n\n` +
             `Kamu gak bisa main lagi sampai:\n` +
             `• Ada yang jawab soal ini bener, atau\n` +
             `• Waktu game habis *(sisa ${formatRemainingTime(remaining)})*\n\n` +
-            `💡 Hint buat yang lain: *${hint}*\n` +
+            `📝 *Pola buat yang lain:*\n` +
+            `┃ \`${polaPublic}\`\n` +
+            `┗ _${wordInfo}_\n` +
             `_Orang lain masih bisa jawab ya~_`,
             [BTN_CEK], m, [senderId]
         )
