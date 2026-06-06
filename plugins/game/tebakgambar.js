@@ -106,16 +106,61 @@ function btnMainLagi() {
     }
 }
 
+// ─── Tampilan pola jawaban (tiap huruf dipisah spasi, kata dipisah "  ·  ") ──
+// Contoh: "SARUNG BANTAL" → "S _ _ _ _ _  ·  _ _ _ _ _ _"
+// revealFirst: kalau true, huruf pertama tiap kata ditampilkan
+function buildHintDisplay(answer, revealFirst = true) {
+    if (!answer) return ''
+    return answer.split(' ').map(word => {
+        return word.split('').map((ch, i) => {
+            if (i === 0 && revealFirst) return ch
+            return '_'
+        }).join(' ')
+    }).join('  ·  ')
+}
+
+// Versi dengan jumlah huruf tertentu yang dibuka (dari kiri, skip spasi)
+function buildHintDisplayRevealed(answer, revealCount) {
+    if (!answer) return ''
+    let revealed = 0
+    const parts = answer.split(' ').map(word => {
+        return word.split('').map(ch => {
+            if (revealed < revealCount) { revealed++; return ch }
+            return '_'
+        }).join(' ')
+    })
+    return parts.join('  ·  ')
+}
+
+// Info kata & huruf: "2 kata · 13 huruf" (tidak hitung spasi)
+function buildWordInfo(answer) {
+    if (!answer) return ''
+    const words   = answer.split(' ').filter(Boolean)
+    const letters = words.reduce((n, w) => n + w.length, 0)
+    const wordTxt = words.length === 1 ? '1 kata' : `${words.length} kata`
+    return `${wordTxt}  ·  ${letters} huruf`
+}
+
 // ─── Kirim gambar game ─────────────────────────────────────────────────────────
 async function sendGameMessage(sock, chatId, question, m) {
-    const hint    = getHint(question.jawaban, 2)
+    const pola      = buildHintDisplay(question.jawaban, true)
+    const wordInfo  = buildWordInfo(question.jawaban)
+    const deskripsi = question.deskripsi ? question.deskripsi.trim() : null
+
     const caption =
-        `🖼️ *TEBAK GAMBAR*\n\n` +
-        `💡 Hint: *${hint}*\n` +
-        `⏱️ Waktu: *${TIMEOUT_MS / 1000} detik*\n` +
-        `🎁 Hadiah: *Limit, Koin, EXP*\n` +
-        `💡 Bantuan: max *${MAX_HINTS}x* per orang\n\n` +
-        `_Jawab langsung di chat atau tekan tombol_`
+        `🖼️  *T E B A K  G A M B A R*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        (deskripsi
+            ? `🔍 *Petunjuk Samaran:*\n_${deskripsi}_\n\n`
+            : '') +
+        `📝 *Pola Jawaban:*\n` +
+        `┃ \`${pola}\`\n` +
+        `┗ _${wordInfo}_\n\n` +
+        `⏱️  Waktu    : *${TIMEOUT_MS / 1000} detik*\n` +
+        `🎁  Hadiah   : *Limit · Koin · EXP*\n` +
+        `💡  Bantuan  : max *${MAX_HINTS}×* per orang\n\n` +
+        `_↩ Reply pesan ini untuk menjawab!_`
+
     const imgBuffer = await fetchBuffer(question.img)
     return await sock.sendMessage(chatId, {
         image: imgBuffer,
@@ -308,7 +353,9 @@ async function answerHandler(m, sock) {
         const usedNow   = incrementUserHint(session, senderId)
         const sisaHint  = MAX_HINTS - usedNow
         const ans       = session.question.jawaban
-        const hint      = getProgressiveHint(ans, usedNow * 2 + 2)
+        const revealN   = 1 + usedNow * 2   // reveal makin banyak tiap bantuan
+        const polaBaru  = buildHintDisplayRevealed(ans, revealN)
+        const wordInfo  = buildWordInfo(ans)
         const remaining = getRemainingTime(chatId)
 
         const btnList = sisaHint > 0
@@ -322,10 +369,13 @@ async function answerHandler(m, sock) {
             : [BTN_NYERAH]
 
         await sendBtn(sock, chatId,
-            `💡 *Bantuan ke-${usedNow} dari ${MAX_HINTS}!*\n\n` +
-            `Hint: *${hint}*\n` +
+            `💡 *Bantuan ${usedNow}/${MAX_HINTS} — ${tag}*\n` +
+            `━━━━━━━━━━━━━━━━━━\n\n` +
+            `📝 *Pola terbaru:*\n` +
+            `┃ \`${polaBaru}\`\n` +
+            `┗ _${wordInfo}_\n\n` +
             `⏱️ Sisa: *${formatRemainingTime(remaining)}*` +
-            (sisaHint === 0 ? `\n\n_Bantuan kamu udah habis ${tag}~ Semangat!_` : ''),
+            (sisaHint === 0 ? `\n\n_Bantuan kamu udah habis~ Semangat!_ 💪` : `\n_Masih ada *${sisaHint}×* bantuan lagi_`),
             btnList, m, [senderId]
         )
         return true
@@ -379,10 +429,15 @@ async function answerHandler(m, sock) {
     if (result.status === 'close') {
         const persen    = Math.round(result.similarity * 100)
         const remaining = getRemainingTime(chatId)
+        const polaNow   = buildHintDisplayRevealed(ans, session.attempts + 1)
         await sock.sendMessage(m.chat, { react: { text: '🔥', key: m.key } })
         await sendBtn(sock, chatId,
-            `🔥 *Hampir!* Jawabanmu *${persen}%* mirip!\n` +
-            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`,
+            `🔥 *Hampir banget! ${persen}% mirip!*\n` +
+            `━━━━━━━━━━━━━━━━━━\n\n` +
+            `📝 *Pola:*\n` +
+            `┃ \`${polaNow}\`\n\n` +
+            `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n` +
+            `_Dikit lagi, coba lagi!_ 🎯`,
             [BTN_BANTUAN, BTN_NYERAH], m
         )
         return false
@@ -391,10 +446,12 @@ async function answerHandler(m, sock) {
     const remaining = getRemainingTime(chatId)
     if (remaining > 0 && session.attempts <= 10) {
         await sock.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
-        const hint = getProgressiveHint(ans, session.attempts)
+        const polaNow = buildHintDisplayRevealed(ans, session.attempts)
         await sendBtn(sock, chatId,
-            `❌ *Belum bener!*\n\n` +
-            `💡 Hint: *${hint}*\n` +
+            `❌ *Belum tepat!*\n` +
+            `━━━━━━━━━━━━━━━━━━\n\n` +
+            `📝 *Pola:*\n` +
+            `┃ \`${polaNow}\`\n\n` +
             `⏱️ Sisa: *${formatRemainingTime(remaining)}*`,
             [BTN_BANTUAN, BTN_NYERAH], m
         )
