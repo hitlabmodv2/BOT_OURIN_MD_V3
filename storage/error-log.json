@@ -52,5 +52,23 @@
     "source": "tebaklagu",
     "message": "[tebaklagu] gagal kirim audio vn: Cannot read properties of undefined (reading 'fromMe')",
     "stack": "Error: [tebaklagu] gagal kirim audio vn: Cannot read properties of undefined (reading 'fromMe') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at sendGameMessage (file:///home/runner/workspace/plugins/game/tebaklagu.js?t=1780750407338:173:17) |     at async Object.handler (file:///home/runner/workspace/plugins/game/tebaklagu.js?t=1780750407338:238:19)"
+  },
+  {
+    "time": "2026-06-06T14:12:14.972Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T14:22:04.413Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Cannot read properties of undefined (reading 'attrs')",
+    "stack": "Error: [GroupHandler] Error: Cannot read properties of undefined (reading 'attrs') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T14:22:06.416Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
   }
 ]

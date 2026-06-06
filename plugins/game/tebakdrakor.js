@@ -4,8 +4,9 @@ games.register('tebakdrakor', {
     alias: ['drakor', 'kdrama'],
     emoji: '🇰🇷',
     title: 'TEBAK DRAKOR',
-    description: 'Tebak judul drama Korea dari sinopsis',
-    hasImage: false
+    description: 'Tebak judul drama Korea dari poster',
+    hasImage: true,
+    timeout: 60000
 })
 
 const { config: pluginConfig, handler, answerHandler } = games.createPlugin('tebakdrakor')

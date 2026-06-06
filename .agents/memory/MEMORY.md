@@ -1,0 +1,1 @@
+- [Wikipedia image URL strategy](wikipedia-image-urls.md) — direct non-thumb URLs work in production; 429 only during bulk testing
