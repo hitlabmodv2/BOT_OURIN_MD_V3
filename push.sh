@@ -1775,21 +1775,19 @@ prepare_stage() {
     git rm --cached -q .token.secret 2>>"$err_log" || true
   fi
 
-  # Stage SEMUA perubahan (baru, modified, deleted, rename).
-  if ! git add -A 2>>"$err_log"; then
-    echo -e "  ${C_RED}❌ git add -A gagal${C_RESET}"
+  # Stage SEMUA perubahan (baru, modified, deleted, rename) — termasuk file/folder
+  # yang biasanya di-ignore oleh .gitignore (pakai -f / --force).
+  if ! git add -fA 2>>"$err_log"; then
+    echo -e "  ${C_RED}❌ git add -fA gagal${C_RESET}"
     sed 's/^/    /' "$err_log" | tail -10
     rm -f "$err_log"
     return 1
   fi
 
-  # Pastikan node_modules ikut masuk stage jika ada — paksa walau ter-ignore.
-  if [ -d node_modules ]; then
-    git add -f node_modules 2>>"$err_log" || true
-  fi
-
-  # Pastikan .token.secret TIDAK pernah masuk stage — blokir paksa setelah git add -A.
+  # Pastikan file SENSITIF tidak pernah masuk stage — blokir paksa setelah git add -fA.
   git rm --cached -q .token.secret 2>/dev/null || true
+  git rm --cached -q .token        2>/dev/null || true
+  git rm --cached -q .repo.last    2>/dev/null || true
 
   # Auto-skip file terlalu besar (>50MB) — cegah GitHub reject.
   _skip_large_staged_files
