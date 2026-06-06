@@ -53,7 +53,7 @@ function getPrefix() {
 }
 
 // ─── Kirim gambar game + button Nyerah & Bantuan ─────────────────────────────
-async function sendGameMessage(sock, chatId, question, quotedMsg) {
+async function sendGameMessage(sock, chatId, question) {
     const answer  = question.jawaban
     const hint    = getHint(answer, 2)
     const caption =
@@ -65,16 +65,17 @@ async function sendGameMessage(sock, chatId, question, quotedMsg) {
 
     const imgBuffer = await fetchBuffer(question.img)
 
-    // TANPA getGameContextInfo() — contextInfo saluran tidak kompatibel
-    // dengan interactive button message dan menyebabkan tampil seperti forward
+    // Tanpa quoted & tanpa contextInfo → tidak ada warisan saluran/forward context
     const msg = new Button(sock)
         .setImage(imgBuffer)
         .setBody(caption)
         .setFooter(botConfig.bot?.name || 'Ourin-AI')
+        .setContextInfo({})
         .addReply('🏳️ Nyerah', 'tebakgambar_nyerah')
         .addReply('💡 Bantuan', 'tebakgambar_bantuan')
 
-    return await msg.send(chatId, { quoted: quotedMsg })
+    // Kirim TANPA quoted supaya tidak mewarisi contextInfo saluran dari pesan sebelumnya
+    return await msg.send(chatId)
 }
 
 // ─── Kirim hasil game + button Main Lagi ─────────────────────────────────────
@@ -85,6 +86,7 @@ async function sendGameOver(sock, chatId, resultText, mentions = []) {
         const msg = new Button(sock)
             .setBody(resultText)
             .setFooter(botConfig.bot?.name || 'Ourin-AI')
+            .setContextInfo({})
             .addReply('🔄 Main Lagi!', `${prefix}tebakgambar`)
 
         await msg.send(chatId)
@@ -140,7 +142,7 @@ async function handler(m, { sock }) {
 
     let sentMsg
     try {
-        sentMsg = await sendGameMessage(sock, chatId, question, m)
+        sentMsg = await sendGameMessage(sock, chatId, question)
     } catch (e) {
         console.error('[tebakgambar] gagal kirim gambar:', e?.message)
         return m.reply('❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
