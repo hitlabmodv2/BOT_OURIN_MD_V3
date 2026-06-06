@@ -26,13 +26,15 @@ const GAME_TYPE  = 'tebakgambar'
 const TIMEOUT_MS = 90000
 const PENALTY_MS = 10 * 60 * 1000
 
-// ─── Helper: kirim teks TANPA saluran (bypass m.reply / sendReplyVariant) ─────
-async function send(sock, chatId, text, quotedMsg, mentions = []) {
-    return sock.sendMessage(
-        chatId,
-        { text, mentions },
-        quotedMsg ? { quoted: quotedMsg } : {}
-    )
+// ─── Helper: kirim teks TANPA saluran ─────────────────────────────────────────
+// sock.sendMessage langsung — bypass sendReplyVariant & _saluranCtx()
+// TANPA quoted karena m (serialized) != raw msg yang dibutuhkan Baileys quoted
+async function send(sock, chatId, text, mentions = []) {
+    try {
+        return await sock.sendMessage(chatId, { text, mentions })
+    } catch (e) {
+        console.error('[tebakgambar] send error:', e?.message)
+    }
 }
 
 // ─── Helpers penalty ──────────────────────────────────────────────────────────
@@ -59,6 +61,7 @@ function getPrefix() {
 }
 
 // ─── Kirim gambar game + button Nyerah & Bantuan ─────────────────────────────
+// { quoted: quotedMsg } di Button.send() TERBUKTI jalan (bukan sock.sendMessage)
 async function sendGameMessage(sock, chatId, question, quotedMsg) {
     const answer  = question.jawaban
     const hint    = getHint(answer, 2)
@@ -71,8 +74,6 @@ async function sendGameMessage(sock, chatId, question, quotedMsg) {
 
     const imgBuffer = await fetchBuffer(question.img)
 
-    // setContextInfo({}) → tidak ada forwardedNewsletterMessageInfo
-    // { quoted: quotedMsg } → dibutuhkan agar WA merender button chips
     const msg = new Button(sock)
         .setImage(imgBuffer)
         .setBody(caption)
@@ -96,13 +97,14 @@ async function sendGameOver(sock, chatId, resultText, mentions = []) {
 
         await msg.send(chatId)
     } catch (btnErr) {
+        console.error('[tebakgambar] sendGameOver button error:', btnErr?.message)
         try {
             await sock.sendMessage(chatId, {
                 text: resultText + `\n\n> Ketik *${prefix}tebakgambar* untuk main lagi`,
                 mentions,
             })
         } catch (textErr) {
-            console.error('[tebakgambar] sendGameOver gagal total:', textErr?.message)
+            console.error('[tebakgambar] sendGameOver teks gagal:', textErr?.message)
         }
     }
 }
@@ -112,30 +114,28 @@ async function handler(m, { sock }) {
     const chatId   = m.chat
     const senderId = m.sender
 
-    // Cek penalty nyerah — kirim langsung tanpa m.reply
+    // Cek penalty nyerah
     if (isSurrenderedPenalty(chatId, senderId)) {
         const expiresAt = surrenderedMap.get(`${chatId}:${senderId}`)
         const sisamenit = Math.ceil((expiresAt - Date.now()) / 60000)
-        return send(sock, chatId,
+        return await send(sock, chatId,
             `❌ *Kamu habis nyerah!*\n\n` +
             `Tunggu sekitar *${sisamenit} menit* lagi atau tunggu ` +
-            `seseorang menjawab game berikutnya dulu ya 😄`,
-            m
+            `seseorang menjawab game berikutnya dulu ya 😄`
         )
     }
 
-    // Cek game aktif — kirim langsung tanpa m.reply
+    // Cek game aktif
     if (hasActiveSession(chatId)) {
         const session = getSession(chatId)
         if (session && session.gameType === GAME_TYPE) {
             const remaining = getRemainingTime(chatId)
             const hint = getHint(session.question.jawaban, 2 + (session.hintLevel || 0))
-            return send(sock, chatId,
+            return await send(sock, chatId,
                 `⚠️ *Ada game yang sedang berjalan!*\n\n` +
                 `💡 Hint: *${hint}*\n` +
                 `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
-                `_Jawab atau tekan tombol Nyerah dulu_`,
-                m
+                `_Jawab atau tekan tombol Nyerah dulu_`
             )
         }
     }
@@ -143,7 +143,7 @@ async function handler(m, { sock }) {
     // Ambil soal acak
     const question = getRandomItem('tebakgambar.json')
     if (!question) {
-        return send(sock, chatId, '❌ *Data tidak tersedia!*\n\n> Tidak ada soal tebak gambar saat ini.', m)
+        return await send(sock, chatId, '❌ *Data tidak tersedia!*\n\n> Tidak ada soal tebak gambar saat ini.')
     }
 
     let sentMsg
@@ -151,7 +151,7 @@ async function handler(m, { sock }) {
         sentMsg = await sendGameMessage(sock, chatId, question, m)
     } catch (e) {
         console.error('[tebakgambar] gagal kirim gambar:', e?.message)
-        return send(sock, chatId, '❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.', m)
+        return await send(sock, chatId, '❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
     }
 
     // Buat session
@@ -179,7 +179,7 @@ async function answerHandler(m, sock) {
     const body = (m.body || '').trim()
     if (!body) return false
 
-    // Abaikan pesan command
+    // Abaikan command
     if (['.', '/', '!', '#'].some(p => body.startsWith(p))) return false
 
     // ── Button: NYERAH ───────────────────────────────────────────────────────
@@ -205,12 +205,10 @@ async function answerHandler(m, sock) {
         const hint      = getProgressiveHint(ans, session.hintLevel + 2)
         const remaining = getRemainingTime(chatId)
 
-        // Langsung sock.sendMessage — tanpa saluran
         await send(sock, chatId,
             `💡 *Bantuan!*\n\n` +
             `Hint: *${hint}*\n` +
-            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`,
-            m
+            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`
         )
         return true
     }
@@ -255,21 +253,19 @@ async function answerHandler(m, sock) {
         await sock.sendMessage(m.chat, { react: { text: '🔥', key: m.key } })
         await send(sock, chatId,
             `🔥 *Hampir!* Jawabanmu *${persen}%* mirip!\n` +
-            `_Sisa: *${formatRemainingTime(remaining)}*_`,
-            m
+            `_Sisa: *${formatRemainingTime(remaining)}*_`
         )
         return false
     }
 
-    // Salah — hint progressive
+    // Salah
     const remaining = getRemainingTime(chatId)
     if (remaining > 0 && session.attempts <= 10) {
         await sock.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
         const hint = getProgressiveHint(ans, session.attempts)
         await send(sock, chatId,
             `❌ Belum bener! Hint: *${hint}*\n` +
-            `_Sisa: *${formatRemainingTime(remaining)}*_`,
-            m
+            `_Sisa: *${formatRemainingTime(remaining)}*_`
         )
     }
 
