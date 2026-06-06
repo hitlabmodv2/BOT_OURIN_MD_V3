@@ -129,13 +129,12 @@ function buildHintDisplay(answer) {
     return buildHintDisplayRevealed(answer, 0)
 }
 
-// Info kata & huruf: "2 kata · 13 huruf" (tidak hitung spasi)
+// Info huruf: "12 huruf" (tidak hitung spasi, tidak tampilkan jumlah kata)
 function buildWordInfo(answer) {
     if (!answer) return ''
     const words   = answer.split(' ').filter(Boolean)
     const letters = words.reduce((n, w) => n + w.length, 0)
-    const wordTxt = words.length === 1 ? '1 kata' : `${words.length} kata`
-    return `${wordTxt}  ·  ${letters} huruf`
+    return `${letters} huruf`
 }
 
 // ─── Kirim gambar game ─────────────────────────────────────────────────────────
