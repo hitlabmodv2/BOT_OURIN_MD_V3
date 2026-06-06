@@ -40,5 +40,17 @@
     "source": "GroupHandler",
     "message": "[GroupHandler] Error: Connection Closed",
     "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T12:51:26.426Z",
+    "source": "tebaklagu",
+    "message": "[tebaklagu] gagal kirim audio: Cannot read properties of undefined (reading 'fromMe')",
+    "stack": "Error: [tebaklagu] gagal kirim audio: Cannot read properties of undefined (reading 'fromMe') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at sendGameMessage (file:///home/runner/workspace/plugins/game/tebaklagu.js:174:17) |     at async Object.handler (file:///home/runner/workspace/plugins/game/tebaklagu.js:231:19)"
+  },
+  {
+    "time": "2026-06-06T12:53:55.423Z",
+    "source": "tebaklagu",
+    "message": "[tebaklagu] gagal kirim audio vn: Cannot read properties of undefined (reading 'fromMe')",
+    "stack": "Error: [tebaklagu] gagal kirim audio vn: Cannot read properties of undefined (reading 'fromMe') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at sendGameMessage (file:///home/runner/workspace/plugins/game/tebaklagu.js?t=1780750407338:173:17) |     at async Object.handler (file:///home/runner/workspace/plugins/game/tebaklagu.js?t=1780750407338:238:19)"
   }
 ]

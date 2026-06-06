@@ -13,7 +13,6 @@ import {
 } from '../../src/lib/ourin-game-data.js'
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
-import { fetchBuffer } from '../../src/lib/ourin-utils.js'
 import botConfig from '../../config.js'
 
 // ─── Surrender map ─────────────────────────────────────────────────────────────
@@ -162,18 +161,25 @@ async function sendGameMessage(sock, chatId, question, m) {
         interactiveButtons: [BTN_BANTUAN, BTN_NYERAH],
     }, { quoted: makeQuoted(m) })
 
-    // Kirim audio sebagai voice note (ptt)
+    // Kirim audio sebagai voice note (ptt) via sendMedia
     try {
-        const audioBuffer = await fetchBuffer(question.preview)
-        await sock.sendMessage(chatId, {
-            audio: audioBuffer,
+        await sock.sendMedia(chatId, question.preview, null, m, {
+            type: 'audio',
             mimetype: 'audio/mp4',
             ptt: true,
-        }, { quoted: { key: textMsg.key, message: { conversation: caption } } })
+        })
     } catch (e) {
-        console.error('[tebaklagu] gagal kirim audio:', e?.message)
-        // Fallback: kirim URL saja
-        await send(sock, chatId, `🔗 Audio: ${question.preview}`)
+        console.error('[tebaklagu] gagal kirim audio vn:', e?.message)
+        // Fallback: audio attachment biasa
+        try {
+            await sock.sendMedia(chatId, question.preview, null, m, {
+                type: 'audio',
+                mimetype: 'audio/mp4',
+                ptt: false,
+            })
+        } catch (e2) {
+            console.error('[tebaklagu] gagal kirim audio attachment:', e2?.message)
+        }
     }
 
     return textMsg
