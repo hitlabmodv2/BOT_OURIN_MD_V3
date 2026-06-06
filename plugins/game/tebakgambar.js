@@ -53,7 +53,7 @@ function getPrefix() {
 }
 
 // ─── Kirim gambar game + button Nyerah & Bantuan ─────────────────────────────
-async function sendGameMessage(sock, chatId, question) {
+async function sendGameMessage(sock, chatId, question, quotedMsg) {
     const answer  = question.jawaban
     const hint    = getHint(answer, 2)
     const caption =
@@ -65,7 +65,8 @@ async function sendGameMessage(sock, chatId, question) {
 
     const imgBuffer = await fetchBuffer(question.img)
 
-    // Tanpa quoted & tanpa contextInfo → tidak ada warisan saluran/forward context
+    // setContextInfo({}) → paksa bersih, tidak ada forwardedNewsletterMessageInfo
+    // quoted tetap diperlukan agar WA merender button chips
     const msg = new Button(sock)
         .setImage(imgBuffer)
         .setBody(caption)
@@ -74,8 +75,7 @@ async function sendGameMessage(sock, chatId, question) {
         .addReply('🏳️ Nyerah', 'tebakgambar_nyerah')
         .addReply('💡 Bantuan', 'tebakgambar_bantuan')
 
-    // Kirim TANPA quoted supaya tidak mewarisi contextInfo saluran dari pesan sebelumnya
-    return await msg.send(chatId)
+    return await msg.send(chatId, { quoted: quotedMsg })
 }
 
 // ─── Kirim hasil game + button Main Lagi ─────────────────────────────────────
@@ -142,7 +142,7 @@ async function handler(m, { sock }) {
 
     let sentMsg
     try {
-        sentMsg = await sendGameMessage(sock, chatId, question)
+        sentMsg = await sendGameMessage(sock, chatId, question, m)
     } catch (e) {
         console.error('[tebakgambar] gagal kirim gambar:', e?.message)
         return m.reply('❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
