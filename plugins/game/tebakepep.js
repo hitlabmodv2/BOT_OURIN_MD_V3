@@ -4,8 +4,8 @@ games.register('tebakepep', {
     alias: ['tebakff', 'tebakfreefire'],
     emoji: '🔫',
     title: 'TEBAK EPEP',
-    description: 'Tebak karakter Free Fire',
-    hasImage: true
+    description: 'Tebak nama karakter Free Fire dari deskripsi kemampuan',
+    hasImage: false
 })
 
 const { config: pluginConfig, handler, answerHandler } = games.createPlugin('tebakepep')

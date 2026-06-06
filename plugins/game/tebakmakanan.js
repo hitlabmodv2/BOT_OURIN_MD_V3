@@ -4,8 +4,8 @@ games.register('tebakmakanan', {
     alias: ['makanan', 'food'],
     emoji: '🍲',
     title: 'TEBAK MAKANAN',
-    description: 'Tebak nama makanan',
-    hasImage: true
+    description: 'Tebak nama makanan dari deskripsi',
+    hasImage: false
 })
 
 const { config: pluginConfig, handler, answerHandler } = games.createPlugin('tebakmakanan')
