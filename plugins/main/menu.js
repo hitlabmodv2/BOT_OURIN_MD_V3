@@ -960,25 +960,36 @@ Welcome to ${config.bot?.name}, Our bot will help you
                   videoMessage: media4.videoMessage
                 },
                 footer: {
-                  text: `Please select the button in below`
+                  text: `Tekan tombol di bawah untuk memilih kategori 👇`
                 },
                 body: {
-                  text: `*${greeting} ${m.pushName}*, 𝘔𝘺 𝘯𝘢𝘮𝘦 𝘪𝘴 ${config.bot.name}.
+                  text: `${greeting}, *${m.pushName}* 👋
+🌿 Selamat datang di *${config.bot?.name}*
 
-  🏔 𝘐 𝘊𝘢𝘯 𝘩𝘦𝘭𝘱 𝘺𝘰𝘶 𝘸𝘪𝘵𝘩 𝘴𝘦𝘷𝘦𝘳𝘢𝘭 𝘵𝘩𝘪𝘯𝘨𝘴 𝘸𝘪𝘵𝘩𝘪𝘯 𝘞𝘩𝘢𝘵𝘴𝘈𝘱𝘱. 𝘈𝘯𝘥 𝘐 𝘢𝘮 𝘈𝘳𝘮𝘦𝘥 𝘢 *𝘑𝘢𝘷𝘢𝘴𝘤𝘳𝘪𝘱𝘵* 𝘗𝘳𝘰𝘨𝘳𝘢𝘮 𝘈𝘴𝘴𝘦𝘮𝘣𝘭𝘦𝘥 𝘣𝘺 𝘮𝘺 𝘤𝘳𝘦𝘢𝘵𝘰𝘳.
+╭─〔 🤖 *ɪɴꜰᴏ ʙᴏᴛ* 〕
+*│* 🖐 ɴᴀᴍᴀ       : *${config.bot?.name}*
+*│* 🔑 ᴠᴇʀsɪ      : *v${config.bot?.version}*
+*│* 👨‍💻 ᴅᴇᴠ        : *${config.bot?.developer}*
+*│* 🧩 ʟɪʙʀᴀʀʏ    : \`ourin-baileys\`
+*│* ⏱️ ᴜᴘᴛɪᴍᴇ     : *${uptimeFormatted}*
+*│* ⚙️ ʀᴜɴᴛɪᴍᴇ    : *${process.version}*
+*│* ⚡ ᴍᴏᴅᴇ        : *${(config.mode || 'public').toUpperCase()}*
+╰────────────────⬣
 
-\`INFORMATION BOT\`
-> 🍛 *Creator*: ${config.bot?.developer}
-> 🥞 *Name*: ${config.bot?.name}
-> 🥩 *Version*: ${config.bot?.version}
-> 🍂 *Type*: \`Plugin x Cases\`
-> 🦴 *Mode*: *${config.mode === 'public' ? '🍕 Unlock for everyone' : '🥖 Only for Owner'}*
+╭─〔 👤 *ɪɴꜰᴏ ᴘᴇɴɢɢᴜɴᴀ* 〕
+*│* 🙋 ɴᴀᴍᴀ       : *${m.pushName}*
+*│* 🎭 ʀᴏʟᴇ       : *${m?.isOwner ? "👑 Owner" : m?.isPremium ? "💎 Premium" : "👤 Member"}*
+*│* ⚡ ʟᴇᴠᴇʟ      : *${Math.floor((user?.exp || 0) / 20000) + 1}*
+*│* ✨ ᴇxᴘ         : *${(user?.exp ?? 0).toLocaleString()}*
+*│* 🎟️ ᴇɴᴇʀɢɪ     : *${m.isOwner || m.isPremium ? "∞ Unlimited" : (user?.energi ?? 25)}*
+*│* 💰 ᴋᴏɪɴ        : *${(user?.koin ?? 0).toLocaleString()}*
+*│* 📋 ʀᴇɢɪsᴛᴇʀ   : *${user?.isRegistered ? "✅ Sudah" : "❌ Belum"}*
+╰────────────────⬣
 
-Enjoy your use brother.
-
-╭─〔 🌐 Ready Panel legal 〕
-│ zanspiwpteroshoppanel.my.id
-╰───────────────`
+╭─〔 🕒 *ᴡᴀᴋᴛᴜ & ᴛᴀɴɢɢᴀʟ* 〕
+*│* 🕐 ᴊᴀᴍ         : *${timeStr} WIB*
+*│* 📅 ᴛᴀɴɢɢᴀʟ    : *${dateStr}*
+╰────────────────⬣`
                 },
                 contextInfo: {
                   mentionedJid: [m.sender],
