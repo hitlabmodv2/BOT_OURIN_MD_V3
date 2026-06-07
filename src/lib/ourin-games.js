@@ -323,28 +323,64 @@ class OurinGames {
       if (cfg.hasImage && fetchBuffer) {
         let imageBuffer;
         try {
-          imageBuffer = await fetchBuffer(question[cfg.imageField]);
+          imageBuffer = await fetchBuffer(question[cfg.imageField], {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.9',
+              'Referer': 'https://www.google.com/',
+            },
+            timeout: 12000,
+          });
         } catch {
-          await m.reply("❌ *ɢᴀɢᴀʟ ᴍᴇᴍᴜᴀᴛ ɢᴀᴍʙᴀʀ*\n\n> Coba lagi nanti!");
-          return;
+          imageBuffer = null;
         }
 
-        let caption = `${cfg.emoji} *${cfg.title}*\n\n`;
-        if (cfg.questionField && question[cfg.questionField]) {
-          caption += `> ${question[cfg.questionField]}\n\n`;
-        }
-        caption += `📝 *Pola Jawaban:*\n`;
-        caption += `┃ \`${pola}\`\n`;
-        caption += `┗ _${wordInfo}_\n\n`;
-        caption += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
-        caption += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
-        caption += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
-        caption += `_↩ Reply pesan ini untuk menjawab!_`;
+        if (imageBuffer) {
+          let caption = `${cfg.emoji} *${cfg.title}*\n\n`;
+          if (cfg.questionField && question[cfg.questionField]) {
+            caption += `> ${question[cfg.questionField]}\n\n`;
+          }
+          caption += `📝 *Pola Jawaban:*\n`;
+          caption += `┃ \`${pola}\`\n`;
+          caption += `┗ _${wordInfo}_\n\n`;
+          caption += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
+          caption += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+          caption += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
+          caption += `_↩ Reply pesan ini untuk menjawab!_`;
 
-        sentMsg = await sendImageWithBtn(
-          sock, chatId, imageBuffer, caption,
-          gameButtons(gameType), m,
-        );
+          sentMsg = await sendImageWithBtn(
+            sock, chatId, imageBuffer, caption,
+            gameButtons(gameType), m,
+          );
+        } else {
+          let text = `${cfg.emoji} *${cfg.title}*\n`;
+          text += `_(Gambar tidak tersedia, main dari deskripsi)_\n\n`;
+          if (cfg.questionField && question[cfg.questionField]) {
+            text += `\`\`\`${question[cfg.questionField]}\`\`\`\n\n`;
+          }
+          text += `📝 *Pola Jawaban:*\n`;
+          text += `┃ \`${pola}\`\n`;
+          text += `┗ _${wordInfo}_\n\n`;
+          text += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
+          text += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+          text += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
+          text += `_↩ Reply pesan ini untuk menjawab!_`;
+
+          try {
+            sentMsg = await sock.sendMessage(
+              chatId,
+              { text, interactiveButtons: gameButtons(gameType), contextInfo: getGameContextInfo() },
+              { quoted: m },
+            );
+          } catch {
+            sentMsg = await sendGamePreview(
+              sock, chatId, text,
+              `${cfg.emoji} ${cfg.title}`, "Jawab dari deskripsi!",
+              { quoted: m },
+            );
+          }
+        }
       } else {
         let text = `${cfg.emoji} *${cfg.title}*\n\n`;
         if (cfg.questionField && question[cfg.questionField]) {
