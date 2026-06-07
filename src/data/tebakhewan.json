@@ -1,32 +1,152 @@
 [
-{"soal":"Hewan ini adalah raja hutan, memiliki rambut lebat di sekitar wajahnya, dan mengaum dengan keras.","jawaban":"singa"},
-{"soal":"Hewan terbesar di darat, hidungnya panjang seperti selang, suka mandi lumpur.","jawaban":"gajah"},
-{"soal":"Hewan laut terbesar, mamalia bernapas dengan paru-paru, bisa bernyanyi di bawah air.","jawaban":"paus"},
-{"soal":"Hewan berkantong asal Australia, anaknya dibawa dalam kantong perut induknya.","jawaban":"kanguru"},
-{"soal":"Hewan ini hitam-putih, suka bambu, terancam punah, berasal dari Tiongkok.","jawaban":"panda"},
-{"soal":"Hewan ini bisa mengubah warna kulitnya, lidahnya sangat panjang untuk menangkap serangga.","jawaban":"bunglon"},
-{"soal":"Hewan ini tidur bergantung terbalik di gua, aktif malam hari, bisa terbang.","jawaban":"kelelawar"},
-{"soal":"Hewan tercepat di darat, berbintik-bintik, bisa berlari 110 km/jam.","jawaban":"cheetah"},
-{"soal":"Hewan laut bercangkang, bergerak lambat, membawa rumahnya ke mana-mana.","jawaban":"siput"},
-{"soal":"Hewan ini besar, bertubuh gemuk, hidup di air dan darat, sangat berbahaya.","jawaban":"buaya"},
-{"soal":"Hewan kecil berkaki delapan, membuat jaring untuk menangkap mangsa.","jawaban":"laba-laba"},
-{"soal":"Hewan ini punya cangkang keras, bergerak sangat lambat, umurnya bisa ratusan tahun.","jawaban":"kura-kura"},
-{"soal":"Hewan laut berwarna-warni, punya tentakel, bisa menyengat, bentuknya seperti payung.","jawaban":"ubur-ubur"},
-{"soal":"Hewan ini berekor panjang, bisa merayap di dinding dan langit-langit, suka makan nyamuk.","jawaban":"cicak"},
-{"soal":"Hewan ini melompat tinggi, telinganya panjang, suka wortel, bulunya lembut.","jawaban":"kelinci"},
-{"soal":"Hewan laut berbentuk bintang, punya lima lengan, bisa tumbuhkan kembali lengannya yang putus.","jawaban":"bintang laut"},
-{"soal":"Hewan ini memiliki leher sangat panjang, tingginya bisa mencapai 6 meter.","jawaban":"jerapah"},
-{"soal":"Hewan ini hidupnya di air tawar, bersisik, bernapas dengan insang, ditangkap untuk dimakan.","jawaban":"ikan"},
-{"soal":"Hewan malam, kepala bisa berputar hampir 360 derajat, simbol kebijaksanaan.","jawaban":"burung hantu"},
-{"soal":"Hewan ini memiliki belalai dan bisa menyemprotkan air, suka menyusuri hutan tropis Indonesia.","jawaban":"tapir"},
-{"soal":"Hewan berbisa, tidak punya kaki, bergerak merayap di tanah, lidahnya bercabang.","jawaban":"ular"},
-{"soal":"Hewan ini punya kantong di pipinya untuk menyimpan makanan, berekor panjang, suka keju.","jawaban":"tikus"},
-{"soal":"Hewan laut berkaki sepuluh, bisa berubah warna, semprotkan tinta hitam saat terancam.","jawaban":"cumi-cumi"},
-{"soal":"Hewan asal Afrika, belang hitam-putih, hidup bergerombolan di sabana.","jawaban":"zebra"},
-{"soal":"Hewan ini suka buah-buahan, punya ekor yang bisa memegang, tinggal di pohon.","jawaban":"monyet"},
-{"soal":"Hewan laut berbentuk bulat berduri, diam di dasar laut, bisa dimakan.","jawaban":"bulu babi"},
-{"soal":"Hewan ini bertelur dan mengeraminya, bulunya sangat indah bermotif ekor merak.","jawaban":"merak"},
-{"soal":"Hewan laut bergigi tajam, berenang terus, penciuman sangat tajam, ditakuti manusia.","jawaban":"hiu"},
-{"soal":"Hewan ini tidur di musim dingin, suka madu, berbulu tebal, bisa berdiri dua kaki.","jawaban":"beruang"},
-{"soal":"Hewan kecil yang rajin, hidup berkoloni, bisa mengangkat beban 50x berat badannya.","jawaban":"semut"}
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/9225318/medium.jpg",
+    "soal": "Hewan ini adalah raja hutan, memiliki rambut lebat di sekitar wajahnya, dan mengaum dengan keras.",
+    "jawaban": "singa"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/2035244/medium.jpg",
+    "soal": "Hewan terbesar di darat, hidungnya panjang seperti selang, suka mandi lumpur.",
+    "jawaban": "gajah"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/194385336/medium.jpg",
+    "soal": "Hewan laut terbesar, mamalia bernapas dengan paru-paru, bisa bernyanyi di bawah air.",
+    "jawaban": "paus"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/60046526/medium.jpg",
+    "soal": "Hewan berkantong asal Australia, anaknya dibawa dalam kantong perut induknya.",
+    "jawaban": "kanguru"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/150277588/medium.jpg",
+    "soal": "Hewan ini hitam-putih, suka bambu, terancam punah, berasal dari Tiongkok.",
+    "jawaban": "panda"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/126642158/medium.jpg",
+    "soal": "Hewan ini bisa mengubah warna kulitnya, lidahnya sangat panjang untuk menangkap serangga.",
+    "jawaban": "bunglon"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/241208700/medium.jpg",
+    "soal": "Hewan ini tidur bergantung terbalik di gua, aktif malam hari, bisa terbang.",
+    "jawaban": "kelelawar"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/57582224/medium.jpg",
+    "soal": "Hewan tercepat di darat, berbintik-bintik, bisa berlari 110 km/jam.",
+    "jawaban": "cheetah"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/247609877/medium.jpg",
+    "soal": "Hewan laut bercangkang, bergerak lambat, membawa rumahnya ke mana-mana.",
+    "jawaban": "siput"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/545741360/medium.jpg",
+    "soal": "Hewan ini besar, bertubuh gemuk, hidup di air dan darat, sangat berbahaya.",
+    "jawaban": "buaya"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/269162938/medium.jpeg",
+    "soal": "Hewan kecil berkaki delapan, membuat jaring untuk menangkap mangsa.",
+    "jawaban": "laba-laba"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/48987498/medium.jpeg",
+    "soal": "Hewan ini punya cangkang keras, bergerak sangat lambat, umurnya bisa ratusan tahun.",
+    "jawaban": "kura-kura"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/13185688/medium.jpg",
+    "soal": "Hewan laut berwarna-warni, punya tentakel, bisa menyengat, bentuknya seperti payung.",
+    "jawaban": "ubur-ubur"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/61116593/medium.jpg",
+    "soal": "Hewan ini berekor panjang, bisa merayap di dinding dan langit-langit, suka makan nyamuk.",
+    "jawaban": "cicak"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/207726062/medium.jpeg",
+    "soal": "Hewan ini melompat tinggi, telinganya panjang, suka wortel, bulunya lembut.",
+    "jawaban": "kelinci"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/162318518/medium.jpg",
+    "soal": "Hewan laut berbentuk bintang, punya lima lengan, bisa tumbuhkan kembali lengannya yang putus.",
+    "jawaban": "bintang laut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/456202579/medium.png",
+    "soal": "Hewan ini memiliki leher sangat panjang, tingginya bisa mencapai 6 meter.",
+    "jawaban": "jerapah"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/203973907/medium.jpg",
+    "soal": "Hewan ini hidupnya di air tawar, bersisik, bernapas dengan insang, ditangkap untuk dimakan.",
+    "jawaban": "ikan"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/344982737/medium.jpeg",
+    "soal": "Hewan malam, kepala bisa berputar hampir 360 derajat, simbol kebijaksanaan.",
+    "jawaban": "burung hantu"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/299796044/medium.jpg",
+    "soal": "Hewan ini memiliki belalai dan bisa menyemprotkan air, suka menyusuri hutan tropis Indonesia.",
+    "jawaban": "tapir"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/28516312/medium.jpeg",
+    "soal": "Hewan berbisa, tidak punya kaki, bergerak merayap di tanah, lidahnya bercabang.",
+    "jawaban": "ular"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/101327658/medium.jpg",
+    "soal": "Hewan ini punya kantong di pipinya untuk menyimpan makanan, berekor panjang, suka keju.",
+    "jawaban": "tikus"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/19302035/medium.jpg",
+    "soal": "Hewan laut berkaki sepuluh, bisa berubah warna, semprotkan tinta hitam saat terancam.",
+    "jawaban": "cumi-cumi"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/335469754/medium.jpg",
+    "soal": "Hewan asal Afrika, belang hitam-putih, hidup bergerombolan di sabana.",
+    "jawaban": "zebra"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/459825328/medium.jpeg",
+    "soal": "Hewan ini suka buah-buahan, punya ekor yang bisa memegang, tinggal di pohon.",
+    "jawaban": "monyet"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/65472908/medium.jpeg",
+    "soal": "Hewan laut berbentuk bulat berduri, diam di dasar laut, bisa dimakan.",
+    "jawaban": "bulu babi"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/4710619/medium.jpg",
+    "soal": "Hewan ini bertelur dan mengeraminya, bulunya sangat indah bermotif ekor merak.",
+    "jawaban": "merak"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/177202266/medium.jpeg",
+    "soal": "Hewan laut bergigi tajam, berenang terus, penciuman sangat tajam, ditakuti manusia.",
+    "jawaban": "hiu"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/1491897/medium.jpg",
+    "soal": "Hewan ini tidur di musim dingin, suka madu, berbulu tebal, bisa berdiri dua kaki.",
+    "jawaban": "beruang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/105103282/medium.jpg",
+    "soal": "Hewan kecil yang rajin, hidup berkoloni, bisa mengangkat beban 50x berat badannya.",
+    "jawaban": "semut"
+  }
 ]
