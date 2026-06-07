@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2420,
+  "commandsExecuted": 2421,
   "command_totalchat": 3,
   "command_menu": 213,
   "command_fb": 4,
@@ -46,7 +46,7 @@
   "command_eval": 17,
   "command_getplugin": 27,
   "command_tourl": 12,
-  "command_p": 8,
+  "command_p": 9,
   "command_ganti-namabot": 1,
   "command_setpp": 1,
   "command_stats": 6,
