@@ -108,9 +108,9 @@ const config = {
 
   energi: {
     enabled: true, // Jika true, maka sistem energi/limit akan bekerja
-    default: 99999,
-    premium: 99999999,
-    owner: -1,
+    default: 100,
+    premium: -1,  // -1 = unlimited untuk premium
+    owner: -1,    // -1 = unlimited untuk owner
   },
 
   sticker: {

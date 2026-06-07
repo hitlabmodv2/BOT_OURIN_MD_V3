@@ -26,8 +26,8 @@
   "onlyAdmin": false,
   "selfAdmin": false,
   "publicAdmin": false,
-  "_lastEnergiDefault": 99999,
-  "_lastEnergiPremium": 99999999,
+  "_lastEnergiDefault": 100,
+  "_lastEnergiPremium": -1,
   "lastLimitReset": "2026-05-16T17:00:00.018Z",
   "onlyThisGroup": false,
   "autoJpm": {
