@@ -1,0 +1,502 @@
+[
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/c/c7/Nasi_Goreng_Kampung_%2811967588375%29.jpg&w=500",
+    "jawaban": "nasi goreng",
+    "soal": "Nasi yang digoreng dengan bumbu kecap, bawang, dan cabai, dilengkapi telur dan kerupuk."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/7/70/Rendang_daging_sapi_asli_Padang.JPG&w=500",
+    "jawaban": "rendang",
+    "soal": "Masakan daging sapi khas Minang yang dimasak lama dengan santan dan bumbu rempah hingga kering."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/2/26/Gado_gado_jakarta.jpg&w=500",
+    "jawaban": "gado-gado",
+    "soal": "Sayuran rebus, tahu, tempe, dan telur disiram saus kacang kental, khas Betawi."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/0/05/Soto_ayam.JPG&w=500",
+    "jawaban": "soto ayam",
+    "soal": "Sup kuah kuning berbumbu kunyit berisi ayam suwir, mie, dan irisan telur."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/2/28/Bakso_mi_bihun.jpg&w=500",
+    "jawaban": "bakso",
+    "soal": "Bola daging sapi kenyal dalam kuah bening, disajikan dengan mie dan pangsit."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/2/24/Sate_Udang.JPG&w=500",
+    "jawaban": "sate",
+    "soal": "Daging ditusuk lidi bambu lalu dibakar, disajikan dengan saus kacang atau kecap manis."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Pempek_Kuah_Cuko.jpg/330px-Pempek_Kuah_Cuko.jpg",
+    "jawaban": "pempek",
+    "soal": "Makanan khas Palembang dari ikan dan sagu yang digoreng, disajikan dengan kuah cuka pedas."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/31/Nasi_Gudeg.jpg/330px-Nasi_Gudeg.jpg",
+    "jawaban": "gudeg",
+    "soal": "Masakan khas Yogyakarta dari nangka muda yang dimasak lama dengan santan hingga berwarna coklat."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/02/Rawon_Setan_II.jpg/330px-Rawon_Setan_II.jpg",
+    "jawaban": "rawon",
+    "soal": "Sup daging sapi kuah hitam khas Jawa Timur dengan bumbu kluwak yang khas."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Opor_Ayam_Telur_Pindang.JPG/330px-Opor_Ayam_Telur_Pindang.JPG",
+    "jawaban": "opor ayam",
+    "soal": "Masakan ayam berkuah santan putih gurih dengan rempah-rempah, biasa disajikan saat Lebaran."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/63/Murtabak.jpg/330px-Murtabak.jpg",
+    "jawaban": "martabak",
+    "soal": "Kue dadar tebal berisi cokelat, keju, atau kacang — ada versi manis dan versi telur asin."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/50/Klepon_Khas_Tulungagung.jpg/330px-Klepon_Khas_Tulungagung.jpg",
+    "jawaban": "klepon",
+    "soal": "Kue bulat hijau dari tepung beras berisi gula merah, dibalut kelapa parut."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Nasi_Kuning_Ibu_Sulastri.jpg/330px-Nasi_Kuning_Ibu_Sulastri.jpg",
+    "jawaban": "nasi kuning",
+    "soal": "Nasi berwarna kuning dari kunyit yang dibentuk kerucut, simbol syukur dalam adat Jawa."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Ketoprak_Boplo.JPG/330px-Ketoprak_Boplo.JPG",
+    "jawaban": "ketoprak",
+    "soal": "Makanan khas Betawi dari lontong, bihun, tahu, dan telur disiram saus kacang."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Nasi_uduk_netherlands.jpg/330px-Nasi_uduk_netherlands.jpg",
+    "jawaban": "nasi uduk",
+    "soal": "Nasi gurih yang dimasak dengan santan, disajikan dengan lauk khas Betawi seperti tempe orek."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Ayam_goreng_in_Jakarta.JPG/330px-Ayam_goreng_in_Jakarta.JPG",
+    "jawaban": "ayam goreng",
+    "soal": "Potongan ayam yang dibalur bumbu rempah lalu digoreng hingga kecoklatan dan renyah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/xquakq1619787532.jpg",
+    "jawaban": "mie goreng",
+    "soal": "Mie yang ditumis dengan saus kecap, bumbu bawang, dan pelengkap seperti telur dan sayuran."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bubur_ayam_chicken_porridge.JPG/330px-Bubur_ayam_chicken_porridge.JPG",
+    "jawaban": "bubur ayam",
+    "soal": "Bubur nasi lembut berkuah kaldu ayam, ditaburi ayam suwir, cakwe, dan kerupuk."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Pecel_Hariadhi.JPG/330px-Pecel_Hariadhi.JPG",
+    "jawaban": "pecel",
+    "soal": "Sayuran rebus seperti kangkung dan kacang panjang yang disiram saus kacang dengan sedikit asam."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/11/Siomay_Udang_Glodok.JPG/330px-Siomay_Udang_Glodok.JPG",
+    "jawaban": "siomay",
+    "soal": "Makanan khas Bandung dari ikan kukus, kentang, dan tahu disiram saus kacang kental."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/48/Rujak_Buah_%28Indonesian_Fruit_Salad%29.JPG/330px-Rujak_Buah_%28Indonesian_Fruit_Salad%29.JPG",
+    "jawaban": "rujak",
+    "soal": "Campuran buah segar dan sayuran yang disiram saus petis hitam atau gula merah yang pedas."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Tongseng_Dish.jpg/330px-Tongseng_Dish.jpg",
+    "jawaban": "tongseng",
+    "soal": "Masakan daging kambing dengan kuah berkecap, santan, kol, dan rempah khas Solo."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Lontong.jpg/330px-Lontong.jpg",
+    "jawaban": "lontong",
+    "soal": "Nasi yang dibungkus daun pisang dan direbus lama hingga padat, biasa dimakan dengan opor atau sate."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f5/Mie-kocok-khas-Bandung-IGisnasutanto.jpg&w=500",
+    "jawaban": "mie kocok",
+    "soal": "Mie berkuah kaldu sapi kental khas Bandung, berisi kikil sapi, tauge, dan bakso."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/82/Mie_Celor.jpg/330px-Mie_Celor.jpg",
+    "jawaban": "mie celor",
+    "soal": "Mie khas Palembang berkuah santan udang yang gurih, disajikan panas dengan telur rebus."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/8/89/Es_teler_di_Bandung.jpg&w=500",
+    "jawaban": "es teler",
+    "soal": "Minuman segar berisi alpukat, nangka, kelapa muda, dan cincau dalam santan manis."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/10/Lupis.jpg/330px-Lupis.jpg",
+    "jawaban": "lupis",
+    "soal": "Kue tradisional dari ketan berbentuk segitiga yang disajikan dengan parutan kelapa dan gula merah cair."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Lotek_Indonesian_food.jpg/330px-Lotek_Indonesian_food.jpg",
+    "jawaban": "lotek",
+    "soal": "Salad sayuran rebus khas Sunda yang disiram bumbu kacang dengan sedikit terasi dan gula merah."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/c/cf/Cendol.jpg&w=500",
+    "jawaban": "cendol",
+    "soal": "Minuman es khas Jawa berisi cetakan hijau dari tepung beras, santan, dan gula merah."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/08/Babi_guling.jpg/500px-Babi_guling.jpg",
+    "jawaban": "babi guling",
+    "soal": "Hidangan khas Bali berupa babi yang dibakar utuh sambil diputar di atas bara hingga kulitnya renyah."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Mie_Aceh.jpg/500px-Mie_Aceh.jpg",
+    "jawaban": "mie aceh",
+    "soal": "Mie tebal berbumbu rempah kuat khas Aceh, bisa digoreng atau berkuah, biasa diisi udang atau kepiting."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Ayam_Betutu.jpg/500px-Ayam_Betutu.jpg",
+    "jawaban": "ayam betutu",
+    "soal": "Ayam utuh khas Bali yang dilumuri bumbu base genep dan dimasak sangat lama hingga sangat empuk."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/9f/Nasi_Padang.jpg&w=500",
+    "jawaban": "nasi padang",
+    "soal": "Nasi putih disajikan bersama banyak lauk khas Minangkabau sekaligus, termasuk rendang dan gulai."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Batagor.jpg/500px-Batagor.jpg",
+    "jawaban": "batagor",
+    "soal": "Bakso tahu goreng khas Bandung, disajikan dengan saus kacang dan kecap asin."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/af/Serabi.jpg/500px-Serabi.jpg",
+    "jawaban": "serabi",
+    "soal": "Kue dadar tradisional dari tepung beras yang dimasak di atas wajan tanah liat, gurih dan wangi."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/26/Lemper.jpg/500px-Lemper.jpg",
+    "jawaban": "lemper",
+    "soal": "Kue dari ketan kukus berisi ayam suwir berbumbu yang dibungkus daun pisang."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/4/4d/Onde-onde.jpg&w=500",
+    "jawaban": "onde-onde",
+    "soal": "Bola goreng dari tepung ketan berbalut wijen, berisi pasta kacang hijau manis di dalamnya."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/2/21/Getuk.jpg&w=500",
+    "jawaban": "getuk",
+    "soal": "Kue tradisional Jawa dari singkong rebus yang dihaluskan, biasanya berwarna-warni dan diberi parutan kelapa."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Es_campur.jpg/500px-Es_campur.jpg",
+    "jawaban": "es campur",
+    "soal": "Minuman es segar berisi aneka campuran seperti mutiara, nangka, alpukat, kolang-kaling, dan sirup."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/8/8a/Garang_asem.jpg&w=500",
+    "jawaban": "garang asem",
+    "soal": "Masakan ayam khas Jawa Tengah yang dikukus dalam bungkusan daun pisang dengan kuah asam segar."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/19/Kolak.jpg/500px-Kolak.jpg",
+    "jawaban": "kolak",
+    "soal": "Makanan manis berkuah santan berisi pisang, ubi, atau kolang-kaling, sering disajikan saat Ramadan."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Oseng_mercon.jpg/500px-Oseng_mercon.jpg",
+    "jawaban": "oseng mercon",
+    "soal": "Tumisan daging sapi atau kikil khas Yogyakarta yang sangat pedas seperti ledakan petasan."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/48/Es_Dawet.jpg/500px-Es_Dawet.jpg",
+    "jawaban": "es dawet",
+    "soal": "Minuman khas Jawa dari cetakan hijau tepung beras dalam santan dan gula merah yang menyegarkan."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/1/10/Tempe_goreng.jpg&w=500",
+    "jawaban": "tempe goreng",
+    "soal": "Irisan tempe berbumbu yang digoreng kering hingga renyah, lauk sederhana khas Indonesia."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/af/Nasi_campur.jpg/500px-Nasi_campur.jpg",
+    "jawaban": "nasi campur",
+    "soal": "Nasi putih disajikan bersama berbagai lauk campur seperti daging, sayuran, dan sambal."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Lontong_sayur.jpg/500px-Lontong_sayur.jpg",
+    "jawaban": "lontong sayur",
+    "soal": "Lontong yang disiram sayur berkuah santan dengan labu siam, kacang panjang, dan telur pindang."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Soto_Lamongan.jpg/500px-Soto_Lamongan.jpg",
+    "jawaban": "soto lamongan",
+    "soal": "Soto kuah kuning khas Lamongan yang disajikan dengan koya (bubuk kerupuk udang) dan telur ayam."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Coto_Makassar_khas.jpg/500px-Coto_Makassar_khas.jpg",
+    "jawaban": "coto makassar",
+    "soal": "Sup jeroan sapi khas Makassar dengan kuah kental berbumbu kacang, disajikan dengan ketupat."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/01/Papeda%2C_Kuah_Kuning%2C_Ikan_Tude_Bakar_2.jpg/500px-Papeda%2C_Kuah_Kuning%2C_Ikan_Tude_Bakar_2.jpg",
+    "jawaban": "papeda",
+    "soal": "Bubur sagu khas Papua dan Maluku yang kenyal dan lengket, disajikan dengan ikan kuah kuning."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/79/Sop_Banjar_Sate_Banjar.JPG/500px-Sop_Banjar_Sate_Banjar.JPG",
+    "jawaban": "soto banjar",
+    "soal": "Soto khas Banjarmasin berkuah bening kekuningan berisi ayam suwir, telur, dan perkedel kentang."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/91/Pizza-3007395.jpg&w=500",
+    "jawaban": "pizza",
+    "soal": "Roti bulat tipis asal Italia yang dipanggang dengan saus tomat, keju mozzarella, dan aneka topping."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/lgmnff1763789847.jpg",
+    "jawaban": "burger",
+    "soal": "Roti bulat berisi daging patty panggang, selada, tomat, dan saus, camilan populer di seluruh dunia."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg",
+    "jawaban": "sushi",
+    "soal": "Hidangan Jepang dari nasi berbumbu cuka yang disajikan dengan irisan ikan mentah segar atau seafood."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/ip5xtp1769779958.jpg",
+    "jawaban": "ramen",
+    "soal": "Mie kuah Jepang dengan kaldu kaya rasa, disajikan dengan telur rebus, chashu, dan nori."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg",
+    "jawaban": "pasta",
+    "soal": "Hidangan Italia dari adonan tepung terigu berbentuk beragam, disajikan dengan saus tomat atau krim."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/vussxq1511882648.jpg",
+    "jawaban": "steak",
+    "soal": "Daging sapi tebal yang dipanggang di atas bara atau wajan panas, biasanya disajikan dengan kentang."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/rg9ze01763479093.jpg",
+    "jawaban": "pad thai",
+    "soal": "Mie goreng khas Thailand dengan udang atau tahu, kecambah, dan saus asam manis tamarind."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/pbzcrx1763765096.jpg",
+    "jawaban": "pho",
+    "soal": "Sup mie khas Vietnam dengan kaldu sapi yang dimasak berjam-jam, disajikan dengan tauge dan basil."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f8/Various_kimchi.jpg&w=500",
+    "jawaban": "kimchi",
+    "soal": "Sayuran Korea yang difermentasi dengan cabai dan bawang putih, punya rasa asam dan pedas khas."
+  },
+  {
+    "img": "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/4/44/Dolsot-bibimbap.jpg&w=500",
+    "jawaban": "bibimbap",
+    "soal": "Nasi campur Korea dalam mangkuk panas berisi sayuran, daging, telur, dan saus gochujang pedas."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/uvuyxu1503067369.jpg",
+    "jawaban": "taco",
+    "soal": "Tortilla jagung renyah asal Meksiko yang diisi daging, tomat, keju, dan guacamole."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg",
+    "jawaban": "lasagna",
+    "soal": "Hidangan pasta Italia berlapis-lapis berisi saus daging, saus béchamel, dan keju yang dipanggang."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg",
+    "jawaban": "paella",
+    "soal": "Nasi saffron khas Spanyol yang dimasak dalam wajan datar besar berisi seafood atau ayam dan sayuran."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/04axct1763793018.jpg",
+    "jawaban": "kebab",
+    "soal": "Daging yang dipanggang di atas tusukan atau diputer vertikal, makanan populer dari Timur Tengah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/xrttsx1487339558.jpg",
+    "jawaban": "biryani",
+    "soal": "Nasi bumbu aromatik khas India yang dimasak bersama daging kambing atau ayam dengan rempah-rempah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/uyqrrv1511553350.jpg",
+    "jawaban": "dumpling",
+    "soal": "Adonan tepung berisi daging atau sayuran yang dikukus atau direbus, populer di masakan Asia."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg",
+    "jawaban": "nasi lemak",
+    "soal": "Hidangan nasional Malaysia berupa nasi santan pandan yang disajikan dengan sambal, ikan teri, dan telur."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/u5e9qq1763795441.jpg",
+    "jawaban": "falafel",
+    "soal": "Bola goreng dari kacang arab tumbuk khas Timur Tengah, biasa disajikan dalam pita dengan hummus."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/gpon5u1763801180.jpg",
+    "jawaban": "hummus",
+    "soal": "Pasta lembut khas Timur Tengah dari kacang arab yang dihaluskan dengan lemon dan tahini."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg",
+    "jawaban": "shawarma",
+    "soal": "Daging sapi atau ayam yang dipanggang berputar lalu diris tipis dan dibungkus roti pita dengan saus."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/rvypwy1503069308.jpg",
+    "jawaban": "laksa",
+    "soal": "Mie kuah kental khas Asia Tenggara dengan santan dan bumbu kari, sangat populer di Malaysia."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/wrustq1511475474.jpg",
+    "jawaban": "udon",
+    "soal": "Mie Jepang tebal yang disajikan dalam kaldu dashi dan kecap, bisa digoreng atau berkuah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/xnv4wf1763756529.jpg",
+    "jawaban": "tempura",
+    "soal": "Makanan Jepang berupa seafood atau sayuran yang dibalur adonan tipis lalu digoreng hingga renyah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/lwsnkl1604181187.jpg",
+    "jawaban": "tonkatsu",
+    "soal": "Irisan daging babi tebal yang dibalur tepung panir dan digoreng krispi, hidangan populer di Jepang."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/h7zrys1779736460.jpg",
+    "jawaban": "waffle",
+    "soal": "Kue sarapan berbentuk kotak-kotak dari adonan manis yang dipanggang dalam cetakan khusus."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg",
+    "jawaban": "pancake",
+    "soal": "Kue dadar tipis dari tepung, telur, dan susu yang digoreng, biasanya disajikan dengan sirup maple."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/j80gmw1764372176.jpg",
+    "jawaban": "sandwich",
+    "soal": "Dua lembar roti berisi daging, keju, sayuran, dan saus sebagai makan praktis dan mengenyangkan."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/nxnny61763250596.jpg",
+    "jawaban": "churros",
+    "soal": "Kue gorengan panjang berbalur gula dan kayu manis asal Spanyol, biasa dicocol cokelat cair."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/eqnf3p1779649407.jpg",
+    "jawaban": "crepe",
+    "soal": "Dadar tipis halus asal Prancis yang bisa diisi manis dengan cokelat atau gurih dengan keju dan ham."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg",
+    "jawaban": "poutine",
+    "soal": "Kentang goreng khas Kanada yang disiram kuah kaldu dan ditaburi keju dadih mozzarella."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/sstssx1487349585.jpg",
+    "jawaban": "green curry",
+    "soal": "Kari hijau khas Thailand dari pasta cabai hijau, santan, terong, dan daun kemangi."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/ctg8jd1585563097.jpg",
+    "jawaban": "moussaka",
+    "soal": "Hidangan panggang khas Yunani berlapis terong, daging cincang, dan saus béchamel yang kaya."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/ytme8t1764111401.jpg",
+    "jawaban": "baklava",
+    "soal": "Kue lapis tipis khas Turki dan Timur Tengah berisi kacang-kacangan yang disiram sirup madu."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/1525876468.jpg",
+    "jawaban": "wonton",
+    "soal": "Pangsit berisi daging rebus khas Tiongkok yang bisa disajikan dalam sup kaldu atau digoreng krispi."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/xxrxux1503070723.jpg",
+    "jawaban": "risotto",
+    "soal": "Nasi Italia bertekstur creamy yang dimasak perlahan dengan kaldu, keju parmesan, dan mentega."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/sutysw1468247559.jpg",
+    "jawaban": "bolognese",
+    "soal": "Saus daging sapi cincang khas Bologna Italia yang dimasak lama dan disajikan di atas spaghetti."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/l50vz41763422681.jpg",
+    "jawaban": "tom yum",
+    "soal": "Sup Thailand yang kaya rasa asam-pedas dari serai, daun jeruk purut, galangal, dan udang."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/tytyxu1515363282.jpg",
+    "jawaban": "jerk chicken",
+    "soal": "Ayam khas Jamaika yang dilumuri bumbu jerk pedas beraroma lalu dipanggang hingga gosong."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg",
+    "jawaban": "couscous",
+    "soal": "Butiran semolina khas Afrika Utara yang dikukus dan disajikan dengan daging stew atau sayuran."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/ol2xxt1763582263.jpg",
+    "jawaban": "tom kha",
+    "soal": "Sup krim santan khas Thailand dengan jamur, serai, lengkuas, dan ayam yang gurih dan harum."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg",
+    "jawaban": "tagine",
+    "soal": "Masakan lambat Maroko yang dimasak dalam pot keramik berbentuk kerucut berisi daging dan rempah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
+    "jawaban": "teriyaki",
+    "soal": "Masakan Jepang berupa ikan atau ayam yang dipoles saus kecap manis dan dipanggang hingga mengkilap."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/020z181619788503.jpg",
+    "jawaban": "ayam percik",
+    "soal": "Ayam panggang bumbu khas Malaysia yang dilumuri santan dan rempah, disajikan dengan nasi lemak."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/vvpprx1487325699.jpg",
+    "jawaban": "beef wellington",
+    "soal": "Daging sapi lembut yang dibungkus pastri berlapis dengan pasta jamur, khas masakan Inggris mewah."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/zadvgb1699012544.jpg",
+    "jawaban": "borscht",
+    "soal": "Sup bit merah khas Eropa Timur yang berwarna ungu mencolok, disajikan dengan krim asam."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/ysxwuq1487323065.jpg",
+    "jawaban": "fish pie",
+    "soal": "Pai ikan khas Inggris berisi ikan kukus dalam saus krim putih dengan topping kentang tumbuk."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/svprys1511176755.jpg",
+    "jawaban": "beef stroganoff",
+    "soal": "Daging sapi irisan tipis dalam saus krim jamur yang kaya, disajikan dengan nasi atau pasta."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/vwrpps1503068729.jpg",
+    "jawaban": "katsu curry",
+    "soal": "Irisan ayam atau babi goreng krispi asal Jepang yang disiram kuah kari kental di atas nasi."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/lqampv1762325397.jpg",
+    "jawaban": "kari daging",
+    "soal": "Daging yang dimasak dalam kuah kari kental dengan rempah-rempah harum khas Asia dan Afrika."
+  },
+  {
+    "img": "https://www.themealdb.com/images/media/meals/wuyd2h1765655837.jpg",
+    "jawaban": "nasi goreng ayam",
+    "soal": "Nasi goreng yang dimasak bersama potongan ayam, sayuran, dan bumbu kecap yang gurih."
+  }
+]
