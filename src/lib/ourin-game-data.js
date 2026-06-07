@@ -285,6 +285,49 @@ function getProgressiveHint(answer, attempts) {
     return chars.map((c, i) => c === ' ' ? ' ' : (revealed.has(i) ? c : '_')).join('');
 }
 
+// ─── buildWordHint ─────────────────────────────────────────────────────────────
+// Format hint sama persis seperti tebakgambar:
+// - Huruf pertama tiap kata SELALU tampil
+// - revealCount huruf tambahan di POSISI RANDOM (deterministic per-jawaban)
+// - Karakter dipisah spasi, kata dipisah "  ·  "
+// revealCount=0 → hanya huruf pertama tiap kata (tampilan awal game)
+// revealCount>0 → + N huruf extra di posisi acak (makin banyak per bantuan)
+function buildWordHint(answer, revealCount = 0) {
+    if (!answer) return '';
+    const words = answer.toUpperCase().split(' ');
+    const seed  = _answerSeed(answer.toUpperCase());
+
+    // Kumpulkan semua posisi non-huruf-pertama
+    const extra = [];
+    words.forEach((word, wi) => {
+        for (let ci = 1; ci < word.length; ci++) extra.push({ wi, ci });
+    });
+
+    // Shuffle deterministik → ambil revealCount pertama
+    const shuffled  = _seededShuffle(extra, seed);
+    const openExtra = new Set(
+        shuffled.slice(0, Math.max(0, revealCount)).map(({ wi, ci }) => `${wi}:${ci}`)
+    );
+
+    const parts = words.map((word, wi) =>
+        word.split('').map((ch, ci) => {
+            if (ci === 0) return ch;
+            return openExtra.has(`${wi}:${ci}`) ? ch : '_';
+        }).join(' ')
+    );
+    return parts.join('  ·  ');
+}
+
+// Info huruf: "12 huruf, 2 kata"
+function getWordInfo(answer) {
+    if (!answer) return '';
+    const words   = answer.split(' ').filter(Boolean);
+    const letters = words.reduce((n, w) => n + w.length, 0);
+    return words.length > 1
+        ? `${letters} huruf, ${words.length} kata`
+        : `${letters} huruf`;
+}
+
 setInterval(() => {
     const now = Date.now();
     const MAX_AGE = 10 * 60 * 1000;
@@ -296,4 +339,4 @@ setInterval(() => {
     }
 }, 5 * 60 * 1000);
 
-export { loadData, getRandomItem, getItemByIndex, searchItem, getAllData, normalizeAnswer, checkAnswer, checkAnswerAdvanced, getSimilarity, getHint, isSurrender, createSession, setSessionTimer, getSession, endSession, hasActiveSession, getRemainingTime, formatRemainingTime, isReplyToGame, GAME_REWARD, getRandomReward, getProgressiveHint }
+export { loadData, getRandomItem, getItemByIndex, searchItem, getAllData, normalizeAnswer, checkAnswer, checkAnswerAdvanced, getSimilarity, getHint, isSurrender, createSession, setSessionTimer, getSession, endSession, hasActiveSession, getRemainingTime, formatRemainingTime, isReplyToGame, GAME_REWARD, getRandomReward, getProgressiveHint, buildWordHint, getWordInfo }

@@ -4,14 +4,14 @@ import {
   getSession,
   endSession,
   checkAnswerAdvanced,
-  getHint,
   hasActiveSession,
   setSessionTimer,
   getRemainingTime,
   formatRemainingTime,
   isSurrender,
   getRandomReward,
-  getProgressiveHint,
+  buildWordHint,
+  getWordInfo,
 } from "./ourin-game-data.js";
 import { getDatabase } from "./ourin-database.js";
 import { addExpWithLevelCheck } from "./ourin-level.js";
@@ -32,6 +32,8 @@ try {
 } catch {}
 
 function getPrefix() { return _prefix; }
+
+const MAX_HINTS = 3; // max bantuan per user per game (sama seperti tebakgambar)
 
 const WIN_MESSAGES = [
   "🌟 *GG WP! Otakmu encer!*",
@@ -86,6 +88,18 @@ function clearChatSurrenders(gameType, chatId) {
   }
 }
 
+// ─── Per-user hint counter (sama seperti tebakgambar) ───────────────────────
+function getUserHintCount(session, senderId) {
+  if (!session.hintUsers) session.hintUsers = {};
+  return session.hintUsers[senderId] || 0;
+}
+
+function incrementUserHint(session, senderId) {
+  if (!session.hintUsers) session.hintUsers = {};
+  session.hintUsers[senderId] = (session.hintUsers[senderId] || 0) + 1;
+  return session.hintUsers[senderId];
+}
+
 // ─── Button helpers ─────────────────────────────────────────────────────────
 function makeBtn(displayText, id) {
   return {
@@ -94,9 +108,16 @@ function makeBtn(displayText, id) {
   };
 }
 
-function gameButtons(gameType) {
+function bantuanBtn(gameType, sisaHint) {
+  const label = sisaHint < MAX_HINTS
+    ? `💡 Bantuan (${sisaHint} sisa)`
+    : "💡 Bantuan";
+  return makeBtn(label, `${gameType}_bantuan`);
+}
+
+function gameButtons(gameType, sisaHint = MAX_HINTS) {
   return [
-    makeBtn("💡 Bantuan", `${gameType}_bantuan`),
+    bantuanBtn(gameType, sisaHint),
     makeBtn("🏳️ Nyerah", `${gameType}_nyerah`),
     makeBtn("⏱️ Cek Sisa Waktu", `${gameType}_ceksisa`),
   ];
@@ -179,7 +200,6 @@ class OurinGames {
       hasImage: false,
       imageField: "img",
       alias: [],
-      hintCount: 2,
     };
     this.registry.set(gameType, { ...defaults, ...cfg, gameType });
   }
@@ -213,9 +233,7 @@ class OurinGames {
           );
           return;
         }
-        // Game sudah selesai tapi belum di-clear (edge case)
         clearChatSurrenders(gameType, chatId);
-        // Lanjut bisa main
       }
 
       // ── Cek ada game aktif ───────────────────────────────────────────────
@@ -224,13 +242,16 @@ class OurinGames {
         if (session && session.gameType === gameType) {
           const remaining = getRemainingTime(chatId);
           const answer = session.question[cfg.answerField];
+          const pola = buildWordHint(answer, 0);
+          const wordInfo = getWordInfo(answer);
           let text = `⚠️ *Eh ada game jalan nih, jawab dulu!*\n\n`;
           if (cfg.questionField && session.question[cfg.questionField]) {
             text += `\`\`\`${session.question[cfg.questionField]}\`\`\`\n\n`;
           }
-          text += `💡 Hint: *${getHint(answer, cfg.hintCount)}*\n`;
+          text += `📝 *Pola:* \`${pola}\`\n`;
+          text += `┗ _${wordInfo}_\n`;
           text += `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n`;
-          text += `_Reply pesan game untuk menjawab, atau tekan Nyerah_`;
+          text += `_↩ Reply pesan game untuk menjawab_`;
           await sendWithBtn(sock, chatId, text, gameButtons(gameType), m);
           return;
         }
@@ -238,13 +259,13 @@ class OurinGames {
 
       const question = getRandomItem(cfg.dataFile);
       if (!question) {
-        await m.reply(
-          "❌ *ᴅᴀᴛᴀ ᴛɪᴅᴀᴋ ᴛᴇʀsᴇᴅɪᴀ*\n\n> Data game tidak tersedia!",
-        );
+        await m.reply("❌ *ᴅᴀᴛᴀ ᴛɪᴅᴀᴋ ᴛᴇʀsᴇᴅɪᴀ*\n\n> Data game tidak tersedia!");
         return;
       }
 
       const answer = question[cfg.answerField];
+      const pola = buildWordHint(answer, 0);
+      const wordInfo = getWordInfo(answer);
       let sentMsg;
 
       if (cfg.hasImage && fetchBuffer) {
@@ -258,11 +279,14 @@ class OurinGames {
 
         let caption = `${cfg.emoji} *${cfg.title}*\n\n`;
         if (cfg.questionField && question[cfg.questionField]) {
-          caption += `> ${question[cfg.questionField]}\n`;
+          caption += `> ${question[cfg.questionField]}\n\n`;
         }
-        caption += `💡 Hint: *${getHint(answer, cfg.hintCount)}*\n`;
+        caption += `📝 *Pola Jawaban:*\n`;
+        caption += `┃ \`${pola}\`\n`;
+        caption += `┗ _${wordInfo}_\n\n`;
         caption += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
-        caption += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n\n`;
+        caption += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+        caption += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
         caption += `_↩ Reply pesan ini untuk menjawab!_`;
 
         sentMsg = await sendImageWithBtn(
@@ -274,19 +298,18 @@ class OurinGames {
         if (cfg.questionField && question[cfg.questionField]) {
           text += `\`\`\`${question[cfg.questionField]}\`\`\`\n\n`;
         }
-        text += `💡 Hint: *${getHint(answer, cfg.hintCount)}*\n`;
+        text += `📝 *Pola Jawaban:*\n`;
+        text += `┃ \`${pola}\`\n`;
+        text += `┗ _${wordInfo}_\n\n`;
         text += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
-        text += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n\n`;
+        text += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+        text += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
         text += `_↩ Reply pesan ini untuk menjawab!_`;
 
         try {
           sentMsg = await sock.sendMessage(
             chatId,
-            {
-              text,
-              interactiveButtons: gameButtons(gameType),
-              contextInfo: getGameContextInfo(),
-            },
+            { text, interactiveButtons: gameButtons(gameType), contextInfo: getGameContextInfo() },
             { quoted: m },
           );
         } catch {
@@ -320,17 +343,21 @@ class OurinGames {
         if (session && session.gameType === gameType) {
           const remaining = getRemainingTime(chatId);
           const answer = session.question[cfg.answerField];
-          const hint = getProgressiveHint(answer, session.attempts || 0);
+          const usedHints = getUserHintCount(session, senderId);
+          const pola = buildWordHint(answer, usedHints > 0 ? 1 + usedHints * 2 : 0);
+          const wordInfo = getWordInfo(answer);
           await sendWithBtn(
             sock, chatId,
-            `⏱️ *Sisa waktu: ${formatRemainingTime(remaining)}*\n💡 Hint: *${hint}*`,
+            `⏱️ *Sisa waktu: ${formatRemainingTime(remaining)}*\n\n` +
+            `📝 *Pola:* \`${pola}\`\n` +
+            `┗ _${wordInfo}_`,
             [cekSisaBtn(gameType)], m,
           );
         } else {
           clearChatSurrenders(gameType, chatId);
           await sendWithBtn(
             sock, chatId,
-            `✅ Game udah selesai nih!\nPenalty nyerah kamu juga udah diangkat — bisa main lagi sekarang 😄`,
+            `✅ Game udah selesai!\nPenalty nyerah kamu udah diangkat — bisa main lagi 😄`,
             [mainLagiBtn(gameType)], m,
           );
         }
@@ -343,27 +370,56 @@ class OurinGames {
       if (!userAnswer) return false;
       if (['.', '/', '!', '#'].some(p => userAnswer.startsWith(p))) return false;
 
-      // ── Button: Bantuan / Hint ─────────────────────────────────────────────
+      // ── Button: Bantuan (per-user, max 3x — sama seperti tebakgambar) ──────
       if (userAnswer === `${gameType}_bantuan`) {
-        const remaining = getRemainingTime(chatId);
-        const answer = session.question[cfg.answerField];
-        if (!session.hintCount) session.hintCount = 0;
-        session.hintCount++;
-        const hint = getProgressiveHint(answer, session.hintCount);
         const tag = `@${senderId.split('@')[0]}`;
+        const hintCount = getUserHintCount(session, senderId);
+
+        if (hintCount >= MAX_HINTS) {
+          const remaining = getRemainingTime(chatId);
+          await sendWithBtn(
+            sock, chatId,
+            `❌ *${tag}*, kamu udah pakai bantuan *${MAX_HINTS}x* — udah maksimal!\n` +
+            `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n\n` +
+            `_Coba tebak sendiri deh 😄_`,
+            [makeBtn("🏳️ Nyerah", `${gameType}_nyerah`), cekSisaBtn(gameType)],
+            m, [senderId]
+          );
+          return true;
+        }
+
+        const usedNow   = incrementUserHint(session, senderId);
+        const sisaHint  = MAX_HINTS - usedNow;
+        const answer    = session.question[cfg.answerField];
+        const revealN   = 1 + usedNow * 2;     // bantuan 1→3 huruf, 2→5 huruf, 3→7 huruf
+        const polaBaru  = buildWordHint(answer, revealN);
+        const wordInfo  = getWordInfo(answer);
+        const remaining = getRemainingTime(chatId);
+
+        const btnList = sisaHint > 0
+          ? [bantuanBtn(gameType, sisaHint), makeBtn("🏳️ Nyerah", `${gameType}_nyerah`)]
+          : [makeBtn("🏳️ Nyerah", `${gameType}_nyerah`)];
+
         await sendWithBtn(
           sock, chatId,
-          `💡 *Bantuan #${session.hintCount} — ${tag}*\nHint: *${hint}*\n_Sisa: ${formatRemainingTime(remaining)}_`,
-          gameButtons(gameType), m, [senderId]
+          `💡 *Bantuan ${usedNow}/${MAX_HINTS} — ${tag}*\n` +
+          `━━━━━━━━━━━━━━━━━━\n\n` +
+          `📝 *Pola terbaru:*\n` +
+          `┃ \`${polaBaru}\`\n` +
+          `┗ _${wordInfo}_\n\n` +
+          `⏱️ Sisa: *${formatRemainingTime(remaining)}*` +
+          (sisaHint === 0
+            ? `\n\n_Bantuan kamu udah habis~ Semangat!_ 💪`
+            : `\n_Masih ada *${sisaHint}×* bantuan lagi_`),
+          btnList, m, [senderId]
         );
         return true;
       }
 
-      // ── Button: Nyerah (hanya via tombol — bukan teks bebas) ─────────────
+      // ── Button: Nyerah (hanya via tombol) ────────────────────────────────
       if (userAnswer === `${gameType}_nyerah`) {
         const tag = `@${senderId.split('@')[0]}`;
 
-        // Sudah nyerah sebelumnya
         if (isSurrenderedUser(gameType, chatId, senderId)) {
           const remaining = getRemainingTime(chatId);
           await sendWithBtn(
@@ -376,12 +432,12 @@ class OurinGames {
           return true;
         }
 
-        // Tandai nyerah — game tetap jalan untuk orang lain
         markSurrenderedUser(gameType, chatId, senderId);
 
         const remaining = getRemainingTime(chatId);
-        const answer = session.question[cfg.answerField];
-        const hint = getHint(answer, cfg.hintCount);
+        const answer    = session.question[cfg.answerField];
+        const pola      = buildWordHint(answer, 0);
+        const wordInfo  = getWordInfo(answer);
 
         await sendWithBtn(
           sock, chatId,
@@ -389,14 +445,16 @@ class OurinGames {
           `Kamu gak bisa main lagi sampai:\n` +
           `• Ada yang jawab soal ini bener, atau\n` +
           `• Waktu game habis *(sisa ${formatRemainingTime(remaining)})*\n\n` +
-          `💡 *Hint buat yang lain:* _${hint}_\n` +
+          `📝 *Pola buat yang lain:*\n` +
+          `┃ \`${pola}\`\n` +
+          `┗ _${wordInfo}_\n` +
           `_Orang lain masih bisa jawab ya~_`,
           [cekSisaBtn(gameType)], m, [senderId]
         );
         return true;
       }
 
-      // ── Wajib reply (quoted) untuk jawaban teks ───────────────────────────
+      // ── Wajib reply (quoted) untuk jawaban teks ──────────────────────────
       if (!m.quoted) return false;
 
       // ── Text surrender: "nyerah", "skip", "gatau" dst (hanya via reply) ──
@@ -415,22 +473,25 @@ class OurinGames {
         }
         markSurrenderedUser(gameType, chatId, senderId);
         const remaining = getRemainingTime(chatId);
-        const answer = session.question[cfg.answerField];
-        const hint = getHint(answer, cfg.hintCount);
+        const answer    = session.question[cfg.answerField];
+        const pola      = buildWordHint(answer, 0);
+        const wordInfo  = getWordInfo(answer);
         await sendWithBtn(
           sock, chatId,
           `🏳️ *${tag} nyerah!*\n\n` +
           `Kamu gak bisa main lagi sampai:\n` +
           `• Ada yang jawab soal ini bener, atau\n` +
           `• Waktu game habis *(sisa ${formatRemainingTime(remaining)})*\n\n` +
-          `💡 *Hint buat yang lain:* _${hint}_\n` +
+          `📝 *Pola buat yang lain:*\n` +
+          `┃ \`${pola}\`\n` +
+          `┗ _${wordInfo}_\n` +
           `_Orang lain masih bisa jawab ya~_`,
           [cekSisaBtn(gameType)], m, [senderId]
         );
         return true;
       }
 
-      // ── Tolak jawaban kalau sudah nyerah ──────────────────────────────────
+      // ── Tolak jawaban kalau sudah nyerah ────────────────────────────────
       if (isSurrenderedUser(gameType, chatId, senderId)) {
         await sock.sendMessage(chatId, { react: { text: '🚫', key: m.key } }).catch(() => {});
         const nama = m.pushName || senderId.split('@')[0];
@@ -439,7 +500,7 @@ class OurinGames {
         return true;
       }
 
-      // ── Proses jawaban teks ───────────────────────────────────────────────
+      // ── Proses jawaban teks ──────────────────────────────────────────────
       session.attempts = (session.attempts || 0) + 1;
 
       const answer = session.question[cfg.answerField];
@@ -449,44 +510,36 @@ class OurinGames {
         endSession(chatId);
         clearChatSurrenders(gameType, chatId);
 
-        const db = getDatabase();
+        const db   = getDatabase();
         const user = db.getUser(senderId);
 
-        let totalLimit = 0;
-        let totalBalance = 0;
-        let totalExp = 0;
+        let totalLimit = 0, totalBalance = 0, totalExp = 0;
 
         if (cfg.rewards === false || cfg.rewards === null) {
           // no rewards
         } else if (cfg.rewards) {
-          totalLimit = cfg.rewards.limit || cfg.rewards.energi || 0;
-          totalBalance = cfg.rewards.koin || cfg.rewards.balance || 0;
-          totalExp = cfg.rewards.exp || 0;
+          totalLimit   = cfg.rewards.limit   || cfg.rewards.energi  || 0;
+          totalBalance = cfg.rewards.koin    || cfg.rewards.balance || 0;
+          totalExp     = cfg.rewards.exp     || 0;
         } else {
           const reward = getRandomReward();
-          totalLimit = reward.limit;
+          totalLimit   = reward.limit;
           totalBalance = reward.koin;
-          totalExp = reward.exp;
+          totalExp     = reward.exp;
         }
 
         let bonusText = "";
-
         const fastResult = checkFastAnswer(session);
-        if (
-          fastResult.isFast &&
-          cfg.rewards !== false &&
-          cfg.rewards !== null
-        ) {
-          totalLimit += fastResult.bonus.limit;
+        if (fastResult.isFast && cfg.rewards !== false && cfg.rewards !== null) {
+          totalLimit   += fastResult.bonus.limit;
           totalBalance += fastResult.bonus.koin;
-          totalExp += fastResult.bonus.exp;
+          totalExp     += fastResult.bonus.exp;
           bonusText = `\n\n${fastResult.praise}\n⚡ *BONUS KILAT:* +${fastResult.bonus.limit} Limit, +${fastResult.bonus.koin} Koin\n⏱️ Waktu: *${(fastResult.elapsed / 1000).toFixed(1)}s*`;
         }
 
-        if (totalLimit > 0) db.updateEnergi(senderId, totalLimit);
+        if (totalLimit   > 0) db.updateEnergi(senderId, totalLimit);
         if (totalBalance > 0) db.updateKoin(senderId, totalBalance);
-
-        if (totalExp > 0) {
+        if (totalExp     > 0) {
           if (!user.rpg) user.rpg = {};
           await addExpWithLevelCheck(sock, m, db, user, totalExp);
         }
@@ -499,9 +552,9 @@ class OurinGames {
 
         if (totalLimit > 0 || totalBalance > 0 || totalExp > 0) {
           const parts = [];
-          if (totalLimit > 0) parts.push(`+${totalLimit} Limit`);
+          if (totalLimit   > 0) parts.push(`+${totalLimit} Limit`);
           if (totalBalance > 0) parts.push(`+${totalBalance} Koin`);
-          if (totalExp > 0) parts.push(`+${totalExp} EXP`);
+          if (totalExp     > 0) parts.push(`+${totalExp} EXP`);
           text += `🎁 ${parts.join(", ")}`;
         }
         text += bonusText;
@@ -512,7 +565,7 @@ class OurinGames {
 
       if (result.status === "close") {
         const remaining = getRemainingTime(chatId);
-        const percent = Math.round(result.similarity * 100);
+        const percent   = Math.round(result.similarity * 100);
         await sock.sendMessage(chatId, { react: { text: '🔥', key: m.key } }).catch(() => {});
         await sendWithBtn(
           sock, chatId,
@@ -525,11 +578,12 @@ class OurinGames {
       const remaining = getRemainingTime(chatId);
       if (remaining > 0 && session.attempts < 10) {
         await sock.sendMessage(chatId, { react: { text: '❌', key: m.key } }).catch(() => {});
-        const hint = getProgressiveHint(answer, session.attempts);
+        const usedHints = getUserHintCount(session, senderId);
+        const pola      = buildWordHint(answer, usedHints > 0 ? 1 + usedHints * 2 : 0);
         await sendWithBtn(
           sock, chatId,
-          `❌ Belum bener! Hint: *${hint}*\n_Sisa: *${formatRemainingTime(remaining)}*_`,
-          gameButtons(gameType), m,
+          `❌ Belum bener!\n📝 Pola: \`${pola}\`\n_Sisa: *${formatRemainingTime(remaining)}*_`,
+          gameButtons(gameType, MAX_HINTS - usedHints), m,
         );
       }
 
