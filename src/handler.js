@@ -1107,7 +1107,8 @@ async function messageHandler(msg, sock, options = {}) {
 
     let gameEvaluated = false;
     if (
-      (hasActiveSession(m.chat) && (m.quoted || isGameButtonPress)) ||
+      isGameButtonPress ||
+      (hasActiveSession(m.chat) && m.quoted) ||
       hasSuitGame ||
       hasTTTGame ||
       hasUTGame

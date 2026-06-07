@@ -359,8 +359,8 @@ class OurinGames {
         return true;
       }
 
-      // ── Button: Nyerah ─────────────────────────────────────────────────────
-      if (userAnswer === `${gameType}_nyerah` || isSurrender(userAnswer)) {
+      // ── Button: Nyerah (hanya via tombol — bukan teks bebas) ─────────────
+      if (userAnswer === `${gameType}_nyerah`) {
         const tag = `@${senderId.split('@')[0]}`;
 
         // Sudah nyerah sebelumnya
@@ -398,6 +398,37 @@ class OurinGames {
 
       // ── Wajib reply (quoted) untuk jawaban teks ───────────────────────────
       if (!m.quoted) return false;
+
+      // ── Text surrender: "nyerah", "skip", "gatau" dst (hanya via reply) ──
+      if (isSurrender(userAnswer)) {
+        const tag = `@${senderId.split('@')[0]}`;
+        if (isSurrenderedUser(gameType, chatId, senderId)) {
+          const remaining = getRemainingTime(chatId);
+          await sendWithBtn(
+            sock, chatId,
+            `🏳️ *${tag}*, kamu udah nyerah dari tadi~\n\n` +
+            `Sabar aja, tunggu game selesai dulu ya 😄\n` +
+            `⏱️ Sisa: *${formatRemainingTime(remaining)}*`,
+            [cekSisaBtn(gameType)], m, [senderId]
+          );
+          return true;
+        }
+        markSurrenderedUser(gameType, chatId, senderId);
+        const remaining = getRemainingTime(chatId);
+        const answer = session.question[cfg.answerField];
+        const hint = getHint(answer, cfg.hintCount);
+        await sendWithBtn(
+          sock, chatId,
+          `🏳️ *${tag} nyerah!*\n\n` +
+          `Kamu gak bisa main lagi sampai:\n` +
+          `• Ada yang jawab soal ini bener, atau\n` +
+          `• Waktu game habis *(sisa ${formatRemainingTime(remaining)})*\n\n` +
+          `💡 *Hint buat yang lain:* _${hint}_\n` +
+          `_Orang lain masih bisa jawab ya~_`,
+          [cekSisaBtn(gameType)], m, [senderId]
+        );
+        return true;
+      }
 
       // ── Tolak jawaban kalau sudah nyerah ──────────────────────────────────
       if (isSurrenderedUser(gameType, chatId, senderId)) {
