@@ -1579,32 +1579,27 @@ async function messageHandler(msg, sock, options = {}) {
           `🎮 *Fitur Game Khusus Grup!*\n\n` +
           `Maaf kak, fitur game ini hanya bisa dimainkan di dalam *Grup WhatsApp*.\n\n` +
           `Yuk join grup kami dan main bareng sama yang lain! 🎉`;
-        await sock.sendMessage(
-          m.chat,
-          {
-            text: gameGroupMsg,
-            footer: config.bot?.name || "Ourin AI",
-            interactiveButtons: [
-              {
-                name: "cta_url",
-                buttonParamsJson: JSON.stringify({
-                  display_text: "🌟 Join Grup 1",
-                  url: groupUrl1,
-                  webview_interaction: false,
-                }),
-              },
-              {
-                name: "cta_url",
-                buttonParamsJson: JSON.stringify({
-                  display_text: "💬 Join Grup 2",
-                  url: groupUrl2,
-                  webview_interaction: false,
-                }),
-              },
-            ],
-          },
-          { quoted: m }
-        );
+        await sock.sendButton(m.chat, null, gameGroupMsg, m, {
+          footer: config.bot?.name || "Ourin AI",
+          buttons: [
+            {
+              name: "cta_url",
+              buttonParamsJson: JSON.stringify({
+                display_text: "🌟 Join Grup 1",
+                url: groupUrl1,
+                webview_interaction: false,
+              }),
+            },
+            {
+              name: "cta_url",
+              buttonParamsJson: JSON.stringify({
+                display_text: "💬 Join Grup 2",
+                url: groupUrl2,
+                webview_interaction: false,
+              }),
+            },
+          ],
+        });
       } else {
         await m.reply(permission.reason);
       }
