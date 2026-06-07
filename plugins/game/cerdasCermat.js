@@ -5,7 +5,6 @@ import { makeGameListBtn } from '../../src/lib/ourin-games.js'
 import botConfig from '../../config.js'
 
 // ─── Konstanta ─────────────────────────────────────────────────────────────────
-const GAME_TYPE  = 'cerdasCermat'
 const TIMEOUT_MS = 30000
 const BASE_URL   = 'https://api.siputzx.my.id/api/games/cc-sd'
 
@@ -26,10 +25,10 @@ const MAPEL = {
 if (!global._ccSessions) global._ccSessions = new Map()
 const sessions = global._ccSessions
 
-function getSession(chatId)        { return sessions.get(chatId) || null }
-function setSession(chatId, data)  { sessions.set(chatId, data) }
-function delSession(chatId)        { sessions.delete(chatId) }
-function getPrefix()               { return botConfig.command?.prefix || '.' }
+function getSession(chatId)       { return sessions.get(chatId) || null }
+function setSession(chatId, data) { sessions.set(chatId, data) }
+function delSession(chatId)       { sessions.delete(chatId) }
+function getPrefix()              { return botConfig.command?.prefix || '.' }
 
 // ─── Helpers kirim ─────────────────────────────────────────────────────────────
 function makeQuoted(m) {
@@ -41,13 +40,14 @@ function makeQuoted(m) {
 
 async function sendBtn(sock, chatId, text, buttons, m, mentions = []) {
     try {
+        const opts = m ? { quoted: makeQuoted(m) } : {}
         return await sock.sendMessage(chatId, {
             text, mentions,
             interactiveButtons: buttons,
-        }, { quoted: makeQuoted(m) })
+        }, opts)
     } catch (e) {
         console.error('[cerdasCermat] sendBtn error:', e?.message)
-        return await sock.sendMessage(chatId, { text, mentions })
+        return await sock.sendMessage(chatId, { text, mentions }).catch(() => {})
     }
 }
 
@@ -76,7 +76,7 @@ function buildQuestionText(session) {
     return text
 }
 
-// ─── Build tombol jawaban ──────────────────────────────────────────────────────
+// ─── Build tombol jawaban A/B/C/D ──────────────────────────────────────────────
 function buildAnswerButtons(soal) {
     const buttons = soal.semua_jawaban.map(opt => {
         const key = Object.keys(opt)[0]
@@ -104,6 +104,8 @@ async function showQuestion(sock, chatId, session, m) {
     const q       = session.questions[session.currentQ]
     const text    = buildQuestionText(session)
     const buttons = buildAnswerButtons(q)
+    // tandai soal sudah ditampilkan — cegah cc_next tampilkan lagi setelah auto-timer
+    session.waitingForNext = false
     return await sendBtn(sock, chatId, text, buttons, m)
 }
 
@@ -114,7 +116,7 @@ async function fetchSoal(mapel) {
     return res.data.data.soal
 }
 
-// ─── Akhiri game dan tampilkan skor ──────────────────────────────────────────
+// ─── Akhiri game dan tampilkan skor ───────────────────────────────────────────
 async function endGame(sock, chatId, session, m) {
     if (session._timer) clearTimeout(session._timer)
     delSession(chatId)
@@ -125,8 +127,8 @@ async function endGame(sock, chatId, session, m) {
     const mapelName = MAPEL[session.matapelajaran] || session.matapelajaran
     const persen    = Math.round((scr / tot) * 100)
 
-    let emoji = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
-    let predikat = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
+    const emoji    = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
+    const predikat = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
 
     let text  = `${emoji} *GAME SELESAI!*\n`
     text += `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`
@@ -156,7 +158,7 @@ async function endGame(sock, chatId, session, m) {
     }
 }
 
-// ─── Timer per soal ────────────────────────────────────────────────────────────
+// ─── Timer per soal (30 detik) ─────────────────────────────────────────────────
 function startQuestionTimer(sock, chatId, m) {
     const session = getSession(chatId)
     if (!session) return
@@ -186,6 +188,7 @@ function startQuestionTimer(sock, chatId, m) {
         } else {
             s.currentQ++
             s.answered = false
+            s.waitingForNext = false
             await sock.sendMessage(chatId, { text: timeoutMsg }).catch(() => {})
             setTimeout(() => {
                 const cur = getSession(chatId)
@@ -252,12 +255,13 @@ async function handler(m, { sock }) {
     )
 
     const session = {
-        step: 'select',
+        step:      'select',
         startedBy: m.sender,
-        _timer: null,
+        _timer:    null,
     }
     setSession(chatId, session)
 
+    // Auto-expire sesi pilih mapel setelah 2 menit
     session._timer = setTimeout(() => {
         const s = getSession(chatId)
         if (s?.step === 'select') delSession(chatId)
@@ -273,9 +277,15 @@ async function answerHandler(m, sock) {
 
     // ── Stop game ─────────────────────────────────────────────────────────────
     if (body === 'cc_stop') {
-        if (!session) return await m.reply('_Tidak ada game yang berjalan._') && true
+        if (!session) {
+            await m.reply('_Tidak ada game yang berjalan._')
+            return true
+        }
         const allowed = m.isOwner || m.isAdmin || session.startedBy === senderId
-        if (!allowed) return await m.reply('_Hanya starter game, admin, atau owner yang bisa stop!_') && true
+        if (!allowed) {
+            await m.reply('_Hanya starter game, admin, atau owner yang bisa stop!_')
+            return true
+        }
         await endGame(sock, chatId, session, m)
         return true
     }
@@ -285,9 +295,11 @@ async function answerHandler(m, sock) {
         const mapel = body.replace('cc_mapel_', '')
         if (!MAPEL[mapel]) return false
 
+        // Kalau sudah ada game berjalan, abaikan
+        if (session?.step === 'playing') return false
+
         if (session?.startedBy && session.startedBy !== senderId) {
-            const ownerNum = session.startedBy.split('@')[0]
-            await m.reply(`_Hanya @${ownerNum} yang bisa memilih mata pelajaran untuk sesi ini._`)
+            await m.reply(`_Hanya @${session.startedBy.split('@')[0]} yang bisa memilih mata pelajaran sesi ini._`)
             return true
         }
 
@@ -301,7 +313,7 @@ async function answerHandler(m, sock) {
             console.error('[cerdasCermat] fetch soal error:', e?.message)
             delSession(chatId)
             await m.react('❌')
-            await m.reply('❌ *Gagal mengambil soal dari API!*\n\nCoba lagi ya.')
+            await m.reply('❌ *Gagal mengambil soal dari API!*\n\nCoba lagi beberapa saat ya.')
             return true
         }
 
@@ -313,6 +325,7 @@ async function answerHandler(m, sock) {
             score:         0,
             startedBy:     senderId,
             answered:      false,
+            waitingForNext: false,
             _timer:        null,
         }
         setSession(chatId, newSession)
@@ -323,21 +336,24 @@ async function answerHandler(m, sock) {
         return true
     }
 
-    // ── Next soal (tombol manual) ─────────────────────────────────────────────
+    // ── Soal berikutnya (tombol manual) ──────────────────────────────────────
+    // FIX: hanya tampilkan soal kalau session dalam mode waitingForNext
     if (body === 'cc_next') {
         if (!session || session.step !== 'playing') return false
-        if (!session.answered) return true
+        // Jika belum waitingForNext (auto-timer sudah tampilkan soal), abaikan
+        if (!session.waitingForNext) return true
         clearTimeout(session._timer)
-        session.answered = false
+        session.waitingForNext = false
         await showQuestion(sock, chatId, session, m)
         startQuestionTimer(sock, chatId, m)
         return true
     }
 
-    // ── Proses jawaban dan skip ───────────────────────────────────────────────
+    // ── Proses jawaban & skip ─────────────────────────────────────────────────
     if (body.startsWith('cc_jawab_') || body === 'cc_skip') {
         if (!session || session.step !== 'playing') return false
 
+        // Soal ini sudah dijawab — tolak
         if (session.answered) {
             await m.react('⏰')
             await m.reply('_Soal ini sudah dijawab, tunggu soal berikutnya ya!_')
@@ -347,23 +363,22 @@ async function answerHandler(m, sock) {
         clearTimeout(session._timer)
         session.answered = true
 
-        const q       = session.questions[session.currentQ]
-        const benar   = q.jawaban_benar
-        const tag     = `@${senderId.split('@')[0]}`
-        const isLast  = session.currentQ >= session.questions.length - 1
+        const q      = session.questions[session.currentQ]
+        const benar  = q.jawaban_benar
+        const tag    = `@${senderId.split('@')[0]}`
+        const isLast = session.currentQ >= session.questions.length - 1
 
         let responseText = ''
 
         if (body === 'cc_skip') {
             const optBenar = q.semua_jawaban.find(o => Object.keys(o)[0] === benar)
             const txtBenar = optBenar ? Object.values(optBenar)[0] : benar
-
+            await m.react('⏩')
             responseText =
                 `⏩ *Soal Dilewati*\n\n` +
                 `✅ Jawaban: *${benar.toUpperCase()}. ${txtBenar}*\n\n` +
                 `_Lanjut ke soal berikutnya..._`
 
-            await m.react('⏩')
         } else {
             const pilihan    = body.replace('cc_jawab_', '')
             const optDipilih = q.semua_jawaban.find(o => Object.keys(o)[0] === pilihan)
@@ -392,9 +407,9 @@ async function answerHandler(m, sock) {
                     `🗝️ Jawaban: *${benar.toUpperCase()}. ${txtBenar}*\n` +
                     `🎁 Reward: *+3 Limit • +50 Koin • +100 EXP*\n\n` +
                     `_Skor: ${session.score}/${session.questions.length}_`
+
             } else {
                 await m.react('❌')
-
                 responseText =
                     `❌ *SALAH! ${tag}*\n\n` +
                     `🫵 Pilihan: *${pilihan.toUpperCase()}. ${txtDipilih}*\n` +
@@ -404,11 +419,15 @@ async function answerHandler(m, sock) {
         }
 
         if (isLast) {
+            // Soal terakhir — tampilkan hasil lalu end game
             await sendBtn(sock, chatId, responseText, [], m, [senderId])
             setTimeout(() => endGame(sock, chatId, session, null).catch(() => {}), 2500)
+
         } else {
+            // Ada soal berikutnya
             session.currentQ++
-            session.answered = false
+            session.answered      = false
+            session.waitingForNext = true  // flag: soal belum ditampilkan, menunggu cc_next atau auto-timer
 
             const btnNext = {
                 name: 'quick_reply',
@@ -419,9 +438,11 @@ async function answerHandler(m, sock) {
             }
             await sendBtn(sock, chatId, responseText, [btnNext], m, [senderId])
 
+            // Auto-tampilkan soal berikutnya setelah 5 detik jika tidak diklik manual
             session._timer = setTimeout(() => {
                 const cur = getSession(chatId)
-                if (!cur || cur.step !== 'playing') return
+                if (!cur || cur.step !== 'playing' || !cur.waitingForNext) return
+                cur.waitingForNext = false
                 showQuestion(sock, chatId, cur, m).catch(() => {})
                 startQuestionTimer(sock, chatId, m)
             }, 5000)
