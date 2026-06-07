@@ -1,402 +1,502 @@
 [
   {
     "soal": "Film animasi Disney tentang putri es yang punya kekuatan beku, bersama adiknya menyelamatkan kerajaan. Lagunya 'Let It Go' sangat terkenal.",
-    "jawaban": "frozen"
+    "jawaban": "frozen",
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/05/Frozen_%282013_film%29_poster.jpg"
   },
   {
     "soal": "Film superhero Marvel tentang manusia laba-laba remaja dari New York yang melawan penjahat kota.",
-    "jawaban": "spiderman"
+    "jawaban": "spiderman",
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/21/Web_of_Spider-Man_Vol_1_129-1.png"
   },
   {
     "soal": "Film tentang seorang hobbit yang membantu para kurcaci merebut kembali gunung dari naga Smaug.",
-    "jawaban": "the hobbit"
+    "jawaban": "the hobbit",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/87/The_Hobbit_An_Unexpected_Journey.jpeg"
   },
   {
     "soal": "Film Indonesia tentang pencak silat, aksi laga dengan koreografi bela diri kelas dunia, dibintangi Iko Uwais.",
-    "jawaban": "the raid"
+    "jawaban": "the raid",
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/5e/The_Raid_film_poster.jpg"
   },
   {
     "soal": "Film animasi tentang mainan-mainan yang berpetualang tanpa sepengetahuan pemiliknya ketika manusia pergi.",
-    "jawaban": "toy story"
+    "jawaban": "toy story",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/13/Toy_Story.jpg"
   },
   {
     "soal": "Film tentang seorang pria yang terjebak di pulau terpencil selama bertahun-tahun hanya ditemani bola bernama Wilson.",
-    "jawaban": "cast away"
+    "jawaban": "cast away",
+    "img": "https://upload.wikimedia.org/wikipedia/en/e/e5/Cast_Away_%28film%29.png"
   },
   {
     "soal": "Film fiksi ilmiah tentang dunia simulasi komputer, manusia memilih antara pil merah atau biru.",
-    "jawaban": "the matrix"
+    "jawaban": "the matrix",
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg"
   },
   {
     "soal": "Film horor Indonesia tentang hantu wanita berambut panjang yang menakuti warga kampung.",
-    "jawaban": "kuntilanak"
+    "jawaban": "kuntilanak",
+    "img": "https://upload.wikimedia.org/wikipedia/id/1/1b/Kuntilanak.jpg"
   },
   {
     "soal": "Film tentang kapal mewah yang tenggelam setelah menabrak gunung es, kisah cinta antara kelas atas dan bawah.",
-    "jawaban": "titanic"
+    "jawaban": "titanic",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/18/Titanic_%281997_film%29_poster.png"
   },
   {
     "soal": "Film animasi tentang ikan badut yang mencari anaknya di lautan luas bersama ikan pelupa.",
-    "jawaban": "finding nemo"
+    "jawaban": "finding nemo",
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/29/Finding_Nemo.jpg"
   },
   {
     "soal": "Film tentang seorang pejuang kemerdekaan Indonesia yang melawan penjajah Belanda, dibintangi Dian Sastro.",
-    "jawaban": "laskar pelangi"
+    "jawaban": "laskar pelangi",
+    "img": "https://upload.wikimedia.org/wikipedia/id/7/76/Laskar_pelangi_film.jpg"
   },
   {
     "soal": "Film superhero DC tentang manusia kelelawar kaya raya yang melindungi kota Gotham dari penjahat.",
-    "jawaban": "batman"
+    "jawaban": "batman",
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/7e/Batman_%281989_film%29_poster.jpg"
   },
   {
     "soal": "Film tentang seorang pria berbaju besi yang membangun setelan lapis baja untuk melawan kejahatan, Tony Stark.",
-    "jawaban": "iron man"
+    "jawaban": "iron man",
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/02/Iron_Man_%282008_film%29_poster.jpg"
   },
   {
     "soal": "Film animasi tentang seorang putri berambut panjang ajaib yang dikurung di menara tinggi.",
-    "jawaban": "tangled"
+    "jawaban": "tangled",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/91/Tangled_poster.jpg"
   },
   {
     "soal": "Film horor tentang boneka dengan rambut merah yang bisa berjalan dan membunuh orang.",
-    "jawaban": "chucky"
+    "jawaban": "chucky",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a4/Childs_play.jpg"
   },
   {
     "soal": "Film tentang perjalanan panjang seorang pria yang berlari melintasi Amerika Serikat, 'Life is like a box of chocolates'.",
-    "jawaban": "forrest gump"
+    "jawaban": "forrest gump",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/67/Forrest_Gump_poster.jpg"
   },
   {
     "soal": "Film tentang dunia sihir, seorang anak yatim piatu yang masuk sekolah penyihir Hogwarts.",
-    "jawaban": "harry potter"
+    "jawaban": "harry potter",
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/7a/Harry_Potter_and_the_Philosopher%27s_Stone_Banner.jpg"
   },
   {
     "soal": "Film Indonesia tentang anak-anak miskin di Belitung yang berjuang untuk sekolah dan bermimpi besar.",
-    "jawaban": "laskar pelangi"
+    "jawaban": "laskar pelangi",
+    "img": "https://upload.wikimedia.org/wikipedia/id/7/76/Laskar_pelangi_film.jpg"
   },
   {
     "soal": "Film animasi tentang seorang chef tikus yang bermimpi memasak di restoran mewah Paris.",
-    "jawaban": "ratatouille"
+    "jawaban": "ratatouille",
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/50/RatatouillePoster.jpg"
   },
   {
     "soal": "Film tentang alien kecil berwarna abu-abu yang terjebak di Bumi dan bersahabat dengan anak kecil.",
-    "jawaban": "e.t."
+    "jawaban": "e.t.",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9b/E.T._the_Extra-Terrestrial_Film.jpg"
   },
   {
     "soal": "Film superhero tentang penguasa Wakanda, kerajaan Afrika dengan teknologi canggih dan vibranium.",
-    "jawaban": "black panther"
+    "jawaban": "black panther",
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/0c/Black_Panther_film_poster.jpg"
   },
   {
     "soal": "Film tentang perempuan cantik yang terkena kutukan tidur abadi oleh penyihir jahat, diselamatkan ciuman pangeran.",
-    "jawaban": "sleeping beauty"
+    "jawaban": "sleeping beauty",
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/4e/Sleeping_beauty_disney_movieposter.jpg"
   },
   {
     "soal": "Film aksi tentang mata-mata paling terkenal, agen 007 dari Inggris, suka Martini dikocok bukan diaduk.",
-    "jawaban": "james bond"
+    "jawaban": "james bond",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Daniel_Craig_cropped.jpg"
   },
   {
     "soal": "Film tentang manusia super berbaju cape merah, berasal dari planet Krypton, lemah terhadap batu hijau.",
-    "jawaban": "superman"
+    "jawaban": "superman",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/6e/Superman_Movie.jpg"
   },
   {
     "soal": "Film horor Indonesia tentang teror di sebuah hotel tua dan angker di pegunungan.",
-    "jawaban": "pengabdi setan"
+    "jawaban": "pengabdi setan",
+    "img": "https://upload.wikimedia.org/wikipedia/id/1/1d/Pengabdi_Setan_poster.jpg"
   },
   {
     "soal": "Film animasi tentang robot kecil yang tertinggal di Bumi penuh sampah, jatuh cinta pada robot cantik.",
-    "jawaban": "wall-e"
+    "jawaban": "wall-e",
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c2/WALL-Eposter.jpg"
   },
   {
     "soal": "Film tentang petualangan di dunia yang ada di dalam buku—setiap kata yang dibaca jadi nyata.",
-    "jawaban": "inkheart"
+    "jawaban": "inkheart",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/82/Inkheart-movie-poster.jpg"
   },
   {
     "soal": "Film tentang seorang lelaki tua pemarah yang mengikat ribuan balon ke rumahnya dan terbang ke South America.",
-    "jawaban": "up"
+    "jawaban": "up",
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/05/Up_%282009_film%29.jpg"
   },
   {
     "soal": "Film tentang penghuni hutan lebat Kalimantan yang berjuang mempertahankan habitatnya dari pembalakan liar.",
-    "jawaban": "sokola rimba"
+    "jawaban": "sokola rimba",
+    "img": "https://upload.wikimedia.org/wikipedia/id/1/18/Sokola_rimba_poster.jpg"
   },
   {
     "soal": "Film Korea tentang keluarga miskin yang menyusup ke keluarga kaya, meraih kepercayaan secara perlahan.",
-    "jawaban": "parasite"
+    "jawaban": "parasite",
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/53/Parasite_%282019_film%29.png"
   },
   {
     "soal": "Film animasi Jepang tentang gadis kecil yang orang tuanya berubah menjadi babi di dunia roh.",
-    "jawaban": "spirited away"
+    "jawaban": "spirited away",
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png"
   },
   {
     "soal": "Film tentang tim astronot yang mencari planet baru untuk manusia karena Bumi tidak lagi layak huni.",
-    "jawaban": "interstellar"
+    "jawaban": "interstellar",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg"
   },
   {
     "soal": "Film Indonesia tentang seorang guru muda yang mengajar di daerah terpencil dan mengubah kehidupan siswanya.",
-    "jawaban": "guru bangsa tjokroaminoto"
+    "jawaban": "guru bangsa tjokroaminoto",
+    "img": "https://upload.wikimedia.org/wikipedia/id/3/3d/Guru_bangsa_tjokroaminoto_film.jpg"
   },
   {
     "soal": "Film horor tentang seorang gadis yang kerasukan setan dan harus diusir oleh seorang pastor tua.",
-    "jawaban": "the exorcist"
+    "jawaban": "the exorcist",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9b/The_Exorcist_%281973_film%29_cover.jpg"
   },
   {
     "soal": "Film aksi tentang keluarga profesional yang ahli mencuri rahasia dari mimpi orang lain.",
-    "jawaban": "inception"
+    "jawaban": "inception",
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg"
   },
   {
     "soal": "Film animasi tentang putri pemberani dari Skotlandia yang mengubah nasibnya sendiri menggunakan panah.",
-    "jawaban": "brave"
+    "jawaban": "brave",
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/4e/Brave_Poster.jpg"
   },
   {
     "soal": "Film Indonesia tentang remaja SMA yang berjuang melawan bullying dan menemukan persahabatan sejati.",
-    "jawaban": "dua garis biru"
+    "jawaban": "dua garis biru",
+    "img": "https://upload.wikimedia.org/wikipedia/id/8/80/Dua_Garis_Biru_poster.jpg"
   },
   {
     "soal": "Film tentang bajak laut eksentrik yang berlayar mencari harta karun dengan kapal berhantu.",
-    "jawaban": "pirates of the caribbean"
+    "jawaban": "pirates of the caribbean",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b5/Pirates_of_the_Caribbean_DVD.jpg"
   },
   {
     "soal": "Film animasi tentang seorang gadis kecil yang masuk ke dunia ajaib melalui sebuah lubang di taman.",
-    "jawaban": "alice in wonderland"
+    "jawaban": "alice in wonderland",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b3/Alice_in_Wonderland_%282010_film%29_poster.jpg"
   },
   {
     "soal": "Film tentang tim superhero yang berkumpul untuk melawan ancaman alien yang ingin menghancurkan Bumi.",
-    "jawaban": "avengers"
+    "jawaban": "avengers",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/8a/Avengers_2012_film_poster.jpg"
   },
   {
     "soal": "Film horor tentang dua detektif yang menyelidiki pembunuhan berantai berdasarkan tujuh dosa mematikan.",
-    "jawaban": "seven"
+    "jawaban": "seven",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/68/Seven_%28movie%29_poster.jpg"
   },
   {
     "soal": "Film Indonesia tentang persahabatan mahasiswa Jakarta yang penuh drama, cinta, dan perjuangan kuliah.",
-    "jawaban": "ada apa dengan cinta"
+    "jawaban": "ada apa dengan cinta",
+    "img": "https://upload.wikimedia.org/wikipedia/id/d/d3/Ada_apa_dengan_cinta.jpg"
   },
   {
     "soal": "Film animasi tentang singa muda yang lari dari kerajaannya setelah ayahnya mati, kembali dewasa untuk merebut takhta.",
-    "jawaban": "the lion king"
+    "jawaban": "the lion king",
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/3d/The_Lion_King_poster.jpg"
   },
   {
     "soal": "Film tentang anak muda yang menemukan cincin sakti dan harus menghancurkannya sebelum kekuatan jahat menguasai dunia.",
-    "jawaban": "lord of the rings"
+    "jawaban": "lord of the rings",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/8a/FOTR.jpg"
   },
   {
     "soal": "Film aksi Indonesia tentang polisi muda yang menyamar di sekolah menengah untuk mengungkap jaringan narkoba.",
-    "jawaban": "bad boys"
+    "jawaban": "bad boys",
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/d9/Bad_Boys_Poster.jpg"
   },
   {
     "soal": "Film tentang sekelompok remaja yang terperangkap di labirin misterius penuh monster dan harus melarikan diri.",
-    "jawaban": "maze runner"
+    "jawaban": "maze runner",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/ac/The_Maze_Runner_poster.jpg"
   },
   {
     "soal": "Film tentang manusia setengah dewa dari Olympus yang berjuang melawan monster-monster mitologi Yunani.",
-    "jawaban": "hercules"
+    "jawaban": "hercules",
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/cb/Hercules_%281997_film%29_poster.png"
   },
   {
     "soal": "Film animasi tentang ratu es yang mengucilkan diri dari kerajaannya karena takut kekuatannya melukai orang lain.",
-    "jawaban": "frozen"
+    "jawaban": "frozen",
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/05/Frozen_%282013_film%29_poster.jpg"
   },
   {
     "soal": "Film tentang seorang nabi yang memimpin bangsanya keluar dari perbudakan di Mesir dengan membelah lautan.",
-    "jawaban": "the ten commandments"
+    "jawaban": "the ten commandments",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/8/80/Ten_commandments_charlton_heston.jpg"
   },
   {
     "soal": "Film Indonesia horor tentang teror di sebuah desa terpencil yang diserang makhluk gaib setiap malam.",
-    "jawaban": "KKN di desa penari"
+    "jawaban": "KKN di desa penari",
+    "img": "https://upload.wikimedia.org/wikipedia/id/1/1d/KKN_di_Desa_Penari.png"
   },
   {
     "soal": "Seorang wanita menemukan buku tua yang mengubah hidupnya, petualangan di dunia sihir pun dimulai.",
-    "jawaban": "narnia"
+    "jawaban": "narnia",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b2/TheChroniclesOfNarnia_poster.jpg"
   },
   {
     "soal": "Detektif pintar dan mitranya memecahkan kasus kriminal di London abad 19 menggunakan logika.",
-    "jawaban": "sherlock holmes"
+    "jawaban": "sherlock holmes",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/99/SherlockHolmesUS.jpg"
   },
   {
     "soal": "Petarung terpilih memasuki turnamen survival mematikan di masa depan untuk bertahan hidup.",
-    "jawaban": "hunger games"
+    "jawaban": "hunger games",
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/42/HungerGamesPoster.jpg"
   },
   {
     "soal": "Seorang pria terbangun dari koma dan mendapati dunianya berubah total selama ia tidak sadar.",
-    "jawaban": "sleepy hollow"
+    "jawaban": "sleepy hollow",
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/3e/Sleepy_Hollow_movie_poster.jpg"
   },
   {
     "soal": "Dua saudara kembar terpisah sejak lahir bertemu kembali secara kebetulan dan memiliki misi serupa.",
-    "jawaban": "parent trap"
+    "jawaban": "parent trap",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/16/Parent_trap_1998.jpg"
   },
   {
     "soal": "Film horor Korea tentang keluarga yang disandera hantu di rumah mewah dengan ruang rahasia.",
-    "jawaban": "the wailing"
+    "jawaban": "the wailing",
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/cc/The_Wailing_poster.jpg"
   },
   {
     "soal": "Anak-anak menemukan peta harta karun dan berpetualang menghindari penjahat untuk menemukannya.",
-    "jawaban": "the goonies"
+    "jawaban": "the goonies",
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/59/The_Goonies.jpg"
   },
   {
     "soal": "Seorang mantan tentara bayaran mendapat kemampuan super setelah uji coba eksperimental.",
-    "jawaban": "deadpool"
+    "jawaban": "deadpool",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/64/Deadpool_%282016_poster%29.png"
   },
   {
     "soal": "Ilmuwan berhasil mengkloning dinosaurus namun semua rencana berantakan saat hewan purba lepas.",
-    "jawaban": "jurassic park"
+    "jawaban": "jurassic park",
+    "img": "https://upload.wikimedia.org/wikipedia/en/e/e7/Jurassic_Park_poster.jpg"
   },
   {
     "soal": "Dua prajurit dari Korea berperang di era kolonial, seorang jatuh cinta dengan gadis bangsawan.",
-    "jawaban": "battleship potemkin"
+    "jawaban": "battleship potemkin",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/90/Battleship_Potemkin.jpg"
   },
   {
     "soal": "Pria bermasker besi terjebak di penjara selama bertahun-tahun karena menyimpan rahasia kerajaan.",
-    "jawaban": "man in the iron mask"
+    "jawaban": "man in the iron mask",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/14/Man_in_the_Iron_Mask_%281998%29.jpg"
   },
   {
     "soal": "Astronot terdampar sendirian di Mars dan harus bertahan hidup menggunakan ilmu pengetahuan.",
-    "jawaban": "the martian"
+    "jawaban": "the martian",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b5/The_Martian_film_poster.jpg"
   },
   {
     "soal": "Sekelompok perampok profesional merencanakan pencurian paling rumit yang pernah ada.",
-    "jawaban": "ocean's eleven"
+    "jawaban": "ocean's eleven",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a8/Ocean%27s_Eleven_film_poster.jpg"
   },
   {
     "soal": "Gadis biasa terpilih sebagai calon pengantin pangeran dalam kompetisi khusus antar remaja.",
-    "jawaban": "princess diaries"
+    "jawaban": "princess diaries",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9f/The_Princess_Diaries_%28film%29.jpg"
   },
   {
     "soal": "Seorang nelayan tua berjuang sendirian menangkap ikan marlin raksasa di samudra lepas.",
-    "jawaban": "old man and the sea"
+    "jawaban": "old man and the sea",
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/09/OldManandtheSeaposter.jpg"
   },
   {
     "soal": "Film tentang kembar yang tertukar dan menjalani kehidupan saling bertukar secara diam-diam.",
-    "jawaban": "freaky friday"
+    "jawaban": "freaky friday",
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/70/Freaky_Friday_2003_film_poster.jpg"
   },
   {
     "soal": "Perempuan berbadan besar yang selalu dianggap remeh membuktikan dirinya di industri musik.",
-    "jawaban": "sing"
+    "jawaban": "sing",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/98/Sing_film_poster.jpg"
   },
   {
     "soal": "Pria biasa yang menemukan kekuatan super dari pakaian yang diciptakan ilmuwan misterius.",
-    "jawaban": "the flash"
+    "jawaban": "the flash",
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/20/The_Flash_%28film%29_poster.jpg"
   },
   {
     "soal": "Film animasi tentang rusa yang ibunya mati ditembak pemburu dan harus belajar hidup di hutan.",
-    "jawaban": "bambi"
+    "jawaban": "bambi",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/15/Bambi_film_poster.png"
   },
   {
     "soal": "Sepasang kakak beradik berani masuk ke rumah tua angker untuk mencari harta peninggalan orang tua.",
-    "jawaban": "haunting of hill house"
+    "jawaban": "haunting of hill house",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/6c/The_Haunting_of_Hill_House_TV_series.jpg"
   },
   {
     "soal": "Sekelompok teman memulai usaha makanan dari modal nol dan berjuang di tengah persaingan ketat.",
-    "jawaban": "chef"
+    "jawaban": "chef",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/6f/Chef_2014_film_poster.jpg"
   },
   {
     "soal": "Pria dan wanita bertemu di kota yang sama setiap tahun selama lima tahun dan jatuh cinta perlahan.",
-    "jawaban": "before sunrise"
+    "jawaban": "before sunrise",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/1c/Before_Sunrise_%28movie_poster%29.jpg"
   },
   {
     "soal": "Pasukan khusus dikirim ke dalam hutan Amazon untuk misi yang ternyata menyimpan ancaman tak terduga.",
-    "jawaban": "predator"
+    "jawaban": "predator",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/8b/Predator_%28film%29_poster.jpg"
   },
   {
     "soal": "Wanita pemberani memimpin pasukannya melawan kerajaan lalim untuk membebaskan rakyatnya yang tertindas.",
-    "jawaban": "mulan"
+    "jawaban": "mulan",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/8b/Mulan_original_film_poster.jpg"
   },
   {
     "soal": "Film tentang seorang guru yang menginspirasi murid-murid dari lingkungan keras lewat matematika.",
-    "jawaban": "stand and deliver"
+    "jawaban": "stand and deliver",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9e/Stand_and_deliver_poster.jpg"
   },
   {
     "soal": "Seluruh penghuni bumi mendapati manusia tiba-tiba hilang dan alam liar kembali berkuasa.",
-    "jawaban": "i am legend"
+    "jawaban": "i am legend",
+    "img": "https://upload.wikimedia.org/wikipedia/en/e/e7/I_Am_Legend_Poster.jpg"
   },
   {
     "soal": "Ilmuwan menemukan mesin waktu dan terus kembali ke masa lalu untuk mengubah satu kejadian fatal.",
-    "jawaban": "back to the future"
+    "jawaban": "back to the future",
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg"
   },
   {
     "soal": "Remaja Indonesia berteman dengan drakula muda dan menjalani petualangan di kegelapan malam.",
-    "jawaban": "dilan"
+    "jawaban": "dilan",
+    "img": "https://upload.wikimedia.org/wikipedia/id/a/a8/Poster_Dilan_1990.jpg"
   },
   {
     "soal": "Film animasi Pixar tentang anak yang masuk ke dunia roh untuk menemukan leluhurnya yang terlupakan.",
-    "jawaban": "coco"
+    "jawaban": "coco",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/98/Coco_%282017_film%29_poster.jpg"
   },
   {
     "soal": "Superhero bertubuh kecil yang bisa mengecil sekecil semut namun sekuat gajah dalam pertempuran.",
-    "jawaban": "ant-man"
+    "jawaban": "ant-man",
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/4d/Ant-Man_poster.jpg"
   },
   {
     "soal": "Seorang wanita menemukan suaminya ternyata alien dan harus memilih antara cinta dan keselamatan bumi.",
-    "jawaban": "men in black"
+    "jawaban": "men in black",
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/2e/Men_in_Black_poster.png"
   },
   {
     "soal": "Film animasi Pixar tentang monster yang bekerja menakut-nakuti anak-anak sebagai sumber energi.",
-    "jawaban": "monsters inc"
+    "jawaban": "monsters inc",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/63/Monsters_Inc.jpg"
   },
   {
     "soal": "Film animasi tentang sepasang ikan yang hidup harmonis namun terancam oleh polusi lautan.",
-    "jawaban": "finding dory"
+    "jawaban": "finding dory",
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/3e/Finding_Dory.jpg"
   },
   {
     "soal": "Seorang detektif tua pensiun dipaksa kembali bertugas ketika kasus lama bangkit kembali.",
-    "jawaban": "knives out"
+    "jawaban": "knives out",
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c3/Knives_Out_poster.jpeg"
   },
   {
     "soal": "Seorang pria terbangun dan mendapati dirinya terjebak dalam satu hari yang sama berulang terus.",
-    "jawaban": "groundhog day"
+    "jawaban": "groundhog day",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a5/Groundhog_Day_%28movie_poster%29.jpg"
   },
   {
     "soal": "Film India tentang pemuda miskin yang memenangkan Who Wants to Be a Millionaire mengejutkan semua.",
-    "jawaban": "slumdog millionaire"
+    "jawaban": "slumdog millionaire",
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f5/Slumdog_Millionaire_film_poster.jpg"
   },
   {
     "soal": "Film tentang seorang nelayan yang bertarung dengan hiu raksasa yang menghantui pantainya.",
-    "jawaban": "jaws"
+    "jawaban": "jaws",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9a/Jaws_%28film%29_poster.jpg"
   },
   {
     "soal": "Gadis cilik yang tinggal di peternakan terseret tornado ke negeri ajaib penuh makhluk aneh.",
-    "jawaban": "wizard of oz"
+    "jawaban": "wizard of oz",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Wizard_of_Oz_1939_movie_poster.jpg"
   },
   {
     "soal": "Film tentang korupsi di lembaga penegak hukum yang dibongkar oleh jurnalis investigasi.",
-    "jawaban": "spotlight"
+    "jawaban": "spotlight",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b0/Spotlight_film_poster.jpg"
   },
   {
     "soal": "Dua sahabat melakukan perjalanan panjang terakhir bersama sebelum salah satu dari mereka pergi.",
-    "jawaban": "the bucket list"
+    "jawaban": "the bucket list",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/65/The_Bucket_List.jpg"
   },
   {
     "soal": "Film Indonesia tentang kisah cinta dua remaja di Bandung pada era 1990-an.",
-    "jawaban": "dilan 1990"
+    "jawaban": "dilan 1990",
+    "img": "https://upload.wikimedia.org/wikipedia/id/a/a8/Poster_Dilan_1990.jpg"
   },
   {
     "soal": "Film animasi tentang anjing yang memiliki kekuatan super namun tidak menyadarinya.",
-    "jawaban": "bolt"
+    "jawaban": "bolt",
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f3/Bolt_film_poster.jpg"
   },
   {
     "soal": "Film thriller tentang seorang wanita yang menyadari suaminya berencana membunuhnya.",
-    "jawaban": "gaslight"
+    "jawaban": "gaslight",
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/55/Gaslight_1944.jpg"
   },
   {
     "soal": "Film animasi tentang ikan kecil yang terpisah dari keluarganya di Great Barrier Reef.",
-    "jawaban": "finding nemo 2"
+    "jawaban": "finding nemo 2",
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/3e/Finding_Dory.jpg"
   },
   {
     "soal": "Superhero berlapis es yang bisa membekukan apapun dalam sekejap untuk melindungi dunianya.",
-    "jawaban": "iceman"
+    "jawaban": "iceman",
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/4c/IcemanFilm.jpg"
   },
   {
     "soal": "Film tentang seorang pemuda yang menemukan bahwa seluruh hidupnya ditayangkan sebagai reality show.",
-    "jawaban": "the truman show"
+    "jawaban": "the truman show",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a7/Truman_show_poster.jpg"
   },
   {
     "soal": "Seorang pilot legendaris harus mengejar musuh lama sambil melatih pilot muda generasi baru.",
-    "jawaban": "top gun maverick"
+    "jawaban": "top gun maverick",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/13/Top_Gun_Maverick_Poster.jpg"
   },
   {
     "soal": "Sekelompok kriminal berencana merampok kasino paling ketat keamanannya di Las Vegas.",
-    "jawaban": "ocean eleven"
+    "jawaban": "ocean eleven",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a8/Ocean%27s_Eleven_film_poster.jpg"
   },
   {
     "soal": "Film dokumenter tentang kondisi lingkungan hidup dan perubahan iklim yang mengancam bumi.",
-    "jawaban": "an inconvenient truth"
+    "jawaban": "an inconvenient truth",
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/95/An_Inconvenient_Truth_film.jpg"
   },
   {
     "soal": "Seorang bocah laki-laki yang terlihat setan hanya berbicara dengan psikolog yang tidak tahu dirinya hantu.",
-    "jawaban": "the sixth sense"
+    "jawaban": "the sixth sense",
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/27/Sixth_sense.jpg"
   }
 ]
