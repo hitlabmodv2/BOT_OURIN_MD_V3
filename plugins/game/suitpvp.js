@@ -1,5 +1,6 @@
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import config from '../../config.js'
+
 const pluginConfig = {
     name: 'suitpvp',
     alias: ['suit', 'rps', 'janken'],
@@ -25,6 +26,27 @@ const EMOJI = {
     batu: '✊',
     gunting: '✌️',
     kertas: '✋'
+}
+
+function makeBtn(displayText, id) {
+    return { name: 'quick_reply', buttonParamsJson: JSON.stringify({ display_text: displayText, id }) }
+}
+
+// Tombol Terima/Tolak untuk challenger
+const BTN_TERIMA = makeBtn('✅ Terima Tantangan', 'suit_terima')
+const BTN_TOLAK  = makeBtn('❌ Tolak', 'suit_tolak')
+
+// Tombol pilihan suit
+const BTN_BATU    = makeBtn('✊ Batu',    'suit_batu')
+const BTN_GUNTING = makeBtn('✌️ Gunting', 'suit_gunting')
+const BTN_KERTAS  = makeBtn('✋ Kertas',  'suit_kertas')
+
+async function sendWithBtn(sock, chatId, text, buttons, quotedMsg, mentions = []) {
+    try {
+        return await sock.sendMessage(chatId, { text, mentions, interactiveButtons: buttons }, quotedMsg ? { quoted: quotedMsg } : {})
+    } catch {
+        return await sock.sendMessage(chatId, { text, mentions }, quotedMsg ? { quoted: quotedMsg } : {})
+    }
 }
 
 async function handler(m, { sock }) {
@@ -92,12 +114,14 @@ async function handler(m, { sock }) {
     }
     
     await m.react('✊')
-    await m.reply(`Kamu menantang @${target.split('@')[0]} untuk adu suit\n\n` +
-            `╭┈┈⬡「 💬 *ʀᴇsᴘᴏɴ* 」\n` +
-            `┃ ✅ Ketik *terima* / *gas* / *ok*\n` +
-            `┃ ❌ Ketik *tolak* / *gabisa*\n` +
-            `╰┈┈┈┈┈┈┈┈⬡\n\n` +
-            `Waktu: 90 detik`, {  mentions: [target]})
+    const challengeText = `✊✌️✋ *sᴜɪᴛ ᴘᴠᴘ*\n\n` +
+        `@${m.sender.split('@')[0]} menantang @${target.split('@')[0]} untuk adu suit!\n\n` +
+        `╭┈┈⬡「 💬 *ʀᴇsᴘᴏɴ* 」\n` +
+        `┃ ✅ Ketik *terima* / *gas* / *ok*\n` +
+        `┃ ❌ Ketik *tolak* / *gabisa*\n` +
+        `╰┈┈┈┈┈┈┈┈⬡\n\n` +
+        `Waktu: 90 detik`
+    await sendWithBtn(sock, m.chat, challengeText, [BTN_TERIMA, BTN_TOLAK], m, [m.sender, target])
 }
 
 async function answerHandler(m, sock) {
@@ -111,47 +135,45 @@ async function answerHandler(m, sock) {
     
     for (const [id, r] of Object.entries(global.suitGames)) {
         if (r.chat === m.chat && [r.p, r.p2].includes(m.sender)) {
-            room = r
-            roomId = id
-            break
+            room = r; roomId = id; break
         }
         if (!m.isGroup && [r.p, r.p2].includes(m.sender)) {
-            room = r
-            roomId = id
-            break
+            room = r; roomId = id; break
         }
     }
     
     if (!room) return false
     
+    // ── Waiting: terima / tolak ─────────────────────────────────────────────
     if (room.status === 'waiting' && m.sender === room.p2 && m.chat === room.chat) {
-        if (/^(acc(ept)?|terima|gas|oke?|ok|iya|yoi)$/i.test(text)) {
+
+        // Tombol suit_terima atau teks terima
+        if (text === 'suit_terima' || /^(acc(ept)?|terima|gas|oke?|ok|iya|yoi)$/i.test(text)) {
             clearTimeout(room.timeout)
             room.status = 'playing'
             
             await m.react('🎮')
-            
             await m.reply(`✊✌️✋ *sᴜɪᴛ ᴅɪᴍᴜʟᴀɪ!*\n\n` +
-                    `@${room.p.split('@')[0]} vs @${room.p2.split('@')[0]}\n\n` +
-                    `> 📩 Cek *Private Chat* untuk memilih!\n` +
-                    `> ⏱️ Timeout: 90 detik`, {  mentions: [room.p, room.p2]})
+                `@${room.p.split('@')[0]} vs @${room.p2.split('@')[0]}\n\n` +
+                `> 📩 Cek *Private Chat* untuk memilih!\n` +
+                `> ⏱️ Timeout: 90 detik`, { mentions: [room.p, room.p2] })
             
-            const pmMessage = `✊✌️✋ *sᴜɪᴛ - ᴘɪʟɪʜ ᴊᴀᴡᴀʙᴀɴ*\n\n` +
-                `Ketik salah satu:\n\n` +
+            const pmText = `✊✌️✋ *sᴜɪᴛ - ᴘɪʟɪʜ ᴊᴀᴡᴀʙᴀɴ*\n\n` +
+                `Pilih satu:\n\n` +
                 `┃ ✊ *batu*\n` +
                 `┃ ✌️ *gunting*\n` +
                 `┃ ✋ *kertas*\n\n` +
-                `*TIP: Reply pesan ini dengan pilihanmu!*\n` +
-                `Contoh: *batu*`
+                `Tekan tombol atau ketik pilihanmu!`
+            
+            const pmButtons = [BTN_BATU, BTN_GUNTING, BTN_KERTAS]
             
             try {
-                await sock.sendMessage(room.p, { text: pmMessage })
+                await sendWithBtn(sock, room.p, pmText, pmButtons, null)
             } catch (e) {
                 console.log('[Suit] Failed to PM player 1:', e.message)
             }
-            
             try {
-                await sock.sendMessage(room.p2, { text: pmMessage })
+                await sendWithBtn(sock, room.p2, pmText, pmButtons, null)
             } catch (e) {
                 console.log('[Suit] Failed to PM player 2:', e.message)
             }
@@ -159,19 +181,13 @@ async function answerHandler(m, sock) {
             room.timeout = setTimeout(async () => {
                 if (global.suitGames[roomId]) {
                     if (!room.pilih && !room.pilih2) {
-                        await sock.sendMessage(room.chat, { 
-                            text: '⏱️ Kedua pemain tidak memilih, suit dibatalkan!' 
-                        })
+                        await sock.sendMessage(room.chat, { text: '⏱️ Kedua pemain tidak memilih, suit dibatalkan!' })
                     } else if (!room.pilih || !room.pilih2) {
-                        const afk = !room.pilih ? room.p : room.p2
+                        const afk    = !room.pilih ? room.p  : room.p2
                         const winner = !room.pilih ? room.p2 : room.p
-                        
                         db.updateKoin(winner, WIN_REWARD)
-                        
                         await sock.sendMessage(room.chat, {
-                            text: `⏱️ *TIMEOUT!*\n\n` +
-                                `@${afk.split('@')[0]} tidak memilih!\n` +
-                                `@${winner.split('@')[0]} menang! +Rp ${WIN_REWARD.toLocaleString()}`,
+                            text: `⏱️ *TIMEOUT!*\n\n@${afk.split('@')[0]} tidak memilih!\n@${winner.split('@')[0]} menang! +Rp ${WIN_REWARD.toLocaleString()}`,
                             mentions: [afk, winner]
                         })
                     }
@@ -182,30 +198,35 @@ async function answerHandler(m, sock) {
             return true
         }
         
-        if (/^(tolak|gamau|nanti|ga(k.)?bisa|no|tidak)$/i.test(text)) {
+        // Tombol suit_tolak atau teks tolak
+        if (text === 'suit_tolak' || /^(tolak|gamau|nanti|ga(k.)?bisa|no|tidak)$/i.test(text)) {
             clearTimeout(room.timeout)
-            
             await sock.sendMessage(room.chat, {
                 text: `❌ @${room.p2.split('@')[0]} menolak tantangan!\nSuit dibatalkan.`,
                 mentions: [room.p2]
             })
-            
             delete global.suitGames[roomId]
             return true
         }
     }
     
-    if (room.status === 'playing' && !m.isGroup) {
+    // ── Playing: pilih batu/gunting/kertas (via PM atau tombol) ────────────
+    if (room.status === 'playing') {
+        // Tombol ditekan via PM atau di group-chat → bisa dari mana saja
+        // Normalisasi: suit_batu → batu, dst.
+        let choiceText = text
+        if (text === 'suit_batu')    choiceText = 'batu'
+        if (text === 'suit_gunting') choiceText = 'gunting'
+        if (text === 'suit_kertas')  choiceText = 'kertas'
+
         const choices = /^(batu|gunting|kertas)$/i
+        if (!choices.test(choiceText)) return false
         
-        if (!choices.test(text)) return false
-        
-        const choice = text.toLowerCase()
+        const choice = choiceText.toLowerCase()
         
         if (m.sender === room.p && !room.pilih) {
             room.pilih = choice
             await m.reply(`✅ Kamu memilih *${choice}* ${EMOJI[choice]}\n\n> Menunggu lawan...`)
-            
             if (!room.pilih2) {
                 await sock.sendMessage(room.chat, {
                     text: `🕕 @${room.p.split('@')[0]} sudah memilih!\n> Menunggu @${room.p2.split('@')[0]}...`,
@@ -217,7 +238,6 @@ async function answerHandler(m, sock) {
         if (m.sender === room.p2 && !room.pilih2) {
             room.pilih2 = choice
             await m.reply(`✅ Kamu memilih *${choice}* ${EMOJI[choice]}\n\n> Menunggu lawan...`)
-            
             if (!room.pilih) {
                 await sock.sendMessage(room.chat, {
                     text: `🕕 @${room.p2.split('@')[0]} sudah memilih!\n> Menunggu @${room.p.split('@')[0]}...`,
@@ -235,9 +255,9 @@ async function answerHandler(m, sock) {
             if (room.pilih === room.pilih2) {
                 tie = true
             } else if (
-                (room.pilih === 'batu' && room.pilih2 === 'gunting') ||
-                (room.pilih === 'gunting' && room.pilih2 === 'kertas') ||
-                (room.pilih === 'kertas' && room.pilih2 === 'batu')
+                (room.pilih === 'batu'    && room.pilih2 === 'gunting') ||
+                (room.pilih === 'gunting' && room.pilih2 === 'kertas')  ||
+                (room.pilih === 'kertas'  && room.pilih2 === 'batu')
             ) {
                 winner = room.p
             } else {
@@ -249,18 +269,25 @@ async function answerHandler(m, sock) {
             resultTxt += `@${room.p2.split('@')[0]} ${EMOJI[room.pilih2]} ${room.pilih2}\n\n`
             
             if (tie) {
-                resultTxt += `🤝 *SERI!*`
+                resultTxt += `🤝 *SERI!*\n> Tidak ada pemenang, coba lagi!`
             } else {
                 db.updateKoin(winner, WIN_REWARD)
-                
-                resultTxt += `🏆 @${winner.split('@')[0]} menang!\n`
-                resultTxt += `> +Rp ${WIN_REWARD.toLocaleString()}`
+                resultTxt += `🏆 @${winner.split('@')[0]} menang!\n> +Rp ${WIN_REWARD.toLocaleString()}`
             }
-            
-            await sock.sendMessage(room.chat, {
-                text: resultTxt,
-                mentions: [room.p, room.p2]
-            }, { quoted: m })
+
+            const prefix = config.command?.prefix || '.'
+            try {
+                await sock.sendMessage(room.chat, {
+                    text: resultTxt,
+                    mentions: [room.p, room.p2],
+                    interactiveButtons: [makeBtn('🔄 Main Lagi!', `${prefix}suit`)]
+                }, { quoted: m })
+            } catch {
+                await sock.sendMessage(room.chat, {
+                    text: resultTxt,
+                    mentions: [room.p, room.p2]
+                }, { quoted: m })
+            }
             
             delete global.suitGames[roomId]
         }

@@ -1,5 +1,7 @@
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { parseMention, delay } from '../../src/lib/ourin-utils.js'
+import config from '../../config.js'
+
 const pluginConfig = {
   name: "tictactoe",
   alias: ["ttt", "xo"],
@@ -17,17 +19,10 @@ const pluginConfig = {
 };
 
 const boardSymbols = {
-  X: "❌",
-  O: "⭕",
-  1: "1️⃣",
-  2: "2️⃣",
-  3: "3️⃣",
-  4: "4️⃣",
-  5: "5️⃣",
-  6: "6️⃣",
-  7: "7️⃣",
-  8: "8️⃣",
-  9: "9️⃣",
+  X: "❌", O: "⭕",
+  1: "1️⃣", 2: "2️⃣", 3: "3️⃣",
+  4: "4️⃣", 5: "5️⃣", 6: "6️⃣",
+  7: "7️⃣", 8: "8️⃣", 9: "9️⃣",
 };
 
 class TicTacToe {
@@ -40,17 +35,9 @@ class TicTacToe {
     this.turns = 0;
   }
 
-  get board() {
-    return this._x | this._o;
-  }
-
-  get currentTurn() {
-    return this._currentTurn ? this.playerO : this.playerX;
-  }
-
-  get enemyTurn() {
-    return this._currentTurn ? this.playerX : this.playerO;
-  }
+  get board() { return this._x | this._o; }
+  get currentTurn() { return this._currentTurn ? this.playerO : this.playerX; }
+  get enemyTurn()   { return this._currentTurn ? this.playerX : this.playerO; }
 
   static check(state) {
     for (let combo of [7, 56, 73, 84, 146, 273, 292, 448])
@@ -89,9 +76,7 @@ class TicTacToe {
       .map((value, index) => (value == 1 ? "X" : value == 2 ? "O" : ++index));
   }
 
-  render() {
-    return TicTacToe.render(this._x, this._o);
-  }
+  render() { return TicTacToe.render(this._x, this._o); }
 
   get winner() {
     let x = TicTacToe.check(this._x);
@@ -102,6 +87,27 @@ class TicTacToe {
 
 if (!global.tictactoeGames) global.tictactoeGames = {};
 
+// ─── Button helpers ──────────────────────────────────────────────────────────
+function makeBtn(displayText, id) {
+  return { name: 'quick_reply', buttonParamsJson: JSON.stringify({ display_text: displayText, id }) }
+}
+
+const BTN_NYERAH = makeBtn('🏳️ Nyerah', 'tictactoe_nyerah')
+
+function mainLagiBtn() {
+  const p = config.command?.prefix || '.'
+  return makeBtn('🔄 Main Lagi!', `${p}tictactoe`)
+}
+
+async function sendWithBtn(sock, chatId, text, buttons, quotedMsg, mentions = []) {
+  try {
+    return await sock.sendMessage(chatId, { text, mentions, interactiveButtons: buttons }, quotedMsg ? { quoted: quotedMsg } : {})
+  } catch {
+    return await sock.sendMessage(chatId, { text, mentions }, quotedMsg ? { quoted: quotedMsg } : {})
+  }
+}
+
+// ─── Utilities ────────────────────────────────────────────────────────────────
 function isRateLimitError(error) {
   const message = String(error?.message || "").toLowerCase();
   return (
@@ -125,9 +131,7 @@ async function sendWithRetry(action) {
       return await action();
     } catch (error) {
       lastError = error;
-      if (!isRateLimitError(error) || attempt === 2) {
-        throw error;
-      }
+      if (!isRateLimitError(error) || attempt === 2) throw error;
       await delay(1200 * Math.pow(2, attempt));
     }
   }
@@ -145,17 +149,28 @@ async function safeReply(m, text, options = {}) {
   }
 }
 
-async function safeReact(m, emoji) {
+async function safeReplyBtn(sock, chatId, text, buttons, quotedMsg, mentions = []) {
   try {
-    await sendWithRetry(() => m.react(emoji));
-  } catch (error) {}
+    return await sendWithRetry(() =>
+      sock.sendMessage(chatId, { text, mentions, interactiveButtons: buttons }, quotedMsg ? { quoted: quotedMsg } : {})
+    );
+  } catch {
+    return await sendWithRetry(() =>
+      sock.sendMessage(chatId, { text, mentions }, quotedMsg ? { quoted: quotedMsg } : {})
+    );
+  }
 }
+
+async function safeReact(m, emoji) {
+  try { await sendWithRetry(() => m.react(emoji)); } catch {}
+}
+
+// ─── Handler utama ────────────────────────────────────────────────────────────
 async function handler(m, { sock }) {
   const db = getDatabase();
   const args = m.args || [];
   const roomName = args.join(" ").trim();
 
-  // Check if player already in a game
   const existingRoom = Object.values(global.tictactoeGames).find(
     (room) =>
       room.id.startsWith("ttt_") &&
@@ -166,11 +181,10 @@ async function handler(m, { sock }) {
     return safeReply(
       m,
       `❌ Kamu masih dalam game!\n\n` +
-        `> Selesaikan game kamu atau ketik *nyerah* untuk menyerah.`,
+        `> Selesaikan game kamu atau tekan tombol / ketik *nyerah* untuk menyerah.`,
     );
   }
 
-  // Find waiting room or create new
   let room = Object.values(global.tictactoeGames).find(
     (r) =>
       r.state === "WAITING" &&
@@ -179,12 +193,10 @@ async function handler(m, { sock }) {
   );
 
   if (room) {
-    // Join existing room
     room.game.playerO = m.sender;
     room.state = "PLAYING";
 
     const board = renderBoard(room.game.render());
-
     const txt =
       `🎮 *ᴛɪᴄ ᴛᴀᴄ ᴛᴏᴇ*\n\n` +
       `Partner ditemukan!\n\n` +
@@ -192,15 +204,12 @@ async function handler(m, { sock }) {
       `⭕ @${room.game.playerO.split("@")[0]}\n\n` +
       `${board}\n\n` +
       `> Giliran: @${room.game.currentTurn.split("@")[0]}\n` +
-      `> Reply pesan ini dengan angka 1-9\n` +
-      `> Ketik *nyerah* untuk menyerah`;
+      `> Reply pesan ini dengan angka *1-9*`;
 
     await safeReact(m, "🎮");
-    await safeReply(m, txt, {
-      mentions: [room.game.playerX, room.game.playerO],
-    });
+    await safeReplyBtn(sock, m.chat, txt, [BTN_NYERAH],
+      m, [room.game.playerX, room.game.playerO]);
   } else {
-    // Create new room
     const roomId = "ttt_" + Date.now();
 
     global.tictactoeGames[roomId] = {
@@ -221,7 +230,6 @@ async function handler(m, { sock }) {
         `> Room akan expired dalam 5 menit`,
     );
 
-    // Auto delete after 5 min
     setTimeout(() => {
       if (global.tictactoeGames[roomId]?.state === "WAITING") {
         delete global.tictactoeGames[roomId];
@@ -230,13 +238,12 @@ async function handler(m, { sock }) {
   }
 }
 
-// ==================== Answer Handler ====================
+// ─── Answer handler ───────────────────────────────────────────────────────────
 async function answerHandler(m, sock) {
   if (!m.body) return false;
 
   const text = m.body.trim().toLowerCase();
 
-  // Find player's active game
   const room = Object.values(global.tictactoeGames).find(
     (r) =>
       r.state === "PLAYING" &&
@@ -248,75 +255,55 @@ async function answerHandler(m, sock) {
 
   const db = getDatabase();
 
-  // Handle surrender
-  if (text === "nyerah" || text === "surrender" || text === "give up") {
-    const winner =
-      m.sender === room.game.playerX ? room.game.playerO : room.game.playerX;
-    const loser = m.sender;
+  // ── Button / teks: Nyerah ──────────────────────────────────────────────────
+  if (text === "tictactoe_nyerah" || text === "nyerah" || text === "surrender" || text === "give up") {
+    const winner = m.sender === room.game.playerX ? room.game.playerO : room.game.playerX;
+    const loser  = m.sender;
 
-    // Reward winner
     const winnerData = db.getUser(winner) || {};
     winnerData.koin = (winnerData.koin || 0) + 500;
     db.setUser(winner, winnerData);
 
     await safeReact(m, "🏳️");
-    await safeReply(
-      m,
+    await sendWithBtn(sock, m.chat,
       `🏳️ *MENYERAH!*\n\n` +
-        `@${loser.split("@")[0]} menyerah!\n` +
-        `@${winner.split("@")[0]} menang! +Rp 500`,
-      { mentions: [winner, loser] },
-    );
+      `@${loser.split("@")[0]} menyerah!\n` +
+      `@${winner.split("@")[0]} menang! +Rp 500`,
+      [mainLagiBtn()], m, [winner, loser]);
 
     delete global.tictactoeGames[room.id];
     return true;
   }
 
-  // Check if valid move
+  // ── Pilih posisi 1-9 ───────────────────────────────────────────────────────
   const move = parseInt(text);
   if (isNaN(move) || move < 1 || move > 9) return false;
 
-  // Check if it's player's turn
   if (room.game.currentTurn !== m.sender) {
     await safeReply(m, "❌ Bukan giliranmu!");
     return true;
   }
 
-  // Make move
   const player = room.game.playerX === m.sender ? 0 : 1;
   const result = room.game.turn(player, move - 1);
 
-  if (result === 0) {
-    await safeReply(m, "❌ Posisi sudah terisi!");
-    return true;
-  }
+  if (result === 0) { await safeReply(m, "❌ Posisi sudah terisi!"); return true; }
+  if (result === -1) { await safeReply(m, "❌ Posisi tidak valid!"); return true; }
 
-  if (result === -1) {
-    await safeReply(m, "❌ Posisi tidak valid!");
-    return true;
-  }
-
-  const board = renderBoard(room.game.render());
+  const board  = renderBoard(room.game.render());
   const winner = room.game.winner;
-  const isTie = room.game.board === 511 && !winner;
+  const isTie  = room.game.board === 511 && !winner;
 
   if (winner) {
-    const loser =
-      winner === room.game.playerX ? room.game.playerO : room.game.playerX;
-
-    // Reward winner
+    const loser = winner === room.game.playerX ? room.game.playerO : room.game.playerX;
     const winnerData = db.getUser(winner) || {};
     winnerData.koin = (winnerData.koin || 0) + 1000;
     db.setUser(winner, winnerData);
 
     await safeReact(m, "🎉");
-    await safeReply(
-      m,
-      `🎉 *GAME OVER!*\n\n` +
-        `${board}\n\n` +
-        `🏆 @${winner.split("@")[0]} menang! +Rp 1.000`,
-      { mentions: [winner, loser] },
-    );
+    await sendWithBtn(sock, m.chat,
+      `🎉 *GAME OVER!*\n\n${board}\n\n🏆 @${winner.split("@")[0]} menang! +Rp 1.000`,
+      [mainLagiBtn()], m, [winner, loser]);
 
     delete global.tictactoeGames[room.id];
     return true;
@@ -324,29 +311,23 @@ async function answerHandler(m, sock) {
 
   if (isTie) {
     await safeReact(m, "🤝");
-    await safeReply(
-      m,
-      `🤝 *SERI!*\n\n` + `${board}\n\n` + `> Tidak ada pemenang!`,
-      { mentions: [room.game.playerX, room.game.playerO] },
-    );
+    await sendWithBtn(sock, m.chat,
+      `🤝 *SERI!*\n\n${board}\n\n> Tidak ada pemenang!`,
+      [mainLagiBtn()], m, [room.game.playerX, room.game.playerO]);
 
     delete global.tictactoeGames[room.id];
     return true;
   }
 
-  // Continue game
-  await safeReply(
-    m,
-    `🎮 *ᴛɪᴄ ᴛᴀᴄ ᴛᴏᴇ*\n\n` +
-      `${board}\n\n` +
-      `> Giliran: @${room.game.currentTurn.split("@")[0]}`,
-    { mentions: [room.game.currentTurn] },
-  );
+  // Lanjut game — tampilkan papan + tombol nyerah
+  await safeReplyBtn(sock, m.chat,
+    `🎮 *ᴛɪᴄ ᴛᴀᴄ ᴛᴏᴇ*\n\n${board}\n\n> Giliran: @${room.game.currentTurn.split("@")[0]}`,
+    [BTN_NYERAH], m, [room.game.currentTurn]);
 
   return true;
 }
 
-// ==================== Helper ====================
+// ─── Render papan ─────────────────────────────────────────────────────────────
 function renderBoard(arr) {
   const cells = arr.map((cell) => boardSymbols[String(cell)] || cell);
   return `┌───┬───┬───┐
