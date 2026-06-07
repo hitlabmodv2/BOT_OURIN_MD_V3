@@ -34,7 +34,7 @@
     "energi": 99981,
     "isPremium": false,
     "isBanned": false,
-    "exp": 18626,
+    "exp": 18716,
     "level": 1,
     "koin": 8232,
     "saldo": 0,
@@ -44,7 +44,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-06-07T09:09:10.150Z",
+    "lastSeen": "2026-06-07T09:28:05.731Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,

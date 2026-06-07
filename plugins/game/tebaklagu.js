@@ -15,6 +15,7 @@ import {
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
 import botConfig from '../../config.js'
+import { makeGameListBtn } from '../../src/lib/ourin-games.js'
 
 // ─── Surrender map ─────────────────────────────────────────────────────────────
 // key: "chatId:senderId"  →  value: nama display (pushName)
@@ -140,7 +141,7 @@ async function sendGameOver(sock, chatId, text, m, mentions = []) {
     const opts = m ? { quoted: makeQuoted(m) } : {}
     try {
         await sock.sendMessage(chatId, {
-            text, mentions, interactiveButtons: [btnMainLagi()],
+            text, mentions, interactiveButtons: [btnMainLagi(), makeGameListBtn()],
         }, opts)
     } catch (e) {
         console.error('[tebaklagu] sendGameOver btn fail:', e?.message)

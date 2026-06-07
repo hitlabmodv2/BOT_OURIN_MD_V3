@@ -15,6 +15,7 @@ import {
 import { getDatabase } from "../../src/lib/ourin-database.js";
 import { addExpWithLevelCheck } from "../../src/lib/ourin-level.js";
 import botConfig from "../../config.js";
+import { makeGameListBtn } from "../../src/lib/ourin-games.js";
 
 function getPrefix() { return botConfig.command?.prefix || "."; }
 
@@ -59,7 +60,7 @@ async function sendWithBtn(sock, chatId, text, buttons, quotedMsg, mentions = []
 
 async function sendGameOver(sock, chatId, text, quotedMsg, mentions = []) {
   try {
-    return await sock.sendMessage(chatId, { text, mentions, interactiveButtons: [mainLagiBtn()] }, quotedMsg ? { quoted: quotedMsg } : {});
+    return await sock.sendMessage(chatId, { text, mentions, interactiveButtons: [mainLagiBtn(), makeGameListBtn()] }, quotedMsg ? { quoted: quotedMsg } : {});
   } catch {
     const p = getPrefix();
     return await sock.sendMessage(chatId, { text: text + `\n\n> Ketik *${p}family100* untuk main lagi`, mentions }, quotedMsg ? { quoted: quotedMsg } : {});

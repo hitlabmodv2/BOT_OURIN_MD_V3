@@ -18,6 +18,7 @@ import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
 import { fetchBuffer } from '../../src/lib/ourin-utils.js'
 import botConfig from '../../config.js'
+import { makeGameListBtn } from '../../src/lib/ourin-games.js'
 
 // ─── Surrender map ─────────────────────────────────────────────────────────────
 // key  : "chatId:senderId"
@@ -214,15 +215,13 @@ async function sendGameOver(sock, chatId, text, m, mentions = []) {
     const p    = getPrefix()
     const opts = m ? { quoted: makeQuoted(m) } : {}
     try {
-        // Satu pesan dengan button
         await sock.sendMessage(chatId, {
             text,
             mentions,
-            interactiveButtons: [btnMainLagi()],
+            interactiveButtons: [btnMainLagi(), makeGameListBtn()],
         }, opts)
     } catch (e) {
         console.error('[tebakgambar] sendGameOver btn fail:', e?.message)
-        // Fallback: satu pesan plain text + petunjuk teks
         try {
             await sock.sendMessage(chatId, {
                 text: text + `\n\n> Ketik *${p}tebakgambar* untuk main lagi`,

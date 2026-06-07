@@ -133,6 +133,57 @@ function mainLagiBtn(gameType) {
   return makeBtn("🔄 Main Lagi!", `${p}${gameType}`);
 }
 
+// ─── Daftar game (single_select) ─────────────────────────────────────────────
+function makeGameListBtn() {
+  const p = getPrefix();
+  const sections = [
+    {
+      title: "🖼️ Tebak Visual",
+      rows: [
+        { header: "🖼️", title: "Tebak Gambar",   description: "Tebak nama dari gambar (1000 soal)",     id: `${p}tebakgambar` },
+        { header: "🐾", title: "Tebak Hewan",    description: "Tebak hewan dari foto Wikipedia",        id: `${p}tebakhewan` },
+        { header: "🍜", title: "Tebak Makanan",  description: "Tebak makanan dari gambar (100 soal)",   id: `${p}tebakmakanan` },
+        { header: "🎭", title: "Tebak Drakor",   description: "Tebak drama Korea (98 drakor)",          id: `${p}tebakdrakor` },
+        { header: "🎬", title: "Tebak Film",     description: "Tebak judul film dari poster",           id: `${p}tebakfilm` },
+        { header: "🏳️", title: "Tebak Bendera",  description: "Tebak bendera negara",                  id: `${p}tebakbendera` },
+        { header: "🌍", title: "Tebak Bendera 2",description: "Tebak bendera (254 negara)",             id: `${p}tebakbendera2` },
+        { header: "🌐", title: "Tebak Negara",   description: "Tebak nama negara",                      id: `${p}tebaknegara` },
+      ],
+    },
+    {
+      title: "🎵 Tebak Kata & Lagu",
+      rows: [
+        { header: "🎵", title: "Tebak Lagu",     description: "Tebak judul lagu dari cuplikan audio",  id: `${p}tebaklagu` },
+        { header: "🎤", title: "Tebak Lirik",    description: "Lengkapi lirik lagu",                   id: `${p}tebaklirik` },
+        { header: "🔤", title: "Tebak Kata",     description: "Tebak kata dari deskripsi",             id: `${p}tebakkata` },
+        { header: "📝", title: "Tebak Kalimat",  description: "Lengkapi kalimat yang hilang",          id: `${p}tebakkalimat` },
+        { header: "💅", title: "Tebak Epep",     description: "Tebak idol K-Pop",                      id: `${p}tebakepep` },
+        { header: "🎪", title: "Tebak JKT48",    description: "Tebak member JKT48",                    id: `${p}tebakjkt48` },
+        { header: "🔬", title: "Tebak Kimia",    description: "Tebak unsur kimia",                     id: `${p}tebakkimia` },
+        { header: "💼", title: "Tebak Profesi",  description: "Tebak nama profesi",                    id: `${p}tebakprofesi` },
+      ],
+    },
+    {
+      title: "🧠 Game Lainnya",
+      rows: [
+        { header: "👨‍👩‍👧‍👦", title: "Family 100",    description: "Survey says! Tebak jawaban teratas",  id: `${p}family100` },
+        { header: "🧩", title: "Asah Otak",     description: "Pertanyaan asah otak seru",             id: `${p}asahotak` },
+        { header: "😂", title: "Cak Lontong",   description: "Teka-teki ala Cak Lontong",             id: `${p}caklontong` },
+        { header: "🔀", title: "Kata Acak",     description: "Susun huruf jadi kata bermakna",        id: `${p}kataacak` },
+        { header: "📚", title: "Susun Kata",    description: "Susun kata yang benar",                 id: `${p}susunkata` },
+        { header: "🔮", title: "Siapa Kah Aku", description: "Tebak tokoh dari petunjuk",            id: `${p}siapakahaku` },
+        { header: "❓", title: "Riddle",         description: "Teka-teki bahasa Inggris",             id: `${p}riddle` },
+        { header: "🎭", title: "Tebak-Tebakan", description: "Tebak-tebakan seru Indonesia",         id: `${p}tebaktebakan` },
+        { header: "🧠", title: "Teka Teki",     description: "Teka-teki asah pikiran",               id: `${p}tekateki` },
+      ],
+    },
+  ];
+  return {
+    name: "single_select",
+    buttonParamsJson: JSON.stringify({ title: "📋 Pilih Game", sections }),
+  };
+}
+
 async function sendWithBtn(sock, chatId, text, buttons, quotedMsg, mentions = []) {
   try {
     return await sock.sendMessage(
@@ -169,7 +220,7 @@ async function sendGameOver(sock, chatId, text, gameType, quotedMsg, mentions = 
   try {
     return await sock.sendMessage(
       chatId,
-      { text, mentions, interactiveButtons: [mainLagiBtn(gameType)] },
+      { text, mentions, interactiveButtons: [mainLagiBtn(gameType), makeGameListBtn()] },
       quotedMsg ? { quoted: quotedMsg } : {},
     );
   } catch {
@@ -643,4 +694,4 @@ class OurinGames {
 
 const games = new OurinGames();
 
-export { OurinGames, games };
+export { OurinGames, games, makeGameListBtn };
