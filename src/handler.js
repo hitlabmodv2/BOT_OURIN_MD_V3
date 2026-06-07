@@ -1100,9 +1100,14 @@ async function messageHandler(msg, sock, options = {}) {
 
     const hasUTGame = global.ulartanggaGames?.[m.chat]?.status === "PLAYING";
 
+    const isGameButtonPress = (() => {
+      const body = (m.body || "").trim();
+      return body && body.includes("_") && !/^[.\/!#]/.test(body);
+    })();
+
     let gameEvaluated = false;
     if (
-      (hasActiveSession(m.chat) && m.quoted) ||
+      (hasActiveSession(m.chat) && (m.quoted || isGameButtonPress)) ||
       hasSuitGame ||
       hasTTTGame ||
       hasUTGame

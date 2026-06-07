@@ -260,7 +260,8 @@ class OurinGames {
       if (!session || session.gameType !== gameType) return false;
 
       const userAnswer = (m.body || "").trim();
-      if (!userAnswer || userAnswer.startsWith(".")) return false;
+      if (!userAnswer) return false;
+      if (['.', '/', '!', '#'].some(p => userAnswer.startsWith(p))) return false;
 
       // ── Button: Cek Sisa Waktu ─────────────────────────────────────────────
       if (userAnswer === `${gameType}_ceksisa`) {
@@ -301,7 +302,7 @@ class OurinGames {
         return true;
       }
 
-      if (!isReplyToGame(m, session)) return false;
+      if (!m.quoted) return false;
 
       session.attempts++;
 
