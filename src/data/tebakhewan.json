@@ -1,152 +1,602 @@
 [
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/9225318/medium.jpg",
-    "soal": "Hewan ini adalah raja hutan, memiliki rambut lebat di sekitar wajahnya, dan mengaum dengan keras.",
+    "soal": "Raja hutan bergigi tajam, punya surai lebat di leher, mengaum keras, hewan karnivora terkuat di Afrika.",
     "jawaban": "singa"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/2035244/medium.jpg",
-    "soal": "Hewan terbesar di darat, hidungnya panjang seperti selang, suka mandi lumpur.",
+    "soal": "Hewan darat terbesar dengan hidung panjang seperti selang, telinga lebar, suka mandi lumpur dan menyemprot air.",
     "jawaban": "gajah"
   },
   {
     "img": "https://static.inaturalist.org/photos/194385336/medium.jpg",
-    "soal": "Hewan laut terbesar, mamalia bernapas dengan paru-paru, bisa bernyanyi di bawah air.",
+    "soal": "Mamalia laut terbesar di dunia, bernapas melalui lubang di kepala, bisa bernyanyi di bawah air.",
     "jawaban": "paus"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/60046526/medium.jpg",
-    "soal": "Hewan berkantong asal Australia, anaknya dibawa dalam kantong perut induknya.",
+    "soal": "Hewan berkantong dari Australia, melompat dengan kaki belakang yang kuat, anaknya disebut joey.",
     "jawaban": "kanguru"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/150277588/medium.jpg",
-    "soal": "Hewan ini hitam-putih, suka bambu, terancam punah, berasal dari Tiongkok.",
+    "soal": "Hewan hitam-putih yang makan bambu, berasal dari Tiongkok, statusnya terancam punah.",
     "jawaban": "panda"
   },
   {
     "img": "https://static.inaturalist.org/photos/126642158/medium.jpg",
-    "soal": "Hewan ini bisa mengubah warna kulitnya, lidahnya sangat panjang untuk menangkap serangga.",
+    "soal": "Reptil yang bisa mengubah warna kulit sesuai suasana hati, punya lidah panjang lengket untuk menangkap serangga.",
     "jawaban": "bunglon"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/241208700/medium.jpg",
-    "soal": "Hewan ini tidur bergantung terbalik di gua, aktif malam hari, bisa terbang.",
+    "soal": "Satu-satunya mamalia yang bisa terbang, aktif di malam hari, navigasi menggunakan echolocation.",
     "jawaban": "kelelawar"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/57582224/medium.jpg",
-    "soal": "Hewan tercepat di darat, berbintik-bintik, bisa berlari 110 km/jam.",
+    "soal": "Hewan darat tercepat di bumi, bisa berlari hingga 110 km/jam, berbintik-bintik hitam di tubuhnya.",
     "jawaban": "cheetah"
   },
   {
     "img": "https://static.inaturalist.org/photos/247609877/medium.jpg",
-    "soal": "Hewan laut bercangkang, bergerak lambat, membawa rumahnya ke mana-mana.",
+    "soal": "Moluska bercangkang yang bergerak sangat lambat, meninggalkan jejak lendir di jalannya.",
     "jawaban": "siput"
   },
   {
     "img": "https://static.inaturalist.org/photos/545741360/medium.jpg",
-    "soal": "Hewan ini besar, bertubuh gemuk, hidup di air dan darat, sangat berbahaya.",
+    "soal": "Reptil besar bergigi tajam, hidup di air dan darat, rahangnya termasuk yang terkuat di dunia.",
     "jawaban": "buaya"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/269162938/medium.jpeg",
-    "soal": "Hewan kecil berkaki delapan, membuat jaring untuk menangkap mangsa.",
+    "soal": "Artropoda berkaki delapan yang membuat jaring sutra untuk menjebak mangsanya.",
     "jawaban": "laba-laba"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/48987498/medium.jpeg",
-    "soal": "Hewan ini punya cangkang keras, bergerak sangat lambat, umurnya bisa ratusan tahun.",
+    "soal": "Reptil bercangkang keras, salah satu hewan tertua di bumi, bisa hidup ratusan tahun.",
     "jawaban": "kura-kura"
   },
   {
     "img": "https://static.inaturalist.org/photos/13185688/medium.jpg",
-    "soal": "Hewan laut berwarna-warni, punya tentakel, bisa menyengat, bentuknya seperti payung.",
+    "soal": "Hewan laut transparan seperti payung, punya tentakel menyengat, tubuhnya 95% terdiri dari air.",
     "jawaban": "ubur-ubur"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/61116593/medium.jpg",
-    "soal": "Hewan ini berekor panjang, bisa merayap di dinding dan langit-langit, suka makan nyamuk.",
+    "soal": "Reptil kecil yang bisa merayap di dinding dan langit-langit, suka memangsa nyamuk dan serangga kecil.",
     "jawaban": "cicak"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/207726062/medium.jpeg",
-    "soal": "Hewan ini melompat tinggi, telinganya panjang, suka wortel, bulunya lembut.",
+    "soal": "Mamalia berbulu lembut dengan telinga panjang, melompat gesit, suka wortel dan sayuran.",
     "jawaban": "kelinci"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/162318518/medium.jpg",
-    "soal": "Hewan laut berbentuk bintang, punya lima lengan, bisa tumbuhkan kembali lengannya yang putus.",
+    "soal": "Hewan laut berbentuk bintang punya lima lengan, bisa menumbuhkan kembali lengan yang putus.",
     "jawaban": "bintang laut"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/456202579/medium.png",
-    "soal": "Hewan ini memiliki leher sangat panjang, tingginya bisa mencapai 6 meter.",
+    "soal": "Hewan berkaki empat dengan leher terpanjang di dunia, tingginya bisa mencapai 6 meter.",
     "jawaban": "jerapah"
   },
   {
     "img": "https://static.inaturalist.org/photos/203973907/medium.jpg",
-    "soal": "Hewan ini hidupnya di air tawar, bersisik, bernapas dengan insang, ditangkap untuk dimakan.",
+    "soal": "Hewan bertulang belakang yang hidup di air, bernapas dengan insang, bergerak menggunakan sirip.",
     "jawaban": "ikan"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/344982737/medium.jpeg",
-    "soal": "Hewan malam, kepala bisa berputar hampir 360 derajat, simbol kebijaksanaan.",
+    "soal": "Burung nokturnal dengan kepala besar dan mata lebar menghadap depan, bisa memutar kepala hampir 360 derajat.",
     "jawaban": "burung hantu"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/299796044/medium.jpg",
-    "soal": "Hewan ini memiliki belalai dan bisa menyemprotkan air, suka menyusuri hutan tropis Indonesia.",
+    "soal": "Mamalia berhidung moncong panjang seperti gajah kecil, suka hutan tropis, terancam punah di Asia.",
     "jawaban": "tapir"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/28516312/medium.jpeg",
-    "soal": "Hewan berbisa, tidak punya kaki, bergerak merayap di tanah, lidahnya bercabang.",
+    "soal": "Reptil tanpa kaki yang bergerak merayap, beberapa jenisnya berbisa mematikan, lidahnya bercabang.",
     "jawaban": "ular"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/101327658/medium.jpg",
-    "soal": "Hewan ini punya kantong di pipinya untuk menyimpan makanan, berekor panjang, suka keju.",
+    "soal": "Hewan pengerat kecil berekor panjang, sering dijumpai di pemukiman, dianggap hama.",
     "jawaban": "tikus"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/19302035/medium.jpg",
-    "soal": "Hewan laut berkaki sepuluh, bisa berubah warna, semprotkan tinta hitam saat terancam.",
+    "soal": "Hewan laut bertubuh panjang bisa berubah warna, punya sepuluh tentakel, semprotkan tinta saat terancam.",
     "jawaban": "cumi-cumi"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/335469754/medium.jpg",
-    "soal": "Hewan asal Afrika, belang hitam-putih, hidup bergerombolan di sabana.",
+    "soal": "Hewan berkaki empat bergaris hitam-putih khas, hidup bergerombolan di padang rumput Afrika.",
     "jawaban": "zebra"
   },
   {
     "img": "https://static.inaturalist.org/photos/459825328/medium.jpeg",
-    "soal": "Hewan ini suka buah-buahan, punya ekor yang bisa memegang, tinggal di pohon.",
+    "soal": "Primata yang hidup di pohon, punya tangan cekatan untuk bergantung dan melompat antar dahan.",
     "jawaban": "monyet"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/65472908/medium.jpeg",
-    "soal": "Hewan laut berbentuk bulat berduri, diam di dasar laut, bisa dimakan.",
+    "soal": "Hewan laut berduri di seluruh tubuh, tinggal di dasar laut, dagingnya bisa dimakan.",
     "jawaban": "bulu babi"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/4710619/medium.jpg",
-    "soal": "Hewan ini bertelur dan mengeraminya, bulunya sangat indah bermotif ekor merak.",
+    "soal": "Burung dengan ekor panjang bermotif indah seperti kipas, jantan membuka ekornya untuk menarik betina.",
     "jawaban": "merak"
   },
   {
     "img": "https://static.inaturalist.org/photos/177202266/medium.jpeg",
-    "soal": "Hewan laut bergigi tajam, berenang terus, penciuman sangat tajam, ditakuti manusia.",
+    "soal": "Ikan predator laut bergigi tajam, berenang tanpa henti, penciuman sanggup mendeteksi darah dari jauh.",
     "jawaban": "hiu"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/1491897/medium.jpg",
-    "soal": "Hewan ini tidur di musim dingin, suka madu, berbulu tebal, bisa berdiri dua kaki.",
+    "soal": "Mamalia berbulu tebal yang tidur panjang saat musim dingin, suka madu, bisa berdiri di dua kaki.",
     "jawaban": "beruang"
   },
   {
     "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/105103282/medium.jpg",
-    "soal": "Hewan kecil yang rajin, hidup berkoloni, bisa mengangkat beban 50x berat badannya.",
+    "soal": "Serangga kecil yang rajin bekerja dalam koloni, bisa mengangkat beban 50 kali berat badannya.",
     "jawaban": "semut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/13207883/medium.jpg",
+    "soal": "Kucing besar berbulu oranye bercorak garis hitam, predator puncak di hutan Asia, bisa berenang.",
+    "jawaban": "harimau"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/43410580/medium.jpg",
+    "soal": "Mamalia karnivora yang hidup bergerombol disebut kawanan, dikenal pandai dan setia kawan.",
+    "jawaban": "serigala"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/265916780/medium.jpg",
+    "soal": "Hewan berbulu oranye kemerahan dengan ekor lebat, sangat cerdik, sering muncul dalam dongeng.",
+    "jawaban": "rubah"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/11328568/medium.jpg",
+    "soal": "Mamalia berkaki empat dengan tanduk bercabang, jantan memiliki tanduk yang gugur setiap tahun.",
+    "jawaban": "rusa"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/23672580/medium.jpeg",
+    "soal": "Hewan peliharaan manusia sejak ribuan tahun lalu, digunakan untuk transportasi dan olahraga berkuda.",
+    "jawaban": "kuda"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/11478901/medium.jpg",
+    "soal": "Hewan ternak penghasil susu dan daging, dibudidayakan manusia di seluruh dunia.",
+    "jawaban": "sapi"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/32200962/medium.jpg",
+    "soal": "Hewan ternak berbulu tebal yang digunting bulunya untuk dijadikan wol, biasanya hidup berkelompok.",
+    "jawaban": "domba"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/11484047/medium.jpg",
+    "soal": "Hewan ternak berkaki empat dengan janggut dan tanduk, suka memanjat batu, pemakan segala tumbuhan.",
+    "jawaban": "kambing"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/103446096/medium.jpg",
+    "soal": "Hewan ternak berhidung pesek dengan tubuh gemuk, berguling di lumpur untuk mendinginkan tubuh.",
+    "jawaban": "babi"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/274681663/medium.jpg",
+    "soal": "Unggas peliharaan paling banyak di dunia, berkokok di pagi hari, penghasil telur dan daging.",
+    "jawaban": "ayam"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/65733687/medium.jpg",
+    "soal": "Unggas air yang pandai berenang, bersuara khas, berjalan dengan gaya berjalan yang lucu.",
+    "jawaban": "bebek"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/13096818/medium.jpg",
+    "soal": "Unggas air berbulu putih bersih dengan leher sangat panjang, dikenal anggun dan bisa agresif jika terganggu.",
+    "jawaban": "angsa"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/6067103/medium.jpg",
+    "soal": "Burung berwarna merah muda cerah dengan kaki panjang, sering berdiri satu kaki di perairan dangkal.",
+    "jawaban": "flamingo"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/220181/medium.jpg",
+    "soal": "Burung laut yang tidak bisa terbang, mahir berenang di air dingin, hidup di Kutub Selatan.",
+    "jawaban": "pinguin"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/1908728/medium.jpg",
+    "soal": "Marsupial gemuk dari Australia yang memeluk pohon eukaliptus, tidur hingga 20 jam sehari.",
+    "jawaban": "koala"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/32713/medium.jpg",
+    "soal": "Marsupial berbadan gemuk dari Australia, menggali liang di tanah, herbivora yang suka rumput.",
+    "jawaban": "wombat"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/611231392/medium.jpg",
+    "soal": "Mamalia laut cerdas yang sering melompat tinggi di atas air, berkomunikasi dengan suara klik.",
+    "jawaban": "lumba-lumba"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/83811529/medium.jpg",
+    "soal": "Hewan laut pipih seperti layang-layang, punya ekor panjang berduri beracun, hidup di dasar laut.",
+    "jawaban": "pari"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/59737507/medium.jpg",
+    "soal": "Moluska laut berkaki delapan sangat cerdas, bisa menyemprotkan tinta hitam dan mengubah warna kulit.",
+    "jawaban": "gurita"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/42468932/medium.jpg",
+    "soal": "Krustasea bercapit besar yang berjalan menyamping, hidup di laut maupun di pantai berbatu.",
+    "jawaban": "kepiting"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/42915513/medium.jpg",
+    "soal": "Krustasea kecil yang banyak dikonsumsi manusia, bertubuh transparan kemerah-merahan saat dimasak.",
+    "jawaban": "udang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/7679315/medium.jpeg",
+    "soal": "Ikan laut unik yang berenang tegak lurus, jantan yang mengandung dan melahirkan anaknya.",
+    "jawaban": "kuda laut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/31735623/medium.jpg",
+    "soal": "Ikan pari besar berbentuk berlian dengan warna berbintik, meluncur anggun di perairan hangat.",
+    "jawaban": "ikan pari"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/348148000/medium.jpeg",
+    "soal": "Krustasea laut bercapit besar dan keras, berwarna gelap saat hidup dan merah saat dimasak.",
+    "jawaban": "lobster"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/100940156/medium.jpeg",
+    "soal": "Burung laut berwarna putih-abu yang terbang rendah di atas ombak, sering mencuri makanan di pantai.",
+    "jawaban": "camar"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/64559686/medium.jpg",
+    "soal": "Burung pemangsa berpenglihatan sangat tajam, terbang tinggi di langit, mencari mangsa dari atas.",
+    "jawaban": "elang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/651411222/medium.jpg",
+    "soal": "Burung hitam legam yang sangat cerdas, bisa meniru suara, sering dikaitkan dengan hal mistis.",
+    "jawaban": "gagak"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/30802055/medium.jpg",
+    "soal": "Burung berjambul putih atau kuning dari Australia, bisa meniru suara manusia, hewan peliharaan populer.",
+    "jawaban": "kakatua"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/466776975/medium.jpg",
+    "soal": "Burung berleher ramping yang sering berjalan berpasangan, sering dipakai sebagai simbol perdamaian.",
+    "jawaban": "merpati"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/12739525/medium.jpg",
+    "soal": "Burung terkecil di dunia, bisa terbang mundur dan hover di tempat, meminum nektar bunga.",
+    "jawaban": "kolibri"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/1892238/medium.jpg",
+    "soal": "Kadal terbesar di dunia berasal dari Indonesia, berbisa, bisa memakan hewan sebesar kambing.",
+    "jawaban": "komodo"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/227001597/medium.jpeg",
+    "soal": "Primata besar berbulu merah dari hutan Kalimantan dan Sumatera, terancam punah karena deforestasi.",
+    "jawaban": "orang utan"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/13302699/medium.jpg",
+    "soal": "Kera besar dari Afrika, hidup dalam kelompok dipimpin jantan dominan, 98% DNA-nya sama dengan manusia.",
+    "jawaban": "gorila"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/184174969/medium.jpeg",
+    "soal": "Primata paling cerdas setelah manusia, bisa menggunakan alat dan belajar bahasa isyarat.",
+    "jawaban": "simpanse"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/27606683/medium.jpg",
+    "soal": "Mamalia besar berhidung cula tajam, kulitnya tebal seperti baju besi, terancam punah akibat perburuan.",
+    "jawaban": "badak"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/13896177/medium.jpg",
+    "soal": "Mamalia bertubuh sangat besar, hidup di sungai Afrika, mulut raksasa, sangat agresif jika terganggu.",
+    "jawaban": "kuda nil"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/306563644/medium.jpg",
+    "soal": "Kucing liar bertelinga runcing dengan jumbai bulu di ujungnya, pemburu handal di hutan dingin.",
+    "jawaban": "lynx"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/8666580/medium.jpeg",
+    "soal": "Kucing besar berbintik hitam seperti mawar, pandai memanjat pohon, aktif malam hari.",
+    "jawaban": "macan tutul"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/17940763/medium.jpg",
+    "soal": "Mamalia laut yang bisa hidup di darat, berbadan gemuk, berkumis tebal, mahir menangkap ikan.",
+    "jawaban": "singa laut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/65857/medium.jpg",
+    "soal": "Mamalia laut besar bergading panjang, hidup di Kutub Utara, punya lapisan lemak tebal untuk tahan dingin.",
+    "jawaban": "walrus"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/1840084/medium.jpg",
+    "soal": "Mamalia semi-akuatik berbulu coklat, suka bermain di sungai, membangun bendungan dari kayu.",
+    "jawaban": "berang-berang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/132296376/medium.jpg",
+    "soal": "Mamalia kecil berduri di sekujur punggungnya, menggulung jadi bola saat terancam bahaya.",
+    "jawaban": "landak"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/32155931/medium.jpg",
+    "soal": "Mamalia nokturnal pemakan buah dan serangga, sering dianggap hama perkebunan, aroma tubuhnya khas.",
+    "jawaban": "musang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/590689448/medium.jpg",
+    "soal": "Mamalia bersisik yang menggulungkan diri jadi bola saat terancam, pemakan semut dan rayap.",
+    "jawaban": "trenggiling"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/86057375/medium.jpg",
+    "soal": "Mamalia berkaki empat dengan tanduk bercabang yang bermigrasi jauh, hidupnya di tundra Arktik.",
+    "jawaban": "rusa kutub"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/34662477/medium.png",
+    "soal": "Mamalia besar berbulu lebat dari Amerika Utara, dulunya berkeliaran jutaan ekor di padang rumput.",
+    "jawaban": "bison"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/253802998/medium.jpg",
+    "soal": "Sapi pegunungan berbulu sangat panjang dan lebat, hidup di dataran tinggi Tibet dan Himalaya.",
+    "jawaban": "yak"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/51281104/medium.jpeg",
+    "soal": "Hewan kerabat unta dari Amerika Selatan, suka meludah saat merasa terancam, dipakai angkut barang.",
+    "jawaban": "llama"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/100229477/medium.jpg",
+    "soal": "Kerabat llama berbulu sangat lebat dan halus, diternakkan untuk diambil wolnya di pegunungan Andes.",
+    "jawaban": "alpaka"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/297970656/medium.jpeg",
+    "soal": "Mamalia gurun dengan punuk di punggung sebagai cadangan energi, bisa bertahan tanpa air berhari-hari.",
+    "jawaban": "unta"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/4213986/medium.JPG",
+    "soal": "Serangga yang bersuara keras di malam hari dengan cara menggosokkan sayap, simbol keberuntungan.",
+    "jawaban": "jangkrik"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/12158783/medium.jpg",
+    "soal": "Serangga bersayap panjang yang melompat jauh, bisa menjadi hama tanaman pertanian dalam jumlah besar.",
+    "jawaban": "belalang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/57511021/medium.jpg",
+    "soal": "Serangga bersayap empat yang terbang cepat, predator kecil yang memangsa nyamuk di udara.",
+    "jawaban": "capung"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/252075801/medium.jpg",
+    "soal": "Serangga bersayap indah berwarna-warni, awalnya hidup sebagai ulat sebelum bermetamorfosis.",
+    "jawaban": "kupu-kupu"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/108395224/medium.jpg",
+    "soal": "Serangga penghasil madu yang hidup berkoloni, memiliki sengat untuk membela sarang.",
+    "jawaban": "lebah"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/16110718/medium.jpg",
+    "soal": "Laba-laba besar berbulu, salah satu laba-laba terbesar di dunia, ada yang dipelihara sebagai hewan eksotis.",
+    "jawaban": "tarantula"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/81244270/medium.jpg",
+    "soal": "Artropoda bercapit dan berekor melengkung berisi racun, aktif malam hari, tinggal di daerah kering.",
+    "jawaban": "kalajengking"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/38108904/medium.jpeg",
+    "soal": "Serangga yang sangat tahan banting, bisa hidup berminggu-minggu tanpa kepala, sering dianggap hama rumah.",
+    "jawaban": "kecoa"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/116144267/medium.jpg",
+    "soal": "Serangga bersayap keras mengkilap beraneka warna, jenis terberagam di antara seluruh hewan.",
+    "jawaban": "kumbang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/36127/medium.jpg",
+    "soal": "Larva serangga berbentuk silinder lunak, memakan daun, sebelum berubah menjadi kepompong.",
+    "jawaban": "ulat"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/145611386/medium.jpg",
+    "soal": "Mamalia kecil hitam-putih yang menyemprotkan cairan berbau sangat menyengat saat merasa terancam.",
+    "jawaban": "sigung"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/290431922/medium.jpeg",
+    "soal": "Mamalia nokturnal bermata hitam seperti topeng, sangat cekatan memanjat, pemakan segala.",
+    "jawaban": "rakun"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/39918766/medium.jpeg",
+    "soal": "Hewan pengerat berbadan gemuk tinggal di padang rumput, berhibernasi saat musim dingin.",
+    "jawaban": "marmut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/327476192/medium.jpg",
+    "soal": "Hewan pengerat mungil berbulu lembut dengan pipi penuh dan ekor pendek, populer sebagai hewan peliharaan.",
+    "jawaban": "hamster"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/102785980/medium.jpg",
+    "soal": "Beruang berwarna putih bersih hidup di Kutub Utara, perenang andal, memangsa anjing laut di es.",
+    "jawaban": "beruang kutub"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/462185764/medium.jpg",
+    "soal": "Serigala berbulu putih tebal yang hidup di tundra Arktik yang beku sepanjang tahun.",
+    "jawaban": "serigala arktik"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/366789669/medium.jpg",
+    "soal": "Rusa besar dari hutan Asia Tenggara termasuk Indonesia, jantan bertanduk besar yang rontok tiap tahun.",
+    "jawaban": "rusa sambar"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/414500081/medium.jpg",
+    "soal": "Babi liar bertaring panjang yang hidup di hutan, bisa sangat berbahaya jika terpojok.",
+    "jawaban": "babi hutan"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/11644095/medium.jpg",
+    "soal": "Kucing liar berekor panjang yang hidup di hutan, lebih kecil dari macan, gerakan sangat lincah.",
+    "jawaban": "kucing hutan"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/96024237/medium.jpg",
+    "soal": "Kucing besar berbintik besar dengan badan kekar, ahli berburu di pohon dan suka lingkungan lembab.",
+    "jawaban": "macan kumbang"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/349074095/medium.jpeg",
+    "soal": "Burung pemangsa Amerika besar berkepala dan berekor putih, simbol resmi negara Amerika Serikat.",
+    "jawaban": "elang botak"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/150549757/medium.jpg",
+    "soal": "Burung hantu berbulu putih bersih yang hidup di padang bersalju Arktik, aktif di siang hari.",
+    "jawaban": "burung hantu salju"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/2964195/medium.jpg",
+    "soal": "Burung tropis berparuh sangat besar dan berwarna cerah, hidup di hutan Amerika Selatan.",
+    "jawaban": "toucan"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/85940956/medium.jpg",
+    "soal": "Burung air besar berparuh berkantong besar untuk menangkap ikan, terbang berkelompok dalam formasi.",
+    "jawaban": "pelikan"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/269104502/medium.jpg",
+    "soal": "Burung berkaki panjang jangkung yang sering diam di sawah atau rawa, migrasi jauh tiap musim.",
+    "jawaban": "bangau"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/14585019/medium.jpg",
+    "soal": "Kerabat zebra dengan garis lebih tebal di bagian leher, bertelinga panjang menyerupai keledai.",
+    "jawaban": "kuda zebra"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/93674728/medium.jpg",
+    "soal": "Gajah bertelinga sangat lebar dan gading panjang, lebih besar dari gajah Asia, hidup di sabana Afrika.",
+    "jawaban": "gajah afrika"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/181264783/medium.jpeg",
+    "soal": "Mamalia kecil ramping semi-akuatik, berburu ikan dan katak, berbulu coklat mengkilap.",
+    "jawaban": "cerpelai"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/10424927/medium.jpeg",
+    "soal": "Mamalia kecil buta yang hidup dalam terowongan di bawah tanah, menggali dengan cakar depan yang kuat.",
+    "jawaban": "tikus tanah"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/63794515/medium.jpg",
+    "soal": "Kelelawar besar pemakan buah yang terbang di malam hari, sayapnya bisa mencapai 1,5 meter.",
+    "jawaban": "kelelawar buah"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/253394669/medium.jpg",
+    "soal": "Kucing besar langka dengan bulu putih bersih bercorak samar, warnanya akibat kelainan genetik.",
+    "jawaban": "harimau putih"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/519729370/medium.jpg",
+    "soal": "Ikan terbesar di lautan, namun hanya memakan plankton dan ikan kecil, dagingnya berbintik putih.",
+    "jawaban": "hiu paus"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/21653035/medium.jpeg",
+    "soal": "Ikan laut berwarna oranye-putih yang bersembunyi di anemon laut, karakter dari film Finding Nemo.",
+    "jawaban": "ikan badut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/460463289/medium.jpg",
+    "soal": "Bintang laut berduri beracun yang memangsa terumbu karang, salah satu ancaman terbesar karang laut.",
+    "jawaban": "bintang laut mahkota duri"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/80266249/medium.jpg",
+    "soal": "Ikan sungai Amazon yang bisa menghasilkan sengatan listrik ratusan volt untuk membela diri.",
+    "jawaban": "belut listrik"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/51377090/medium.jpg",
+    "soal": "Ikan laut yang bisa mengembungkan tubuhnya menjadi bola berduri, mengandung racun mematikan tetrodotoksin.",
+    "jawaban": "ikan buntal"
+  },
+  {
+    "img": "https://static.inaturalist.org/photos/87987665/medium.jpg",
+    "soal": "Reptil laut yang bertelur di pantai, menempuh ribuan kilometer untuk kembali ke pantai tempat lahirnya.",
+    "jawaban": "kura-kura laut"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/244918310/medium.jpg",
+    "soal": "Kura-kura laut terbesar di dunia dengan cangkang kulit lunak, bisa menyelam hingga kedalaman 1.000 meter.",
+    "jawaban": "penyu belimbing"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/152543/medium.jpg",
+    "soal": "Ikan laut dengan sirip punggung menjulang tinggi seperti layar, ikan bersirip tercepat di lautan.",
+    "jawaban": "ikan layar"
+  },
+  {
+    "img": "https://inaturalist-open-data.s3.amazonaws.com/photos/26989188/medium.jpeg",
+    "soal": "Mamalia kecil berbulu merah-oranye dengan ekor lebat, kerabat rakun dari hutan Asia, bukan beruang.",
+    "jawaban": "panda merah"
   }
 ]
