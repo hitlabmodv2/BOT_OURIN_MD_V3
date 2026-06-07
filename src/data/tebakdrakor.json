@@ -98,5 +98,410 @@
     "img": "https://upload.wikimedia.org/wikipedia/en/0/09/The_Penthouse_TV_series.jpg",
     "jawaban": "the penthouse",
     "soal": "Persaingan sengit antar orang kaya di apartemen mewah Seoul demi uang, kekuasaan, dan balas dendam."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/04/Strong_Woman_Do_Bong-soon_poster.jpg",
+    "jawaban": "strong woman do bong soon",
+    "soal": "Wanita dengan kekuatan super melampaui batas manusia harus menyembunyikan kemampuannya, jatuh cinta dengan CEO eksentrik."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/44/Mr._Sunshine_poster.jpg",
+    "jawaban": "mr sunshine",
+    "soal": "Anak budak Korea yang melarikan diri ke Amerika menjadi tentara, kembali ke tanah airnya dan jatuh cinta dengan bangsawan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/96/My_Mister_Korean_drama_poster.jpg",
+    "jawaban": "my mister",
+    "soal": "Pria paruh baya penuh beban hidup dan wanita muda dengan masa lalu kelam menemukan ketenangan dalam pertemanan mereka."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/58/Signal_poster.jpg",
+    "jawaban": "signal",
+    "soal": "Detektif masa kini dan masa lalu berkomunikasi lewat walkie-talkie lintas waktu untuk memecahkan kasus yang belum terpecahkan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/74/Reply_1988_poster.jpg",
+    "jawaban": "reply 1988",
+    "soal": "Drama nostalgia tentang lima keluarga yang tinggal di gang sempit Seoul tahun 1988, kehangatan persahabatan dan cinta remaja."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/85/Sky_Castle_poster.jpg",
+    "jawaban": "sky castle",
+    "soal": "Ibu-ibu obsesif di perumahan elit berlomba memasukkan anak mereka ke universitas terbaik, menyimpan rahasia gelap masing-masing."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/38/Misaeng_poster.jpg",
+    "jawaban": "misaeng",
+    "soal": "Mantan pemain baduk yang gagal masuk profesional mulai bekerja sebagai karyawan kontrak di perusahaan besar, berjuang di dunia kerja."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/22/Move_to_Heaven_poster.jpg",
+    "jawaban": "move to heaven",
+    "soal": "Pemuda dengan sindrom Asperger dan pamannya menjalankan bisnis pembersih tempat kejadian, mengantarkan pesan terakhir orang yang meninggal."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f5/Pinocchio_2014_TV_series.jpg",
+    "jawaban": "pinocchio",
+    "soal": "Wanita yang tak bisa berbohong dan pria yang berambisi menjadi jurnalis untuk membalas dendam terlibat dalam kisah cinta dan kebenaran."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/5e/W_-_Two_Worlds_poster.jpg",
+    "jawaban": "w two worlds",
+    "soal": "Wanita di dunia nyata tersedot ke dalam webtoon karya ayahnya, bertemu karakter utama yang mengetahui dirinya ada dalam cerita fiksi."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/05/Because_This_Is_My_First_Life_poster.jpg",
+    "jawaban": "because this is my first life",
+    "soal": "Wanita kehabisan uang kontrakan, membuat perjanjian kawin kontrak dengan pria dingin yang ingin melunasi hutang rumahnya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/4e/While_You_Were_Sleeping_poster.jpg",
+    "jawaban": "while you were sleeping",
+    "soal": "Wanita yang bisa melihat masa depan dalam mimpinya berusaha mengubah takdir bersama jaksa yang juga bisa bermimpi."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/85/Cheese_in_the_Trap_poster.jpg",
+    "jawaban": "cheese in the trap",
+    "soal": "Mahasiswi biasa yang terlilit masalah finansial terlibat hubungan rumit dengan senior sempurna yang menyimpan sisi gelap."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c8/Kill_Me_Heal_Me_poster.jpg",
+    "jawaban": "kill me heal me",
+    "soal": "Konglomerat dengan 7 kepribadian berbeda meminta bantuan psikiater muda untuk menyembuhkan dirinya secara rahasia."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/2d/Hyde_Jekyll_Me_poster.jpg",
+    "jawaban": "hyde jekyll me",
+    "soal": "Direktur sirkus dengan gangguan kepribadian ganda harus berurusan dengan manajer pertunjukan wanita yang tak mau menurut."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a1/Gu_Family_Book_poster.jpg",
+    "jawaban": "gu family book",
+    "soal": "Setengah manusia setengah gumiho berjuang menjadi manusia seutuhnya sambil melindungi gadis yang dicintainya di era Joseon."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/14/Moon_Lovers%3A_Scarlet_Heart_Ryeo_poster.jpg",
+    "jawaban": "moon lovers scarlet heart ryeo",
+    "soal": "Wanita modern terseret ke era Goryeo, terjebak di antara persaingan para pangeran memperebutkan tahta kerajaan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9a/Scarlet_Heart_Ryeo.jpg",
+    "jawaban": "scarlet heart ryeo",
+    "soal": "Gadis abad 21 terpindah ke era dinasti Goryeo, jatuh cinta dengan pangeran keempat yang dingin namun baik hati."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/5f/The_K2_poster.jpg",
+    "jawaban": "the k2",
+    "soal": "Mantan tentara bayaran menjadi pengawal pribadi putri seorang politisi, terlibat dalam persekongkolan politik berbahaya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/97/Healer_poster.jpg",
+    "jawaban": "healer",
+    "soal": "Kurir malam misterius yang menjual layanan ilegalnya bertemu wartawan wanita dalam operasi yang mengungkap konspirasi masa lalu."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/0c/City_Hunter_poster.jpg",
+    "jawaban": "city hunter",
+    "soal": "Pemuda dibesarkan untuk menjadi mesin pembunuh demi membalas dendam, tapi memilih jalan keadilan sebagai pembasmi korupsi."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/59/I_Hear_Your_Voice_poster.jpg",
+    "jawaban": "i hear your voice",
+    "soal": "Pemuda yang bisa membaca pikiran orang mencari wanita yang bersaksi untuknya di masa kecil, kini berjuang melindunginya dari pembunuh."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c0/Master_s_Sun_poster.jpg",
+    "jawaban": "masters sun",
+    "soal": "Wanita yang selalu dikejar hantu menemukan bahwa hantu menghilang saat menyentuh direktur pelit, keduanya akhirnya saling bergantung."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/36/Rooftop_Prince_poster.jpg",
+    "jawaban": "rooftop prince",
+    "soal": "Pangeran era Joseon dan tiga pengawalnya berpindah ke Seoul modern, berjuang memecahkan misteri kematian putri mahkota."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/75/49_Days_poster.jpg",
+    "jawaban": "49 days",
+    "soal": "Wanita muda yang koma harus mengumpulkan tiga tetes air mata tulus orang lain dalam 49 hari agar bisa kembali ke dunia nyata."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/e/ef/The_Good_Doctor_Korean_poster.jpg",
+    "jawaban": "good doctor",
+    "soal": "Dokter muda dengan sindrom savant dan autisme berjuang membuktikan kemampuannya di rumah sakit penuh prasangka."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f3/Heartstrings_poster.jpg",
+    "jawaban": "heartstrings",
+    "soal": "Mahasiswi musik tradisional dan lead vocalist band rock di kampus seni bertemu dan jatuh cinta lewat pertunjukan bersama."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c6/You%27re_Beautiful_poster.jpg",
+    "jawaban": "youre beautiful",
+    "soal": "Calon biarawati menyamar sebagai saudara kembarnya yang masuk grup idol, jatuh cinta dengan vokalis utama yang angkuh."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/d5/Personal_Taste_poster.jpg",
+    "jawaban": "personal taste",
+    "soal": "Arsitek pria menyamar sebagai gay untuk tinggal di rumah wanita yang dimiliki arsitektur legendaris demi memenangkan proyek."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/40/Playful_Kiss_poster.jpg",
+    "jawaban": "playful kiss",
+    "soal": "Gadis periang jatuh cinta bertahun-tahun pada siswa jenius dingin yang selalu menolaknya, takdir terus mempertemukan mereka."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b4/Secret_Garden_poster.jpg",
+    "jawaban": "secret garden",
+    "soal": "CEO perusahaan mewah dan stuntwoman bertukar jiwa, saling memahami kehidupan satu sama lain sambil jatuh cinta."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/11/Flower_Boy_Next_Door_poster.jpg",
+    "jawaban": "flower boy next door",
+    "soal": "Wanita penyendiri yang enggan keluar rumah menemukan kembali keinginan hidup berkat cowok ceria bertetangga dengan apartemennya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/70/Coffee_Prince_poster.jpg",
+    "jawaban": "coffee prince",
+    "soal": "Gadis tomboy bekerja di kafe khusus pria cantik, sang pemilik kafe jatuh cinta namun bingung dengan perasaannya sendiri."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/05/My_Girl_Korean_poster.jpg",
+    "jawaban": "my girl",
+    "soal": "Gadis penipu terpaksa berpura-pura menjadi sepupu jauh pria kaya, keduanya perlahan jatuh cinta dalam kebohongan yang rumit."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/51/Full_House_Korean_poster.jpg",
+    "jawaban": "full house",
+    "soal": "Penulis wanita kehilangan rumah akibat tipuan teman, rumahnya dibeli aktor terkenal, keduanya membuat perjanjian pernikahan palsu."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/11/My_Name_2021_poster.jpg",
+    "jawaban": "my name",
+    "soal": "Wanita menyusup ke polisi menyamar sebagai pria demi membalas dendam atas kematian ayahnya yang dituduh kriminal."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/d9/Squid_Game_Poster.jpg",
+    "jawaban": "squid game",
+    "soal": "Ratusan orang dengan masalah keuangan diundang bermain permainan anak-anak klasik dengan hadiah miliaran won, yang kalah mati."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b3/Juvenile_Justice_poster.jpg",
+    "jawaban": "juvenile justice",
+    "soal": "Hakim pengadilan anak yang membenci pelaku kejahatan remaja harus berhadapan dengan kasus-kasus gelap yang mengubah pandangannya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f9/Twenty-Five_Twenty-One_poster.jpg",
+    "jawaban": "twenty five twenty one",
+    "soal": "Atlet anggar muda dan pemuda yang mimpinya hancur karena krisis moneter tumbuh bersama dalam persahabatan yang menjadi cinta."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/03/All_of_Us_Are_Dead_poster.jpg",
+    "jawaban": "all of us are dead",
+    "soal": "Wabah zombie melanda sekolah menengah di Korea, sekelompok siswa terjebak dan berjuang bertahan hidup dari dalam gedung sekolah."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/22/Reborn_Rich_poster.jpg",
+    "jawaban": "reborn rich",
+    "soal": "Karyawan yang dibunuh konglomerat yang dilayaninya bereinkarnasi sebagai cucu bungsu keluarga konglomerat tersebut untuk membalas dendam."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c5/Our_Blues_poster.jpg",
+    "jawaban": "our blues",
+    "soal": "Drama antologi tentang kehidupan berbagai orang di Pulau Jeju, masing-masing membawa luka dan harapan dalam kisah sehari-hari mereka."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/70/Little_Women_Korean_drama_poster.jpg",
+    "jawaban": "little women",
+    "soal": "Tiga kakak beradik dari keluarga miskin terjerat dalam konspirasi keluarga konglomerat yang menyembunyikan rahasia pembunuhan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c3/Extraordinary_Attorney_Woo_poster.jpg",
+    "jawaban": "extraordinary attorney woo",
+    "soal": "Pengacara muda dengan autisme dan IQ luar biasa tinggi menangani kasus-kasus unik sambil belajar berinteraksi di dunia nyata."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/09/Business_Proposal_poster.jpg",
+    "jawaban": "business proposal",
+    "soal": "Wanita menggantikan temannya pada kencan buta dengan harapan ditolak, ternyata sang pria adalah CEO perusahaan tempatnya bekerja."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/7e/Happiness_2021_Korean_drama_poster.jpg",
+    "jawaban": "happiness",
+    "soal": "Wabah penyakit baru mengkarantina sebuah apartemen mewah, polisi dan istrinya berjuang melindungi penghuni dari ancaman dalam dan luar."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/fa/Juvenile_Justice_poster.jpg",
+    "jawaban": "hellbound",
+    "soal": "Makhluk misterius dari neraka muncul di dunia nyata menghukum manusia, gerakan agama baru memanfaatkan kepanikan yang terjadi."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/97/Flower_of_Evil_poster.jpg",
+    "jawaban": "flower of evil",
+    "soal": "Detektif kejahatan mencurigai suami sendiri yang menyimpan identitas palsu berhubungan dengan serangkaian pembunuhan masa lalu."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/e/e4/Strangers_from_Hell_poster.jpg",
+    "jawaban": "strangers from hell",
+    "soal": "Pemuda pindah ke Seoul tinggal di kos murah, perlahan menyadari para penghuni kos menyimpan rahasia gelap yang mematikan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/19/Taxi_Driver_Korean_drama_poster.jpg",
+    "jawaban": "taxi driver",
+    "soal": "Perusahaan taksi rahasia membantu korban kejahatan membalas dendam pada pelaku yang lolos dari hukuman, dipimpin supir taksi misterius."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/47/Start-Up_Korean_drama_poster.jpg",
+    "jawaban": "start-up",
+    "soal": "Wanita muda bermimpi mendirikan startup teknologi, dibantu dua pria dari masa lalu berbeda yang sama-sama mencintainya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9e/Record_of_Youth_poster.jpg",
+    "jawaban": "record of youth",
+    "soal": "Aktor muda berbakat dari keluarga biasa berjuang menembus industri hiburan, bertemu make-up artist yang menjadi penopang hidupnya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f5/It%27s_Okay_to_Not_Be_Okay_poster.jpg",
+    "jawaban": "its okay not to be okay",
+    "soal": "Penulis dongeng antisosial berpenyakit jiwa bertemu pekerja psikiatri yang selalu mengorbankan diri untuk adik autisnya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/42/Itaewon_Class_poster.jpg",
+    "jawaban": "itaewon class",
+    "soal": "Mantan narapidana membuka restoran kecil di Itaewon untuk mengalahkan konglomerat makanan yang menghancurkan hidupnya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b0/Stove_League_poster.jpg",
+    "jawaban": "stove league",
+    "soal": "Manajer baru tim baseball paling jelek di liga membangun tim dari nol dengan cara tak lazim selama musim off-season."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/77/When_the_Camellia_Blooms_poster.jpg",
+    "jawaban": "when the camellia blooms",
+    "soal": "Ibu tunggal membuka bar kecil di kota pesisir, didekati polisi polos yang jatuh cinta padanya di tengah ancaman pembunuhan berantai."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/2/28/Arthdal_Chronicles_poster.jpg",
+    "jawaban": "arthdal chronicles",
+    "soal": "Epik fantasi tentang sebuah kota kuno bernama Arthdal, pertarungan kekuasaan dan keturunan dewa dalam peradaban fiksi Korea."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/81/The_World_of_the_Married_poster.jpg",
+    "jawaban": "the world of the married",
+    "soal": "Dokter teladan yang dicintai semua orang menemukan suaminya berselingkuh, memulai pertempuran psikologis yang menghancurkan segalanya."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/fc/Crash_Course_in_Romance_poster.jpg",
+    "jawaban": "crash course in romance",
+    "soal": "Ibu single keras yang menjual banchan jatuh cinta dengan guru les terkenal yang mengajar anaknya demi masuk universitas terbaik."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9c/Alchemy_of_Souls_poster.jpg",
+    "jawaban": "alchemy of souls",
+    "soal": "Di kerajaan fiksi, jiwa-jiwa yang tertukar mengancam tatanan dunia, seorang pemuda terlibat dengan penyihir kuat yang terkurung tubuh lemah."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/3e/My_Demon_2023_poster.jpg",
+    "jawaban": "my demon",
+    "soal": "Ahli waris konglomerat wanita membuat perjanjian dengan iblis tampan yang kehilangan kekuatannya, keduanya terpaksa hidup bersama."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f3/The_Glory_poster.jpg",
+    "jawaban": "the glory",
+    "soal": "Wanita yang di-bully parah saat sekolah menyusun rencana balas dendam selama bertahun-tahun dengan menjadi guru anak pelaku bully."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/0f/Mask_Girl_poster.jpg",
+    "jawaban": "mask girl",
+    "soal": "Karyawan kantoran dengan wajah biasa jadi bintang streaming dengan topeng, aksinya berujung pada serangkaian kejahatan dan kebohongan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b4/D.P._poster.jpg",
+    "jawaban": "dp",
+    "soal": "Tentara wajib militer ditugaskan menangkap pelarian dari dinas militer, menyaksikan sisi kelam kehidupan dalam institusi tentara Korea."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/80/Celebrity_2023_poster.jpg",
+    "jawaban": "celebrity",
+    "soal": "Wanita biasa menjadi influencer terkenal, terjebak dalam dunia selebritis media sosial yang penuh persaingan, iri, dan kebohongan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/c/c4/Doctor_Stranger_poster.jpg",
+    "jawaban": "doctor stranger",
+    "soal": "Dokter jenius yang kabur dari Korea Utara kembali ke Selatan, mencari kekasihnya sambil terlibat dalam operasi jantung penuh konspirasi."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9f/Fated_to_Love_You_poster.jpg",
+    "jawaban": "fated to love you",
+    "soal": "Pria kaya yang ingin melamar pacarnya malah secara tidak sengaja menghamili wanita biasa di kapal pesiar, keduanya terpaksa menikah."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/d8/Running_Man_poster.jpg",
+    "jawaban": "running man",
+    "soal": "Pemuda dari keluarga miskin yang menjadi pengawal pribadi anak konglomerat, keduanya saling melindungi di tengah intrik keluarga."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/1e/Money_Heist_Korea_poster.jpg",
+    "jawaban": "money heist korea",
+    "soal": "Versi Korea dari serial Spanyol, sekelompok perampok terencana menyusup ke percetakan uang gabungan Korea Selatan dan Utara."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/0/07/Psychopath_Diary_poster.jpg",
+    "jawaban": "psychopath diary",
+    "soal": "Pria polos yang selalu ditindas kehilangan ingatan dan menemukan buku harian pembunuh berantai, akhirnya berpura-pura menjadi psikopat."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/5d/Vagabond_poster.jpg",
+    "jawaban": "vagabond",
+    "soal": "Pria yang kehilangan keponakannya dalam kecelakaan pesawat menguak konspirasi besar yang melibatkan pemerintah dan industri pertahanan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/ab/Crash_2024_poster.jpg",
+    "jawaban": "crash",
+    "soal": "Tim polisi lalu lintas yang dianggap remeh ternyata menyelidiki kasus kriminal besar yang tersembunyi di balik kecelakaan-kecelakaan misterius."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/4/44/Sweet_Home_poster.jpg",
+    "jawaban": "sweet home",
+    "soal": "Pemuda yang hendak bunuh diri terperangkap di apartemennya ketika wabah mengubah manusia menjadi monster sesuai hasrat terdalam mereka."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/67/Netflix_Kingdom.jpg",
+    "jawaban": "kingdom",
+    "soal": "Pangeran kerajaan Joseon menyelidiki wabah zombie yang menyebar dari utara sambil menghadapi kudeta dari pihak yang ingin merebut takhta."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/3b/Hotel_del_Luna_poster.jpg",
+    "jawaban": "hotel del luna",
+    "soal": "Hotel misterius yang hanya bisa dilihat arwah, dikelola wanita cantik yang sudah hidup ribuan tahun karena kutukan masa lalu."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/f/f3/Memories_of_the_Alhambra.jpg",
+    "jawaban": "memories of the alhambra",
+    "soal": "CEO game misterius pergi ke Granada dan menemukan game AR yang mengaburkan batas antara dunia nyata dan virtual."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/3/33/Romantic_Doctor_Teacher_Kim_poster.jpg",
+    "jawaban": "romantic doctor teacher kim",
+    "soal": "Dokter brilian yang menyembunyikan identitasnya bekerja di klinik terpencil, melatih dokter muda dengan cara luar biasa."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/5/50/Life_on_Mars_Korean_poster.jpg",
+    "jawaban": "life on mars",
+    "soal": "Detektif modern kecelakaan dan terbangun di era 1988, harus beradaptasi dengan metode polisi masa lalu sambil mencari jalan pulang."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a5/Prison_Playbook_poster.jpg",
+    "jawaban": "prison playbook",
+    "soal": "Atlet baseball berbakat masuk penjara sebelum debutnya, menghadapi kehidupan di balik jeruji besi dengan humor dan kemanusiaan."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/1f/Birthcare_Center_poster.jpg",
+    "jawaban": "birthcare center",
+    "soal": "Perempuan karir sukses menghadapi kenyataan pahit menjadi ibu baru di pusat perawatan bersalin penuh ibu-ibu dengan berbagai karakter."
+  },
+  {
+    "img": "https://upload.wikimedia.org/wikipedia/en/9/9e/Tomorrow_Korean_drama.jpg",
+    "jawaban": "tomorrow",
+    "soal": "Dua malaikat maut menjalankan tim krisis untuk mencegah orang bunuh diri, seorang manusia tak sengaja bergabung dalam misi mereka."
   }
 ]

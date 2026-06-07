@@ -1,32 +1,402 @@
 [
-{"soal":"Negara terbesar di dunia, ibu kotanya Moskow, punya sungai Volga.","jawaban":"Rusia"},
-{"soal":"Negara kepulauan terbesar di dunia, ibu kotanya Jakarta, terletak di Asia Tenggara.","jawaban":"Indonesia"},
-{"soal":"Negara berbentuk sepatu bot, ibu kotanya Roma, terkenal dengan pizza dan pasta.","jawaban":"Italia"},
-{"soal":"Negara tempat berdirinya Piramida, dialiri Sungai Nil, ibu kotanya Kairo.","jawaban":"Mesir"},
-{"soal":"Negara dengan populasi terbanyak di dunia, ibu kotanya Beijing, tembok besarnya terkenal.","jawaban":"China"},
-{"soal":"Negara tanduk Afrika, ibu kotanya Addis Ababa, satu-satunya negara Afrika yang tidak pernah dijajah.","jawaban":"Ethiopia"},
-{"soal":"Negara kecil di Asia Tenggara, dikelilingi Malaysia, terkenal sebagai pusat perdagangan.","jawaban":"Singapura"},
-{"soal":"Negara di ujung barat Eropa, terkenal dengan menara Eiffel, ibu kotanya Paris.","jawaban":"Prancis"},
-{"soal":"Negara di Semenanjung Korea bagian selatan, terkenal K-Pop dan teknologi, ibu kotanya Seoul.","jawaban":"Korea Selatan"},
-{"soal":"Negara dengan iklim gurun terluas, ibu kotanya Riyadh, penghasil minyak bumi terbesar.","jawaban":"Arab Saudi"},
-{"soal":"Negara pulau besar di Samudra Hindia, ibu kotanya Antananarivo, terkenal dengan hewan endemiknya.","jawaban":"Madagaskar"},
-{"soal":"Negara paling berpengaruh di dunia, ibu kotanya Washington DC, mata uangnya dolar.","jawaban":"Amerika Serikat"},
-{"soal":"Negara di Amerika Selatan, terkenal dengan Hutan Amazon dan Karnaval Rio, ibu kotanya Brasilia.","jawaban":"Brasil"},
-{"soal":"Negara di Eropa Barat, terkenal dengan tulip dan kincir angin, ibu kotanya Amsterdam.","jawaban":"Belanda"},
-{"soal":"Negara di Asia Selatan, berpenduduk terbanyak ke-2 di dunia, punya Taj Mahal.","jawaban":"India"},
-{"soal":"Negara di Timur Tengah, terkenal dengan menara Burj Khalifa, ibu kotanya Abu Dhabi.","jawaban":"Uni Emirat Arab"},
-{"soal":"Negara di Asia Tenggara, dijuluki Negeri Gajah Putih, ibu kotanya Bangkok.","jawaban":"Thailand"},
-{"soal":"Negara di Eropa, terkenal dengan coklat dan jam, menggunakan 4 bahasa resmi.","jawaban":"Swiss"},
-{"soal":"Negara di ujung selatan Afrika, punya 3 ibu kota, terkenal dengan berlian.","jawaban":"Afrika Selatan"},
-{"soal":"Negara di Asia Tengah, punya Tembok Besar dan Silk Road, ibu kotanya Ulan Bator.","jawaban":"Mongolia"},
-{"soal":"Negara di Amerika Selatan, ibu kotanya Buenos Aires, terkenal dengan tango.","jawaban":"Argentina"},
-{"soal":"Negara di Eropa Utara, terkenal dengan aurora borealis, Viking, ibu kotanya Oslo.","jawaban":"Norwegia"},
-{"soal":"Negara di Asia Tenggara, berbatasan dengan Indonesia, ibu kotanya Kuala Lumpur.","jawaban":"Malaysia"},
-{"soal":"Negara di Asia Timur, terdiri dari 4 pulau utama, ibu kotanya Tokyo.","jawaban":"Jepang"},
-{"soal":"Negara di Eropa Tengah, terkenal dengan bir dan sosis, ibu kotanya Berlin.","jawaban":"Jerman"},
-{"soal":"Negara monarki di Eropa, terkenal dengan kuda dan sepakbola, ibu kotanya Madrid.","jawaban":"Spanyol"},
-{"soal":"Negara di Asia Tenggara, dijuluki Negeri Singa, ibu kotanya Vientiane.","jawaban":"Laos"},
-{"soal":"Negara bekas USSR di Asia Tengah, banyak padang stepa, ibu kotanya Astana.","jawaban":"Kazakhstan"},
-{"soal":"Negara di Afrika Barat, terkenal dengan musik afrobeat, ibu kotanya Abuja.","jawaban":"Nigeria"},
-{"soal":"Negara di Eropa Timur, terkenal dengan vodka dan balet, ibu kotanya Kyiv.","jawaban":"Ukraina"}
+  {
+    "soal": "Negara terbesar di dunia, ibu kotanya Moskow, punya sungai Volga.",
+    "jawaban": "Rusia"
+  },
+  {
+    "soal": "Negara kepulauan terbesar di dunia, ibu kotanya Jakarta, terletak di Asia Tenggara.",
+    "jawaban": "Indonesia"
+  },
+  {
+    "soal": "Negara berbentuk sepatu bot, ibu kotanya Roma, terkenal dengan pizza dan pasta.",
+    "jawaban": "Italia"
+  },
+  {
+    "soal": "Negara tempat berdirinya Piramida, dialiri Sungai Nil, ibu kotanya Kairo.",
+    "jawaban": "Mesir"
+  },
+  {
+    "soal": "Negara dengan populasi terbanyak di dunia, ibu kotanya Beijing, tembok besarnya terkenal.",
+    "jawaban": "China"
+  },
+  {
+    "soal": "Negara tanduk Afrika, ibu kotanya Addis Ababa, satu-satunya negara Afrika yang tidak pernah dijajah.",
+    "jawaban": "Ethiopia"
+  },
+  {
+    "soal": "Negara kecil di Asia Tenggara, dikelilingi Malaysia, terkenal sebagai pusat perdagangan.",
+    "jawaban": "Singapura"
+  },
+  {
+    "soal": "Negara di ujung barat Eropa, terkenal dengan menara Eiffel, ibu kotanya Paris.",
+    "jawaban": "Prancis"
+  },
+  {
+    "soal": "Negara di Semenanjung Korea bagian selatan, terkenal K-Pop dan teknologi, ibu kotanya Seoul.",
+    "jawaban": "Korea Selatan"
+  },
+  {
+    "soal": "Negara dengan iklim gurun terluas, ibu kotanya Riyadh, penghasil minyak bumi terbesar.",
+    "jawaban": "Arab Saudi"
+  },
+  {
+    "soal": "Negara pulau besar di Samudra Hindia, ibu kotanya Antananarivo, terkenal dengan hewan endemiknya.",
+    "jawaban": "Madagaskar"
+  },
+  {
+    "soal": "Negara paling berpengaruh di dunia, ibu kotanya Washington DC, mata uangnya dolar.",
+    "jawaban": "Amerika Serikat"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, terkenal dengan Hutan Amazon dan Karnaval Rio, ibu kotanya Brasilia.",
+    "jawaban": "Brasil"
+  },
+  {
+    "soal": "Negara di Eropa Barat, terkenal dengan tulip dan kincir angin, ibu kotanya Amsterdam.",
+    "jawaban": "Belanda"
+  },
+  {
+    "soal": "Negara di Asia Selatan, berpenduduk terbanyak ke-2 di dunia, punya Taj Mahal.",
+    "jawaban": "India"
+  },
+  {
+    "soal": "Negara di Timur Tengah, terkenal dengan menara Burj Khalifa, ibu kotanya Abu Dhabi.",
+    "jawaban": "Uni Emirat Arab"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, dijuluki Negeri Gajah Putih, ibu kotanya Bangkok.",
+    "jawaban": "Thailand"
+  },
+  {
+    "soal": "Negara di Eropa, terkenal dengan coklat dan jam, menggunakan 4 bahasa resmi.",
+    "jawaban": "Swiss"
+  },
+  {
+    "soal": "Negara di ujung selatan Afrika, punya 3 ibu kota, terkenal dengan berlian.",
+    "jawaban": "Afrika Selatan"
+  },
+  {
+    "soal": "Negara di Asia Tengah, punya Tembok Besar dan Silk Road, ibu kotanya Ulan Bator.",
+    "jawaban": "Mongolia"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Buenos Aires, terkenal dengan tango.",
+    "jawaban": "Argentina"
+  },
+  {
+    "soal": "Negara di Eropa Utara, terkenal dengan aurora borealis, Viking, ibu kotanya Oslo.",
+    "jawaban": "Norwegia"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, berbatasan dengan Indonesia, ibu kotanya Kuala Lumpur.",
+    "jawaban": "Malaysia"
+  },
+  {
+    "soal": "Negara di Asia Timur, terdiri dari 4 pulau utama, ibu kotanya Tokyo.",
+    "jawaban": "Jepang"
+  },
+  {
+    "soal": "Negara di Eropa Tengah, terkenal dengan bir dan sosis, ibu kotanya Berlin.",
+    "jawaban": "Jerman"
+  },
+  {
+    "soal": "Negara monarki di Eropa, terkenal dengan kuda dan sepakbola, ibu kotanya Madrid.",
+    "jawaban": "Spanyol"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, dijuluki Negeri Singa, ibu kotanya Vientiane.",
+    "jawaban": "Laos"
+  },
+  {
+    "soal": "Negara bekas USSR di Asia Tengah, banyak padang stepa, ibu kotanya Astana.",
+    "jawaban": "Kazakhstan"
+  },
+  {
+    "soal": "Negara di Afrika Barat, terkenal dengan musik afrobeat, ibu kotanya Abuja.",
+    "jawaban": "Nigeria"
+  },
+  {
+    "soal": "Negara di Eropa Timur, terkenal dengan vodka dan balet, ibu kotanya Kyiv.",
+    "jawaban": "Ukraina"
+  },
+  {
+    "soal": "Negara di Eropa Barat, ibu kotanya London, terkenal dengan Big Ben dan keluarga kerajaannya.",
+    "jawaban": "Inggris"
+  },
+  {
+    "soal": "Negara di Amerika Utara, ibu kotanya Ottawa, terkenal dengan maple syrup dan hockey.",
+    "jawaban": "Kanada"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, ibu kotanya Manila, dikenal dengan kepulauan dan tarian tradisional.",
+    "jawaban": "Filipina"
+  },
+  {
+    "soal": "Negara di Amerika Tengah, ibu kotanya Mexico City, terkenal dengan taco dan piramida Aztek.",
+    "jawaban": "Meksiko"
+  },
+  {
+    "soal": "Negara di Eropa Utara, ibu kotanya Stockholm, terkenal dengan IKEA dan ABBA.",
+    "jawaban": "Swedia"
+  },
+  {
+    "soal": "Negara di Eropa Utara, ibu kotanya Copenhagen, terkenal dengan Little Mermaid dan Lego.",
+    "jawaban": "Denmark"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, ibu kotanya Hanoi, terkenal dengan Pho dan Ha Long Bay.",
+    "jawaban": "Vietnam"
+  },
+  {
+    "soal": "Negara pulau di Oceania, ibu kotanya Canberra, terkenal dengan kanguru dan Great Barrier Reef.",
+    "jawaban": "Australia"
+  },
+  {
+    "soal": "Negara di Eropa Utara, ibu kotanya Helsinki, terkenal dengan Nokia dan sistem pendidikannya.",
+    "jawaban": "Finlandia"
+  },
+  {
+    "soal": "Negara di Asia Selatan, ibu kotanya Islamabad, berbagi perbatasan dengan India dan Afghanistan.",
+    "jawaban": "Pakistan"
+  },
+  {
+    "soal": "Negara di Timur Tengah, ibu kotanya Teheran, terkenal dengan karpet Persia dan sejarah panjang.",
+    "jawaban": "Iran"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Bogota, penghasil kopi terbesar ketiga di dunia.",
+    "jawaban": "Kolombia"
+  },
+  {
+    "soal": "Negara di Eropa Selatan, ibu kotanya Athens, tempat lahirnya demokrasi dan olimpiade.",
+    "jawaban": "Yunani"
+  },
+  {
+    "soal": "Negara di Eropa Timur, ibu kotanya Warsaw, terkenal dengan vodka dan pierogi.",
+    "jawaban": "Polandia"
+  },
+  {
+    "soal": "Negara di Eropa Barat, ibu kotanya Brussels, terkenal dengan cokelat, wafel, dan markas NATO.",
+    "jawaban": "Belgia"
+  },
+  {
+    "soal": "Negara di Asia Timur, ibu kotanya Taipei, terkenal dengan bubble tea dan semikonduktor.",
+    "jawaban": "Taiwan"
+  },
+  {
+    "soal": "Negara di Eropa Selatan, ibu kotanya Lisbon, negara pertama yang menjelajahi samudra luas.",
+    "jawaban": "Portugal"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, ibu kotanya Naypyidaw, terkenal dengan pagoda dan konflik internal.",
+    "jawaban": "Myanmar"
+  },
+  {
+    "soal": "Negara di Timur Tengah, ibu kotanya Tel Aviv atau Jerusalem, terkenal dengan Dead Sea.",
+    "jawaban": "Israel"
+  },
+  {
+    "soal": "Negara di Afrika Utara, ibu kotanya Tunis, dikenal sebagai gerbang antara Eropa dan Afrika.",
+    "jawaban": "Tunisia"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Lima, terkenal dengan Machu Picchu dan alpaka.",
+    "jawaban": "Peru"
+  },
+  {
+    "soal": "Negara di Asia Selatan, ibu kotanya Colombo, dikenal sebagai pulau mutiara Samudra Hindia.",
+    "jawaban": "Sri Lanka"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, ibu kotanya Phnom Penh, terkenal dengan Angkor Wat.",
+    "jawaban": "Kamboja"
+  },
+  {
+    "soal": "Negara di Eropa Timur, ibu kotanya Bucharest, terkenal dengan Transylvania dan kastil Dracula.",
+    "jawaban": "Rumania"
+  },
+  {
+    "soal": "Negara di Eropa Timur, ibu kotanya Budapest, terkenal dengan Sungai Danube dan pemandian.",
+    "jawaban": "Hungaria"
+  },
+  {
+    "soal": "Negara di Eropa Tenggara, ibu kotanya Sofia, terkenal dengan mawar dan yogurt khasnya.",
+    "jawaban": "Bulgaria"
+  },
+  {
+    "soal": "Negara di Asia Barat, ibu kotanya Ankara, terletak di persimpangan Eropa dan Asia.",
+    "jawaban": "Turki"
+  },
+  {
+    "soal": "Negara di Asia Barat, ibu kotanya Baghdad, terkenal dengan peradaban Mesopotamia kuno.",
+    "jawaban": "Irak"
+  },
+  {
+    "soal": "Negara di Asia Barat, ibu kotanya Riyadh, negara berbentuk kerajaan di Jazirah Arab.",
+    "jawaban": "Kuwait"
+  },
+  {
+    "soal": "Negara di Afrika Timur, ibu kotanya Nairobi, terkenal dengan safari dan atletnya yang juara dunia.",
+    "jawaban": "Kenya"
+  },
+  {
+    "soal": "Negara di Afrika Utara, ibu kotanya Tripoli, penghasil minyak besar di benua Afrika.",
+    "jawaban": "Libya"
+  },
+  {
+    "soal": "Negara di Asia Selatan, ibu kotanya Dhaka, salah satu negara terpadat di dunia.",
+    "jawaban": "Bangladesh"
+  },
+  {
+    "soal": "Negara kepulauan di Pasifik Selatan, ibu kotanya Wellington, terkenal dengan hobbit dan bungee jumping.",
+    "jawaban": "Selandia Baru"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Santiago, memanjang di sepanjang pantai barat Amerika Selatan.",
+    "jawaban": "Chili"
+  },
+  {
+    "soal": "Negara di Afrika Selatan, ibu kotanya Luanda, penghasil minyak terbesar kedua di Afrika.",
+    "jawaban": "Angola"
+  },
+  {
+    "soal": "Negara di Eropa Barat, ibu kotanya Wina, terkenal dengan musik klasik dan Sungai Danube.",
+    "jawaban": "Austria"
+  },
+  {
+    "soal": "Negara di Eropa Tengah, ibu kotanya Praha, terkenal dengan bir dan arsitektur Gotik.",
+    "jawaban": "Ceko"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, ibu kotanya Bandar Seri Begawan, kaya minyak bumi di Borneo.",
+    "jawaban": "Brunei"
+  },
+  {
+    "soal": "Negara di Amerika Tengah, ibu kotanya Havana, terkenal dengan cerutu, salsa, dan revolusinya.",
+    "jawaban": "Kuba"
+  },
+  {
+    "soal": "Negara di Afrika Barat, ibu kotanya Accra, salah satu negara paling stabil di Afrika Barat.",
+    "jawaban": "Ghana"
+  },
+  {
+    "soal": "Negara di Asia Barat, ibu kotanya Beirut, dikenal sebagai Paris-nya Timur Tengah.",
+    "jawaban": "Lebanon"
+  },
+  {
+    "soal": "Negara di Afrika Timur, ibu kotanya Dar es Salaam, terkenal dengan Kilimanjaro dan Zanzibar.",
+    "jawaban": "Tanzania"
+  },
+  {
+    "soal": "Negara di Asia Selatan, ibu kotanya Kathmandu, rumah bagi Gunung Everest tertinggi di dunia.",
+    "jawaban": "Nepal"
+  },
+  {
+    "soal": "Negara di Asia Selatan, ibu kotanya Thimphu, dikenal dengan kebijakan Gross National Happiness.",
+    "jawaban": "Bhutan"
+  },
+  {
+    "soal": "Negara di Eropa Timur, ibu kotanya Minsk, sering disebut sebagai negara terakhir diktator Eropa.",
+    "jawaban": "Belarus"
+  },
+  {
+    "soal": "Negara di Amerika Tengah, ibu kotanya Panama City, terkenal dengan Terusan Panama.",
+    "jawaban": "Panama"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Caracas, kaya minyak namun dilanda krisis ekonomi.",
+    "jawaban": "Venezuela"
+  },
+  {
+    "soal": "Negara di Afrika Timur, ibu kotanya Kampala, terletak di tepi Danau Victoria.",
+    "jawaban": "Uganda"
+  },
+  {
+    "soal": "Negara di Asia Tengah, ibu kotanya Tashkent, terkenal dengan Jalur Sutra kuno.",
+    "jawaban": "Uzbekistan"
+  },
+  {
+    "soal": "Negara di Asia Tenggara, ibu kotanya Dili, negara termuda di Asia.",
+    "jawaban": "Timor Leste"
+  },
+  {
+    "soal": "Negara di Afrika Selatan, ibu kotanya Harare, pernah mengalami hiperinflasi terburuk.",
+    "jawaban": "Zimbabwe"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Quito, dilalui garis khatulistiwa tepat di tengahnya.",
+    "jawaban": "Ekuador"
+  },
+  {
+    "soal": "Negara di Eropa Selatan, ibu kotanya Zagreb, dikenal dengan pantai indah di Laut Adriatik.",
+    "jawaban": "Kroasia"
+  },
+  {
+    "soal": "Negara di Asia Barat, ibu kotanya Doha, tuan rumah Piala Dunia FIFA 2022.",
+    "jawaban": "Qatar"
+  },
+  {
+    "soal": "Negara di Afrika Timur, ibu kotanya Mogadishu, menghadapi konflik berkepanjangan.",
+    "jawaban": "Somalia"
+  },
+  {
+    "soal": "Negara di Asia Timur, ibu kotanya Pyongyang, dikenal sebagai negara paling tertutup di dunia.",
+    "jawaban": "Korea Utara"
+  },
+  {
+    "soal": "Negara di Eropa Selatan, ibu kotanya Sarajevo, bekas pusat konflik Balkan tahun 1990-an.",
+    "jawaban": "Bosnia"
+  },
+  {
+    "soal": "Negara di Asia Barat, ibu kotanya Abu Dhabi, terkenal dengan Burj Khalifa dan Dubai.",
+    "jawaban": "UEA"
+  },
+  {
+    "soal": "Negara di Asia Tengah, ibu kotanya Kabul, mengalami pergantian rezim Taliban.",
+    "jawaban": "Afghanistan"
+  },
+  {
+    "soal": "Negara di Amerika Tengah, ibu kotanya San José, terkenal dengan biodiversitas hutan tropisnya.",
+    "jawaban": "Kosta Rika"
+  },
+  {
+    "soal": "Negara di Afrika Barat, ibu kotanya Dakar, dikenal dengan gurun Sahara yang melintasinya.",
+    "jawaban": "Senegal"
+  },
+  {
+    "soal": "Negara di Eropa Timur, ibu kotanya Chisinau, salah satu negara termiskin di Eropa.",
+    "jawaban": "Moldova"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Montevideo, dikenal dengan kualitas hidup terbaik.",
+    "jawaban": "Uruguay"
+  },
+  {
+    "soal": "Negara kepulauan di Karibia, ibu kotanya Kingston, terkenal dengan musik reggae dan Bob Marley.",
+    "jawaban": "Jamaika"
+  },
+  {
+    "soal": "Negara di Afrika Barat, ibu kotanya Bamako, dikenal dengan gurun Sahara di utaranya.",
+    "jawaban": "Mali"
+  },
+  {
+    "soal": "Negara di Asia Selatan, ibu kotanya Male, negara kepulauan yang terancam tenggelam.",
+    "jawaban": "Maladewa"
+  },
+  {
+    "soal": "Negara di Afrika Barat, ibu kotanya Conakry, penghasil bauksit terbesar di dunia.",
+    "jawaban": "Guinea"
+  },
+  {
+    "soal": "Negara di Eropa Utara, ibu kotanya Tallinn, salah satu negara paling digital di dunia.",
+    "jawaban": "Estonia"
+  },
+  {
+    "soal": "Negara di Asia Tengah, ibu kotanya Ashgabat, terkenal dengan pipa gas dan kota pualam putih.",
+    "jawaban": "Turkmenistan"
+  },
+  {
+    "soal": "Negara di Amerika Selatan, ibu kotanya Asunción, salah satu negara terkurung daratan.",
+    "jawaban": "Paraguay"
+  }
 ]

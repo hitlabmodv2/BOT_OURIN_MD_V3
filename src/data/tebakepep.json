@@ -118,5 +118,285 @@
   {
     "soal": "Spesialis bom dan ledakan, kemampuannya meningkatkan jangkauan dan damage dari semua senjata peledak.",
     "jawaban": "alvaro"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan es, bisa membekukan musuh dalam area luas. Senjatanya senapan salju.",
+    "jawaban": "laura"
+  },
+  {
+    "soal": "Penjaga pantai yang kemampuannya memperpanjang waktu menyelam di air tanpa kehilangan HP.",
+    "jawaban": "adam"
+  },
+  {
+    "soal": "Karakter bertopi yang bisa menggunakan granat asap untuk menghilang dari pandangan musuh.",
+    "jawaban": "over"
+  },
+  {
+    "soal": "Tokoh legenda dengan kemampuan mengurangi cooldown skill aktif saat mengeliminasi musuh.",
+    "jawaban": "dimitri"
+  },
+  {
+    "soal": "Karakter dengan kemampuan khusus mempercepat healing saat menggunakan medkit di belakang dinding.",
+    "jawaban": "finn"
+  },
+  {
+    "soal": "Wanita bertopeng yang kemampuannya meningkatkan kapasitas amunisi yang bisa dibawa.",
+    "jawaban": "luna"
+  },
+  {
+    "soal": "Karakter pria bersenjata pisau yang kemampuannya mengunci target secara otomatis saat berlari.",
+    "jawaban": "ryden"
+  },
+  {
+    "soal": "Ninja wanita yang bisa membuat klon palsu untuk mengalihkan perhatian musuh.",
+    "jawaban": "shirou"
+  },
+  {
+    "soal": "Pria veteran tempur yang kemampuannya meningkatkan armor sementara saat HP turun drastis.",
+    "jawaban": "rafael"
+  },
+  {
+    "soal": "Karakter dengan kemampuan melempar senter ke area musuh untuk mengekspos posisi mereka.",
+    "jawaban": "thiva"
+  },
+  {
+    "soal": "Pria dengan baju zirah militer yang kemampuannya mengurangi damage dari tembakan jarak jauh.",
+    "jawaban": "rafael"
+  },
+  {
+    "soal": "Karakter sniper wanita dengan kemampuan mengurangi magazine senjata musuh dari jarak jauh.",
+    "jawaban": "ash"
+  },
+  {
+    "soal": "Karakter penari breakdance yang kemampuannya meningkatkan akurasi dan kecepatan bergerak.",
+    "jawaban": "d-bee"
+  },
+  {
+    "soal": "Karakter dengan kemampuan memulihkan sedikit HP setelah menghilangkan musuh atau bertahan lama.",
+    "jawaban": "leon"
+  },
+  {
+    "soal": "Karakter robot android yang bisa mengkonversi EP menjadi HP dengan cepat saat darurat.",
+    "jawaban": "a124"
+  },
+  {
+    "soal": "Karakter yang bisa membuat dekorasi palsu sebagai umpan untuk mengalihkan perhatian musuh.",
+    "jawaban": "santino"
+  },
+  {
+    "soal": "Karakter dengan kemampuan melakukan operasi darurat yang mengembalikan HP anggota tim.",
+    "jawaban": "dr beacon"
+  },
+  {
+    "soal": "Karakter yang bisa mempercepat landing dari pesawat dan mendarat lebih akurat dari pemain lain.",
+    "jawaban": "aloha"
+  },
+  {
+    "soal": "Karakter pria besar yang kemampuannya meningkatkan kapasitas HP dengan makan makanan di map.",
+    "jawaban": "orion"
+  },
+  {
+    "soal": "Karakter dengan kemampuan menambah kapasitas maksimal EP yang bisa dibawa dalam satu game.",
+    "jawaban": "k"
+  },
+  {
+    "soal": "Karakter pria dengan drone pengintai yang menampilkan posisi musuh di peta secara realtime.",
+    "jawaban": "homer"
+  },
+  {
+    "soal": "Karakter cyborg wanita yang bisa mendeteksi dan mengambil item di luar jangkauan biasa.",
+    "jawaban": "nyra"
+  },
+  {
+    "soal": "Karakter penjelajah alam dengan kemampuan bertahan lebih lama di area poison zone tanpa item.",
+    "jawaban": "sonia"
+  },
+  {
+    "soal": "Karakter dengan kemampuan menguatkan tim dengan aura kepemimpinan dalam radius kecil.",
+    "jawaban": "lance"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan meningkatkan kecepatan bergerak saat tidak membawa senjata.",
+    "jawaban": "tesa"
+  },
+  {
+    "soal": "Karakter pria misterius yang bisa mendeteksi jebakan dan ranjau dalam radius sekitar dirinya.",
+    "jawaban": "dasha"
+  },
+  {
+    "soal": "Karakter yang bisa membuat shield portabel untuk melindungi tim dari tembakan arah tertentu.",
+    "jawaban": "bigfoot"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan membuat tanda rahasia di peta yang hanya terlihat oleh tim.",
+    "jawaban": "tatsuya"
+  },
+  {
+    "soal": "Karakter dengan kemampuan memulihkan HP saat berhasil menghindari serangan musuh.",
+    "jawaban": "fenris"
+  },
+  {
+    "soal": "Karakter dengan kemampuan mempercepat masuk ke kendaraan dan keluar lebih cepat dari musuh.",
+    "jawaban": "mechanoid"
+  },
+  {
+    "soal": "Karakter wanita yang kemampuannya meningkatkan radius lempar item granat dan bom asap.",
+    "jawaban": "oase"
+  },
+  {
+    "soal": "Karakter pria dengan kemampuan mempercepat pengisian ulang skill aktif semua anggota tim.",
+    "jawaban": "reaper"
+  },
+  {
+    "soal": "Karakter dengan kemampuan bertahan hidup lebih lama karena bisa memakai armor dua lapis.",
+    "jawaban": "iron"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan mengaktifkan mode tak terlihat saat berdiam di satu posisi.",
+    "jawaban": "misha"
+  },
+  {
+    "soal": "Karakter veteran yang memperkuat seluruh anggota tim dengan bonus armor saat masuk zona aman.",
+    "jawaban": "nextera"
+  },
+  {
+    "soal": "Karakter wanita alien dengan kemampuan menyerap kekuatan musuh yang baru dieliminasi.",
+    "jawaban": "xayne2"
+  },
+  {
+    "soal": "Karakter yang bisa membuat tembok es untuk memblokir serangan musuh dari satu arah tertentu.",
+    "jawaban": "ignis"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan mengaktifkan sensor gerak untuk memantau area sekitarnya.",
+    "jawaban": "spikey"
+  },
+  {
+    "soal": "Karakter dengan kemampuan memperkuat pertahanan saat berdiri di posisi yang sama selama 3 detik.",
+    "jawaban": "woodpecker"
+  },
+  {
+    "soal": "Karakter yang kemampuannya meningkatkan jarak pandang saat mengincar musuh dari ketinggian.",
+    "jawaban": "markhor"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan menciptakan kabut asap pelindung di area kecil.",
+    "jawaban": "clu2"
+  },
+  {
+    "soal": "Karakter pria berambut abu dengan kemampuan mempercepat gerakan saat berada di air.",
+    "jawaban": "aqua"
+  },
+  {
+    "soal": "Karakter dengan kemampuan menandai musuh yang menembak rekan satu tim kita.",
+    "jawaban": "trace"
+  },
+  {
+    "soal": "Karakter wanita dengan sayap mekanik yang bisa meningkatkan kecepatan jatuh bebas.",
+    "jawaban": "wing"
+  },
+  {
+    "soal": "Karakter pria berbadan kekar yang bisa menghancurkan cover musuh dengan tembakan khusus.",
+    "jawaban": "brute"
+  },
+  {
+    "soal": "Karakter dengan kemampuan mempercepat pengumpulan loot dari area yang baru dibereskan.",
+    "jawaban": "scavenger"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan mendeteksi jebakan di dalam bangunan secara otomatis.",
+    "jawaban": "scout"
+  },
+  {
+    "soal": "Karakter robot dengan kemampuan memperbaiki armor yang rusak tanpa menggunakan item tambahan.",
+    "jawaban": "mech"
+  },
+  {
+    "soal": "Karakter dengan skill aktif berupa beam energi yang menembus tembok tipis.",
+    "jawaban": "beam"
+  },
+  {
+    "soal": "Karakter pria dengan kemampuan meningkatkan kecepatan bidik secara drastis dalam mode ADS.",
+    "jawaban": "aim"
+  },
+  {
+    "soal": "Karakter wanita bersenjata sihir yang bisa memulihkan HP anggota tim dari kejauhan.",
+    "jawaban": "healer"
+  },
+  {
+    "soal": "Karakter yang bisa memanggil drone pengiriman senjata ke posisinya dalam pertempuran.",
+    "jawaban": "supply"
+  },
+  {
+    "soal": "Karakter pria petualang yang kemampuannya meningkatkan kecepatan lari di medan berbukit.",
+    "jawaban": "ranger"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan aktif membuat area perangkap di sekitar posisinya.",
+    "jawaban": "trap"
+  },
+  {
+    "soal": "Karakter yang kemampuannya meningkatkan damage senjata pistol secara permanen.",
+    "jawaban": "gunner"
+  },
+  {
+    "soal": "Karakter berjas jas hitam yang bisa membuat seluruh tim tidak terlihat di minimap musuh.",
+    "jawaban": "ghost"
+  },
+  {
+    "soal": "Karakter dengan kemampuan bertahan ekstra saat zona gas mendekati posisinya.",
+    "jawaban": "survivor"
+  },
+  {
+    "soal": "Karakter wanita yang kemampuannya meningkatkan efek penyembuhan dari medkit secara pasif.",
+    "jawaban": "medic"
+  },
+  {
+    "soal": "Karakter robot tempur yang kemampuannya meningkatkan akurasi tembakan dalam kondisi apapun.",
+    "jawaban": "cyber"
+  },
+  {
+    "soal": "Karakter dengan kemampuan mengunci senjata musuh selama beberapa detik lewat skill aktif.",
+    "jawaban": "jammer"
+  },
+  {
+    "soal": "Karakter pria dengan kemampuan melakukan sprint jarak jauh tanpa kehilangan stamina.",
+    "jawaban": "sprint"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan membuat bayangan ilusi yang mengecoh sistem aiming musuh.",
+    "jawaban": "illusion"
+  },
+  {
+    "soal": "Karakter yang bisa mengaktifkan mode baret baja untuk meningkatkan ketahanan kepala.",
+    "jawaban": "steel"
+  },
+  {
+    "soal": "Karakter dengan kemampuan khusus menambah satu slot inventory tambahan secara permanen.",
+    "jawaban": "pack"
+  },
+  {
+    "soal": "Karakter pria berambut keriting yang kemampuannya mempercepat proses memasang gloo wall.",
+    "jawaban": "builder"
+  },
+  {
+    "soal": "Karakter wanita dengan kemampuan melempar bom suara yang membutakan indera pendengaran musuh.",
+    "jawaban": "sonic"
+  },
+  {
+    "soal": "Karakter petarung dengan kemampuan menghentikan proses memasak item musuh dari jarak dekat.",
+    "jawaban": "disrupt"
+  },
+  {
+    "soal": "Karakter dengan kemampuan meningkatkan kecepatan gerakan seluruh tim saat nyawa terakhir.",
+    "jawaban": "clutch"
+  },
+  {
+    "soal": "Karakter pria teknisi yang bisa memperbaiki kendaraan yang rusak di lapangan tanpa item.",
+    "jawaban": "mechanic"
+  },
+  {
+    "soal": "Karakter wanita dengan kekuatan sihir api yang meninggalkan jejak api di tanah saat berlari.",
+    "jawaban": "ember"
   }
 ]

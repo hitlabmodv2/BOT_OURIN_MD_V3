@@ -1,42 +1,422 @@
 [
-{"soal":"Semakin diisi, semakin ringan. Apakah aku?","jawaban":"balon"},
-{"soal":"Punya tangan tapi tak bisa tepuk tangan. Apakah aku?","jawaban":"jam"},
-{"soal":"Aku selalu di depanmu tapi tak bisa dilihat. Apakah aku?","jawaban":"masa depan"},
-{"soal":"Aku punya gigi tapi tidak bisa menggigit. Apakah aku?","jawaban":"sisir"},
-{"soal":"Semakin tua semakin muda. Apakah aku?","jawaban":"lilin"},
-{"soal":"Aku bisa terbang tanpa sayap, menangis tanpa mata. Apakah aku?","jawaban":"awan"},
-{"soal":"Punya kepala tapi tidak punya otak, punya ekor tapi bukan hewan. Apakah aku?","jawaban":"koin"},
-{"soal":"Aku bergerak tanpa kaki, mengalir tanpa tubuh. Apakah aku?","jawaban":"sungai"},
-{"soal":"Semakin banyak diambil, semakin besar aku. Apakah aku?","jawaban":"lubang"},
-{"soal":"Aku hitam saat bersih, putih saat kotor. Apakah aku?","jawaban":"papan tulis"},
-{"soal":"Aku bisa dipegang tapi tidak bisa disentuh. Apakah aku?","jawaban":"nafas"},
-{"soal":"Punya telinga tapi tidak bisa mendengar. Apakah aku?","jawaban":"jagung"},
-{"soal":"Aku ada di atas meja makan tapi bukan makanan. Apakah aku?","jawaban":"taplak"},
-{"soal":"Aku punya mata tapi tidak bisa melihat. Apakah aku?","jawaban":"jarum"},
-{"soal":"Semakin dibasuh, semakin kotor airnya. Apakah aku?","jawaban":"kaki"},
-{"soal":"Aku tidur di siang hari, terjaga di malam hari. Apakah aku?","jawaban":"bintang"},
-{"soal":"Punya mulut tapi tidak bisa bicara, punya daun tapi bukan pohon. Apakah aku?","jawaban":"botol"},
-{"soal":"Aku berlari tapi tidak punya kaki, aku berbicara tapi tidak punya mulut. Apakah aku?","jawaban":"jam tangan"},
-{"soal":"Aku selalu jatuh tapi tidak pernah sakit. Apakah aku?","jawaban":"air hujan"},
-{"soal":"Aku bisa dipotong tapi tidak berdarah. Apakah aku?","jawaban":"kertas"},
-{"soal":"Aku punya punggung tapi tidak bisa digendong. Apakah aku?","jawaban":"kursi"},
-{"soal":"Aku terbang tanpa sayap di siang hari, mati di malam hari. Apakah aku?","jawaban":"layangan"},
-{"soal":"Aku punya leher tapi tidak punya kepala. Apakah aku?","jawaban":"botol"},
-{"soal":"Aku bisa memanjat tapi bukan manusia, punya cakar tapi bukan kucing. Apakah aku?","jawaban":"tangga"},
-{"soal":"Aku selalu ada dua, satu di kiri satu di kanan. Apakah aku?","jawaban":"sepatu"},
-{"soal":"Aku punya rambut tapi bukan manusia. Apakah aku?","jawaban":"jagung"},
-{"soal":"Aku semakin pendek ketika digunakan. Apakah aku?","jawaban":"pensil"},
-{"soal":"Aku punya sayap tapi tidak bisa terbang. Apakah aku?","jawaban":"ayam"},
-{"soal":"Aku semakin panas semakin dingin rasanya. Apakah aku?","jawaban":"es krim"},
-{"soal":"Aku bisa membuat orang menangis tanpa menyakitinya. Apakah aku?","jawaban":"bawang"},
-{"soal":"Aku punya kaki empat tapi tidak bisa berjalan. Apakah aku?","jawaban":"meja"},
-{"soal":"Aku tumbuh ke bawah, bukan ke atas. Apakah aku?","jawaban":"stalaktit"},
-{"soal":"Aku putih di pagi hari, merah di sore hari. Apakah aku?","jawaban":"langit"},
-{"soal":"Aku bisa bicara semua bahasa tapi tidak punya lidah. Apakah aku?","jawaban":"kamus"},
-{"soal":"Aku punya lubang di tengah tapi tidak berlubang. Apakah aku?","jawaban":"donat"},
-{"soal":"Aku selalu mengikutimu ke mana pun pergi tapi tidak punya kaki. Apakah aku?","jawaban":"bayangan"},
-{"soal":"Aku lebih keras dari batu, lebih ringan dari bulu. Apakah aku?","jawaban":"suara"},
-{"soal":"Aku punya tulang tapi bukan manusia, punya sirip tapi bukan ikan. Apakah aku?","jawaban":"payung"},
-{"soal":"Aku hidup ketika mati, mati ketika hidup. Apakah aku?","jawaban":"korek api"},
-{"soal":"Aku dibeli untuk dimakan tapi tidak pernah dimakan. Apakah aku?","jawaban":"piring"}
+  {
+    "soal": "Semakin diisi, semakin ringan. Apakah aku?",
+    "jawaban": "balon"
+  },
+  {
+    "soal": "Punya tangan tapi tak bisa tepuk tangan. Apakah aku?",
+    "jawaban": "jam"
+  },
+  {
+    "soal": "Aku selalu di depanmu tapi tak bisa dilihat. Apakah aku?",
+    "jawaban": "masa depan"
+  },
+  {
+    "soal": "Aku punya gigi tapi tidak bisa menggigit. Apakah aku?",
+    "jawaban": "sisir"
+  },
+  {
+    "soal": "Semakin tua semakin muda. Apakah aku?",
+    "jawaban": "lilin"
+  },
+  {
+    "soal": "Aku bisa terbang tanpa sayap, menangis tanpa mata. Apakah aku?",
+    "jawaban": "awan"
+  },
+  {
+    "soal": "Punya kepala tapi tidak punya otak, punya ekor tapi bukan hewan. Apakah aku?",
+    "jawaban": "koin"
+  },
+  {
+    "soal": "Aku bergerak tanpa kaki, mengalir tanpa tubuh. Apakah aku?",
+    "jawaban": "sungai"
+  },
+  {
+    "soal": "Semakin banyak diambil, semakin besar aku. Apakah aku?",
+    "jawaban": "lubang"
+  },
+  {
+    "soal": "Aku hitam saat bersih, putih saat kotor. Apakah aku?",
+    "jawaban": "papan tulis"
+  },
+  {
+    "soal": "Aku bisa dipegang tapi tidak bisa disentuh. Apakah aku?",
+    "jawaban": "nafas"
+  },
+  {
+    "soal": "Punya telinga tapi tidak bisa mendengar. Apakah aku?",
+    "jawaban": "jagung"
+  },
+  {
+    "soal": "Aku ada di atas meja makan tapi bukan makanan. Apakah aku?",
+    "jawaban": "taplak"
+  },
+  {
+    "soal": "Aku punya mata tapi tidak bisa melihat. Apakah aku?",
+    "jawaban": "jarum"
+  },
+  {
+    "soal": "Semakin dibasuh, semakin kotor airnya. Apakah aku?",
+    "jawaban": "kaki"
+  },
+  {
+    "soal": "Aku tidur di siang hari, terjaga di malam hari. Apakah aku?",
+    "jawaban": "bintang"
+  },
+  {
+    "soal": "Punya mulut tapi tidak bisa bicara, punya daun tapi bukan pohon. Apakah aku?",
+    "jawaban": "botol"
+  },
+  {
+    "soal": "Aku berlari tapi tidak punya kaki, aku berbicara tapi tidak punya mulut. Apakah aku?",
+    "jawaban": "jam tangan"
+  },
+  {
+    "soal": "Aku selalu jatuh tapi tidak pernah sakit. Apakah aku?",
+    "jawaban": "air hujan"
+  },
+  {
+    "soal": "Aku bisa dipotong tapi tidak berdarah. Apakah aku?",
+    "jawaban": "kertas"
+  },
+  {
+    "soal": "Aku punya punggung tapi tidak bisa digendong. Apakah aku?",
+    "jawaban": "kursi"
+  },
+  {
+    "soal": "Aku terbang tanpa sayap di siang hari, mati di malam hari. Apakah aku?",
+    "jawaban": "layangan"
+  },
+  {
+    "soal": "Aku punya leher tapi tidak punya kepala. Apakah aku?",
+    "jawaban": "botol"
+  },
+  {
+    "soal": "Aku bisa memanjat tapi bukan manusia, punya cakar tapi bukan kucing. Apakah aku?",
+    "jawaban": "tangga"
+  },
+  {
+    "soal": "Aku selalu ada dua, satu di kiri satu di kanan. Apakah aku?",
+    "jawaban": "sepatu"
+  },
+  {
+    "soal": "Aku punya rambut tapi bukan manusia. Apakah aku?",
+    "jawaban": "jagung"
+  },
+  {
+    "soal": "Aku semakin pendek ketika digunakan. Apakah aku?",
+    "jawaban": "pensil"
+  },
+  {
+    "soal": "Aku punya sayap tapi tidak bisa terbang. Apakah aku?",
+    "jawaban": "ayam"
+  },
+  {
+    "soal": "Aku semakin panas semakin dingin rasanya. Apakah aku?",
+    "jawaban": "es krim"
+  },
+  {
+    "soal": "Aku bisa membuat orang menangis tanpa menyakitinya. Apakah aku?",
+    "jawaban": "bawang"
+  },
+  {
+    "soal": "Aku punya kaki empat tapi tidak bisa berjalan. Apakah aku?",
+    "jawaban": "meja"
+  },
+  {
+    "soal": "Aku tumbuh ke bawah, bukan ke atas. Apakah aku?",
+    "jawaban": "stalaktit"
+  },
+  {
+    "soal": "Aku putih di pagi hari, merah di sore hari. Apakah aku?",
+    "jawaban": "langit"
+  },
+  {
+    "soal": "Aku bisa bicara semua bahasa tapi tidak punya lidah. Apakah aku?",
+    "jawaban": "kamus"
+  },
+  {
+    "soal": "Aku punya lubang di tengah tapi tidak berlubang. Apakah aku?",
+    "jawaban": "donat"
+  },
+  {
+    "soal": "Aku selalu mengikutimu ke mana pun pergi tapi tidak punya kaki. Apakah aku?",
+    "jawaban": "bayangan"
+  },
+  {
+    "soal": "Aku lebih keras dari batu, lebih ringan dari bulu. Apakah aku?",
+    "jawaban": "suara"
+  },
+  {
+    "soal": "Aku punya tulang tapi bukan manusia, punya sirip tapi bukan ikan. Apakah aku?",
+    "jawaban": "payung"
+  },
+  {
+    "soal": "Aku hidup ketika mati, mati ketika hidup. Apakah aku?",
+    "jawaban": "korek api"
+  },
+  {
+    "soal": "Aku dibeli untuk dimakan tapi tidak pernah dimakan. Apakah aku?",
+    "jawaban": "piring"
+  },
+  {
+    "soal": "Semakin dicuci semakin kotor. Apakah aku?",
+    "jawaban": "air"
+  },
+  {
+    "soal": "Semakin banyak kamu ambil, semakin banyak yang kamu tinggalkan. Apakah aku?",
+    "jawaban": "jejak kaki"
+  },
+  {
+    "soal": "Aku bisa mengisi ruangan besar tanpa mengambil tempat apapun. Apakah aku?",
+    "jawaban": "cahaya"
+  },
+  {
+    "soal": "Aku memiliki kota-kota, tapi tidak ada rumah di sana. Aku memiliki pegunungan tapi tidak ada pohon. Apakah aku?",
+    "jawaban": "peta"
+  },
+  {
+    "soal": "Aku bisa melompat tapi tidak punya kaki. Aku bisa jatuh tapi tidak akan pecah. Apakah aku?",
+    "jawaban": "suhu"
+  },
+  {
+    "soal": "Semakin banyak yang ada di sini, semakin sedikit yang bisa kamu lihat. Apakah aku?",
+    "jawaban": "kabut"
+  },
+  {
+    "soal": "Aku punya banyak kunci tapi tak ada satu pun yang bisa membuka pintu. Apakah aku?",
+    "jawaban": "piano"
+  },
+  {
+    "soal": "Aku bisa memotong tanpa pisau, membakar tanpa api. Apakah aku?",
+    "jawaban": "kata-kata"
+  },
+  {
+    "soal": "Aku bisa berlari tapi tidak memiliki kaki. Aku bisa mengalir tapi tidak basah. Apakah aku?",
+    "jawaban": "waktu"
+  },
+  {
+    "soal": "Aku bisa dibawa kemana-mana tapi tidak di kantong. Aku selalu ada tapi tidak terlihat. Apakah aku?",
+    "jawaban": "nama"
+  },
+  {
+    "soal": "Semakin besar apinya, semakin banyak yang aku telan. Apakah aku?",
+    "jawaban": "lubang api"
+  },
+  {
+    "soal": "Aku hidup di musim panas, mati di musim dingin. Aku berdiri tegak tapi tidak punya tulang. Apakah aku?",
+    "jawaban": "tanaman"
+  },
+  {
+    "soal": "Aku bisa terbang lebih tinggi dari elang. Aku bisa turun lebih dalam dari ikan. Apakah aku?",
+    "jawaban": "pikiran"
+  },
+  {
+    "soal": "Aku punya tangan dan kaki tapi tidak bisa berjalan. Aku punya mata tapi tidak bisa melihat. Apakah aku?",
+    "jawaban": "boneka"
+  },
+  {
+    "soal": "Aku tidak pernah bertanya tapi selalu dijawab. Apakah aku?",
+    "jawaban": "telepon"
+  },
+  {
+    "soal": "Aku punya rumah tapi tidak pernah tinggal di sana. Apakah aku?",
+    "jawaban": "siput"
+  },
+  {
+    "soal": "Aku memiliki banyak lubang tapi tidak bocor. Apakah aku?",
+    "jawaban": "spons"
+  },
+  {
+    "soal": "Aku bisa hidup tanpa makan bertahun-tahun, tapi mati dalam semenit tanpa air. Apakah aku?",
+    "jawaban": "api"
+  },
+  {
+    "soal": "Aku ada di awal setiap akhir, dan di akhir setiap awal. Apakah aku?",
+    "jawaban": "huruf a"
+  },
+  {
+    "soal": "Aku selalu jatuh tapi tidak pernah terluka. Apakah aku?",
+    "jawaban": "hujan"
+  },
+  {
+    "soal": "Aku bisa membuat kamu tertawa tanpa berbicara. Aku bisa menangis tanpa bersedih. Apakah aku?",
+    "jawaban": "badut"
+  },
+  {
+    "soal": "Aku punya banyak gigi tapi bukan mulut. Aku menggigit tapi tidak sakit. Apakah aku?",
+    "jawaban": "gergaji"
+  },
+  {
+    "soal": "Aku dapat terbang tanpa sayap, aku dapat bernyanyi tanpa suara. Apakah aku?",
+    "jawaban": "angin"
+  },
+  {
+    "soal": "Aku berdiri tegak walau angin berhembus kencang. Aku bisa memelukmu walau tidak punya tangan. Apakah aku?",
+    "jawaban": "pohon"
+  },
+  {
+    "soal": "Aku bisa ada di mana-mana sekaligus tapi tidak bisa dipegang. Apakah aku?",
+    "jawaban": "udara"
+  },
+  {
+    "soal": "Aku bisa melihat tanpa mata, mendengar tanpa telinga, merasakan tanpa tangan. Apakah aku?",
+    "jawaban": "hati"
+  },
+  {
+    "soal": "Aku selalu menunjuk ke utara tapi tidak pernah bergerak ke sana. Apakah aku?",
+    "jawaban": "kompas"
+  },
+  {
+    "soal": "Aku bisa memotong besi tapi tidak bisa memotong sutra. Apakah aku?",
+    "jawaban": "karat"
+  },
+  {
+    "soal": "Aku berbicara ketika dipukul. Apakah aku?",
+    "jawaban": "gong"
+  },
+  {
+    "soal": "Aku selalu ikut kamu ke mana pun, tapi tidak ikut saat kamu masuk ke dalam air. Apakah aku?",
+    "jawaban": "pakaian"
+  },
+  {
+    "soal": "Aku bisa hidup di dalam air tapi mati jika kena hujan. Apakah aku?",
+    "jawaban": "garam"
+  },
+  {
+    "soal": "Aku penuh di pagi hari, kosong di malam hari, dan berubah setiap hari. Apakah aku?",
+    "jawaban": "kalender"
+  },
+  {
+    "soal": "Aku punya leher tapi tidak bisa berbicara. Aku punya tubuh tapi tidak bisa bergerak. Apakah aku?",
+    "jawaban": "kemeja"
+  },
+  {
+    "soal": "Aku satu di tiap sudut dan dua di tiap ruangan. Apakah aku?",
+    "jawaban": "huruf r"
+  },
+  {
+    "soal": "Aku bisa tumbuh tanpa disiram dan mati tanpa layu. Apakah aku?",
+    "jawaban": "kuku"
+  },
+  {
+    "soal": "Aku penuh saat kosong dan kosong saat penuh. Apakah aku?",
+    "jawaban": "jaring ikan"
+  },
+  {
+    "soal": "Aku bisa berbicara dalam semua bahasa tanpa pernah belajar satupun. Apakah aku?",
+    "jawaban": "gema"
+  },
+  {
+    "soal": "Aku tidak punya telinga tapi bisa mendengar segalanya. Apakah aku?",
+    "jawaban": "dinding"
+  },
+  {
+    "soal": "Aku punya banyak cabang tapi bukan pohon. Aku punya akar tapi bukan tanaman. Apakah aku?",
+    "jawaban": "keluarga"
+  },
+  {
+    "soal": "Aku punya badan tapi tidak bernyawa. Aku bisa bergerak tapi tidak berlari. Apakah aku?",
+    "jawaban": "kapal"
+  },
+  {
+    "soal": "Aku selalu ada di kanan dan kiri tapi tidak di tengah. Apakah aku?",
+    "jawaban": "tepi"
+  },
+  {
+    "soal": "Aku bisa dibaca tapi bukan buku. Aku bisa ditulis tapi bukan cerita. Apakah aku?",
+    "jawaban": "surat"
+  },
+  {
+    "soal": "Aku bisa tidur tapi tidak bermimpi. Aku bisa bangun tapi tidak berdiri. Apakah aku?",
+    "jawaban": "komputer"
+  },
+  {
+    "soal": "Aku semakin dipakai semakin tajam, bukan pisau. Semakin diasah semakin berguna. Apakah aku?",
+    "jawaban": "otak"
+  },
+  {
+    "soal": "Aku bisa menampung air tapi bukan ember. Aku bisa dibawa tapi bukan tas. Apakah aku?",
+    "jawaban": "tangan"
+  },
+  {
+    "soal": "Aku selalu dipegang tapi bukan tangan. Aku selalu dibawa tapi bukan koper. Apakah aku?",
+    "jawaban": "stir"
+  },
+  {
+    "soal": "Aku bisa berbicara dalam semua bahasa tapi tidak punya lidah. Apakah aku?",
+    "jawaban": "buku"
+  },
+  {
+    "soal": "Aku selalu menjawab pertanyaanmu tapi tidak pernah berbicara balik. Apakah aku?",
+    "jawaban": "cermin"
+  },
+  {
+    "soal": "Aku bisa tumbuh ke atas dan ke bawah sekaligus di tempat yang sama. Apakah aku?",
+    "jawaban": "gigi"
+  },
+  {
+    "soal": "Aku tidak bisa dilihat, tidak bisa disentuh, tapi selalu kamu rasakan. Apakah aku?",
+    "jawaban": "emosi"
+  },
+  {
+    "soal": "Aku bisa panas dan dingin di tempat yang sama dalam waktu bersamaan. Apakah aku?",
+    "jawaban": "termos"
+  },
+  {
+    "soal": "Aku bisa membuatmu berlari tapi tidak punya kaki. Aku bisa membuatmu takut. Apakah aku?",
+    "jawaban": "ketakutan"
+  },
+  {
+    "soal": "Aku punya banyak gigi dan setiap hari kamu menggunakanku tapi aku bukan sisir. Apakah aku?",
+    "jawaban": "resleting"
+  },
+  {
+    "soal": "Aku semakin kotor semakin bersih. Bukan sapu. Apakah aku?",
+    "jawaban": "sabun"
+  },
+  {
+    "soal": "Aku punya dua kaki tapi tidak bisa berjalan. Aku punya kepala tapi tidak bisa berpikir. Apakah aku?",
+    "jawaban": "celana"
+  },
+  {
+    "soal": "Aku bisa menjadi besar atau kecil sesuai keinginanmu tapi bukan balon. Apakah aku?",
+    "jawaban": "font"
+  },
+  {
+    "soal": "Aku selalu ada di akhir pelangi tapi tidak bisa diraih. Apakah aku?",
+    "jawaban": "impian"
+  },
+  {
+    "soal": "Aku punya banyak halaman tapi bukan buku. Aku punya banyak cerita tapi bukan novel. Apakah aku?",
+    "jawaban": "hidup"
+  },
+  {
+    "soal": "Aku bisa jatuh dari langit tapi bukan hujan. Aku bisa putih tapi bukan salju. Apakah aku?",
+    "jawaban": "bulu"
+  },
+  {
+    "soal": "Aku ada di dalam dompetmu tapi bukan uang. Aku bisa membuka pintu tapi bukan kunci. Apakah aku?",
+    "jawaban": "kartu"
+  },
+  {
+    "soal": "Aku bisa menangkap angin tapi bukan layar. Aku bisa berputar tanpa lelah. Apakah aku?",
+    "jawaban": "kincir"
+  },
+  {
+    "soal": "Aku punya suara tapi tidak punya mulut. Aku bisa berteriak tapi tidak punya pita suara. Apakah aku?",
+    "jawaban": "lonceng"
+  },
+  {
+    "soal": "Aku bisa membuat kamu lapar hanya dengan melihatku. Apakah aku?",
+    "jawaban": "foto makanan"
+  },
+  {
+    "soal": "Aku tinggal di saku tapi tidak pernah tidur. Aku berdering tapi bukan bel. Apakah aku?",
+    "jawaban": "handphone"
+  },
+  {
+    "soal": "Aku bisa menjadi teman terbaikmu atau musuh terberatmu. Aku ada di mana-mana. Apakah aku?",
+    "jawaban": "kebiasaan"
+  }
 ]

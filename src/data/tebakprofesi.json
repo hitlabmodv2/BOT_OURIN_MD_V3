@@ -1,32 +1,402 @@
 [
-{"soal":"Aku bekerja di rumah sakit, merawat orang sakit, memberikan obat dan suntikan.","jawaban":"dokter"},
-{"soal":"Aku mengajar murid di sekolah, menjelaskan pelajaran, memberikan PR.","jawaban":"guru"},
-{"soal":"Aku membangun gedung dan rumah, bekerja dengan batu bata dan semen.","jawaban":"tukang bangunan"},
-{"soal":"Aku terbang membawa penumpang ke berbagai kota dan negara.","jawaban":"pilot"},
-{"soal":"Aku menjaga keamanan negara, menggunakan senjata, berlatih keras setiap hari.","jawaban":"tentara"},
-{"soal":"Aku memasak makanan lezat di restoran, menciptakan menu baru.","jawaban":"chef"},
-{"soal":"Aku membela klien di pengadilan, membaca undang-undang setiap hari.","jawaban":"pengacara"},
-{"soal":"Aku mendesain bangunan dan gedung, membuat gambar teknik.","jawaban":"arsitek"},
-{"soal":"Aku menulis berita, mewawancarai narasumber, kerja di media.","jawaban":"wartawan"},
-{"soal":"Aku memotong dan menata rambut, bekerja di salon.","jawaban":"tukang cukur"},
-{"soal":"Aku memadamkan api, menyelamatkan orang dari kebakaran.","jawaban":"pemadam kebakaran"},
-{"soal":"Aku mengendarai taksi atau ojek, mengantar penumpang ke tujuannya.","jawaban":"sopir"},
-{"soal":"Aku memperbaiki gigi, mengobati sakit gigi, kamu pasti takut sama aku.","jawaban":"dokter gigi"},
-{"soal":"Aku merancang pakaian dan busana, mengikuti tren mode terkini.","jawaban":"perancang busana"},
-{"soal":"Aku memerankan tokoh di film atau sinetron, tampil di layar kaca.","jawaban":"aktor"},
-{"soal":"Aku menjaga tanaman dan kebun, menanam sayuran dan buah.","jawaban":"petani"},
-{"soal":"Aku menangkap ikan di laut, bekerja sejak subuh, sering kehujanan di kapal.","jawaban":"nelayan"},
-{"soal":"Aku memprogram komputer, membuat aplikasi dan website.","jawaban":"programmer"},
-{"soal":"Aku mengantarkan surat dan paket ke alamat tujuan.","jawaban":"kurir"},
-{"soal":"Aku memeriksa pembukuan keuangan, menghitung pajak perusahaan.","jawaban":"akuntan"},
-{"soal":"Aku memotret momen penting, mengabadikan kenangan indah.","jawaban":"fotografer"},
-{"soal":"Aku menggambar dan melukis karya seni, bekerja dengan kuas dan cat.","jawaban":"pelukis"},
-{"soal":"Aku menjaga toko atau kasir, melayani pembeli, memberikan kembalian.","jawaban":"kasir"},
-{"soal":"Aku bermain musik di atas panggung, menghibur penonton.","jawaban":"musisi"},
-{"soal":"Aku mengoperasi pasien di kamar operasi, dibantu suster dan dokter anestesi.","jawaban":"dokter bedah"},
-{"soal":"Aku melatih atlet dan tim olahraga, memberi strategi dan semangat.","jawaban":"pelatih"},
-{"soal":"Aku menerjemahkan bahasa asing, membantu komunikasi antar negara.","jawaban":"penerjemah"},
-{"soal":"Aku mengendarai bus kota atau antarkota, mengangkut banyak penumpang.","jawaban":"supir bus"},
-{"soal":"Aku menerima tamu hotel, membantu check-in dan check-out.","jawaban":"resepsionis"},
-{"soal":"Aku bekerja di pesawat, melayani penumpang, memberikan makanan dan minuman.","jawaban":"pramugari"}
+  {
+    "soal": "Aku bekerja di rumah sakit, merawat orang sakit, memberikan obat dan suntikan.",
+    "jawaban": "dokter"
+  },
+  {
+    "soal": "Aku mengajar murid di sekolah, menjelaskan pelajaran, memberikan PR.",
+    "jawaban": "guru"
+  },
+  {
+    "soal": "Aku membangun gedung dan rumah, bekerja dengan batu bata dan semen.",
+    "jawaban": "tukang bangunan"
+  },
+  {
+    "soal": "Aku terbang membawa penumpang ke berbagai kota dan negara.",
+    "jawaban": "pilot"
+  },
+  {
+    "soal": "Aku menjaga keamanan negara, menggunakan senjata, berlatih keras setiap hari.",
+    "jawaban": "tentara"
+  },
+  {
+    "soal": "Aku memasak makanan lezat di restoran, menciptakan menu baru.",
+    "jawaban": "chef"
+  },
+  {
+    "soal": "Aku membela klien di pengadilan, membaca undang-undang setiap hari.",
+    "jawaban": "pengacara"
+  },
+  {
+    "soal": "Aku mendesain bangunan dan gedung, membuat gambar teknik.",
+    "jawaban": "arsitek"
+  },
+  {
+    "soal": "Aku menulis berita, mewawancarai narasumber, kerja di media.",
+    "jawaban": "wartawan"
+  },
+  {
+    "soal": "Aku memotong dan menata rambut, bekerja di salon.",
+    "jawaban": "tukang cukur"
+  },
+  {
+    "soal": "Aku memadamkan api, menyelamatkan orang dari kebakaran.",
+    "jawaban": "pemadam kebakaran"
+  },
+  {
+    "soal": "Aku mengendarai taksi atau ojek, mengantar penumpang ke tujuannya.",
+    "jawaban": "sopir"
+  },
+  {
+    "soal": "Aku memperbaiki gigi, mengobati sakit gigi, kamu pasti takut sama aku.",
+    "jawaban": "dokter gigi"
+  },
+  {
+    "soal": "Aku merancang pakaian dan busana, mengikuti tren mode terkini.",
+    "jawaban": "perancang busana"
+  },
+  {
+    "soal": "Aku memerankan tokoh di film atau sinetron, tampil di layar kaca.",
+    "jawaban": "aktor"
+  },
+  {
+    "soal": "Aku menjaga tanaman dan kebun, menanam sayuran dan buah.",
+    "jawaban": "petani"
+  },
+  {
+    "soal": "Aku menangkap ikan di laut, bekerja sejak subuh, sering kehujanan di kapal.",
+    "jawaban": "nelayan"
+  },
+  {
+    "soal": "Aku memprogram komputer, membuat aplikasi dan website.",
+    "jawaban": "programmer"
+  },
+  {
+    "soal": "Aku mengantarkan surat dan paket ke alamat tujuan.",
+    "jawaban": "kurir"
+  },
+  {
+    "soal": "Aku memeriksa pembukuan keuangan, menghitung pajak perusahaan.",
+    "jawaban": "akuntan"
+  },
+  {
+    "soal": "Aku memotret momen penting, mengabadikan kenangan indah.",
+    "jawaban": "fotografer"
+  },
+  {
+    "soal": "Aku menggambar dan melukis karya seni, bekerja dengan kuas dan cat.",
+    "jawaban": "pelukis"
+  },
+  {
+    "soal": "Aku menjaga toko atau kasir, melayani pembeli, memberikan kembalian.",
+    "jawaban": "kasir"
+  },
+  {
+    "soal": "Aku bermain musik di atas panggung, menghibur penonton.",
+    "jawaban": "musisi"
+  },
+  {
+    "soal": "Aku mengoperasi pasien di kamar operasi, dibantu suster dan dokter anestesi.",
+    "jawaban": "dokter bedah"
+  },
+  {
+    "soal": "Aku melatih atlet dan tim olahraga, memberi strategi dan semangat.",
+    "jawaban": "pelatih"
+  },
+  {
+    "soal": "Aku menerjemahkan bahasa asing, membantu komunikasi antar negara.",
+    "jawaban": "penerjemah"
+  },
+  {
+    "soal": "Aku mengendarai bus kota atau antarkota, mengangkut banyak penumpang.",
+    "jawaban": "supir bus"
+  },
+  {
+    "soal": "Aku menerima tamu hotel, membantu check-in dan check-out.",
+    "jawaban": "resepsionis"
+  },
+  {
+    "soal": "Aku bekerja di pesawat, melayani penumpang, memberikan makanan dan minuman.",
+    "jawaban": "pramugari"
+  },
+  {
+    "soal": "Aku menulis berita dan artikel untuk surat kabar, majalah, atau portal berita online.",
+    "jawaban": "jurnalis"
+  },
+  {
+    "soal": "Aku membuat dan mengelola program komputer, membangun website dan aplikasi mobile.",
+    "jawaban": "developer"
+  },
+  {
+    "soal": "Aku melukis kanvas, membuat patung atau karya seni visual untuk dipamerkan.",
+    "jawaban": "seniman"
+  },
+  {
+    "soal": "Aku memimpin perusahaan, membuat keputusan strategis dan mengelola seluruh sumber daya.",
+    "jawaban": "direktur"
+  },
+  {
+    "soal": "Aku merancang pakaian, membuat pola dan menjahit busana untuk koleksi fashion terkini.",
+    "jawaban": "desainer"
+  },
+  {
+    "soal": "Aku mengecat rumah, gedung, atau kendaraan dengan warna yang diinginkan klien.",
+    "jawaban": "tukang cat"
+  },
+  {
+    "soal": "Aku memangkas dan menata rambut pelanggan sesuai tren mode terkini.",
+    "jawaban": "stylist"
+  },
+  {
+    "soal": "Aku menjual barang di pasar atau toko, melayani pembeli dengan ramah dan informatif.",
+    "jawaban": "pedagang"
+  },
+  {
+    "soal": "Aku menulis kode program untuk menganalisis data besar dan membangun model kecerdasan buatan.",
+    "jawaban": "data scientist"
+  },
+  {
+    "soal": "Aku mengelola akun media sosial perusahaan, membuat konten dan memantau engagement.",
+    "jawaban": "social media manager"
+  },
+  {
+    "soal": "Aku membantu orang dengan masalah psikologis mereka lewat sesi konsultasi dan terapi.",
+    "jawaban": "psikolog"
+  },
+  {
+    "soal": "Aku mengajarkan gerakan yoga, meditasi, dan teknik pernafasan untuk keseimbangan tubuh.",
+    "jawaban": "instruktur yoga"
+  },
+  {
+    "soal": "Aku memandu wisatawan ke tempat-tempat menarik, menjelaskan sejarah dan budaya setempat.",
+    "jawaban": "pemandu wisata"
+  },
+  {
+    "soal": "Aku membuat konten video di YouTube atau TikTok dan menghasilkan pendapatan dari iklan.",
+    "jawaban": "content creator"
+  },
+  {
+    "soal": "Aku menyajikan berita dan informasi di depan kamera televisi kepada jutaan pemirsa.",
+    "jawaban": "presenter"
+  },
+  {
+    "soal": "Aku memimpin jalannya pertandingan olahraga, memastikan semua aturan dipatuhi pemain.",
+    "jawaban": "wasit"
+  },
+  {
+    "soal": "Aku membuat dan menjual roti, kue, dan pastri di toko atau pasar.",
+    "jawaban": "baker"
+  },
+  {
+    "soal": "Aku memeriksa dan memperbaiki kendaraan yang rusak di bengkel servis.",
+    "jawaban": "mekanik"
+  },
+  {
+    "soal": "Aku menjaga keamanan gedung, melarang orang yang tidak berkepentingan masuk.",
+    "jawaban": "satpam"
+  },
+  {
+    "soal": "Aku memotong rambut pria dan memberikan pelayanan grooming beard dan kumis.",
+    "jawaban": "barber"
+  },
+  {
+    "soal": "Aku membersihkan gedung, menyapu, dan mengepel lantai agar lingkungan tetap bersih.",
+    "jawaban": "cleaning service"
+  },
+  {
+    "soal": "Aku mengarahkan lalu lintas di persimpangan jalan yang ramai agar tidak macet.",
+    "jawaban": "polisi lalu lintas"
+  },
+  {
+    "soal": "Aku membuat desain grafis untuk iklan, poster, logo perusahaan dan kebutuhan visual.",
+    "jawaban": "desainer grafis"
+  },
+  {
+    "soal": "Aku merawat hewan peliharaan yang sakit, memberikan vaksin dan pengobatan yang diperlukan.",
+    "jawaban": "dokter hewan"
+  },
+  {
+    "soal": "Aku mengajarkan murid cara berenang yang benar dan melatih teknik pernapasan dalam air.",
+    "jawaban": "pelatih renang"
+  },
+  {
+    "soal": "Aku mengurus perpustakaan, membantu pengunjung mencari buku dan mengelola koleksi.",
+    "jawaban": "pustakawan"
+  },
+  {
+    "soal": "Aku membuat film dokumenter, mengatur kamera dan mengedit footage menjadi cerita visual.",
+    "jawaban": "videografer"
+  },
+  {
+    "soal": "Aku mengatur perjalanan wisata, memesan tiket dan hotel untuk klien sesuai budget.",
+    "jawaban": "agen perjalanan"
+  },
+  {
+    "soal": "Aku membuat animasi karakter untuk film, game, atau iklan menggunakan software komputer.",
+    "jawaban": "animator"
+  },
+  {
+    "soal": "Aku menyiarkan pertandingan olahraga secara langsung dengan komentari yang menarik.",
+    "jawaban": "komentator"
+  },
+  {
+    "soal": "Aku mengajar murid-murid cara memainkan instrumen musik tertentu di sekolah musik.",
+    "jawaban": "guru musik"
+  },
+  {
+    "soal": "Aku mengelola proyek konstruksi dari awal hingga selesai sesuai waktu dan anggaran.",
+    "jawaban": "manajer proyek"
+  },
+  {
+    "soal": "Aku menjahit pakaian, membuat seragam, atau memperbaiki baju yang rusak.",
+    "jawaban": "penjahit"
+  },
+  {
+    "soal": "Aku memainkan peran sebagai karakter favorit di event cosplay atau pameran komik.",
+    "jawaban": "cosplayer"
+  },
+  {
+    "soal": "Aku membuat model matematika dan statistik untuk membantu perusahaan mengambil keputusan.",
+    "jawaban": "aktuaris"
+  },
+  {
+    "soal": "Aku memeriksa makanan dan minuman agar aman dikonsumsi sesuai standar kesehatan nasional.",
+    "jawaban": "inspektur pangan"
+  },
+  {
+    "soal": "Aku mengelola dan merawat taman kota, kebun, atau area hijau milik pribadi maupun publik.",
+    "jawaban": "tukang kebun"
+  },
+  {
+    "soal": "Aku mengajar tarian tradisional atau modern kepada murid-murid di sanggar seni.",
+    "jawaban": "guru tari"
+  },
+  {
+    "soal": "Aku mengelola gudang dan memastikan stok barang selalu tersedia dan teratur.",
+    "jawaban": "staf gudang"
+  },
+  {
+    "soal": "Aku membantu pasien berjalan kembali setelah cedera atau operasi dengan latihan fisik.",
+    "jawaban": "fisioterapis"
+  },
+  {
+    "soal": "Aku membuat menu makanan sehat dan rencana diet untuk klien berdasarkan kebutuhan gizi.",
+    "jawaban": "ahli gizi"
+  },
+  {
+    "soal": "Aku memangkas dan merawat pohon agar tetap sehat dan tidak membahayakan lingkungan.",
+    "jawaban": "arborist"
+  },
+  {
+    "soal": "Aku memeriksa kondisi listrik di rumah dan gedung, memastikan tidak ada korsleting berbahaya.",
+    "jawaban": "teknisi listrik"
+  },
+  {
+    "soal": "Aku memperbaiki pipa bocor, saluran air tersumbat, dan instalasi sanitasi di rumah.",
+    "jawaban": "tukang ledeng"
+  },
+  {
+    "soal": "Aku menyediakan keamanan siber bagi perusahaan agar tidak diretas oleh pihak tidak bertanggung jawab.",
+    "jawaban": "hacker etis"
+  },
+  {
+    "soal": "Aku meneliti fosil dan sisa-sisa makhluk yang hidup jutaan tahun lalu.",
+    "jawaban": "paleontolog"
+  },
+  {
+    "soal": "Aku menyelam ke dasar laut untuk memeriksa dan memperbaiki infrastruktur bawah air.",
+    "jawaban": "penyelam profesional"
+  },
+  {
+    "soal": "Aku mengelola kegiatan sosial dan advokasi bagi masyarakat yang membutuhkan bantuan.",
+    "jawaban": "pekerja sosial"
+  },
+  {
+    "soal": "Aku menguji software aplikasi untuk menemukan bug dan memastikan kualitasnya sebelum dirilis.",
+    "jawaban": "quality assurance"
+  },
+  {
+    "soal": "Aku mengelola dan mengawasi jalannya operasional bandara setiap harinya.",
+    "jawaban": "staf bandara"
+  },
+  {
+    "soal": "Aku mengelola keuangan pribadi atau bisnis klien agar investasinya menguntungkan.",
+    "jawaban": "perencana keuangan"
+  },
+  {
+    "soal": "Aku memastikan kapal berlayar dengan aman, menentukan rute dan menangani keadaan darurat.",
+    "jawaban": "kapten kapal"
+  },
+  {
+    "soal": "Aku membuat arsip digital dan mengelola data penting agar mudah diakses kembali.",
+    "jawaban": "arsiparis"
+  },
+  {
+    "soal": "Aku memimpin doa dan ibadah di masjid setiap hari lima waktu.",
+    "jawaban": "imam"
+  },
+  {
+    "soal": "Aku mengajarkan cara berkendara yang benar dan aman kepada calon pengemudi baru.",
+    "jawaban": "instruktur mengemudi"
+  },
+  {
+    "soal": "Aku memberi motivasi dan semangat kepada orang lain lewat seminar dan buku self-help.",
+    "jawaban": "motivator"
+  },
+  {
+    "soal": "Aku bertanggung jawab atas keamanan dan keselamatan seluruh penumpang di kapal.",
+    "jawaban": "perwira kapal"
+  },
+  {
+    "soal": "Aku memerankan tokoh jahat, pahlawan, atau karakter apapun di atas panggung teater.",
+    "jawaban": "aktor teater"
+  },
+  {
+    "soal": "Aku mengelola keuangan negara, menyusun anggaran dan kebijakan fiskal tahunan.",
+    "jawaban": "ekonom"
+  },
+  {
+    "soal": "Aku menguji keamanan sistem komputer dengan cara yang sama seperti peretas jahat.",
+    "jawaban": "pentester"
+  },
+  {
+    "soal": "Aku meneliti bintang, planet, dan galaksi menggunakan teleskop dan data satelit.",
+    "jawaban": "astronom"
+  },
+  {
+    "soal": "Aku membuat resep obat dan menjelaskan cara penggunaan obat yang benar kepada pasien.",
+    "jawaban": "apoteker"
+  },
+  {
+    "soal": "Aku menulis naskah untuk film, sinetron, atau drama panggung yang dipentaskan.",
+    "jawaban": "penulis naskah"
+  },
+  {
+    "soal": "Aku mengatur teknis pencahayaan dan suara untuk konser dan pertunjukan langsung.",
+    "jawaban": "teknisi panggung"
+  },
+  {
+    "soal": "Aku meneliti berbagai tanaman obat dan manfaatnya untuk kesehatan manusia.",
+    "jawaban": "herbalis"
+  },
+  {
+    "soal": "Aku memimpin orchestra, mengarahkan pemain musik agar harmonis dan sesuai partitur.",
+    "jawaban": "konduktor"
+  },
+  {
+    "soal": "Aku mengajarkan cara bernapas dan teknik vokal untuk penyanyi profesional.",
+    "jawaban": "vocal coach"
+  },
+  {
+    "soal": "Aku bertanggung jawab atas keselamatan penumpang di wahana permainan taman hiburan.",
+    "jawaban": "operator wahana"
+  },
+  {
+    "soal": "Aku membuat keputusan hukum di pengadilan berdasarkan bukti dan fakta yang ada.",
+    "jawaban": "hakim"
+  },
+  {
+    "soal": "Aku mengelola brand sebuah produk, mengatur strategi pemasaran dan iklan di semua platform.",
+    "jawaban": "brand manager"
+  }
 ]

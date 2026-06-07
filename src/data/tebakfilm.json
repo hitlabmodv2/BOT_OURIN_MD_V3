@@ -1,52 +1,402 @@
 [
-  {"soal":"Film animasi Disney tentang putri es yang punya kekuatan beku, bersama adiknya menyelamatkan kerajaan. Lagunya 'Let It Go' sangat terkenal.","jawaban":"frozen"},
-  {"soal":"Film superhero Marvel tentang manusia laba-laba remaja dari New York yang melawan penjahat kota.","jawaban":"spiderman"},
-  {"soal":"Film tentang seorang hobbit yang membantu para kurcaci merebut kembali gunung dari naga Smaug.","jawaban":"the hobbit"},
-  {"soal":"Film Indonesia tentang pencak silat, aksi laga dengan koreografi bela diri kelas dunia, dibintangi Iko Uwais.","jawaban":"the raid"},
-  {"soal":"Film animasi tentang mainan-mainan yang berpetualang tanpa sepengetahuan pemiliknya ketika manusia pergi.","jawaban":"toy story"},
-  {"soal":"Film tentang seorang pria yang terjebak di pulau terpencil selama bertahun-tahun hanya ditemani bola bernama Wilson.","jawaban":"cast away"},
-  {"soal":"Film fiksi ilmiah tentang dunia simulasi komputer, manusia memilih antara pil merah atau biru.","jawaban":"the matrix"},
-  {"soal":"Film horor Indonesia tentang hantu wanita berambut panjang yang menakuti warga kampung.","jawaban":"kuntilanak"},
-  {"soal":"Film tentang kapal mewah yang tenggelam setelah menabrak gunung es, kisah cinta antara kelas atas dan bawah.","jawaban":"titanic"},
-  {"soal":"Film animasi tentang ikan badut yang mencari anaknya di lautan luas bersama ikan pelupa.","jawaban":"finding nemo"},
-  {"soal":"Film tentang seorang pejuang kemerdekaan Indonesia yang melawan penjajah Belanda, dibintangi Dian Sastro.","jawaban":"laskar pelangi"},
-  {"soal":"Film superhero DC tentang manusia kelelawar kaya raya yang melindungi kota Gotham dari penjahat.","jawaban":"batman"},
-  {"soal":"Film tentang seorang pria berbaju besi yang membangun setelan lapis baja untuk melawan kejahatan, Tony Stark.","jawaban":"iron man"},
-  {"soal":"Film animasi tentang seorang putri berambut panjang ajaib yang dikurung di menara tinggi.","jawaban":"tangled"},
-  {"soal":"Film horor tentang boneka dengan rambut merah yang bisa berjalan dan membunuh orang.","jawaban":"chucky"},
-  {"soal":"Film tentang perjalanan panjang seorang pria yang berlari melintasi Amerika Serikat, 'Life is like a box of chocolates'.","jawaban":"forrest gump"},
-  {"soal":"Film tentang dunia sihir, seorang anak yatim piatu yang masuk sekolah penyihir Hogwarts.","jawaban":"harry potter"},
-  {"soal":"Film Indonesia tentang anak-anak miskin di Belitung yang berjuang untuk sekolah dan bermimpi besar.","jawaban":"laskar pelangi"},
-  {"soal":"Film animasi tentang seorang chef tikus yang bermimpi memasak di restoran mewah Paris.","jawaban":"ratatouille"},
-  {"soal":"Film tentang alien kecil berwarna abu-abu yang terjebak di Bumi dan bersahabat dengan anak kecil.","jawaban":"e.t."},
-  {"soal":"Film superhero tentang penguasa Wakanda, kerajaan Afrika dengan teknologi canggih dan vibranium.","jawaban":"black panther"},
-  {"soal":"Film tentang perempuan cantik yang terkena kutukan tidur abadi oleh penyihir jahat, diselamatkan ciuman pangeran.","jawaban":"sleeping beauty"},
-  {"soal":"Film aksi tentang mata-mata paling terkenal, agen 007 dari Inggris, suka Martini dikocok bukan diaduk.","jawaban":"james bond"},
-  {"soal":"Film tentang manusia super berbaju cape merah, berasal dari planet Krypton, lemah terhadap batu hijau.","jawaban":"superman"},
-  {"soal":"Film horor Indonesia tentang teror di sebuah hotel tua dan angker di pegunungan.","jawaban":"pengabdi setan"},
-  {"soal":"Film animasi tentang robot kecil yang tertinggal di Bumi penuh sampah, jatuh cinta pada robot cantik.","jawaban":"wall-e"},
-  {"soal":"Film tentang petualangan di dunia yang ada di dalam buku—setiap kata yang dibaca jadi nyata.","jawaban":"inkheart"},
-  {"soal":"Film tentang seorang lelaki tua pemarah yang mengikat ribuan balon ke rumahnya dan terbang ke South America.","jawaban":"up"},
-  {"soal":"Film tentang penghuni hutan lebat Kalimantan yang berjuang mempertahankan habitatnya dari pembalakan liar.","jawaban":"sokola rimba"},
-  {"soal":"Film Korea tentang keluarga miskin yang menyusup ke keluarga kaya, meraih kepercayaan secara perlahan.","jawaban":"parasite"},
-  {"soal":"Film animasi Jepang tentang gadis kecil yang orang tuanya berubah menjadi babi di dunia roh.","jawaban":"spirited away"},
-  {"soal":"Film tentang tim astronot yang mencari planet baru untuk manusia karena Bumi tidak lagi layak huni.","jawaban":"interstellar"},
-  {"soal":"Film Indonesia tentang seorang guru muda yang mengajar di daerah terpencil dan mengubah kehidupan siswanya.","jawaban":"guru bangsa tjokroaminoto"},
-  {"soal":"Film horor tentang seorang gadis yang kerasukan setan dan harus diusir oleh seorang pastor tua.","jawaban":"the exorcist"},
-  {"soal":"Film aksi tentang keluarga profesional yang ahli mencuri rahasia dari mimpi orang lain.","jawaban":"inception"},
-  {"soal":"Film animasi tentang putri pemberani dari Skotlandia yang mengubah nasibnya sendiri menggunakan panah.","jawaban":"brave"},
-  {"soal":"Film Indonesia tentang remaja SMA yang berjuang melawan bullying dan menemukan persahabatan sejati.","jawaban":"dua garis biru"},
-  {"soal":"Film tentang bajak laut eksentrik yang berlayar mencari harta karun dengan kapal berhantu.","jawaban":"pirates of the caribbean"},
-  {"soal":"Film animasi tentang seorang gadis kecil yang masuk ke dunia ajaib melalui sebuah lubang di taman.","jawaban":"alice in wonderland"},
-  {"soal":"Film tentang tim superhero yang berkumpul untuk melawan ancaman alien yang ingin menghancurkan Bumi.","jawaban":"avengers"},
-  {"soal":"Film horor tentang dua detektif yang menyelidiki pembunuhan berantai berdasarkan tujuh dosa mematikan.","jawaban":"seven"},
-  {"soal":"Film Indonesia tentang persahabatan mahasiswa Jakarta yang penuh drama, cinta, dan perjuangan kuliah.","jawaban":"ada apa dengan cinta"},
-  {"soal":"Film animasi tentang singa muda yang lari dari kerajaannya setelah ayahnya mati, kembali dewasa untuk merebut takhta.","jawaban":"the lion king"},
-  {"soal":"Film tentang anak muda yang menemukan cincin sakti dan harus menghancurkannya sebelum kekuatan jahat menguasai dunia.","jawaban":"lord of the rings"},
-  {"soal":"Film aksi Indonesia tentang polisi muda yang menyamar di sekolah menengah untuk mengungkap jaringan narkoba.","jawaban":"bad boys"},
-  {"soal":"Film tentang sekelompok remaja yang terperangkap di labirin misterius penuh monster dan harus melarikan diri.","jawaban":"maze runner"},
-  {"soal":"Film tentang manusia setengah dewa dari Olympus yang berjuang melawan monster-monster mitologi Yunani.","jawaban":"hercules"},
-  {"soal":"Film animasi tentang ratu es yang mengucilkan diri dari kerajaannya karena takut kekuatannya melukai orang lain.","jawaban":"frozen"},
-  {"soal":"Film tentang seorang nabi yang memimpin bangsanya keluar dari perbudakan di Mesir dengan membelah lautan.","jawaban":"the ten commandments"},
-  {"soal":"Film Indonesia horor tentang teror di sebuah desa terpencil yang diserang makhluk gaib setiap malam.","jawaban":"KKN di desa penari"}
+  {
+    "soal": "Film animasi Disney tentang putri es yang punya kekuatan beku, bersama adiknya menyelamatkan kerajaan. Lagunya 'Let It Go' sangat terkenal.",
+    "jawaban": "frozen"
+  },
+  {
+    "soal": "Film superhero Marvel tentang manusia laba-laba remaja dari New York yang melawan penjahat kota.",
+    "jawaban": "spiderman"
+  },
+  {
+    "soal": "Film tentang seorang hobbit yang membantu para kurcaci merebut kembali gunung dari naga Smaug.",
+    "jawaban": "the hobbit"
+  },
+  {
+    "soal": "Film Indonesia tentang pencak silat, aksi laga dengan koreografi bela diri kelas dunia, dibintangi Iko Uwais.",
+    "jawaban": "the raid"
+  },
+  {
+    "soal": "Film animasi tentang mainan-mainan yang berpetualang tanpa sepengetahuan pemiliknya ketika manusia pergi.",
+    "jawaban": "toy story"
+  },
+  {
+    "soal": "Film tentang seorang pria yang terjebak di pulau terpencil selama bertahun-tahun hanya ditemani bola bernama Wilson.",
+    "jawaban": "cast away"
+  },
+  {
+    "soal": "Film fiksi ilmiah tentang dunia simulasi komputer, manusia memilih antara pil merah atau biru.",
+    "jawaban": "the matrix"
+  },
+  {
+    "soal": "Film horor Indonesia tentang hantu wanita berambut panjang yang menakuti warga kampung.",
+    "jawaban": "kuntilanak"
+  },
+  {
+    "soal": "Film tentang kapal mewah yang tenggelam setelah menabrak gunung es, kisah cinta antara kelas atas dan bawah.",
+    "jawaban": "titanic"
+  },
+  {
+    "soal": "Film animasi tentang ikan badut yang mencari anaknya di lautan luas bersama ikan pelupa.",
+    "jawaban": "finding nemo"
+  },
+  {
+    "soal": "Film tentang seorang pejuang kemerdekaan Indonesia yang melawan penjajah Belanda, dibintangi Dian Sastro.",
+    "jawaban": "laskar pelangi"
+  },
+  {
+    "soal": "Film superhero DC tentang manusia kelelawar kaya raya yang melindungi kota Gotham dari penjahat.",
+    "jawaban": "batman"
+  },
+  {
+    "soal": "Film tentang seorang pria berbaju besi yang membangun setelan lapis baja untuk melawan kejahatan, Tony Stark.",
+    "jawaban": "iron man"
+  },
+  {
+    "soal": "Film animasi tentang seorang putri berambut panjang ajaib yang dikurung di menara tinggi.",
+    "jawaban": "tangled"
+  },
+  {
+    "soal": "Film horor tentang boneka dengan rambut merah yang bisa berjalan dan membunuh orang.",
+    "jawaban": "chucky"
+  },
+  {
+    "soal": "Film tentang perjalanan panjang seorang pria yang berlari melintasi Amerika Serikat, 'Life is like a box of chocolates'.",
+    "jawaban": "forrest gump"
+  },
+  {
+    "soal": "Film tentang dunia sihir, seorang anak yatim piatu yang masuk sekolah penyihir Hogwarts.",
+    "jawaban": "harry potter"
+  },
+  {
+    "soal": "Film Indonesia tentang anak-anak miskin di Belitung yang berjuang untuk sekolah dan bermimpi besar.",
+    "jawaban": "laskar pelangi"
+  },
+  {
+    "soal": "Film animasi tentang seorang chef tikus yang bermimpi memasak di restoran mewah Paris.",
+    "jawaban": "ratatouille"
+  },
+  {
+    "soal": "Film tentang alien kecil berwarna abu-abu yang terjebak di Bumi dan bersahabat dengan anak kecil.",
+    "jawaban": "e.t."
+  },
+  {
+    "soal": "Film superhero tentang penguasa Wakanda, kerajaan Afrika dengan teknologi canggih dan vibranium.",
+    "jawaban": "black panther"
+  },
+  {
+    "soal": "Film tentang perempuan cantik yang terkena kutukan tidur abadi oleh penyihir jahat, diselamatkan ciuman pangeran.",
+    "jawaban": "sleeping beauty"
+  },
+  {
+    "soal": "Film aksi tentang mata-mata paling terkenal, agen 007 dari Inggris, suka Martini dikocok bukan diaduk.",
+    "jawaban": "james bond"
+  },
+  {
+    "soal": "Film tentang manusia super berbaju cape merah, berasal dari planet Krypton, lemah terhadap batu hijau.",
+    "jawaban": "superman"
+  },
+  {
+    "soal": "Film horor Indonesia tentang teror di sebuah hotel tua dan angker di pegunungan.",
+    "jawaban": "pengabdi setan"
+  },
+  {
+    "soal": "Film animasi tentang robot kecil yang tertinggal di Bumi penuh sampah, jatuh cinta pada robot cantik.",
+    "jawaban": "wall-e"
+  },
+  {
+    "soal": "Film tentang petualangan di dunia yang ada di dalam buku—setiap kata yang dibaca jadi nyata.",
+    "jawaban": "inkheart"
+  },
+  {
+    "soal": "Film tentang seorang lelaki tua pemarah yang mengikat ribuan balon ke rumahnya dan terbang ke South America.",
+    "jawaban": "up"
+  },
+  {
+    "soal": "Film tentang penghuni hutan lebat Kalimantan yang berjuang mempertahankan habitatnya dari pembalakan liar.",
+    "jawaban": "sokola rimba"
+  },
+  {
+    "soal": "Film Korea tentang keluarga miskin yang menyusup ke keluarga kaya, meraih kepercayaan secara perlahan.",
+    "jawaban": "parasite"
+  },
+  {
+    "soal": "Film animasi Jepang tentang gadis kecil yang orang tuanya berubah menjadi babi di dunia roh.",
+    "jawaban": "spirited away"
+  },
+  {
+    "soal": "Film tentang tim astronot yang mencari planet baru untuk manusia karena Bumi tidak lagi layak huni.",
+    "jawaban": "interstellar"
+  },
+  {
+    "soal": "Film Indonesia tentang seorang guru muda yang mengajar di daerah terpencil dan mengubah kehidupan siswanya.",
+    "jawaban": "guru bangsa tjokroaminoto"
+  },
+  {
+    "soal": "Film horor tentang seorang gadis yang kerasukan setan dan harus diusir oleh seorang pastor tua.",
+    "jawaban": "the exorcist"
+  },
+  {
+    "soal": "Film aksi tentang keluarga profesional yang ahli mencuri rahasia dari mimpi orang lain.",
+    "jawaban": "inception"
+  },
+  {
+    "soal": "Film animasi tentang putri pemberani dari Skotlandia yang mengubah nasibnya sendiri menggunakan panah.",
+    "jawaban": "brave"
+  },
+  {
+    "soal": "Film Indonesia tentang remaja SMA yang berjuang melawan bullying dan menemukan persahabatan sejati.",
+    "jawaban": "dua garis biru"
+  },
+  {
+    "soal": "Film tentang bajak laut eksentrik yang berlayar mencari harta karun dengan kapal berhantu.",
+    "jawaban": "pirates of the caribbean"
+  },
+  {
+    "soal": "Film animasi tentang seorang gadis kecil yang masuk ke dunia ajaib melalui sebuah lubang di taman.",
+    "jawaban": "alice in wonderland"
+  },
+  {
+    "soal": "Film tentang tim superhero yang berkumpul untuk melawan ancaman alien yang ingin menghancurkan Bumi.",
+    "jawaban": "avengers"
+  },
+  {
+    "soal": "Film horor tentang dua detektif yang menyelidiki pembunuhan berantai berdasarkan tujuh dosa mematikan.",
+    "jawaban": "seven"
+  },
+  {
+    "soal": "Film Indonesia tentang persahabatan mahasiswa Jakarta yang penuh drama, cinta, dan perjuangan kuliah.",
+    "jawaban": "ada apa dengan cinta"
+  },
+  {
+    "soal": "Film animasi tentang singa muda yang lari dari kerajaannya setelah ayahnya mati, kembali dewasa untuk merebut takhta.",
+    "jawaban": "the lion king"
+  },
+  {
+    "soal": "Film tentang anak muda yang menemukan cincin sakti dan harus menghancurkannya sebelum kekuatan jahat menguasai dunia.",
+    "jawaban": "lord of the rings"
+  },
+  {
+    "soal": "Film aksi Indonesia tentang polisi muda yang menyamar di sekolah menengah untuk mengungkap jaringan narkoba.",
+    "jawaban": "bad boys"
+  },
+  {
+    "soal": "Film tentang sekelompok remaja yang terperangkap di labirin misterius penuh monster dan harus melarikan diri.",
+    "jawaban": "maze runner"
+  },
+  {
+    "soal": "Film tentang manusia setengah dewa dari Olympus yang berjuang melawan monster-monster mitologi Yunani.",
+    "jawaban": "hercules"
+  },
+  {
+    "soal": "Film animasi tentang ratu es yang mengucilkan diri dari kerajaannya karena takut kekuatannya melukai orang lain.",
+    "jawaban": "frozen"
+  },
+  {
+    "soal": "Film tentang seorang nabi yang memimpin bangsanya keluar dari perbudakan di Mesir dengan membelah lautan.",
+    "jawaban": "the ten commandments"
+  },
+  {
+    "soal": "Film Indonesia horor tentang teror di sebuah desa terpencil yang diserang makhluk gaib setiap malam.",
+    "jawaban": "KKN di desa penari"
+  },
+  {
+    "soal": "Seorang wanita menemukan buku tua yang mengubah hidupnya, petualangan di dunia sihir pun dimulai.",
+    "jawaban": "narnia"
+  },
+  {
+    "soal": "Detektif pintar dan mitranya memecahkan kasus kriminal di London abad 19 menggunakan logika.",
+    "jawaban": "sherlock holmes"
+  },
+  {
+    "soal": "Petarung terpilih memasuki turnamen survival mematikan di masa depan untuk bertahan hidup.",
+    "jawaban": "hunger games"
+  },
+  {
+    "soal": "Seorang pria terbangun dari koma dan mendapati dunianya berubah total selama ia tidak sadar.",
+    "jawaban": "sleepy hollow"
+  },
+  {
+    "soal": "Dua saudara kembar terpisah sejak lahir bertemu kembali secara kebetulan dan memiliki misi serupa.",
+    "jawaban": "parent trap"
+  },
+  {
+    "soal": "Film horor Korea tentang keluarga yang disandera hantu di rumah mewah dengan ruang rahasia.",
+    "jawaban": "the wailing"
+  },
+  {
+    "soal": "Anak-anak menemukan peta harta karun dan berpetualang menghindari penjahat untuk menemukannya.",
+    "jawaban": "the goonies"
+  },
+  {
+    "soal": "Seorang mantan tentara bayaran mendapat kemampuan super setelah uji coba eksperimental.",
+    "jawaban": "deadpool"
+  },
+  {
+    "soal": "Ilmuwan berhasil mengkloning dinosaurus namun semua rencana berantakan saat hewan purba lepas.",
+    "jawaban": "jurassic park"
+  },
+  {
+    "soal": "Dua prajurit dari Korea berperang di era kolonial, seorang jatuh cinta dengan gadis bangsawan.",
+    "jawaban": "battleship potemkin"
+  },
+  {
+    "soal": "Pria bermasker besi terjebak di penjara selama bertahun-tahun karena menyimpan rahasia kerajaan.",
+    "jawaban": "man in the iron mask"
+  },
+  {
+    "soal": "Astronot terdampar sendirian di Mars dan harus bertahan hidup menggunakan ilmu pengetahuan.",
+    "jawaban": "the martian"
+  },
+  {
+    "soal": "Sekelompok perampok profesional merencanakan pencurian paling rumit yang pernah ada.",
+    "jawaban": "ocean's eleven"
+  },
+  {
+    "soal": "Gadis biasa terpilih sebagai calon pengantin pangeran dalam kompetisi khusus antar remaja.",
+    "jawaban": "princess diaries"
+  },
+  {
+    "soal": "Seorang nelayan tua berjuang sendirian menangkap ikan marlin raksasa di samudra lepas.",
+    "jawaban": "old man and the sea"
+  },
+  {
+    "soal": "Film tentang kembar yang tertukar dan menjalani kehidupan saling bertukar secara diam-diam.",
+    "jawaban": "freaky friday"
+  },
+  {
+    "soal": "Perempuan berbadan besar yang selalu dianggap remeh membuktikan dirinya di industri musik.",
+    "jawaban": "sing"
+  },
+  {
+    "soal": "Pria biasa yang menemukan kekuatan super dari pakaian yang diciptakan ilmuwan misterius.",
+    "jawaban": "the flash"
+  },
+  {
+    "soal": "Film animasi tentang rusa yang ibunya mati ditembak pemburu dan harus belajar hidup di hutan.",
+    "jawaban": "bambi"
+  },
+  {
+    "soal": "Sepasang kakak beradik berani masuk ke rumah tua angker untuk mencari harta peninggalan orang tua.",
+    "jawaban": "haunting of hill house"
+  },
+  {
+    "soal": "Sekelompok teman memulai usaha makanan dari modal nol dan berjuang di tengah persaingan ketat.",
+    "jawaban": "chef"
+  },
+  {
+    "soal": "Pria dan wanita bertemu di kota yang sama setiap tahun selama lima tahun dan jatuh cinta perlahan.",
+    "jawaban": "before sunrise"
+  },
+  {
+    "soal": "Pasukan khusus dikirim ke dalam hutan Amazon untuk misi yang ternyata menyimpan ancaman tak terduga.",
+    "jawaban": "predator"
+  },
+  {
+    "soal": "Wanita pemberani memimpin pasukannya melawan kerajaan lalim untuk membebaskan rakyatnya yang tertindas.",
+    "jawaban": "mulan"
+  },
+  {
+    "soal": "Film tentang seorang guru yang menginspirasi murid-murid dari lingkungan keras lewat matematika.",
+    "jawaban": "stand and deliver"
+  },
+  {
+    "soal": "Seluruh penghuni bumi mendapati manusia tiba-tiba hilang dan alam liar kembali berkuasa.",
+    "jawaban": "i am legend"
+  },
+  {
+    "soal": "Ilmuwan menemukan mesin waktu dan terus kembali ke masa lalu untuk mengubah satu kejadian fatal.",
+    "jawaban": "back to the future"
+  },
+  {
+    "soal": "Remaja Indonesia berteman dengan drakula muda dan menjalani petualangan di kegelapan malam.",
+    "jawaban": "dilan"
+  },
+  {
+    "soal": "Film animasi Pixar tentang anak yang masuk ke dunia roh untuk menemukan leluhurnya yang terlupakan.",
+    "jawaban": "coco"
+  },
+  {
+    "soal": "Superhero bertubuh kecil yang bisa mengecil sekecil semut namun sekuat gajah dalam pertempuran.",
+    "jawaban": "ant-man"
+  },
+  {
+    "soal": "Seorang wanita menemukan suaminya ternyata alien dan harus memilih antara cinta dan keselamatan bumi.",
+    "jawaban": "men in black"
+  },
+  {
+    "soal": "Film animasi Pixar tentang monster yang bekerja menakut-nakuti anak-anak sebagai sumber energi.",
+    "jawaban": "monsters inc"
+  },
+  {
+    "soal": "Film animasi tentang sepasang ikan yang hidup harmonis namun terancam oleh polusi lautan.",
+    "jawaban": "finding dory"
+  },
+  {
+    "soal": "Seorang detektif tua pensiun dipaksa kembali bertugas ketika kasus lama bangkit kembali.",
+    "jawaban": "knives out"
+  },
+  {
+    "soal": "Seorang pria terbangun dan mendapati dirinya terjebak dalam satu hari yang sama berulang terus.",
+    "jawaban": "groundhog day"
+  },
+  {
+    "soal": "Film India tentang pemuda miskin yang memenangkan Who Wants to Be a Millionaire mengejutkan semua.",
+    "jawaban": "slumdog millionaire"
+  },
+  {
+    "soal": "Film tentang seorang nelayan yang bertarung dengan hiu raksasa yang menghantui pantainya.",
+    "jawaban": "jaws"
+  },
+  {
+    "soal": "Gadis cilik yang tinggal di peternakan terseret tornado ke negeri ajaib penuh makhluk aneh.",
+    "jawaban": "wizard of oz"
+  },
+  {
+    "soal": "Film tentang korupsi di lembaga penegak hukum yang dibongkar oleh jurnalis investigasi.",
+    "jawaban": "spotlight"
+  },
+  {
+    "soal": "Dua sahabat melakukan perjalanan panjang terakhir bersama sebelum salah satu dari mereka pergi.",
+    "jawaban": "the bucket list"
+  },
+  {
+    "soal": "Film Indonesia tentang kisah cinta dua remaja di Bandung pada era 1990-an.",
+    "jawaban": "dilan 1990"
+  },
+  {
+    "soal": "Film animasi tentang anjing yang memiliki kekuatan super namun tidak menyadarinya.",
+    "jawaban": "bolt"
+  },
+  {
+    "soal": "Film thriller tentang seorang wanita yang menyadari suaminya berencana membunuhnya.",
+    "jawaban": "gaslight"
+  },
+  {
+    "soal": "Film animasi tentang ikan kecil yang terpisah dari keluarganya di Great Barrier Reef.",
+    "jawaban": "finding nemo 2"
+  },
+  {
+    "soal": "Superhero berlapis es yang bisa membekukan apapun dalam sekejap untuk melindungi dunianya.",
+    "jawaban": "iceman"
+  },
+  {
+    "soal": "Film tentang seorang pemuda yang menemukan bahwa seluruh hidupnya ditayangkan sebagai reality show.",
+    "jawaban": "the truman show"
+  },
+  {
+    "soal": "Seorang pilot legendaris harus mengejar musuh lama sambil melatih pilot muda generasi baru.",
+    "jawaban": "top gun maverick"
+  },
+  {
+    "soal": "Sekelompok kriminal berencana merampok kasino paling ketat keamanannya di Las Vegas.",
+    "jawaban": "ocean eleven"
+  },
+  {
+    "soal": "Film dokumenter tentang kondisi lingkungan hidup dan perubahan iklim yang mengancam bumi.",
+    "jawaban": "an inconvenient truth"
+  },
+  {
+    "soal": "Seorang bocah laki-laki yang terlihat setan hanya berbicara dengan psikolog yang tidak tahu dirinya hantu.",
+    "jawaban": "the sixth sense"
+  }
 ]
