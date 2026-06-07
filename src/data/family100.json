@@ -1,0 +1,1325 @@
+[
+  {
+    "soal": "Sebutkan buah yang biasa dijual di pasar tradisional!",
+    "jawaban": [
+      "Mangga",
+      "Pisang",
+      "Jeruk",
+      "Semangka",
+      "Pepaya",
+      "Apel",
+      "Nanas",
+      "Rambutan"
+    ]
+  },
+  {
+    "soal": "Sebutkan hewan peliharaan yang umum di Indonesia!",
+    "jawaban": [
+      "Kucing",
+      "Anjing",
+      "Ayam",
+      "Burung",
+      "Ikan",
+      "Kelinci",
+      "Hamster",
+      "Kura-kura"
+    ]
+  },
+  {
+    "soal": "Sebutkan makanan yang biasa ada di warteg!",
+    "jawaban": [
+      "Ayam goreng",
+      "Tempe",
+      "Tahu",
+      "Sayur lodeh",
+      "Rendang",
+      "Ikan asin",
+      "Telur dadar",
+      "Sayur bayam"
+    ]
+  },
+  {
+    "soal": "Sebutkan warna yang ada di pelangi!",
+    "jawaban": [
+      "Merah",
+      "Jingga",
+      "Kuning",
+      "Hijau",
+      "Biru",
+      "Nila",
+      "Ungu"
+    ]
+  },
+  {
+    "soal": "Sebutkan minuman yang sering dipesan di warteg!",
+    "jawaban": [
+      "Es teh",
+      "Es jeruk",
+      "Teh hangat",
+      "Kopi",
+      "Air putih",
+      "Es campur",
+      "Susu"
+    ]
+  },
+  {
+    "soal": "Sebutkan pelajaran yang ada di sekolah SD!",
+    "jawaban": [
+      "Matematika",
+      "Bahasa Indonesia",
+      "IPA",
+      "IPS",
+      "Agama",
+      "Bahasa Inggris",
+      "Olahraga",
+      "Seni"
+    ]
+  },
+  {
+    "soal": "Sebutkan kendaraan yang biasa ada di jalan raya!",
+    "jawaban": [
+      "Motor",
+      "Mobil",
+      "Bis",
+      "Truk",
+      "Angkot",
+      "Ojek",
+      "Sepeda",
+      "Taksi"
+    ]
+  },
+  {
+    "soal": "Sebutkan bagian tubuh manusia yang ada di kepala!",
+    "jawaban": [
+      "Mata",
+      "Hidung",
+      "Telinga",
+      "Mulut",
+      "Rambut",
+      "Dahi",
+      "Alis",
+      "Pipi"
+    ]
+  },
+  {
+    "soal": "Sebutkan bumbu dapur yang sering dipakai memasak!",
+    "jawaban": [
+      "Bawang merah",
+      "Bawang putih",
+      "Cabai",
+      "Garam",
+      "Gula",
+      "Kemiri",
+      "Kunyit",
+      "Jahe"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis olahraga yang populer di Indonesia!",
+    "jawaban": [
+      "Badminton",
+      "Sepak bola",
+      "Voli",
+      "Basket",
+      "Renang",
+      "Lari",
+      "Tenis",
+      "Bulu tangkis"
+    ]
+  },
+  {
+    "soal": "Sebutkan profesi yang ada di rumah sakit!",
+    "jawaban": [
+      "Dokter",
+      "Perawat",
+      "Bidan",
+      "Apoteker",
+      "Satpam",
+      "Kasir",
+      "Admin",
+      "Cleaning service"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang ada di dapur!",
+    "jawaban": [
+      "Panci",
+      "Wajan",
+      "Pisau",
+      "Sendok",
+      "Garpu",
+      "Piring",
+      "Gelas",
+      "Spatula"
+    ]
+  },
+  {
+    "soal": "Sebutkan hewan yang bisa terbang!",
+    "jawaban": [
+      "Burung",
+      "Kupu-kupu",
+      "Lebah",
+      "Capung",
+      "Kelelawar",
+      "Nyamuk",
+      "Lalat",
+      "Elang"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama bulan dalam setahun!",
+    "jawaban": [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember"
+    ]
+  },
+  {
+    "soal": "Sebutkan alat tulis yang biasa ada di tas sekolah!",
+    "jawaban": [
+      "Pensil",
+      "Pulpen",
+      "Penghapus",
+      "Penggaris",
+      "Buku",
+      "Spidol",
+      "Tip-ex",
+      "Rautan"
+    ]
+  },
+  {
+    "soal": "Sebutkan pakaian yang dipakai sehari-hari!",
+    "jawaban": [
+      "Baju",
+      "Celana",
+      "Kaos",
+      "Jeans",
+      "Dress",
+      "Rok",
+      "Kemeja",
+      "Jaket"
+    ]
+  },
+  {
+    "soal": "Sebutkan sayuran yang biasa dimasak di Indonesia!",
+    "jawaban": [
+      "Kangkung",
+      "Bayam",
+      "Wortel",
+      "Kentang",
+      "Kubis",
+      "Kacang panjang",
+      "Buncis",
+      "Sawi"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang ada di ruang tamu!",
+    "jawaban": [
+      "Sofa",
+      "Meja",
+      "Televisi",
+      "Karpet",
+      "Lemari",
+      "Vas bunga",
+      "Jam dinding",
+      "Foto"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis ikan yang biasa dimakan!",
+    "jawaban": [
+      "Lele",
+      "Nila",
+      "Gurame",
+      "Kakap",
+      "Tongkol",
+      "Mas",
+      "Patin",
+      "Bandeng"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang dipakai saat hujan!",
+    "jawaban": [
+      "Payung",
+      "Jas hujan",
+      "Sepatu boots",
+      "Topi",
+      "Plastik",
+      "Mantel"
+    ]
+  },
+  {
+    "soal": "Sebutkan tempat wisata yang populer di Indonesia!",
+    "jawaban": [
+      "Bali",
+      "Yogyakarta",
+      "Lombok",
+      "Raja Ampat",
+      "Komodo",
+      "Bromo",
+      "Borobudur",
+      "Labuan Bajo"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama hari dalam seminggu!",
+    "jawaban": [
+      "Senin",
+      "Selasa",
+      "Rabu",
+      "Kamis",
+      "Jumat",
+      "Sabtu",
+      "Minggu"
+    ]
+  },
+  {
+    "soal": "Sebutkan hal yang dilakukan saat liburan!",
+    "jawaban": [
+      "Jalan-jalan",
+      "Tidur",
+      "Nonton film",
+      "Masak",
+      "Baca buku",
+      "Main game",
+      "Kumpul keluarga",
+      "Piknik"
+    ]
+  },
+  {
+    "soal": "Sebutkan aplikasi media sosial yang populer!",
+    "jawaban": [
+      "Instagram",
+      "TikTok",
+      "Facebook",
+      "Twitter",
+      "YouTube",
+      "WhatsApp",
+      "Snapchat",
+      "Telegram"
+    ]
+  },
+  {
+    "soal": "Sebutkan bahan makanan yang biasa dibeli di supermarket!",
+    "jawaban": [
+      "Beras",
+      "Telur",
+      "Minyak goreng",
+      "Gula",
+      "Tepung",
+      "Susu",
+      "Mentega",
+      "Garam"
+    ]
+  },
+  {
+    "soal": "Sebutkan alat yang dipakai di bengkel!",
+    "jawaban": [
+      "Obeng",
+      "Kunci pas",
+      "Tang",
+      "Palu",
+      "Bor",
+      "Gergaji",
+      "Kunci inggris",
+      "Dongkrak"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis kue yang populer di Indonesia!",
+    "jawaban": [
+      "Risoles",
+      "Klepon",
+      "Getuk",
+      "Onde-onde",
+      "Dadar gulung",
+      "Bakpao",
+      "Donat",
+      "Bolu"
+    ]
+  },
+  {
+    "soal": "Sebutkan binatang yang hidup di laut!",
+    "jawaban": [
+      "Ikan",
+      "Cumi",
+      "Kepiting",
+      "Udang",
+      "Lumba-lumba",
+      "Paus",
+      "Gurita",
+      "Penyu"
+    ]
+  },
+  {
+    "soal": "Sebutkan hal yang dilakukan setiap pagi hari!",
+    "jawaban": [
+      "Mandi",
+      "Sarapan",
+      "Sikat gigi",
+      "Sholat subuh",
+      "Olahraga",
+      "Baca berita",
+      "Minum kopi",
+      "Ganti baju"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis minuman tradisional Indonesia!",
+    "jawaban": [
+      "Jamu",
+      "Wedang jahe",
+      "Bajigur",
+      "Cendol",
+      "Es doger",
+      "Bandrek",
+      "Sekoteng",
+      "Beras kencur"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama presiden Indonesia!",
+    "jawaban": [
+      "Soekarno",
+      "Soeharto",
+      "Habibie",
+      "Megawati",
+      "Gus Dur",
+      "SBY",
+      "Jokowi",
+      "Prabowo"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis masakan berkuah yang populer di Indonesia!",
+    "jawaban": [
+      "Soto",
+      "Bakso",
+      "Rawon",
+      "Gulai",
+      "Opor",
+      "Pho",
+      "Sop buntut",
+      "Sup ayam"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama planet di tata surya!",
+    "jawaban": [
+      "Merkurius",
+      "Venus",
+      "Bumi",
+      "Mars",
+      "Jupiter",
+      "Saturnus",
+      "Uranus",
+      "Neptunus"
+    ]
+  },
+  {
+    "soal": "Sebutkan alat musik tradisional Indonesia!",
+    "jawaban": [
+      "Gamelan",
+      "Angklung",
+      "Sasando",
+      "Kolintang",
+      "Rebab",
+      "Saron",
+      "Kendang",
+      "Tifa"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis transportasi umum di Indonesia!",
+    "jawaban": [
+      "Busway",
+      "MRT",
+      "KRL",
+      "Angkot",
+      "Ojek",
+      "Bajaj",
+      "Taksi",
+      "Becak"
+    ]
+  },
+  {
+    "soal": "Sebutkan hal yang biasa dibawa saat piknik!",
+    "jawaban": [
+      "Tikar",
+      "Bekal makanan",
+      "Minuman",
+      "Payung",
+      "Kamera",
+      "Snack",
+      "Speaker",
+      "Topi"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis kue basah Indonesia!",
+    "jawaban": [
+      "Klepon",
+      "Onde-onde",
+      "Getuk",
+      "Putu",
+      "Cenil",
+      "Nagasari",
+      "Lemper",
+      "Lupis"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama gunung berapi terkenal di Indonesia!",
+    "jawaban": [
+      "Merapi",
+      "Bromo",
+      "Semeru",
+      "Krakatau",
+      "Rinjani",
+      "Sinabung",
+      "Kerinci",
+      "Agung"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang biasa ada di kamar tidur!",
+    "jawaban": [
+      "Kasur",
+      "Bantal",
+      "Lemari",
+      "Meja belajar",
+      "Lampu",
+      "Cermin",
+      "AC",
+      "Jam alarm"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis ikan air tawar yang populer di Indonesia!",
+    "jawaban": [
+      "Lele",
+      "Nila",
+      "Gurame",
+      "Mas",
+      "Patin",
+      "Mujair",
+      "Gabus",
+      "Tawes"
+    ]
+  },
+  {
+    "soal": "Sebutkan pekerjaan rumah tangga yang biasa dilakukan!",
+    "jawaban": [
+      "Memasak",
+      "Mencuci piring",
+      "Menyapu",
+      "Mengepel",
+      "Mencuci baju",
+      "Menyetrika",
+      "Membersihkan kamar mandi",
+      "Membuang sampah"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama sungai besar di Indonesia!",
+    "jawaban": [
+      "Kapuas",
+      "Musi",
+      "Mahakam",
+      "Barito",
+      "Ciliwung",
+      "Bengawan Solo",
+      "Memberamo",
+      "Brantas"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis sambal yang populer di Indonesia!",
+    "jawaban": [
+      "Sambal terasi",
+      "Sambal ijo",
+      "Sambal matah",
+      "Sambal bawang",
+      "Sambal tomat",
+      "Sambal kecap",
+      "Sambal bajak",
+      "Sambal dabu-dabu"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama tokoh pahlawan nasional Indonesia!",
+    "jawaban": [
+      "Soekarno",
+      "Hatta",
+      "Kartini",
+      "Diponegoro",
+      "Pattimura",
+      "Cut Nyak Dien",
+      "Hasanuddin",
+      "Teuku Umar"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis warung makan yang populer di Indonesia!",
+    "jawaban": [
+      "Warteg",
+      "Padang",
+      "Pecel lele",
+      "Mie ayam",
+      "Bakso",
+      "Soto",
+      "Nasi goreng",
+      "Bubur ayam"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama danau terkenal di Indonesia!",
+    "jawaban": [
+      "Toba",
+      "Maninjau",
+      "Singkarak",
+      "Batur",
+      "Poso",
+      "Towuti",
+      "Ranau",
+      "Sentani"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis lauk yang biasa dimakan dengan nasi!",
+    "jawaban": [
+      "Ayam goreng",
+      "Tempe goreng",
+      "Tahu goreng",
+      "Ikan goreng",
+      "Telur",
+      "Rendang",
+      "Tumis kangkung",
+      "Perkedel"
+    ]
+  },
+  {
+    "soal": "Sebutkan hewan yang ada di kebun binatang!",
+    "jawaban": [
+      "Singa",
+      "Harimau",
+      "Gajah",
+      "Jerapah",
+      "Kera",
+      "Komodo",
+      "Buaya",
+      "Kuda nil"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis tas yang biasa dipakai!",
+    "jawaban": [
+      "Ransel",
+      "Tas tangan",
+      "Dompet",
+      "Koper",
+      "Tote bag",
+      "Tas selempang",
+      "Tas pinggang",
+      "Clutch"
+    ]
+  },
+  {
+    "soal": "Sebutkan hal yang ada di pantai!",
+    "jawaban": [
+      "Pasir",
+      "Ombak",
+      "Karang",
+      "Kerang",
+      "Kelapa",
+      "Perahu",
+      "Payung pantai",
+      "Bintang laut"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis mi yang populer di Indonesia!",
+    "jawaban": [
+      "Mie goreng",
+      "Mie ayam",
+      "Bakmi",
+      "Mie Aceh",
+      "Mie Jawa",
+      "Kwetiau",
+      "Bihun",
+      "Sohun"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama provinsi di Pulau Jawa!",
+    "jawaban": [
+      "Banten",
+      "DKI Jakarta",
+      "Jawa Barat",
+      "Jawa Tengah",
+      "DI Yogyakarta",
+      "Jawa Timur"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama-nama hari raya di Indonesia!",
+    "jawaban": [
+      "Lebaran",
+      "Natal",
+      "Nyepi",
+      "Imlek",
+      "Waisak",
+      "Galungan",
+      "Idul Adha",
+      "Tahun Baru"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis minuman kemasan populer di Indonesia!",
+    "jawaban": [
+      "Teh Botol",
+      "Pocari Sweat",
+      "Aqua",
+      "Mizone",
+      "Kopi ABC",
+      "Marimas",
+      "Nu Green Tea",
+      "Good Day"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang dipakai saat memasak!",
+    "jawaban": [
+      "Celemek",
+      "Sarung tangan",
+      "Wadah",
+      "Spatula",
+      "Pisau",
+      "Talenan",
+      "Panci",
+      "Penggorengan"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama universitas negeri terkenal di Indonesia!",
+    "jawaban": [
+      "UI",
+      "ITB",
+      "UGM",
+      "IPB",
+      "ITS",
+      "Unair",
+      "Undip",
+      "Unpad"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis olahraga air!",
+    "jawaban": [
+      "Renang",
+      "Selam",
+      "Selancar",
+      "Kayak",
+      "Polo air",
+      "Snorkeling",
+      "Ski air",
+      "Kano"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama makanan khas Jawa!",
+    "jawaban": [
+      "Gudeg",
+      "Nasi pecel",
+      "Soto lamongan",
+      "Rawon",
+      "Lontong cap gomeh",
+      "Tahu tek",
+      "Rujak cingur",
+      "Gado-gado"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang ada di kantor!",
+    "jawaban": [
+      "Komputer",
+      "Printer",
+      "Meja",
+      "Kursi",
+      "Lemari arsip",
+      "Papan tulis",
+      "Stapler",
+      "Kalkulator"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama makanan street food yang populer!",
+    "jawaban": [
+      "Bakso",
+      "Cilok",
+      "Somay",
+      "Cireng",
+      "Batagor",
+      "Empek-empek",
+      "Kerak telor",
+      "Martabak"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama binatang yang bisa kamu pelihara di rumah!",
+    "jawaban": [
+      "Kucing",
+      "Anjing",
+      "Hamster",
+      "Kelinci",
+      "Burung",
+      "Ikan hias",
+      "Kura-kura",
+      "Guinea pig"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama bumbu masak yang biasa dibeli di warung!",
+    "jawaban": [
+      "Kecap",
+      "Saos sambal",
+      "Saos tomat",
+      "Garam",
+      "Gula",
+      "Penyedap rasa",
+      "Terasi",
+      "Minyak goreng"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama alat elektronik yang ada di rumah!",
+    "jawaban": [
+      "Televisi",
+      "Kulkas",
+      "Mesin cuci",
+      "AC",
+      "Kipas angin",
+      "Kompor listrik",
+      "Microwave",
+      "Blender"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama baju adat daerah Indonesia!",
+    "jawaban": [
+      "Kebaya",
+      "Batik",
+      "Ulos",
+      "Baju kurung",
+      "Baju bodo",
+      "Pakaian bali",
+      "Pakaian dayak",
+      "Lurik"
+    ]
+  },
+  {
+    "soal": "Sebutkan hal yang biasa ada di pesta ulang tahun!",
+    "jawaban": [
+      "Kue tart",
+      "Lilin",
+      "Balon",
+      "Hadiah",
+      "Topi",
+      "Tiup terompet",
+      "Foto",
+      "Snack"
+    ]
+  },
+  {
+    "soal": "Sebutkan jenis makanan dari tepung!",
+    "jawaban": [
+      "Roti",
+      "Mie",
+      "Kue",
+      "Donat",
+      "Pizza",
+      "Pancake",
+      "Bolu",
+      "Biskuit"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama sumber energi yang kamu ketahui!",
+    "jawaban": [
+      "Matahari",
+      "Angin",
+      "Air",
+      "Minyak bumi",
+      "Gas alam",
+      "Batu bara",
+      "Nuklir",
+      "Panas bumi"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama permainan tradisional Indonesia!",
+    "jawaban": [
+      "Congklak",
+      "Petak umpet",
+      "Kelereng",
+      "Layang-layang",
+      "Lompat tali",
+      "Engklek",
+      "Bentengan",
+      "Gobak sodor"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama benda langit yang bisa kamu lihat malam hari!",
+    "jawaban": [
+      "Bintang",
+      "Bulan",
+      "Planet",
+      "Meteor",
+      "Galaksi",
+      "Satelit",
+      "Komet",
+      "Nebula"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis kopi yang populer di Indonesia!",
+    "jawaban": [
+      "Kopi Gayo",
+      "Kopi Flores",
+      "Kopi Toraja",
+      "Kopi Mandailing",
+      "Kopi Lintong",
+      "Kopi Wamena",
+      "Kopi Kintamani",
+      "Kopi Java"
+    ]
+  },
+  {
+    "soal": "Sebutkan benda yang biasa dibawa saat kemping!",
+    "jawaban": [
+      "Tenda",
+      "Sleeping bag",
+      "Senter",
+      "Kompor portable",
+      "Matras",
+      "Jas hujan",
+      "Korek api",
+      "P3K"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis alas kaki!",
+    "jawaban": [
+      "Sepatu",
+      "Sandal",
+      "Selop",
+      "Boots",
+      "Sneakers",
+      "Flat shoes",
+      "Heels",
+      "Sandal jepit"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama tim sepak bola Liga 1 Indonesia yang terkenal!",
+    "jawaban": [
+      "Persija",
+      "Persib",
+      "Arema",
+      "PSM",
+      "Bali United",
+      "Persebaya",
+      "PSIS",
+      "Borneo FC"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama bahan minuman yang bisa dibuat jus!",
+    "jawaban": [
+      "Jeruk",
+      "Mangga",
+      "Semangka",
+      "Jambu",
+      "Alpukat",
+      "Melon",
+      "Nanas",
+      "Tomat"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama negara di Asia Tenggara!",
+    "jawaban": [
+      "Indonesia",
+      "Malaysia",
+      "Singapura",
+      "Thailand",
+      "Vietnam",
+      "Filipina",
+      "Myanmar",
+      "Kamboja"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama peralatan yang dipakai petani!",
+    "jawaban": [
+      "Cangkul",
+      "Sabit",
+      "Bajak",
+      "Traktor",
+      "Arit",
+      "Ember",
+      "Karung",
+      "Semprot hama"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama makanan yang bisa dibuat dari telur!",
+    "jawaban": [
+      "Telur ceplok",
+      "Telur dadar",
+      "Telur rebus",
+      "Omelette",
+      "Telur balado",
+      "Scotch egg",
+      "Telur asin",
+      "Martabak"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis tanaman bunga yang populer!",
+    "jawaban": [
+      "Mawar",
+      "Melati",
+      "Anggrek",
+      "Matahari",
+      "Dahlia",
+      "Tulip",
+      "Kenanga",
+      "Bougenville"
+    ]
+  },
+  {
+    "soal": "Sebutkan hal yang biasa dilakukan saat Lebaran!",
+    "jawaban": [
+      "Silaturahmi",
+      "Bagi THR",
+      "Makan ketupat",
+      "Pakai baju baru",
+      "Sholat Ied",
+      "Minta maaf",
+      "Mudik",
+      "Foto keluarga"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama kota besar di Indonesia!",
+    "jawaban": [
+      "Jakarta",
+      "Surabaya",
+      "Bandung",
+      "Medan",
+      "Makassar",
+      "Semarang",
+      "Palembang",
+      "Denpasar"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis penyakit yang umum diderita!",
+    "jawaban": [
+      "Flu",
+      "Demam",
+      "Batuk",
+      "Diare",
+      "Maag",
+      "Asma",
+      "Diabetes",
+      "Hipertensi"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama benda yang ada di kamar mandi!",
+    "jawaban": [
+      "Sabun",
+      "Sampo",
+      "Handuk",
+      "Sikat gigi",
+      "Pasta gigi",
+      "Shower",
+      "Cermin",
+      "Ember"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis pohon buah yang bisa tumbuh di Indonesia!",
+    "jawaban": [
+      "Mangga",
+      "Rambutan",
+      "Durian",
+      "Jambu",
+      "Kelapa",
+      "Pisang",
+      "Pepaya",
+      "Nangka"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis daging yang biasa dimakan di Indonesia!",
+    "jawaban": [
+      "Sapi",
+      "Ayam",
+      "Kambing",
+      "Ikan",
+      "Bebek",
+      "Babi",
+      "Kerbau",
+      "Udang"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama benda yang ada di tas sekolah murid SD!",
+    "jawaban": [
+      "Buku",
+      "Pensil",
+      "Penggaris",
+      "Penghapus",
+      "Bekal",
+      "Minuman",
+      "Dompet",
+      "Tempat pensil"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama kegiatan yang biasa dilakukan saat liburan ke pantai!",
+    "jawaban": [
+      "Berenang",
+      "Main pasir",
+      "Snorkeling",
+      "Foto",
+      "Makan seafood",
+      "Bermain ombak",
+      "Tidur di tepi pantai",
+      "Naik perahu"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis pakaian yang dipakai di gym!",
+    "jawaban": [
+      "Kaos",
+      "Celana training",
+      "Sepatu olahraga",
+      "Headband",
+      "Sarung tangan",
+      "Kaos kaki",
+      "Singlet",
+      "Legging"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama bahan yang digunakan untuk membuat kue!",
+    "jawaban": [
+      "Tepung",
+      "Telur",
+      "Gula",
+      "Mentega",
+      "Susu",
+      "Baking powder",
+      "Coklat",
+      "Vanilla"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama tokoh kartun yang populer di Indonesia!",
+    "jawaban": [
+      "Upin Ipin",
+      "Dora",
+      "SpongeBob",
+      "Doraemon",
+      "Naruto",
+      "Pokemon",
+      "Shinchan",
+      "Tom and Jerry"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis investasi yang populer di Indonesia!",
+    "jawaban": [
+      "Saham",
+      "Emas",
+      "Deposito",
+      "Reksadana",
+      "Properti",
+      "Kripto",
+      "ORI",
+      "Tanah"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis olahraga yang bisa dilakukan di rumah!",
+    "jawaban": [
+      "Push up",
+      "Sit up",
+      "Squat",
+      "Plank",
+      "Yoga",
+      "Skipping",
+      "Stretching",
+      "Zumba"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis sayuran yang bisa dimakan mentah!",
+    "jawaban": [
+      "Selada",
+      "Mentimun",
+      "Tomat",
+      "Wortel",
+      "Kol",
+      "Daun bawang",
+      "Seledri",
+      "Lobak"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama stasiun TV nasional Indonesia!",
+    "jawaban": [
+      "RCTI",
+      "SCTV",
+      "Trans TV",
+      "Metro TV",
+      "NET",
+      "ANTV",
+      "iNews",
+      "TVOne"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis snack kemasan yang populer di Indonesia!",
+    "jawaban": [
+      "Chitato",
+      "Piattos",
+      "Qtela",
+      "Cheetos",
+      "Taro",
+      "Oreo",
+      "Superstar",
+      "Richeese"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis selai yang biasa dioleskan ke roti!",
+    "jawaban": [
+      "Coklat",
+      "Stroberi",
+      "Blueberry",
+      "Kacang",
+      "Nanas",
+      "Jeruk",
+      "Keju",
+      "Madu"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama bagian tubuh yang biasa diukur saat buat baju!",
+    "jawaban": [
+      "Lingkar dada",
+      "Pinggang",
+      "Bahu",
+      "Lengan",
+      "Panjang badan",
+      "Pinggul",
+      "Leher",
+      "Tinggi badan"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis transportasi udara!",
+    "jawaban": [
+      "Pesawat",
+      "Helikopter",
+      "Balon udara",
+      "Drone",
+      "Parasut",
+      "Pesawat tempur",
+      "Jet",
+      "Blimp"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama penyanyi Indonesia yang terkenal!",
+    "jawaban": [
+      "Raisa",
+      "Tulus",
+      "Rizky Febian",
+      "Mahalini",
+      "Tiara Andini",
+      "Afgan",
+      "Isyana",
+      "Rossa"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis makanan yang dibungkus daun!",
+    "jawaban": [
+      "Ketupat",
+      "Lontong",
+      "Lemper",
+      "Nagasari",
+      "Bothok",
+      "Nasi bakar",
+      "Pepes",
+      "Gabus pucung"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis olahraga bela diri yang populer!",
+    "jawaban": [
+      "Karate",
+      "Taekwondo",
+      "Pencak silat",
+      "Judo",
+      "Kungfu",
+      "Muay thai",
+      "Tinju",
+      "Aikido"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama benda teknologi yang sering dibawa kemana-mana!",
+    "jawaban": [
+      "Handphone",
+      "Laptop",
+      "Earphone",
+      "Powerbank",
+      "Charger",
+      "Smartwatch",
+      "Tablet",
+      "USB"
+    ]
+  },
+  {
+    "soal": "Sebutkan nama jenis permen yang sering dijual di warung!",
+    "jawaban": [
+      "Yupi",
+      "Kopiko",
+      "Relaxa",
+      "Sugus",
+      "Mentos",
+      "Fox",
+      "Karet",
+      "Milkita"
+    ]
+  }
+]
