@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2399,
+  "commandsExecuted": 2401,
   "command_totalchat": 3,
   "command_menu": 213,
   "command_fb": 4,
@@ -185,7 +185,7 @@
   "command_setownertype": 2,
   "command_welcometype": 12,
   "command_tebakkata": 10,
-  "command_tebakhewan": 11,
+  "command_tebakhewan": 12,
   "command_addplugin": 1,
   "command_autoreply": 1,
   "command_addcmdsticker": 1,
@@ -405,6 +405,6 @@
   "command_leaderboard": 1,
   "command_setmsg": 1,
   "command_wm": 2,
-  "command_tebakgambar": 41,
+  "command_tebakgambar": 42,
   "command_tebaklagu": 11
 }
