@@ -110,22 +110,57 @@ function btnMainLagi() {
     }
 }
 
+// ─── Seed deterministic untuk hint konsisten per-soal ─────────────────────────
+function _hintSeed(answer) {
+    let h = 5381
+    for (let i = 0; i < answer.length; i++) {
+        h = (((h << 5) + h) ^ answer.charCodeAt(i)) >>> 0
+    }
+    return h || 1
+}
+
+function _hintShuffle(arr, seed) {
+    const result = [...arr]
+    let s = seed
+    for (let i = result.length - 1; i > 0; i--) {
+        s = ((s * 1664525) + 1013904223) >>> 0
+        const j = s % (i + 1)
+        ;[result[i], result[j]] = [result[j], result[i]]
+    }
+    return result
+}
+
 // ─── Tampilan pola jawaban (tiap huruf dipisah spasi, kata dipisah "  ·  ") ──
-// Selalu tampilkan huruf pertama tiap kata, lalu buka revealCount huruf tambahan.
+// Selalu tampilkan huruf pertama tiap kata, lalu buka revealCount huruf tambahan
+// di POSISI RANDOM (deterministic berdasarkan jawaban, konsisten dalam satu game).
 // revealCount = 0  → hanya huruf pertama tiap kata (sama seperti tampilan awal)
-// revealCount > 0  → huruf pertama tiap kata + N huruf ekstra dari kiri
+// revealCount > 0  → huruf pertama tiap kata + N huruf ekstra posisi acak
 // Contoh: "SARUNG BANTAL", revealCount=0 → "S _ _ _ _ _  ·  B _ _ _ _ _"
-//         "SARUNG BANTAL", revealCount=3 → "S A R U _ _  ·  B _ _ _ _ _"
+//         "SARUNG BANTAL", revealCount=3 → "S _ G _ _ _  ·  B A _ _ _ _"  (contoh)
 function buildHintDisplayRevealed(answer, revealCount = 0) {
     if (!answer) return ''
-    let extra = 0
-    const parts = answer.split(' ').map(word => {
-        return word.split('').map((ch, i) => {
-            if (i === 0) return ch          // huruf pertama tiap kata selalu muncul
-            if (extra < revealCount) { extra++; return ch }
-            return '_'
-        }).join(' ')
+
+    const words = answer.split(' ')
+    const seed  = _hintSeed(answer)
+
+    // Kumpulkan semua posisi non-huruf-pertama dari tiap kata: {wi, ci}
+    const extra = []
+    words.forEach((word, wi) => {
+        for (let ci = 1; ci < word.length; ci++) extra.push({ wi, ci })
     })
+
+    // Shuffle posisi extra secara deterministik lalu ambil revealCount pertama
+    const shuffled  = _hintShuffle(extra, seed)
+    const openExtra = new Set(
+        shuffled.slice(0, Math.max(0, revealCount)).map(({ wi, ci }) => `${wi}:${ci}`)
+    )
+
+    const parts = words.map((word, wi) =>
+        word.split('').map((ch, ci) => {
+            if (ci === 0) return ch                         // huruf pertama selalu tampil
+            return openExtra.has(`${wi}:${ci}`) ? ch : '_'
+        }).join(' ')
+    )
     return parts.join('  ·  ')
 }
 

@@ -124,15 +124,37 @@ function checkAnswer(correctAnswer, userAnswer) {
     return result.status === 'correct';
 }
 
+// ─── Deterministik random berdasarkan jawaban ─────────────────────────────────
+// Seed = hash dari string jawaban → posisi yang dibuka selalu SAMA untuk soal
+// yang sama, tapi berbeda antar soal. Makin banyak bantuan, makin banyak
+// posisi yang terbuka (dari urutan shuffled yang sama).
+function _answerSeed(answer) {
+    let h = 5381;
+    for (let i = 0; i < answer.length; i++) {
+        h = (((h << 5) + h) ^ answer.charCodeAt(i)) >>> 0;
+    }
+    return h || 1;
+}
+
+function _seededShuffle(arr, seed) {
+    const result = [...arr];
+    let s = seed;
+    for (let i = result.length - 1; i > 0; i--) {
+        s = ((s * 1664525) + 1013904223) >>> 0;
+        const j = s % (i + 1);
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}
+
 function getHint(answer, revealCount = 2) {
     if (!answer) return '';
     const chars = answer.split('');
-    const hintChars = chars.map((char, i) => {
-        if (char === ' ') return ' ';
-        if (i < revealCount) return char;
-        return '_';
-    });
-    return hintChars.join('');
+    const nonSpaceIdx = chars.reduce((acc, c, i) => { if (c !== ' ') acc.push(i); return acc; }, []);
+    const seed = _answerSeed(answer);
+    const shuffled = _seededShuffle(nonSpaceIdx, seed);
+    const revealed = new Set(shuffled.slice(0, Math.max(0, revealCount)));
+    return chars.map((c, i) => c === ' ' ? ' ' : (revealed.has(i) ? c : '_')).join('');
 }
 
 function isSurrender(text) {
@@ -253,15 +275,14 @@ function getRandomReward() {
 function getProgressiveHint(answer, attempts) {
     if (!answer) return '';
     const chars = answer.split('');
-    const totalChars = chars.filter(c => c !== ' ').length;
+    const nonSpaceIdx = chars.reduce((acc, c, i) => { if (c !== ' ') acc.push(i); return acc; }, []);
+    const totalChars = nonSpaceIdx.length;
     const base = 2;
     const reveal = Math.min(totalChars, base + Math.floor(attempts / 2));
-    let revealed = 0;
-    return chars.map((char, i) => {
-        if (char === ' ') return ' ';
-        if (revealed < reveal) { revealed++; return char; }
-        return '_';
-    }).join('');
+    const seed = _answerSeed(answer);
+    const shuffled = _seededShuffle(nonSpaceIdx, seed);
+    const revealed = new Set(shuffled.slice(0, reveal));
+    return chars.map((c, i) => c === ' ' ? ' ' : (revealed.has(i) ? c : '_')).join('');
 }
 
 setInterval(() => {
