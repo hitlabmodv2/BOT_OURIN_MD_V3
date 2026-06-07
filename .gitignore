@@ -7,11 +7,10 @@ vite.config.ts.*
 tmp/
 bin/
 replit.md
-.local
-.cache
+.local/
 .cache/
-.config
-data
+.config/
+attached_assets/
 index.d.ts
 
 # Force-include .replit

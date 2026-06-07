@@ -1775,6 +1775,18 @@ prepare_stage() {
     git rm --cached -q .token.secret 2>>"$err_log" || true
   fi
 
+  # 🚫 Untrack folder internal Replit/.cache/.local sebelum staging.
+  # Folder ini tidak perlu di GitHub sama sekali.
+  local _internal_dirs=(".cache" ".local" "attached_assets")
+  for _dir in "${_internal_dirs[@]}"; do
+    if git ls-files --error-unmatch "$_dir" >/dev/null 2>&1; then
+      local _cnt
+      _cnt=$(git ls-files "$_dir" 2>/dev/null | wc -l | tr -d ' ')
+      echo -e "  ${C_YELLOW}🗑️  Untrack ${_cnt} file '$_dir' dari git (folder tetap di disk)...${C_RESET}"
+      git rm --cached -rq "$_dir" 2>>"$err_log" || true
+    fi
+  done
+
   # Stage SEMUA perubahan (baru, modified, deleted, rename) — termasuk file/folder
   # yang biasanya di-ignore oleh .gitignore (pakai -f / --force).
   if ! git add -fA 2>>"$err_log"; then
@@ -1789,6 +1801,11 @@ prepare_stage() {
   git rm --cached -q .token        2>/dev/null || true
   git rm --cached -q .repo.last    2>/dev/null || true
 
+  # Blokir paksa folder internal Replit — tidak boleh ke GitHub sekalipun ter-stage oleh -fA.
+  for _dir in ".cache" ".local" "attached_assets"; do
+    git rm --cached -rq "$_dir" 2>/dev/null || true
+  done
+
   # Auto-skip file terlalu besar (>50MB) — cegah GitHub reject.
   _skip_large_staged_files
 
@@ -1799,7 +1816,7 @@ prepare_stage() {
                 sessions/hisoka/contacts.json \
                 sessions/hisoka/groups.json \
                 sessions/hisoka/settings.json \
-                attached_assets .agents \
+                .agents \
                 jadibot \
                 data \
                 .replit; do
