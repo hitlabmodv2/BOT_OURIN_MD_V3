@@ -11,7 +11,7 @@ const pluginConfig = {
     example: ".kyubigame",
     isOwner: false,
     isPremium: false,
-    isGroup: false,
+    isGroup: true,
     isPrivate: false,
     cooldown: 60,
     energi: 0,

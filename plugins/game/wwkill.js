@@ -9,7 +9,7 @@ const pluginConfig = {
     example: '.wwkill 2',
     isOwner: false,
     isPremium: false,
-    isGroup: false,
+    isGroup: true,
     isPrivate: true,
     cooldown: 0,
     energi: 0,

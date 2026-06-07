@@ -9,7 +9,7 @@ const pluginConfig = {
     example: '.wwprotect 3',
     isOwner: false,
     isPremium: false,
-    isGroup: false,
+    isGroup: true,
     isPrivate: true,
     cooldown: 0,
     energi: 0,

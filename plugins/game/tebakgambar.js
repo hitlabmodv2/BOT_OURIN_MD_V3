@@ -546,7 +546,7 @@ const pluginConfig = {
     example: '.tebakgambar',
     isOwner: false,
     isPremium: false,
-    isGroup: false,
+    isGroup: true,
     isPrivate: false,
     cooldown: 5,
     energi: 0,

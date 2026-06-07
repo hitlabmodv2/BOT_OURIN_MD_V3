@@ -94,7 +94,7 @@ const pluginConfig = {
   example: ".mct help",
   isOwner: false,
   isPremium: false,
-  isGroup: false,
+  isGroup: true,
   isPrivate: false,
   cooldown: 3,
   energi: 0,

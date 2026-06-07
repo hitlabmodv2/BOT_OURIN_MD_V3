@@ -715,7 +715,7 @@ class OurinGames {
         example: `.${gameType}`,
         isOwner: false,
         isPremium: false,
-        isGroup: false,
+        isGroup: true,
         isPrivate: false,
         cooldown: cfg.cooldown,
         energi: 0,

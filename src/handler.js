@@ -1572,7 +1572,42 @@ async function messageHandler(msg, sock, options = {}) {
 
     const permission = checkPermission(m, plugin.config);
     if (!permission.allowed) {
-      await m.reply(permission.reason);
+      if (plugin.config.category === "game" && !m.isGroup) {
+        const groupUrl1 = "https://chat.whatsapp.com/FnfatV8TlOZEMwLlLoDCRp?mode=gi_t";
+        const groupUrl2 = "https://chat.whatsapp.com/KaNQoAG6eGWLGnso3cKvwq?mode=gi_t";
+        const gameGroupMsg =
+          `🎮 *Fitur Game Khusus Grup!*\n\n` +
+          `Maaf kak, fitur game ini hanya bisa dimainkan di dalam *Grup WhatsApp*.\n\n` +
+          `Yuk join grup kami dan main bareng sama yang lain! 🎉`;
+        await sock.sendMessage(
+          m.chat,
+          {
+            text: gameGroupMsg,
+            footer: config.bot?.name || "Ourin AI",
+            interactiveButtons: [
+              {
+                name: "cta_url",
+                buttonParamsJson: JSON.stringify({
+                  display_text: "🌟 Join Grup 1",
+                  url: groupUrl1,
+                  webview_interaction: false,
+                }),
+              },
+              {
+                name: "cta_url",
+                buttonParamsJson: JSON.stringify({
+                  display_text: "💬 Join Grup 2",
+                  url: groupUrl2,
+                  webview_interaction: false,
+                }),
+              },
+            ],
+          },
+          { quoted: m }
+        );
+      } else {
+        await m.reply(permission.reason);
+      }
       return;
     }
 

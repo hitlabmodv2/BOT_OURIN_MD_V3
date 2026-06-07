@@ -9,7 +9,7 @@ const pluginConfig = {
     example: '.wwsee 1',
     isOwner: false,
     isPremium: false,
-    isGroup: false,
+    isGroup: true,
     isPrivate: true,
     cooldown: 0,
     energi: 0,

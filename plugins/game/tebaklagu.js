@@ -519,7 +519,7 @@ const pluginConfig = {
     example: '.tebaklagu',
     isOwner: false,
     isPremium: false,
-    isGroup: false,
+    isGroup: true,
     isPrivate: false,
     cooldown: 5,
     energi: 0,
