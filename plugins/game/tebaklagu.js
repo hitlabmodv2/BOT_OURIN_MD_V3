@@ -7,6 +7,7 @@ import {
     getProgressiveHint,
     hasActiveSession,
     setSessionTimer,
+    setBocoranTimer,
     getRemainingTime,
     formatRemainingTime,
     getRandomReward,
@@ -271,6 +272,24 @@ async function handler(m, { sock }) {
             `_Gak ada yang bisa jawab nih~_`
         sendGameOver(sock, chatId, text, null)
             .catch(e => console.error('[tebaklagu] timeout sendGameOver error:', e?.message))
+    })
+
+    // ── Bocoran otomatis di 50% waktu ─────────────────────────────────────────
+    setBocoranTimer(chatId, () => {
+        const remaining = getRemainingTime(chatId)
+        const halfSec   = Math.round(TIMEOUT_MS / 1000 / 2)
+        const judulHint = question.judul.charAt(0).toUpperCase() + question.judul.slice(1, 3) + '...'
+        const artisHint = question.artis.charAt(0).toUpperCase() + '...'
+        let text = `🔍 *BOCORAN TEBAK LAGU!*\n`
+        text += `━━━━━━━━━━━━━━━━━━\n`
+        text += `_Udah ${halfSec} detik gak ada yang jawab~_\n\n`
+        text += `💡 *Petunjuk:*\n`
+        text += `┃ Judul diawali: *${judulHint}*\n`
+        text += `┗ Artis diawali: *${artisHint}*\n\n`
+        text += `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n`
+        text += `_Ayo semangat, masih bisa dijawab!_ 💪`
+        sock.sendMessage(chatId, { text })
+            .catch(e => console.error('[tebaklagu] bocoran error:', e?.message))
     })
 }
 

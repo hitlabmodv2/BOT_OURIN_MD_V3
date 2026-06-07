@@ -223,8 +223,32 @@ function endSession(chatId) {
     if (session && session.timer) {
         clearTimeout(session.timer);
     }
+    if (session && session.bocoranTimer) {
+        clearTimeout(session.bocoranTimer);
+    }
     gameSessions.delete(chatId);
     return session;
+}
+
+// ─── Bocoran timer: kirim hint publik otomatis di 50% waktu ───────────────────
+// Dipanggil setelah createSession + setSessionTimer
+// callback(answer) dipanggil jika masih ada session aktif di 50% waktu
+function setBocoranTimer(chatId, callback) {
+    const session = gameSessions.get(chatId);
+    if (!session) return;
+
+    const totalMs = session.endTime - session.startTime;
+    const halfMs  = totalMs / 2;
+
+    session.bocoranTimer = setTimeout(() => {
+        const currentSession = gameSessions.get(chatId);
+        if (currentSession && currentSession.startTime === session.startTime) {
+            const answer = currentSession.question
+                ? (currentSession.question.jawaban || currentSession.question.name || currentSession.question.lambang || '')
+                : '';
+            callback(answer, currentSession);
+        }
+    }, halfMs);
 }
 
 function hasActiveSession(chatId) {
@@ -339,4 +363,4 @@ setInterval(() => {
     }
 }, 5 * 60 * 1000);
 
-export { loadData, getRandomItem, getItemByIndex, searchItem, getAllData, normalizeAnswer, checkAnswer, checkAnswerAdvanced, getSimilarity, getHint, isSurrender, createSession, setSessionTimer, getSession, endSession, hasActiveSession, getRemainingTime, formatRemainingTime, isReplyToGame, GAME_REWARD, getRandomReward, getProgressiveHint, buildWordHint, getWordInfo }
+export { loadData, getRandomItem, getItemByIndex, searchItem, getAllData, normalizeAnswer, checkAnswer, checkAnswerAdvanced, getSimilarity, getHint, isSurrender, createSession, setSessionTimer, setBocoranTimer, getSession, endSession, hasActiveSession, getRemainingTime, formatRemainingTime, isReplyToGame, GAME_REWARD, getRandomReward, getProgressiveHint, buildWordHint, getWordInfo }

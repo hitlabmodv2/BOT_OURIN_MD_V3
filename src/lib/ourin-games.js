@@ -6,6 +6,7 @@ import {
   checkAnswerAdvanced,
   hasActiveSession,
   setSessionTimer,
+  setBocoranTimer,
   getRemainingTime,
   formatRemainingTime,
   isSurrender,
@@ -329,6 +330,24 @@ class OurinGames {
         text += `Jawaban: *${answer}*\n\n`;
         text += `_Gak ada yang bisa jawab nih~_`;
         await sendGameOver(sock, chatId, text, gameType, null).catch(() => {});
+      });
+
+      // ── Bocoran otomatis di 50% waktu ─────────────────────────────────────
+      setBocoranTimer(chatId, async (ans) => {
+        if (!ans) return;
+        const remaining = getRemainingTime(chatId);
+        const pola      = buildWordHint(ans, 3);
+        const wordInfo  = getWordInfo(ans);
+        const halfSec   = Math.round(cfg.timeout / 1000 / 2);
+        let text = `🔍 *BOCORAN!*\n`;
+        text += `━━━━━━━━━━━━━━━━━━\n`;
+        text += `_Udah ${halfSec} detik gak ada yang jawab~_\n\n`;
+        text += `📝 *Pola terbaru:*\n`;
+        text += `┃ \`${pola}\`\n`;
+        text += `┗ _${wordInfo}_\n\n`;
+        text += `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n`;
+        text += `_Ayo semangat, masih bisa dijawab!_ 💪`;
+        await sock.sendMessage(chatId, { text }).catch(() => {});
       });
     };
 

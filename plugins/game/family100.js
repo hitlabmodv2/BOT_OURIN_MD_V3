@@ -5,6 +5,7 @@ import {
   endSession,
   hasActiveSession,
   setSessionTimer,
+  setBocoranTimer,
   getRemainingTime,
   formatRemainingTime,
   isSurrender,
@@ -129,6 +130,26 @@ async function handler(m, { sock }) {
 
     endSession(chatId);
     await sendGameOver(sock, chatId, timeoutText, null);
+  });
+
+  // ── Bocoran otomatis di 50% waktu ─────────────────────────────────────────
+  setBocoranTimer(chatId, async (ans, sess) => {
+    const session   = getSession(chatId);
+    if (!session) return;
+    const answered  = session.answered || [];
+    const remaining = question.jawaban.filter((j) => !answered.includes(j.toLowerCase()));
+    const sisaWaktu = getRemainingTime(chatId);
+    if (remaining.length === 0) return;
+    const bocorIdx    = Math.floor(Math.random() * remaining.length);
+    const bocorJawab  = remaining[bocorIdx];
+    let text = `🔍 *BOCORAN FAMILY 100!*\n`;
+    text += `━━━━━━━━━━━━━━━━━━\n`;
+    text += `_Udah setengah waktu tapi belum semua terjawab~_\n\n`;
+    text += `💡 Salah satu jawaban yang belum: *${bocorJawab}*\n\n`;
+    text += `📊 Sudah dijawab: *${answered.length}/${question.jawaban.length}*\n`;
+    text += `⏱️ Sisa: *${formatRemainingTime(sisaWaktu)}*\n`;
+    text += `_Ayo semangat, masih bisa!_ 💪`;
+    await sock.sendMessage(chatId, { text }).catch(() => {});
   });
 }
 

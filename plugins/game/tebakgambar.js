@@ -7,9 +7,12 @@ import {
     getProgressiveHint,
     hasActiveSession,
     setSessionTimer,
+    setBocoranTimer,
     getRemainingTime,
     formatRemainingTime,
     getRandomReward,
+    buildWordHint,
+    getWordInfo,
 } from '../../src/lib/ourin-game-data.js'
 import { getDatabase } from '../../src/lib/ourin-database.js'
 import { addExpWithLevelCheck } from '../../src/lib/ourin-level.js'
@@ -303,6 +306,25 @@ async function handler(m, { sock }) {
         // null = tanpa quoted (pesan trigger sudah lama), tapi tetap ada button Main Lagi
         sendGameOver(sock, chatId, text, null)
             .catch(e => console.error('[tebakgambar] timeout sendGameOver error:', e?.message))
+    })
+
+    // ── Bocoran otomatis di 50% waktu ─────────────────────────────────────────
+    setBocoranTimer(chatId, (ans) => {
+        if (!ans) return
+        const remaining = getRemainingTime(chatId)
+        const halfSec   = Math.round(TIMEOUT_MS / 1000 / 2)
+        const pola      = buildWordHint(ans, 3)
+        const wordInfo  = getWordInfo(ans)
+        let text = `🔍 *BOCORAN!*\n`
+        text += `━━━━━━━━━━━━━━━━━━\n`
+        text += `_Udah ${halfSec} detik gak ada yang jawab~_\n\n`
+        text += `📝 *Pola terbaru:*\n`
+        text += `┃ \`${pola}\`\n`
+        text += `┗ _${wordInfo}_\n\n`
+        text += `⏱️ Sisa: *${formatRemainingTime(remaining)}*\n`
+        text += `_Ayo semangat, masih bisa dijawab!_ 💪`
+        sock.sendMessage(chatId, { text })
+            .catch(e => console.error('[tebakgambar] bocoran error:', e?.message))
     })
 }
 
