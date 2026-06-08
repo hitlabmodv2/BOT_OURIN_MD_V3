@@ -616,7 +616,18 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
 
     // Build sections untuk single_select "Lihat Semua Kategori" — semua 33 kategori individual
     const buildAllCategoriesSections = () => {
-      const sections = [];
+      const sections = [
+        {
+          title: "📦 Menu Lengkap",
+          rows: [
+            {
+              title: "📋 MENU ALL",
+              description: `Semua ${totalCmds} perintah dalam 1 paket`,
+              id: `${m.prefix}allmenu`,
+            },
+          ],
+        },
+      ];
       for (const group of CATEGORY_GROUPS) {
         const rows = categories.sorted
           .filter(({ cat }) => group.cats.includes(cat))
