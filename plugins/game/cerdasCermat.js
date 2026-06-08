@@ -116,45 +116,104 @@ async function fetchSoal(mapel) {
     return res.data.data.soal
 }
 
+// ─── Tampilkan pilih mata pelajaran (reusable) ────────────────────────────────
+async function showMapelSelect(sock, chatId, startedBy, m) {
+    const rows = Object.entries(MAPEL).map(([key, label]) => ({
+        title: label,
+        description: `Mainkan soal ${label}`,
+        id: `cc_mapel_${key}`,
+    }))
+
+    const buttons = [{
+        name: 'single_select',
+        buttonParamsJson: JSON.stringify({
+            title: '📚 Pilih Mata Pelajaran',
+            sections: [{ title: '🏫 CERDAS CERMAT SD', rows }],
+        }),
+    }]
+
+    await sock.sendButton(chatId, null,
+        `🏫 *C E R D A S  C E R M A T*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `Pilih mata pelajaran untuk sesi berikutnya!\n\n` +
+        `⏱️ *${TIMEOUT_MS / 1000} detik* per soal  •  *5 soal* per sesi\n` +
+        `🎁 Reward tiap jawaban benar\n\n` +
+        `_Silakan pilih dari tombol di bawah!_`,
+        m,
+        { footer: botConfig.bot?.name || 'Ourin AI', buttons }
+    )
+
+    const session = { step: 'select', startedBy, _timer: null }
+    setSession(chatId, session)
+    session._timer = setTimeout(() => {
+        const s = getSession(chatId)
+        if (s?.step === 'select') delSession(chatId)
+    }, 120000)
+}
+
 // ─── Akhiri game dan tampilkan skor ───────────────────────────────────────────
 async function endGame(sock, chatId, session, m) {
     if (session._timer) clearTimeout(session._timer)
+    const mapel     = session.matapelajaran
+    const startedBy = session.startedBy
     delSession(chatId)
 
     const p         = getPrefix()
     const tot       = session.questions.length
     const scr       = session.score
-    const mapelName = MAPEL[session.matapelajaran] || session.matapelajaran
+    const mapelName = MAPEL[mapel] || mapel
     const persen    = Math.round((scr / tot) * 100)
 
     const emoji    = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
     const predikat = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
 
-    let text  = `${emoji} *GAME SELESAI!*\n`
+    // Bar skor visual
+    const filled = Math.round((scr / tot) * 10)
+    const bar    = '█'.repeat(filled) + '░'.repeat(10 - filled)
+
+    let text  = `${emoji} *G A M E  S E L E S A I !*\n`
     text += `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`
-    text += `📚 Mata Pelajaran: *${mapelName}*\n`
-    text += `📊 Skor Akhir: *${scr}/${tot}* _(${persen}%)_\n`
+    text += `📚 *${mapelName}*\n\n`
+    text += `📊 Skor: *${scr}/${tot}* _(${persen}%)_\n`
+    text += `${bar}\n`
     text += `✅ Benar : *${scr} soal*\n`
     text += `❌ Salah : *${tot - scr} soal*\n\n`
-    text += `🎯 Predikat: *${predikat}*\n\n`
-    text += `_Yuk main lagi dengan mata pelajaran berbeda!_`
+    text += `🎯 Predikat: *${predikat}*`
 
-    const btnMainLagi = {
+    // ── 3 tombol kontekstual ───────────────────────────────────────────────
+    // Tombol 1: main lagi mapel yang sama (langsung fetch, skip pilih)
+    const btnUlang = {
         name: 'quick_reply',
         buttonParamsJson: JSON.stringify({
-            display_text: '🔄 Main Lagi!',
-            id: `${p}tebakcerdas`,
+            display_text: `🔄 Main Lagi — ${mapelName}`,
+            id: `cc_ulang_${mapel}`,
         }),
     }
+
+    // Tombol 2: ganti ke mapel lain (munculkan list pilih mapel)
+    const btnGanti = {
+        name: 'quick_reply',
+        buttonParamsJson: JSON.stringify({
+            display_text: '📚 Ganti Mata Pelajaran',
+            id: 'cc_gantiMapel',
+        }),
+    }
+
+    // Tombol 3: pilih game lain (single_select list semua game)
+    const btnGameLain = makeGameListBtn()
 
     const opts = m ? { quoted: makeQuoted(m) } : {}
     try {
         await sock.sendMessage(chatId, {
             text,
-            interactiveButtons: [btnMainLagi, makeGameListBtn()],
+            interactiveButtons: [btnUlang, btnGanti, btnGameLain],
         }, opts)
     } catch (e) {
-        await sock.sendMessage(chatId, { text }).catch(() => {})
+        console.error('[cerdasCermat] endGame btn error:', e?.message)
+        // Fallback: teks biasa + hint command
+        await sock.sendMessage(chatId, {
+            text: text + `\n\n> Main lagi: *${p}tebakcerdas*`,
+        }).catch(() => {})
     }
 }
 
@@ -224,48 +283,7 @@ async function handler(m, { sock }) {
         delSession(chatId)
     }
 
-    const rows = Object.entries(MAPEL).map(([key, label]) => ({
-        title: label,
-        description: `Mainkan soal ${label}`,
-        id: `cc_mapel_${key}`,
-    }))
-
-    const buttons = [{
-        name: 'single_select',
-        buttonParamsJson: JSON.stringify({
-            title: '📚 Pilih Mata Pelajaran',
-            sections: [{
-                title: '🏫 CERDAS CERMAT SD',
-                rows,
-            }],
-        }),
-    }]
-
-    await sock.sendButton(chatId, null,
-        `🏫 *C E R D A S  C E R M A T*\n` +
-        `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-        `Kuis pilihan ganda lintas mata pelajaran!\n\n` +
-        `📚 *${Object.keys(MAPEL).length} mata pelajaran* tersedia\n` +
-        `📝 *5 soal* per sesi dari API real-time\n` +
-        `⏱️ *${TIMEOUT_MS / 1000} detik* per soal\n` +
-        `🎁 Reward: *Limit + Koin + EXP* tiap jawaban benar\n\n` +
-        `_Pilih mata pelajaran dari tombol di bawah!_`,
-        m,
-        { footer: botConfig.bot?.name || 'Ourin AI', buttons }
-    )
-
-    const session = {
-        step:      'select',
-        startedBy: m.sender,
-        _timer:    null,
-    }
-    setSession(chatId, session)
-
-    // Auto-expire sesi pilih mapel setelah 2 menit
-    session._timer = setTimeout(() => {
-        const s = getSession(chatId)
-        if (s?.step === 'select') delSession(chatId)
-    }, 120000)
+    await showMapelSelect(sock, chatId, m.sender, m)
 }
 
 // ─── Answer handler ────────────────────────────────────────────────────────────
@@ -448,6 +466,53 @@ async function answerHandler(m, sock) {
             }, 5000)
         }
 
+        return true
+    }
+
+    // ── Main lagi mapel yang sama (tombol di layar selesai) ──────────────────
+    if (body.startsWith('cc_ulang_')) {
+        const mapel = body.replace('cc_ulang_', '')
+        if (!MAPEL[mapel]) return false
+        if (session?.step === 'playing') return false
+
+        if (session?._timer) clearTimeout(session._timer)
+        delSession(chatId)
+        await m.react('⏳')
+
+        let soal
+        try {
+            soal = await fetchSoal(mapel)
+        } catch (e) {
+            console.error('[cerdasCermat] cc_ulang fetch error:', e?.message)
+            await m.react('❌')
+            await m.reply('❌ *Gagal mengambil soal dari API!*\n\nCoba lagi beberapa saat ya.')
+            return true
+        }
+
+        const newSession = {
+            step:           'playing',
+            matapelajaran:  mapel,
+            questions:      soal,
+            currentQ:       0,
+            score:          0,
+            startedBy:      senderId,
+            answered:       false,
+            waitingForNext: false,
+            _timer:         null,
+        }
+        setSession(chatId, newSession)
+        await m.react('✅')
+        await showQuestion(sock, chatId, newSession, m)
+        startQuestionTimer(sock, chatId, m)
+        return true
+    }
+
+    // ── Ganti mata pelajaran (tombol di layar selesai) ────────────────────────
+    if (body === 'cc_gantiMapel') {
+        if (session?.step === 'playing') return false
+        if (session?._timer) clearTimeout(session._timer)
+        delSession(chatId)
+        await showMapelSelect(sock, chatId, senderId, m)
         return true
     }
 
