@@ -625,6 +625,11 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
               description: `Semua ${totalCmds} perintah dalam 1 paket`,
               id: `${m.prefix}allmenu`,
             },
+            {
+              title: "👥 GRUP BOT",
+              description: "Bergabung ke grup WhatsApp bot",
+              id: `${m.prefix}gc`,
+            },
           ],
         },
       ];
@@ -873,11 +878,10 @@ ${readmore}${s}`
                         }),
                       },
                       {
-                        name: "cta_url",
+                        name: "quick_reply",
                         buttonParamsJson: JSON.stringify({
-                          display_text: "👥 Grup Bot",
-                          url: botConfig.grupwa || "https://chat.whatsapp.com/",
-                          merchant_url: botConfig.grupwa || "https://chat.whatsapp.com/",
+                          display_text: "📋 Lihat Semua Menu",
+                          id: `${m.prefix}allmenu`,
                         }),
                       },
                       {
