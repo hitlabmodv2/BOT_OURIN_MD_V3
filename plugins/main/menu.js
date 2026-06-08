@@ -856,8 +856,8 @@ ${readmore}${s}`
                       {
                         name: "single_select",
                         buttonParamsJson: JSON.stringify({
-                          title: "📂 Pilih Kategori",
-                          sections: buildGroupedSections(),
+                          title: "📂 Semua Menu",
+                          sections: buildAllCategoriesSections(),
                           icon: "DEFAULT",
                         }),
                       },
