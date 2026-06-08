@@ -573,7 +573,23 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
 
     // Build single_select grouped sections (dipakai case 1 button "Pilih Kategori")
     const buildGroupedSections = () => {
-      const sections = [];
+      const sections = [
+        {
+          title: "⚡ Akses Cepat",
+          rows: [
+            {
+              title: "📋 Semua Menu Lengkap",
+              description: `Lihat semua ${totalCmds} perintah dalam satu tampilan`,
+              id: `${m.prefix}allmenu`,
+            },
+            {
+              title: "🔍 Cari Kategori",
+              description: "Pilih kategori menu di bawah ini",
+              id: `${m.prefix}menucat`,
+            },
+          ],
+        },
+      ];
       for (const group of CATEGORY_GROUPS) {
         const rows = categories.sorted
           .filter(({ cat }) => group.cats.includes(cat))
