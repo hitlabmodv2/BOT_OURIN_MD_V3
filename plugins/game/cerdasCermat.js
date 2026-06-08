@@ -38,17 +38,34 @@ function getParticipant(session, senderId) {
     if (!session.participants) session.participants = {}
     if (!session.participants[senderId]) {
         session.participants[senderId] = {
-            benar:        0,
-            salah:        0,
-            wrongStreak:  0,
+            benar:         0,
+            salah:         0,
+            wrongStreak:   0,
             cooldownUntil: 0,
         }
     }
     return session.participants[senderId]
 }
 
+// ─── Catat hasil per-soal secara realtime ─────────────────────────────────────
+// status: 'benar' | 'salah' | 'skip' | 'timeout'
+// answeredBy: jid atau null (timeout)
+// pilihanUser: key yg dipilih atau null (timeout/skip)
+function logQuestion(session, q, status, answeredBy, pilihanUser) {
+    if (!session.questionResults) session.questionResults = []
+    const optBenar = q.semua_jawaban.find(o => Object.keys(o)[0] === q.jawaban_benar)
+    session.questionResults.push({
+        qNum:         session.questionResults.length + 1,
+        pertanyaan:   q.pertanyaan.length > 55 ? q.pertanyaan.slice(0, 55) + '…' : q.pertanyaan,
+        jawaban_benar: q.jawaban_benar,
+        txt_benar:    optBenar ? Object.values(optBenar)[0] : q.jawaban_benar,
+        status,
+        answeredBy:   answeredBy || null,
+        pilihanUser:  pilihanUser || null,
+    })
+}
+
 // ─── Simpan ccStats ke database (persistent) ──────────────────────────────────
-// Dipanggil saat game selesai — simpan stats sesi ini ke user record
 function saveCCStats(db, senderId, delta) {
     try {
         const user = db.getUser(senderId)
@@ -57,7 +74,7 @@ function saveCCStats(db, senderId, delta) {
         user.ccStats.benar     += (delta.benar     || 0)
         user.ccStats.salah     += (delta.salah     || 0)
         user.ccStats.totalGame += (delta.totalGame || 0)
-        // updateKoin(+0) = no-op tapi mark users dirty agar db.save() flush user data
+        // updateKoin(+0) = no-op tapi mark users dirty agar db.save() flush data user
         db.updateKoin(senderId, 0)
     } catch (e) {
         console.error('[cerdasCermat] saveCCStats error:', e?.message)
@@ -106,7 +123,6 @@ function buildQuestionText(session) {
 
     text += `\n⏱️ Waktu: *${TIMEOUT_MS / 1000} detik*\n`
     text += `_Tekan tombol pilihan jawaban!_`
-
     return text
 }
 
@@ -184,7 +200,113 @@ async function showMapelSelect(sock, chatId, startedBy, m) {
     }, 120000)
 }
 
-// ─── Akhiri game: simpan stats + tampilkan skor + leaderboard ─────────────────
+// ─── Build teks rekap lengkap endGame ─────────────────────────────────────────
+function buildEndGameText(session, mapelName) {
+    const tot      = session.questions.length
+    const scr      = session.score
+    const persen   = Math.round((scr / tot) * 100)
+    const filled   = Math.round((scr / tot) * 10)
+    const bar      = '█'.repeat(filled) + '░'.repeat(10 - filled)
+    const emoji    = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
+    const predikat = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
+
+    let text = `${emoji} *G A M E  S E L E S A I !*\n`
+    text += `━━━━━━━━━━━━━━━━━━━━━━━━━\n`
+    text += `📚 *${mapelName}*\n`
+    text += `📊 Skor grup: *${scr}/${tot}* _(${persen}%)_\n`
+    text += `${bar}\n`
+    text += `🎯 Predikat: *${predikat}*\n`
+
+    // ── Rekap per-soal ─────────────────────────────────────────────────────────
+    const results = session.questionResults || []
+    const loggedNums = new Set(results.map(r => r.qNum))
+
+    text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━\n`
+    text += `📋 *REKAP SOAL*\n\n`
+
+    for (let i = 0; i < tot; i++) {
+        const num = i + 1
+        const r   = results.find(r => r.qNum === num)
+        const q   = session.questions[i]
+
+        if (!r) {
+            // Soal tidak sempat dijawab (game di-stop paksa)
+            const optB = q.semua_jawaban.find(o => Object.keys(o)[0] === q.jawaban_benar)
+            const txB  = optB ? Object.values(optB)[0] : q.jawaban_benar
+            text += `*${num}.* ⏭️ _Tidak dijawab_\n`
+            text += `   ✅ Jawaban: *${q.jawaban_benar.toUpperCase()}.* ${txB}\n\n`
+            continue
+        }
+
+        const pertQ = r.pertanyaan.length > 45 ? r.pertanyaan.slice(0, 45) + '…' : r.pertanyaan
+
+        if (r.status === 'benar') {
+            const who = r.answeredBy ? `@${r.answeredBy.split('@')[0]}` : '?'
+            text += `*${num}.* ✅ *BENAR* — ${who}\n`
+            text += `   💬 _${pertQ}_\n`
+            text += `   🗝️ Pilih *${r.pilihanUser.toUpperCase()}.* ${r.txt_benar}\n\n`
+
+        } else if (r.status === 'salah') {
+            const who     = r.answeredBy ? `@${r.answeredBy.split('@')[0]}` : '?'
+            const optPil  = q.semua_jawaban.find(o => Object.keys(o)[0] === r.pilihanUser)
+            const txtPil  = optPil ? Object.values(optPil)[0] : r.pilihanUser
+            text += `*${num}.* ❌ *SALAH* — ${who}\n`
+            text += `   💬 _${pertQ}_\n`
+            text += `   🫵 Pilih: *${r.pilihanUser.toUpperCase()}.* ${txtPil}\n`
+            text += `   ✅ Benar: *${r.jawaban_benar.toUpperCase()}.* ${r.txt_benar}\n\n`
+
+        } else if (r.status === 'skip') {
+            const who = r.answeredBy ? `@${r.answeredBy.split('@')[0]}` : '?'
+            text += `*${num}.* ⏩ *SKIP* — ${who}\n`
+            text += `   💬 _${pertQ}_\n`
+            text += `   ✅ Jawaban: *${r.jawaban_benar.toUpperCase()}.* ${r.txt_benar}\n\n`
+
+        } else if (r.status === 'timeout') {
+            text += `*${num}.* ⏱️ *TIMEOUT* — tidak ada yang menjawab\n`
+            text += `   💬 _${pertQ}_\n`
+            text += `   ✅ Jawaban: *${r.jawaban_benar.toUpperCase()}.* ${r.txt_benar}\n\n`
+        }
+    }
+
+    // ── Papan skor per user ────────────────────────────────────────────────────
+    const participants  = session.participants || {}
+    const partEntries   = Object.entries(participants)
+
+    if (partEntries.length > 0) {
+        // Urutkan: benar terbanyak dulu, lalu salah paling sedikit
+        partEntries.sort(([, a], [, b]) => b.benar - a.benar || a.salah - b.salah)
+
+        text += `━━━━━━━━━━━━━━━━━━━━━━━━━\n`
+        text += `🏅 *PAPAN SKOR*\n\n`
+
+        const medals = ['🥇', '🥈', '🥉']
+        partEntries.forEach(([jid, data], i) => {
+            const tag    = `@${jid.split('@')[0]}`
+            const med    = medals[i] || `${i + 1}.`
+            const total  = data.benar + data.salah
+            const pct    = total > 0 ? Math.round((data.benar / total) * 100) : 0
+            // Hitung soal yang diikuti user ini (skip dihitung sebagai berpartisipasi)
+            const ikut   = results.filter(r => r.answeredBy === jid).length
+            text += `${med} ${tag}\n`
+            text += `   ✅ *${data.benar}* benar  ❌ *${data.salah}* salah  📝 *${ikut}* dijawab  _(${pct}%)_\n`
+        })
+    }
+
+    // Ringkasan soal tidak terjawab
+    const tidakTerjawab = tot - results.length
+    const timeoutCount  = results.filter(r => r.status === 'timeout').length
+    const skipCount     = results.filter(r => r.status === 'skip').length
+
+    if (results.length > 0) {
+        text += `\n📈 *Statistik Sesi*\n`
+        text += `✅ Benar: *${scr}*  ❌ Salah: *${results.filter(r => r.status === 'salah').length}*  ⏩ Skip: *${skipCount}*  ⏱️ Timeout: *${timeoutCount}*`
+        if (tidakTerjawab > 0) text += `  ⏭️ Tak dijawab: *${tidakTerjawab}*`
+    }
+
+    return text
+}
+
+// ─── Akhiri game: simpan stats + tampilkan rekap ──────────────────────────────
 async function endGame(sock, chatId, session, m) {
     if (session._timer) clearTimeout(session._timer)
     const mapel     = session.matapelajaran
@@ -192,12 +314,7 @@ async function endGame(sock, chatId, session, m) {
     delSession(chatId)
 
     const p         = getPrefix()
-    const tot       = session.questions.length
-    const scr       = session.score
     const mapelName = MAPEL[mapel] || mapel
-    const persen    = Math.round((scr / tot) * 100)
-    const emoji     = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
-    const predikat  = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
 
     // ── Simpan ccStats ke DB untuk semua peserta ──────────────────────────────
     const db           = getDatabase()
@@ -205,53 +322,17 @@ async function endGame(sock, chatId, session, m) {
     const mentions     = []
 
     for (const [jid, data] of Object.entries(participants)) {
-        saveCCStats(db, jid, {
-            benar:     data.benar,
-            salah:     data.salah,
-            totalGame: 1,
-        })
+        saveCCStats(db, jid, { benar: data.benar, salah: data.salah, totalGame: 1 })
         mentions.push(jid)
     }
-    // Jika tidak ada peserta sama sekali (semua timeout), tetap catat starter
+    // Jika starter tidak ikut jawab sama sekali, tetap catat totalGame+1
     if (!participants[startedBy]) {
         saveCCStats(db, startedBy, { benar: 0, salah: 0, totalGame: 1 })
     }
     db.save()
 
-    // ── Teks skor keseluruhan ─────────────────────────────────────────────────
-    const filled = Math.round((scr / tot) * 10)
-    const bar    = '█'.repeat(filled) + '░'.repeat(10 - filled)
-
-    let text  = `${emoji} *G A M E  S E L E S A I !*\n`
-    text += `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`
-    text += `📚 *${mapelName}*\n\n`
-    text += `📊 Skor grup: *${scr}/${tot}* _(${persen}%)_\n`
-    text += `${bar}\n`
-    text += `✅ Benar : *${scr} soal*\n`
-    text += `❌ Salah : *${tot - scr} soal*\n`
-    text += `🎯 Predikat: *${predikat}*\n`
-
-    // ── Leaderboard peserta ────────────────────────────────────────────────────
-    const partEntries = Object.entries(participants)
-    if (partEntries.length > 0) {
-        // Urutkan: benar terbanyak dulu, lalu salah paling sedikit
-        partEntries.sort(([, a], [, b]) => b.benar - a.benar || a.salah - b.salah)
-
-        text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━\n`
-        text += `🏅 *Kontribusi Pemain*\n\n`
-
-        const medals = ['🥇', '🥈', '🥉']
-        partEntries.forEach(([jid, data], i) => {
-            const num  = jid.split('@')[0]
-            const tag  = `@${num}`
-            const med  = medals[i] || `${i + 1}.`
-            const pBar = data.benar + data.salah > 0
-                ? Math.round((data.benar / (data.benar + data.salah)) * 100)
-                : 0
-            text += `${med} ${tag}\n`
-            text += `   ✅ *${data.benar}* benar  ❌ *${data.salah}* salah  _(${pBar}%)_\n`
-        })
-    }
+    // ── Build teks rekap lengkap ───────────────────────────────────────────────
+    const text = buildEndGameText(session, mapelName)
 
     // ── 3 tombol kontekstual ──────────────────────────────────────────────────
     const btnUlang = {
@@ -303,6 +384,9 @@ function startQuestionTimer(sock, chatId, m) {
         const txtBenar = optBenar ? Object.values(optBenar)[0] : benar
         const isLast   = s.currentQ >= s.questions.length - 1
 
+        // Catat timeout ke questionResults SEBELUM currentQ naik
+        logQuestion(s, q, 'timeout', null, null)
+
         const timeoutMsg =
             `⏱️ *WAKTU HABIS!*\n\n` +
             `✅ Jawaban: *${benar.toUpperCase()}. ${txtBenar}*\n\n` +
@@ -313,7 +397,7 @@ function startQuestionTimer(sock, chatId, m) {
             setTimeout(() => endGame(sock, chatId, s, null).catch(() => {}), 2500)
         } else {
             s.currentQ++
-            s.answered     = false
+            s.answered       = false
             s.waitingForNext = false
             await sock.sendMessage(chatId, { text: timeoutMsg }).catch(() => {})
             setTimeout(() => {
@@ -329,16 +413,17 @@ function startQuestionTimer(sock, chatId, m) {
 // ─── Buat session baru (helper reusable) ──────────────────────────────────────
 function makeNewSession(mapel, soal, startedBy) {
     return {
-        step:           'playing',
-        matapelajaran:  mapel,
-        questions:      soal,
-        currentQ:       0,
-        score:          0,
+        step:            'playing',
+        matapelajaran:   mapel,
+        questions:       soal,
+        currentQ:        0,
+        score:           0,
         startedBy,
-        answered:       false,
-        waitingForNext: false,
-        participants:   {},   // { [jid]: { benar, salah, wrongStreak, cooldownUntil } }
-        _timer:         null,
+        answered:        false,
+        waitingForNext:  false,
+        participants:    {},   // { [jid]: { benar, salah, wrongStreak, cooldownUntil } }
+        questionResults: [],   // [ { qNum, pertanyaan, jawaban_benar, txt_benar, status, answeredBy, pilihanUser } ]
+        _timer:          null,
     }
 }
 
@@ -475,8 +560,12 @@ async function answerHandler(m, sock) {
             const optBenar = q.semua_jawaban.find(o => Object.keys(o)[0] === benar)
             const txtBenar = optBenar ? Object.values(optBenar)[0] : benar
             await m.react('⏩')
+
+            // Catat skip ke questionResults SEBELUM currentQ naik
+            logQuestion(session, q, 'skip', senderId, null)
+
             responseText =
-                `⏩ *Soal Dilewati*\n\n` +
+                `⏩ *Soal Dilewati* — ${tag}\n\n` +
                 `✅ Jawaban: *${benar.toUpperCase()}. ${txtBenar}*\n\n` +
                 `_Lanjut ke soal berikutnya..._`
 
@@ -492,7 +581,11 @@ async function answerHandler(m, sock) {
                 // ✅ Benar ─────────────────────────────────────────────────────
                 session.score++
                 part.benar++
-                part.wrongStreak = 0   // reset streak
+                part.wrongStreak = 0
+
+                // Catat benar ke questionResults SEBELUM currentQ naik
+                logQuestion(session, q, 'benar', senderId, pilihan)
+
                 await m.react('✅')
 
                 try {
@@ -517,6 +610,10 @@ async function answerHandler(m, sock) {
                 // ❌ Salah ─────────────────────────────────────────────────────
                 part.salah++
                 part.wrongStreak++
+
+                // Catat salah ke questionResults SEBELUM currentQ naik
+                logQuestion(session, q, 'salah', senderId, pilihan)
+
                 await m.react('❌')
 
                 let spamWarning = ''
@@ -544,7 +641,7 @@ async function answerHandler(m, sock) {
 
         } else {
             session.currentQ++
-            session.answered      = false
+            session.answered       = false
             session.waitingForNext = true
 
             const btnNext = {

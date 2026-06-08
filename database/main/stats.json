@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2423,
+  "commandsExecuted": 2425,
   "command_totalchat": 3,
   "command_menu": 213,
   "command_fb": 4,
@@ -409,5 +409,6 @@
   "command_tebaklagu": 11,
   "command_tebaknegara": 1,
   "command_tebakmakanan": 1,
-  "command_gamecerdas": 2
+  "command_gamecerdas": 2,
+  "command_tebakcerdas": 2
 }

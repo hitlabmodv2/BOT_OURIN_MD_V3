@@ -34,9 +34,9 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 24087,
+    "exp": 24377,
     "level": 1,
-    "koin": 9653,
+    "koin": 9753,
     "saldo": 0,
     "unlockedFeatures": [],
     "registeredAt": null,
@@ -44,7 +44,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-06-08T03:22:41.307Z",
+    "lastSeen": "2026-06-08T07:17:42.827Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -209,7 +209,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 1734,
+    "exp": 1764,
     "level": 1,
     "koin": 716,
     "saldo": 0,
@@ -219,7 +219,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-06-06T13:51:07.433Z",
+    "lastSeen": "2026-06-08T07:11:40.845Z",
     "cooldowns": {
       "tebaklagu": 1780753809394
     },
