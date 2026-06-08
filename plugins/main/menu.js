@@ -873,10 +873,11 @@ ${readmore}${s}`
                         }),
                       },
                       {
-                        name: "quick_reply",
+                        name: "cta_url",
                         buttonParamsJson: JSON.stringify({
-                          display_text: "📋 Lihat Semua Menu",
-                          id: `${m.prefix}allmenu`,
+                          display_text: "👥 Grup Bot",
+                          url: botConfig.grupwa || "https://chat.whatsapp.com/",
+                          merchant_url: botConfig.grupwa || "https://chat.whatsapp.com/",
                         }),
                       },
                       {
