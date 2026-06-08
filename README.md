@@ -4,7 +4,7 @@
 
 **Bot WhatsApp Multi-Device berbasis Baileys dengan sistem plugin modular**
 
-[![Deploy on Replit](https://replit.com/badge/github/yourusername/ourin-md)](https://replit.com/new/github/yourusername/ourin-md)
+[![Deploy on Replit](https://replit.com/badge/github/hitlabmodv2/BOT_OURIN_MD_V3)](https://replit.com/new/github/hitlabmodv2/BOT_OURIN_MD_V3)
 
 ![Node](https://img.shields.io/badge/Node.js-%3E%3D22.0.0-brightgreen?logo=node.js)
 ![License](https://img.shields.io/badge/License-ISC-blue)
@@ -33,7 +33,7 @@
 
 Cara paling mudah untuk menjalankan bot ini:
 
-[![Run on Replit](https://replit.com/badge/github/yourusername/ourin-md)](https://replit.com/new/github/yourusername/ourin-md)
+[![Run on Replit](https://replit.com/badge/github/hitlabmodv2/BOT_OURIN_MD_V3)](https://replit.com/new/github/hitlabmodv2/BOT_OURIN_MD_V3)
 
 1. Klik tombol di atas
 2. Tunggu instalasi selesai
@@ -80,8 +80,8 @@ bot: {
 
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/ourin-md
-cd ourin-md
+git clone https://github.com/hitlabmodv2/BOT_OURIN_MD_V3
+cd BOT_OURIN_MD_V3
 
 # Install dependencies
 npm install
