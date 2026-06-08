@@ -840,24 +840,26 @@ ${readmore}${s}`
                       {
                         name: "single_select",
                         buttonParamsJson: JSON.stringify({
-                          has_multiple_buttons: true
-                        })
-                      },
-                      {
-                        name: "cta_url",
-                        buttonParamsJson: JSON.stringify({
-                          display_text: "🍫 Owner Kami",
-                          url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                          merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                        })
+                          title: "📂 Pilih Kategori",
+                          sections: buildGroupedSections(),
+                          icon: "DEFAULT",
+                        }),
                       },
                       {
                         name: "quick_reply",
                         buttonParamsJson: JSON.stringify({
-                          display_text: "🍛 Dapatkan Script ( Gratis )",
-                          id: `${m.prefix}sc`
-                        })
-                      }
+                          display_text: "📋 Lihat Semua Menu",
+                          id: `${m.prefix}allmenu`,
+                        }),
+                      },
+                      {
+                        name: "cta_url",
+                        buttonParamsJson: JSON.stringify({
+                          display_text: "👑 Hubungi Owner",
+                          url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                          merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                        }),
+                      },
                     ]
                   }
                 }
