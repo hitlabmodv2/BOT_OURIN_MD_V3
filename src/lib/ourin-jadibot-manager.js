@@ -12,7 +12,7 @@ import { addJadibotOwner } from "./ourin-jadibot-database.js";
 import { extendSocket } from "./ourin-socket.js";
 import { getAssetBuffer } from "./ourin-asset-manager.js";
 import { useSingleFileAuthState } from "./ourin-single-file-auth.js";
-const JADIBOT_AUTH_FOLDER = path.join(process.cwd(), "storage", "userjadibot");
+const JADIBOT_AUTH_FOLDER = path.join("/home/runner", "userjadibot");
 const jadibotSessions = new Map();
 const reconnectAttempts = new Map();
 const MAX_RECONNECT_ATTEMPTS = 3;
