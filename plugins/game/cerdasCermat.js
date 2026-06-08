@@ -5,8 +5,10 @@ import { makeGameListBtn } from '../../src/lib/ourin-games.js'
 import botConfig from '../../config.js'
 
 // ─── Konstanta ─────────────────────────────────────────────────────────────────
-const TIMEOUT_MS = 30000
-const BASE_URL   = 'https://api.siputzx.my.id/api/games/cc-sd'
+const TIMEOUT_MS      = 30000   // waktu per soal
+const COOLDOWN_MS     = 10000   // cooldown anti-spam
+const WRONG_THRESHOLD = 3       // salah berturut-turut sebelum kena cooldown
+const BASE_URL        = 'https://api.siputzx.my.id/api/games/cc-sd'
 
 const MAPEL = {
     bindo:      '📚 Bhs. Indonesia',
@@ -29,6 +31,38 @@ function getSession(chatId)       { return sessions.get(chatId) || null }
 function setSession(chatId, data) { sessions.set(chatId, data) }
 function delSession(chatId)       { sessions.delete(chatId) }
 function getPrefix()              { return botConfig.command?.prefix || '.' }
+
+// ─── Per-user participant dalam session ────────────────────────────────────────
+// Setiap entry: { benar, salah, wrongStreak, cooldownUntil }
+function getParticipant(session, senderId) {
+    if (!session.participants) session.participants = {}
+    if (!session.participants[senderId]) {
+        session.participants[senderId] = {
+            benar:        0,
+            salah:        0,
+            wrongStreak:  0,
+            cooldownUntil: 0,
+        }
+    }
+    return session.participants[senderId]
+}
+
+// ─── Simpan ccStats ke database (persistent) ──────────────────────────────────
+// Dipanggil saat game selesai — simpan stats sesi ini ke user record
+function saveCCStats(db, senderId, delta) {
+    try {
+        const user = db.getUser(senderId)
+        if (!user) return
+        if (!user.ccStats) user.ccStats = { totalGame: 0, benar: 0, salah: 0 }
+        user.ccStats.benar     += (delta.benar     || 0)
+        user.ccStats.salah     += (delta.salah     || 0)
+        user.ccStats.totalGame += (delta.totalGame || 0)
+        // updateKoin(+0) = no-op tapi mark users dirty agar db.save() flush user data
+        db.updateKoin(senderId, 0)
+    } catch (e) {
+        console.error('[cerdasCermat] saveCCStats error:', e?.message)
+    }
+}
 
 // ─── Helpers kirim ─────────────────────────────────────────────────────────────
 function makeQuoted(m) {
@@ -76,7 +110,7 @@ function buildQuestionText(session) {
     return text
 }
 
-// ─── Build tombol jawaban A/B/C/D ──────────────────────────────────────────────
+// ─── Build tombol jawaban A/B/C/D + Lewati ────────────────────────────────────
 function buildAnswerButtons(soal) {
     const buttons = soal.semua_jawaban.map(opt => {
         const key = Object.keys(opt)[0]
@@ -104,7 +138,6 @@ async function showQuestion(sock, chatId, session, m) {
     const q       = session.questions[session.currentQ]
     const text    = buildQuestionText(session)
     const buttons = buildAnswerButtons(q)
-    // tandai soal sudah ditampilkan — cegah cc_next tampilkan lagi setelah auto-timer
     session.waitingForNext = false
     return await sendBtn(sock, chatId, text, buttons, m)
 }
@@ -116,7 +149,7 @@ async function fetchSoal(mapel) {
     return res.data.data.soal
 }
 
-// ─── Tampilkan pilih mata pelajaran (reusable) ────────────────────────────────
+// ─── Tampilkan pilih mata pelajaran (reusable) ─────────────────────────────────
 async function showMapelSelect(sock, chatId, startedBy, m) {
     const rows = Object.entries(MAPEL).map(([key, label]) => ({
         title: label,
@@ -151,7 +184,7 @@ async function showMapelSelect(sock, chatId, startedBy, m) {
     }, 120000)
 }
 
-// ─── Akhiri game dan tampilkan skor ───────────────────────────────────────────
+// ─── Akhiri game: simpan stats + tampilkan skor + leaderboard ─────────────────
 async function endGame(sock, chatId, session, m) {
     if (session._timer) clearTimeout(session._timer)
     const mapel     = session.matapelajaran
@@ -163,25 +196,64 @@ async function endGame(sock, chatId, session, m) {
     const scr       = session.score
     const mapelName = MAPEL[mapel] || mapel
     const persen    = Math.round((scr / tot) * 100)
+    const emoji     = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
+    const predikat  = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
 
-    const emoji    = scr === tot ? '🏆' : scr >= tot * 0.7 ? '🌟' : scr >= tot * 0.5 ? '😊' : '📖'
-    const predikat = scr === tot ? 'Sempurna!' : scr >= tot * 0.7 ? 'Sangat Bagus!' : scr >= tot * 0.5 ? 'Lumayan!' : 'Tetap Semangat!'
+    // ── Simpan ccStats ke DB untuk semua peserta ──────────────────────────────
+    const db           = getDatabase()
+    const participants = session.participants || {}
+    const mentions     = []
 
-    // Bar skor visual
+    for (const [jid, data] of Object.entries(participants)) {
+        saveCCStats(db, jid, {
+            benar:     data.benar,
+            salah:     data.salah,
+            totalGame: 1,
+        })
+        mentions.push(jid)
+    }
+    // Jika tidak ada peserta sama sekali (semua timeout), tetap catat starter
+    if (!participants[startedBy]) {
+        saveCCStats(db, startedBy, { benar: 0, salah: 0, totalGame: 1 })
+    }
+    db.save()
+
+    // ── Teks skor keseluruhan ─────────────────────────────────────────────────
     const filled = Math.round((scr / tot) * 10)
     const bar    = '█'.repeat(filled) + '░'.repeat(10 - filled)
 
     let text  = `${emoji} *G A M E  S E L E S A I !*\n`
     text += `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`
     text += `📚 *${mapelName}*\n\n`
-    text += `📊 Skor: *${scr}/${tot}* _(${persen}%)_\n`
+    text += `📊 Skor grup: *${scr}/${tot}* _(${persen}%)_\n`
     text += `${bar}\n`
     text += `✅ Benar : *${scr} soal*\n`
-    text += `❌ Salah : *${tot - scr} soal*\n\n`
-    text += `🎯 Predikat: *${predikat}*`
+    text += `❌ Salah : *${tot - scr} soal*\n`
+    text += `🎯 Predikat: *${predikat}*\n`
 
-    // ── 3 tombol kontekstual ───────────────────────────────────────────────
-    // Tombol 1: main lagi mapel yang sama (langsung fetch, skip pilih)
+    // ── Leaderboard peserta ────────────────────────────────────────────────────
+    const partEntries = Object.entries(participants)
+    if (partEntries.length > 0) {
+        // Urutkan: benar terbanyak dulu, lalu salah paling sedikit
+        partEntries.sort(([, a], [, b]) => b.benar - a.benar || a.salah - b.salah)
+
+        text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━\n`
+        text += `🏅 *Kontribusi Pemain*\n\n`
+
+        const medals = ['🥇', '🥈', '🥉']
+        partEntries.forEach(([jid, data], i) => {
+            const num  = jid.split('@')[0]
+            const tag  = `@${num}`
+            const med  = medals[i] || `${i + 1}.`
+            const pBar = data.benar + data.salah > 0
+                ? Math.round((data.benar / (data.benar + data.salah)) * 100)
+                : 0
+            text += `${med} ${tag}\n`
+            text += `   ✅ *${data.benar}* benar  ❌ *${data.salah}* salah  _(${pBar}%)_\n`
+        })
+    }
+
+    // ── 3 tombol kontekstual ──────────────────────────────────────────────────
     const btnUlang = {
         name: 'quick_reply',
         buttonParamsJson: JSON.stringify({
@@ -189,8 +261,6 @@ async function endGame(sock, chatId, session, m) {
             id: `cc_ulang_${mapel}`,
         }),
     }
-
-    // Tombol 2: ganti ke mapel lain (munculkan list pilih mapel)
     const btnGanti = {
         name: 'quick_reply',
         buttonParamsJson: JSON.stringify({
@@ -198,19 +268,16 @@ async function endGame(sock, chatId, session, m) {
             id: 'cc_gantiMapel',
         }),
     }
-
-    // Tombol 3: pilih game lain (single_select list semua game)
     const btnGameLain = makeGameListBtn()
 
     const opts = m ? { quoted: makeQuoted(m) } : {}
     try {
         await sock.sendMessage(chatId, {
-            text,
+            text, mentions,
             interactiveButtons: [btnUlang, btnGanti, btnGameLain],
         }, opts)
     } catch (e) {
         console.error('[cerdasCermat] endGame btn error:', e?.message)
-        // Fallback: teks biasa + hint command
         await sock.sendMessage(chatId, {
             text: text + `\n\n> Main lagi: *${p}tebakcerdas*`,
         }).catch(() => {})
@@ -246,7 +313,7 @@ function startQuestionTimer(sock, chatId, m) {
             setTimeout(() => endGame(sock, chatId, s, null).catch(() => {}), 2500)
         } else {
             s.currentQ++
-            s.answered = false
+            s.answered     = false
             s.waitingForNext = false
             await sock.sendMessage(chatId, { text: timeoutMsg }).catch(() => {})
             setTimeout(() => {
@@ -257,6 +324,22 @@ function startQuestionTimer(sock, chatId, m) {
             }, 3000)
         }
     }, TIMEOUT_MS)
+}
+
+// ─── Buat session baru (helper reusable) ──────────────────────────────────────
+function makeNewSession(mapel, soal, startedBy) {
+    return {
+        step:           'playing',
+        matapelajaran:  mapel,
+        questions:      soal,
+        currentQ:       0,
+        score:          0,
+        startedBy,
+        answered:       false,
+        waitingForNext: false,
+        participants:   {},   // { [jid]: { benar, salah, wrongStreak, cooldownUntil } }
+        _timer:         null,
+    }
 }
 
 // ─── Handler utama: .tebakcerdas ──────────────────────────────────────────────
@@ -312,8 +395,6 @@ async function answerHandler(m, sock) {
     if (body.startsWith('cc_mapel_')) {
         const mapel = body.replace('cc_mapel_', '')
         if (!MAPEL[mapel]) return false
-
-        // Kalau sudah ada game berjalan, abaikan
         if (session?.step === 'playing') return false
 
         if (session?.startedBy && session.startedBy !== senderId) {
@@ -335,30 +416,17 @@ async function answerHandler(m, sock) {
             return true
         }
 
-        const newSession = {
-            step:          'playing',
-            matapelajaran: mapel,
-            questions:     soal,
-            currentQ:      0,
-            score:         0,
-            startedBy:     senderId,
-            answered:      false,
-            waitingForNext: false,
-            _timer:        null,
-        }
+        const newSession = makeNewSession(mapel, soal, senderId)
         setSession(chatId, newSession)
         await m.react('✅')
-
         await showQuestion(sock, chatId, newSession, m)
         startQuestionTimer(sock, chatId, m)
         return true
     }
 
     // ── Soal berikutnya (tombol manual) ──────────────────────────────────────
-    // FIX: hanya tampilkan soal kalau session dalam mode waitingForNext
     if (body === 'cc_next') {
         if (!session || session.step !== 'playing') return false
-        // Jika belum waitingForNext (auto-timer sudah tampilkan soal), abaikan
         if (!session.waitingForNext) return true
         clearTimeout(session._timer)
         session.waitingForNext = false
@@ -371,10 +439,24 @@ async function answerHandler(m, sock) {
     if (body.startsWith('cc_jawab_') || body === 'cc_skip') {
         if (!session || session.step !== 'playing') return false
 
-        // Soal ini sudah dijawab — tolak
+        // Soal sudah dijawab orang lain — tolak
         if (session.answered) {
             await m.react('⏰')
             await m.reply('_Soal ini sudah dijawab, tunggu soal berikutnya ya!_')
+            return true
+        }
+
+        // ── Anti-spam: cek cooldown per user ──────────────────────────────────
+        const part = getParticipant(session, senderId)
+        const now  = Date.now()
+        if (part.cooldownUntil > now) {
+            const sisa = Math.ceil((part.cooldownUntil - now) / 1000)
+            await m.react('🚫')
+            await m.reply(
+                `🚫 *Cooldown!* @${senderId.split('@')[0]}\n\n` +
+                `Kamu salah ${WRONG_THRESHOLD}x berturut-turut.\n` +
+                `Tunggu *${sisa} detik* lagi ya!`
+            )
             return true
         }
 
@@ -388,6 +470,7 @@ async function answerHandler(m, sock) {
 
         let responseText = ''
 
+        // ── Skip ──────────────────────────────────────────────────────────────
         if (body === 'cc_skip') {
             const optBenar = q.semua_jawaban.find(o => Object.keys(o)[0] === benar)
             const txtBenar = optBenar ? Object.values(optBenar)[0] : benar
@@ -398,6 +481,7 @@ async function answerHandler(m, sock) {
                 `_Lanjut ke soal berikutnya..._`
 
         } else {
+            // ── Jawab ─────────────────────────────────────────────────────────
             const pilihan    = body.replace('cc_jawab_', '')
             const optDipilih = q.semua_jawaban.find(o => Object.keys(o)[0] === pilihan)
             const optBenar   = q.semua_jawaban.find(o => Object.keys(o)[0] === benar)
@@ -405,7 +489,10 @@ async function answerHandler(m, sock) {
             const txtBenar   = optBenar   ? Object.values(optBenar)[0]   : benar
 
             if (pilihan === benar) {
+                // ✅ Benar ─────────────────────────────────────────────────────
                 session.score++
+                part.benar++
+                part.wrongStreak = 0   // reset streak
                 await m.react('✅')
 
                 try {
@@ -427,25 +514,38 @@ async function answerHandler(m, sock) {
                     `_Skor: ${session.score}/${session.questions.length}_`
 
             } else {
+                // ❌ Salah ─────────────────────────────────────────────────────
+                part.salah++
+                part.wrongStreak++
                 await m.react('❌')
+
+                let spamWarning = ''
+                if (part.wrongStreak >= WRONG_THRESHOLD) {
+                    part.cooldownUntil = now + COOLDOWN_MS
+                    part.wrongStreak   = 0
+                    spamWarning        = `\n\n🚫 *${tag} kena cooldown ${COOLDOWN_MS / 1000} detik!*\n_Salah ${WRONG_THRESHOLD}x berturut-turut~_`
+                } else {
+                    const sisa = WRONG_THRESHOLD - part.wrongStreak
+                    spamWarning = `\n_Salah lagi ${sisa}x berturut-turut → cooldown!_`
+                }
+
                 responseText =
                     `❌ *SALAH! ${tag}*\n\n` +
                     `🫵 Pilihan: *${pilihan.toUpperCase()}. ${txtDipilih}*\n` +
-                    `✅ Jawaban benar: *${benar.toUpperCase()}. ${txtBenar}*\n\n` +
-                    `_Jangan menyerah! Masih ada soal lagi 📚_`
+                    `✅ Jawaban benar: *${benar.toUpperCase()}. ${txtBenar}*` +
+                    spamWarning
             }
         }
 
+        // ── Soal terakhir atau lanjut ─────────────────────────────────────────
         if (isLast) {
-            // Soal terakhir — tampilkan hasil lalu end game
             await sendBtn(sock, chatId, responseText, [], m, [senderId])
             setTimeout(() => endGame(sock, chatId, session, null).catch(() => {}), 2500)
 
         } else {
-            // Ada soal berikutnya
             session.currentQ++
             session.answered      = false
-            session.waitingForNext = true  // flag: soal belum ditampilkan, menunggu cc_next atau auto-timer
+            session.waitingForNext = true
 
             const btnNext = {
                 name: 'quick_reply',
@@ -456,7 +556,7 @@ async function answerHandler(m, sock) {
             }
             await sendBtn(sock, chatId, responseText, [btnNext], m, [senderId])
 
-            // Auto-tampilkan soal berikutnya setelah 5 detik jika tidak diklik manual
+            // Auto-tampilkan soal berikutnya setelah 5 detik
             session._timer = setTimeout(() => {
                 const cur = getSession(chatId)
                 if (!cur || cur.step !== 'playing' || !cur.waitingForNext) return
@@ -469,7 +569,7 @@ async function answerHandler(m, sock) {
         return true
     }
 
-    // ── Main lagi mapel yang sama (tombol di layar selesai) ──────────────────
+    // ── Main lagi mapel yang sama ─────────────────────────────────────────────
     if (body.startsWith('cc_ulang_')) {
         const mapel = body.replace('cc_ulang_', '')
         if (!MAPEL[mapel]) return false
@@ -489,17 +589,7 @@ async function answerHandler(m, sock) {
             return true
         }
 
-        const newSession = {
-            step:           'playing',
-            matapelajaran:  mapel,
-            questions:      soal,
-            currentQ:       0,
-            score:          0,
-            startedBy:      senderId,
-            answered:       false,
-            waitingForNext: false,
-            _timer:         null,
-        }
+        const newSession = makeNewSession(mapel, soal, senderId)
         setSession(chatId, newSession)
         await m.react('✅')
         await showQuestion(sock, chatId, newSession, m)
@@ -507,7 +597,7 @@ async function answerHandler(m, sock) {
         return true
     }
 
-    // ── Ganti mata pelajaran (tombol di layar selesai) ────────────────────────
+    // ── Ganti mata pelajaran ──────────────────────────────────────────────────
     if (body === 'cc_gantiMapel') {
         if (session?.step === 'playing') return false
         if (session?._timer) clearTimeout(session._timer)
