@@ -98,9 +98,11 @@ async function handler(m, { sock, config: botConfig }) {
   ];
 
   const contextInfo = {
+    stanzaId: m.raw?.key?.id,
+    participant: m.raw?.key?.participant || m.sender,
+    quotedMessage: m.raw?.message,
     isForwarded: true,
     forwardingScore: 9,
-    participant: "0@s.whatsapp.net",
     forwardedNewsletterMessageInfo: {
       newsletterJid: saluranId,
       newsletterName: saluranName,
