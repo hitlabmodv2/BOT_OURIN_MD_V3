@@ -19,18 +19,52 @@ const pluginConfig = {
 };
 
 async function handler(m, { sock }) {
-  const grupwa = config.info?.grupwa || "";
+  const rawGrupwa = config.info?.grupwa;
   const botName = config.bot?.name || "Ourin-AI";
   const saluranId = config.saluran?.id || "120363400911374213@newsletter";
   const saluranName = config.saluran?.name || botName;
 
-  if (!grupwa || grupwa.includes("xxxx")) {
+  // Support string atau array
+  const links = Array.isArray(rawGrupwa)
+    ? rawGrupwa.filter((l) => l && !l.includes("xxxx"))
+    : rawGrupwa && !rawGrupwa.includes("xxxx")
+    ? [rawGrupwa]
+    : [];
+
+  if (links.length === 0) {
     return m.reply(
       `❌ *Link grup belum diatur*\n\n> Minta owner untuk mengisi \`config.info.grupwa\``
     );
   }
 
   const thumb = getAssetBuffer("ourin2");
+
+  // Bangun tombol: tiap link jadi 1 cta_url + tombol kembali ke menu
+  const grupButtons = links.map((url, i) => ({
+    name: "cta_url",
+    buttonParamsJson: JSON.stringify({
+      display_text: links.length > 1 ? `👥 Grup Bot ${i + 1}` : "👥 Join Grup Bot",
+      url,
+      merchant_url: url,
+    }),
+  }));
+
+  const buttons = [
+    ...grupButtons,
+    {
+      name: "quick_reply",
+      buttonParamsJson: JSON.stringify({
+        display_text: "🏠 Kembali ke Menu",
+        id: `${m.prefix}menu`,
+      }),
+    },
+  ];
+
+  const bodyText =
+    `👥 *GRUP ${botName.toUpperCase()}*\n\n` +
+    `> Klik tombol di bawah untuk bergabung ke grup WhatsApp bot.\n` +
+    `> Saling sharing, tanya fitur, dan update terbaru ada di sana!\n\n` +
+    links.map((url, i) => `> ${i + 1}. ${url}`).join("\n");
 
   try {
     const media = await prepareWAMessageMedia(
@@ -51,9 +85,7 @@ async function handler(m, { sock }) {
                 hasMediaAttachment: true,
                 imageMessage: media.imageMessage,
               },
-              body: {
-                text: `👥 *GRUP ${botName.toUpperCase()}*\n\n> Klik tombol di bawah untuk bergabung ke grup WhatsApp bot.\n> Saling sharing, tanya fitur, dan update terbaru ada di sana!`,
-              },
+              body: { text: bodyText },
               footer: { text: botName },
               contextInfo: {
                 isForwarded: true,
@@ -66,25 +98,7 @@ async function handler(m, { sock }) {
                 },
                 mentionedJid: [m.sender],
               },
-              nativeFlowMessage: {
-                buttons: [
-                  {
-                    name: "cta_url",
-                    buttonParamsJson: JSON.stringify({
-                      display_text: "👥 Join Grup Bot",
-                      url: grupwa,
-                      merchant_url: grupwa,
-                    }),
-                  },
-                  {
-                    name: "quick_reply",
-                    buttonParamsJson: JSON.stringify({
-                      display_text: "🏠 Kembali ke Menu",
-                      id: `${m.prefix}menu`,
-                    }),
-                  },
-                ],
-              },
+              nativeFlowMessage: { buttons },
             },
           },
         },
@@ -92,9 +106,11 @@ async function handler(m, { sock }) {
       {}
     );
   } catch (e) {
-    await m.reply(
-      `👥 *GRUP ${botName.toUpperCase()}*\n\n> Link: ${grupwa}\n\n_Klik link di atas untuk bergabung!_`
-    );
+    const fallback =
+      `👥 *GRUP ${botName.toUpperCase()}*\n\n` +
+      links.map((url, i) => `> Grup ${i + 1}: ${url}`).join("\n") +
+      `\n\n_Klik link di atas untuk bergabung!_`;
+    await m.reply(fallback);
   }
 }
 

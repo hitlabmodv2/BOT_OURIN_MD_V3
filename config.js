@@ -9,7 +9,10 @@ import * as ownerPremiumDb from "./src/lib/ourin-premium-db.js";
 const config = {
   info: {
     website: "https://youtu.be/dQw4w9WgXcQ",
-    grupwa: "https://chat.whatsapp.com/xxxx",
+    grupwa: [
+      "https://chat.whatsapp.com/FnfatV8TlOZEMwLlLoDCRp",
+      "https://chat.whatsapp.com/KaNQoAG6eGWLGnso3cKvwq",
+    ],
   },
 
   owner: {
