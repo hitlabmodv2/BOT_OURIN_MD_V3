@@ -1,19 +1,13 @@
-import crypto from "crypto";
 import config, { getOwnerName } from "../../config.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import {
-  proto,
-  generateWAMessageFromContent,
-  prepareWAMessageMedia,
-} from "ourin";
-import { AIRich } from "../../src/lib/ourin-builder.js";
-import axios from "axios";
-import sharp from "sharp";
+import { prepareWAMessageMedia } from "ourin";
+import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
+
 const pluginConfig = {
   name: "owner",
   alias: ["creator", "dev", "developer"],
   category: "main",
-  description: "Menampilkan kontak owner bot",
+  description: "Menampilkan info & kontak owner bot",
   usage: ".owner",
   example: ".owner",
   isOwner: false,
@@ -28,54 +22,143 @@ const pluginConfig = {
 async function handler(m, { sock, config: botConfig }) {
   const db = getDatabase();
   const ownerType = db.setting("ownerType") || 1;
+
   const configOwners = botConfig.owner?.number || [];
   const dbOwners = db.data.owner || [];
   const ownerNumbers = [...new Set([...configOwners, ...dbOwners])];
   const botName = botConfig.bot?.name || "Ourin-AI";
+  const saluranId = botConfig.saluran?.id || "120363400911374213@newsletter";
+  const saluranName = botConfig.saluran?.name || botName;
+
+  // Type 2 — kirim contact card (tidak diubah)
   if (ownerType === 2) {
-    const contacts = [];
+    const contacts = ownerNumbers.map((number) => {
+      const clean = number.replace(/[^0-9]/g, "");
+      return {
+        vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:${getOwnerName(number)}\nTEL;type=CELL;type=VOICE;waid=${clean}:+${clean}\nEND:VCARD`,
+      };
+    });
+    const sent = await sock.sendMessage(
+      m.chat,
+      { contacts: { displayName: "Owner Bot", contacts } },
+      { quoted: m.raw }
+    );
+    await sock.sendMessage(
+      m.chat,
+      { text: "💬 Jika ada pertanyaan, jangan ragu untuk menghubungi owner ya!" },
+      { quoted: sent }
+    );
+    return;
+  }
 
-    for (const number of ownerNumbers) {
-      const cleanNumber = number.replace(/[^0-9]/g, "");
+  // Type 1 (default) — pesan interaktif dengan tombol
+  const ownerName = ownerNumbers.map((n) => getOwnerName(n)).join(", ");
+  const totalOwner = ownerNumbers.length;
 
-      const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${getOwnerName(number)}\nTEL;type=CELL;type=VOICE;waid=${cleanNumber}:+${cleanNumber}\nEND:VCARD`;
+  const bodyText =
+    `👑 *OWNER ${botName.toUpperCase()}*\n\n` +
+    `╭──────────────────────\n` +
+    ownerNumbers
+      .map((n, i) => {
+        const clean = n.replace(/[^0-9]/g, "");
+        const name = getOwnerName(n);
+        return `┃ ${i + 1}. *${name}*\n┃    📞 +${clean}`;
+      })
+      .join("\n") +
+    `\n┃\n` +
+    `┃ 🤖 Bot: *${botName}*\n` +
+    `┃ 🟢 Status: *Online*\n` +
+    `╰──────────────────────\n\n` +
+    `> _Ada pertanyaan atau kendala? Hubungi owner langsung via tombol di bawah!_`;
 
-      contacts.push({ vcard });
-    }
+  // Tombol: satu per owner + kembali ke menu
+  const ownerButtons = ownerNumbers.map((number, i) => {
+    const clean = number.replace(/[^0-9]/g, "");
+    const name = getOwnerName(number);
+    return {
+      name: "cta_url",
+      buttonParamsJson: JSON.stringify({
+        display_text:
+          totalOwner > 1 ? `👑 Chat ${name}` : `👑 Hubungi Owner`,
+        url: `https://wa.me/${clean}`,
+        merchant_url: `https://wa.me/${clean}`,
+      }),
+    };
+  });
 
-    const zanne = await sock.sendMessage(
+  const buttons = [
+    ...ownerButtons,
+    {
+      name: "quick_reply",
+      buttonParamsJson: JSON.stringify({
+        display_text: "🏠 Kembali ke Menu",
+        id: `${m.prefix}menu`,
+      }),
+    },
+  ];
+
+  const contextInfo = {
+    isForwarded: true,
+    forwardingScore: 9,
+    participant: "0@s.whatsapp.net",
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: saluranId,
+      newsletterName: saluranName,
+      serverMessageId: 127,
+    },
+    mentionedJid: [m.sender],
+  };
+
+  const thumb = getAssetBuffer("ourin2");
+
+  try {
+    const media = await prepareWAMessageMedia(
+      { image: thumb || { url: "https://gimita.id/ourin.png" } },
+      { upload: sock.waUploadToServer }
+    );
+
+    await sock.relayMessage(
       m.chat,
       {
-        contacts: {
-          displayName: `Ini adalah owner kami`,
-          contacts,
+        viewOnceMessage: {
+          message: {
+            messageContextInfo: {},
+            interactiveMessage: {
+              header: {
+                title: "",
+                subtitle: "",
+                hasMediaAttachment: true,
+                imageMessage: media.imageMessage,
+              },
+              body: { text: bodyText },
+              footer: { text: botName },
+              contextInfo,
+              nativeFlowMessage: { buttons },
+            },
+          },
         },
       },
-      { quoted: m.raw },
-
+      {}
     );
-    await sock.sendMessage(m.chat, {
-      text: "💬 Jika kamu memiliki pertanyaan, jangan ragu untuk bertanya, owner ramah kok"
-    }, { quoted: zanne })
-  } else {
-    const ownerText = `👑 *ᴏᴡɴᴇʀ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ*\n\n╭┈┈⬡「 📋 *ᴅᴇᴛᴀɪʟ* 」\n┃ ㊗ ɴᴀᴍᴀ: *${ownerNumbers.map((n) => getOwnerName(n)).join(", ")}*\n┃ ㊗ ʙᴏᴛ: *${botName}*\n┃ ㊗ sᴛᴀᴛᴜs: *🟢 Online*\n╰┈┈⬡\n\n> _Jika ada pertanyaan atau kendala,_\n> _silakan hubungi owner di atas!_\n> _📞 Contact card di bawah._`;
-
-    await m.reply(ownerText);
-
+  } catch {
+    // Fallback: teks biasa + vCard kalau interactive gagal
+    await m.reply(bodyText);
     for (const number of ownerNumbers) {
-      const cleanNumber = number.replace(/[^0-9]/g, "");
-
-      const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${getOwnerName(number)} (Owner ${botName})\nTEL;type=CELL;type=VOICE;waid=${cleanNumber}:+${cleanNumber}\nEND:VCARD`;
-
+      const clean = number.replace(/[^0-9]/g, "");
+      const name = getOwnerName(number);
       await sock.sendMessage(
         m.chat,
         {
           contacts: {
-            displayName: getOwnerName(number),
-            contacts: [{ vcard }],
+            displayName: name,
+            contacts: [
+              {
+                vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:${name} (Owner ${botName})\nTEL;type=CELL;type=VOICE;waid=${clean}:+${clean}\nEND:VCARD`,
+              },
+            ],
           },
         },
-        { quoted: m.raw },
+        { quoted: m.raw }
       );
     }
   }
