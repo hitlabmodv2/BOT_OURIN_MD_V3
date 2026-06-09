@@ -1,8 +1,8 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2448,
+  "commandsExecuted": 2452,
   "command_totalchat": 3,
-  "command_menu": 223,
+  "command_menu": 224,
   "command_fb": 4,
   "command_brat": 18,
   "command_antidocument": 2,
@@ -412,5 +412,5 @@
   "command_gamecerdas": 2,
   "command_tebakcerdas": 3,
   "command_autosholat": 3,
-  "command_gc": 2
+  "command_gc": 5
 }
