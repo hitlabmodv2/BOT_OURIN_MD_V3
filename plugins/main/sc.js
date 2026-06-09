@@ -117,25 +117,44 @@ async function handler(m, { sock }) {
         }
     }
 
+    const rawGrupwa = config.info?.grupwa
+    const grupLinks = Array.isArray(rawGrupwa)
+        ? rawGrupwa.filter(l => l && !l.includes('xxxx'))
+        : rawGrupwa && !String(rawGrupwa).includes('xxxx')
+        ? [rawGrupwa]
+        : []
+
+    const ownerNum = config.owner?.number?.[0] || '6289688206739'
+
+    const buttons = [
+        {
+            name: 'cta_url',
+            buttonParamsJson: JSON.stringify({
+                display_text: '👑 Hubungi Owner',
+                url: `https://wa.me/${ownerNum}`,
+                merchant_url: `https://wa.me/${ownerNum}`
+            })
+        },
+        ...grupLinks.map((url, i) => ({
+            name: 'cta_url',
+            buttonParamsJson: JSON.stringify({
+                display_text: grupLinks.length > 1 ? `👥 Grup Bot ${i + 1}` : '👥 Grup Bot',
+                url,
+                merchant_url: url
+            })
+        })),
+        {
+            name: 'quick_reply',
+            buttonParamsJson: JSON.stringify({
+                display_text: '📥 Download Script',
+                id: `${m.prefix}sc sticker`
+            })
+        },
+    ]
+
     await sock.sendButton(m.chat, getAssetBuffer("ourin"), cap, m, {
         footer: botName,
-        buttons: [
-            {
-                name: 'cta_url',
-                buttonParamsJson: JSON.stringify({
-                    display_text: '🥐 O W N E R',
-                    url: 'https://wa.me/6289688206739',
-                    merchant_url: 'https://wa.me/6289688206739'
-                })
-            },
-            {
-                name: 'quick_reply',
-                buttonParamsJson: JSON.stringify({
-                    display_text: '📥 Download Script',
-                    id: `${m.prefix}sc sticker`
-                })
-            },
-        ],
+        buttons,
         contextInfo
     })
 }
