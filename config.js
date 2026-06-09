@@ -8,11 +8,7 @@ import * as ownerPremiumDb from "./src/lib/ourin-premium-db.js";
 //  utamakan baca object config sampai bawah
 const config = {
   info: {
-    website: "https://ourin.site",        // Website bisnis (tampil di vCard)
-    email: "",                            // Email bisnis (kosongkan jika tidak ada)
-    address: "Indonesia",                 // Alamat bisnis (bebas isi)
-    bizCategory: "Technology",            // Kategori bisnis WhatsApp
-    bizHours: "MON,TUE,WED,THU,FRI,SAT,SUN 00:00-24:00", // Jam operasional (24 jam)
+    website: "https://youtu.be/dQw4w9WgXcQ",
     grupwa: [
       "https://chat.whatsapp.com/FnfatV8TlOZEMwLlLoDCRp",
       "https://chat.whatsapp.com/KaNQoAG6eGWLGnso3cKvwq",

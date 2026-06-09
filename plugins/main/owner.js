@@ -19,16 +19,10 @@ const pluginConfig = {
   isEnabled: true,
 };
 
-function buildBusinessVCard(number, botName, info = {}) {
+function buildBusinessVCard(number, botName, website) {
   const clean = number.replace(/[^0-9]/g, "");
   const name = getOwnerName(number);
-  const website = info.website && !info.website.includes("dQw4w") ? info.website : "";
-  const email = info.email || "";
-  const address = info.address || "Indonesia";
-  const category = info.bizCategory || "Technology";
-  const hours = info.bizHours || "MON,TUE,WED,THU,FRI,SAT,SUN 00:00-24:00";
-
-  let vcard =
+  return (
     `BEGIN:VCARD\n` +
     `VERSION:3.0\n` +
     `N:${name};;;\n` +
@@ -36,17 +30,12 @@ function buildBusinessVCard(number, botName, info = {}) {
     `ORG:${botName}\n` +
     `TITLE:Owner & Developer\n` +
     `TEL;type=CELL;type=VOICE;waid=${clean}:+${clean}\n` +
-    `ADR;type=WORK:;;${address};;;;\n` +
-    (website ? `URL:${website}\n` : "") +
-    (email ? `EMAIL;type=INTERNET:${email}\n` : "") +
     `X-WA-BIZ-NAME:${botName}\n` +
     `X-WA-BIZ-DESCRIPTION:WhatsApp Bot Multi Device\n` +
-    `X-WA-BIZ-CATEGORY:${category}\n` +
-    (website ? `X-WA-BIZ-WEBSITE:${website}\n` : "") +
-    `X-WA-BIZ-HOURS:${hours}\n` +
-    `END:VCARD`;
-
-  return vcard;
+    `X-WA-BIZ-CATEGORY:Technology\n` +
+    (website && !website.includes("dQw4w") ? `X-WA-BIZ-WEBSITE:${website}\n` : "") +
+    `END:VCARD`
+  );
 }
 
 async function handler(m, { sock, config: botConfig }) {
@@ -59,12 +48,12 @@ async function handler(m, { sock, config: botConfig }) {
   const botName = botConfig.bot?.name || "Ourin-AI";
   const saluranId = botConfig.saluran?.id || "120363400911374213@newsletter";
   const saluranName = botConfig.saluran?.name || botName;
-  const bizInfo = botConfig.info || {};
+  const website = botConfig.info?.website || "";
 
   // Type 2 — kirim contact card klasik
   if (ownerType === 2) {
     const contacts = ownerNumbers.map((number) => ({
-      vcard: buildBusinessVCard(number, botName, bizInfo),
+      vcard: buildBusinessVCard(number, botName, website),
     }));
     const sent = await sock.sendMessage(
       m.chat,
@@ -192,7 +181,7 @@ async function handler(m, { sock, config: botConfig }) {
 
     // 2️⃣ Kirim business vCard — tampil sebagai kontak bisnis WhatsApp
     const bizContacts = ownerNumbers.map((number) => ({
-      vcard: buildBusinessVCard(number, botName, bizInfo),
+      vcard: buildBusinessVCard(number, botName, website),
     }));
 
     await sock.sendMessage(
@@ -212,7 +201,7 @@ async function handler(m, { sock, config: botConfig }) {
     // Fallback teks + vCard biasa
     await m.reply(bodyText);
     const bizContacts = ownerNumbers.map((number) => ({
-      vcard: buildBusinessVCard(number, botName, bizInfo),
+      vcard: buildBusinessVCard(number, botName, website),
     }));
     await sock.sendMessage(
       m.chat,
