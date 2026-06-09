@@ -34,7 +34,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 25322,
+    "exp": 25367,
     "level": 1,
     "koin": 9753,
     "saldo": 0,
@@ -44,7 +44,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-06-09T05:39:27.855Z",
+    "lastSeen": "2026-06-09T05:43:44.404Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -83,7 +83,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 1710,
+    "exp": 1770,
     "level": 1,
     "koin": 0,
     "saldo": 0,
@@ -93,7 +93,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-06-08T11:26:00.900Z",
+    "lastSeen": "2026-06-09T05:57:17.354Z",
     "cooldowns": {
       "menu": 1780588440712,
       "s": 1780584119107,
@@ -107,7 +107,8 @@
       "menucat": 1780588235510,
       "hd": 1780729097010,
       "tebakgambar": 1780736386419,
-      "tebakhewan": 1780826669803
+      "tebakhewan": 1780826669803,
+      "owner": 1780984642759
     },
     "clanId": null,
     "isRegistered": false,

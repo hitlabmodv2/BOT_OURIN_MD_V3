@@ -3,6 +3,7 @@ import path from "path";
 import sharp from "sharp";
 import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
 import { pluginStore } from "../../src/lib/ourin-plugins.js";
+import { prepareWAMessageMedia } from "ourin";
 import config from "../../config.js";
 
 const pluginConfig = {
@@ -107,16 +108,6 @@ async function handler(m, { sock }) {
     cap += `⚡ *Runtime:* Hot-reload aktif\n\n`
     cap += `_Script asli oleh *Zanspiw* — cari *OURIN MD*_`
 
-    const contextInfo = {
-        forwardingScore: 9999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-            newsletterJid: saluranId,
-            newsletterName: saluranName,
-            serverMessageId: 127
-        }
-    }
-
     const rawGrupwa = config.info?.grupwa
     const grupLinks = Array.isArray(rawGrupwa)
         ? rawGrupwa.filter(l => l && !l.includes('xxxx'))
@@ -124,7 +115,7 @@ async function handler(m, { sock }) {
         ? [rawGrupwa]
         : []
 
-    const ownerNum = config.owner?.number?.[0] || '6289688206739'
+    const ownerNum = (config.owner?.number?.[0] || '6289688206739').replace(/[^0-9]/g, '')
 
     const buttons = [
         {
@@ -152,11 +143,68 @@ async function handler(m, { sock }) {
         },
     ]
 
-    await sock.sendButton(m.chat, getAssetBuffer("ourin"), cap, m, {
-        footer: botName,
-        buttons,
-        contextInfo
-    })
+    const totalButtons = buttons.length
+
+    const thumb = getAssetBuffer('ourin')
+
+    try {
+        const media = await prepareWAMessageMedia(
+            { image: thumb || { url: 'https://gimita.id/ourin.png' } },
+            { upload: sock.waUploadToServer }
+        )
+
+        await sock.relayMessage(
+            m.chat,
+            {
+                viewOnceMessage: {
+                    message: {
+                        messageContextInfo: {},
+                        interactiveMessage: {
+                            header: {
+                                title: '',
+                                subtitle: '',
+                                hasMediaAttachment: true,
+                                imageMessage: media.imageMessage,
+                            },
+                            body: { text: cap },
+                            footer: { text: botName },
+                            contextInfo: {
+                                isForwarded: true,
+                                forwardingScore: 9,
+                                participant: '0@s.whatsapp.net',
+                                forwardedNewsletterMessageInfo: {
+                                    newsletterJid: saluranId,
+                                    newsletterName: saluranName,
+                                    serverMessageId: 127,
+                                },
+                            },
+                            nativeFlowMessage: {
+                                messageParamsJson: JSON.stringify({
+                                    bottom_sheet: {
+                                        in_thread_buttons_limit: 2,
+                                        divider_indices: Array.from({ length: totalButtons }, (_, i) => i + 1).concat([999]),
+                                        list_title: `Info & Kontak ${botName}`,
+                                        button_title: '📋 Lihat Semua',
+                                    },
+                                    tap_target_configuration: {
+                                        title: ' X ',
+                                        description: botName,
+                                        canonical_url: 'https://ourin.site',
+                                        domain: 'ourin.site',
+                                        button_index: 0,
+                                    },
+                                }),
+                                buttons,
+                            },
+                        },
+                    },
+                },
+            },
+            {}
+        )
+    } catch {
+        await m.reply(cap)
+    }
 }
 
 export { pluginConfig as config, handler }
