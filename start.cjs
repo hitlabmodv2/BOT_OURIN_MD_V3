@@ -8,13 +8,6 @@ if (process.stderr._handle && typeof process.stderr._handle.setBlocking === 'fun
   process.stderr._handle.setBlocking(true);
 }
 
-// Also patch write to always flush
-const origWrite = process.stdout.write.bind(process.stdout);
-process.stdout.write = function(...args) {
-  const result = origWrite(...args);
-  return result;
-};
-
 process.stderr.write('[START] Ourin-MD pre-loader aktif, memulai bot...\n');
 
 import('./index.js').catch((err) => {
