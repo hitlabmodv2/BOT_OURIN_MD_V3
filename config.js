@@ -29,7 +29,7 @@ const config = {
   bot: {
     name: "𝗢𝗨𝗥𝗜𝗡 𝗔𝗜", // Nama bot
     version: "3", // Versi bot
-    developer: "Zann", // Nama developer
+    developer: "WILYKUN", // Nama developer
   },
 
   // ini cuman di versi 3 kok, di versi 3.1 balik lagi ke assets semua
@@ -123,8 +123,8 @@ const config = {
 
   saluran: {
     id: "120363312297133690@newsletter", // ID saluran — ganti sesuai milikmu
-    name: "WHATSAPP BOT MULTI DEVICE",  // Nama saluran
-    link: "https://whatsapp.com/channel/0029VbB37bgBfxoAmAlsgE0t", // Link saluran
+    name: "Info Seputar Anime Dll 👤",  // Nama saluran
+    link: "https://whatsapp.com/channel/0029VaiyhS37IUYSuDJoJj1L", // Link saluran
   },
 
   groupProtection: {
