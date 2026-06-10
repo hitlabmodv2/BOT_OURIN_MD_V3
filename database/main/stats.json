@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2478,
+  "commandsExecuted": 2480,
   "command_totalchat": 3,
   "command_menu": 230,
   "command_fb": 4,
@@ -180,7 +180,7 @@
   "command_autovcf_off": 1,
   "command_selfthisgc": 1,
   "command_publicthisgc": 3,
-  "command_owner": 72,
+  "command_owner": 74,
   "command_ownertype": 4,
   "command_setownertype": 2,
   "command_welcometype": 12,
