@@ -1,5 +1,8 @@
 import path from "path";
 import fs from "fs";
+
+if (process.stdout._handle?.setBlocking) process.stdout._handle.setBlocking(true);
+if (process.stderr._handle?.setBlocking) process.stderr._handle.setBlocking(true);
 import config from "./config.js";
 import { startConnection } from "./src/connection.js";
 import {
