@@ -8,7 +8,6 @@ if (process.stderr._handle && typeof process.stderr._handle.setBlocking === 'fun
   process.stderr._handle.setBlocking(true);
 }
 
-process.stderr.write('[START] Ourin-MD pre-loader aktif, memulai bot...\n');
 
 import('./index.js').catch((err) => {
   process.stderr.write('[FATAL] Gagal memuat index.js: ' + (err?.message || String(err)) + '\n');
