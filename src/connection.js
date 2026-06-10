@@ -425,9 +425,10 @@ async function startConnection(options = {}) {
         } else {
           colors.logger.error(
             "whatsapp",
-            "konflik sesi — perangkat lain terdeteksi, matikan bot yang lain",
+            "konflik sesi — perangkat lain terdeteksi, restart otomatis",
           );
           connectionState.reconnectAttempts = 0;
+          setTimeout(() => process.exit(1), 3000);
         }
         return;
       }
@@ -447,8 +448,9 @@ async function startConnection(options = {}) {
         } else {
           colors.logger.error(
             "whatsapp",
-            `gagal sambung ulang setelah ${m} percobaan`,
+            `gagal sambung ulang setelah ${m} percobaan — restart otomatis`,
           );
+          setTimeout(() => process.exit(1), 3000);
         }
       } else {
         connectionState.reconnectAttempts = 0;
