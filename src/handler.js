@@ -107,6 +107,7 @@ let FormData,
   sulapPlugin,
   handleAutoAI,
   handleAutoDownload,
+  handleAutoVN,
   checkStickerCommand,
   handleStickerReply,
   sendWelcomeMessage,
@@ -200,6 +201,9 @@ try {
 } catch { }
 try {
   handleAutoAI = (await import("./lib/ourin-auto-ai.js")).handleAutoAI;
+} catch { }
+try {
+  handleAutoVN = (await import("./lib/ourin-auto-vn.js")).handleAutoVN;
 } catch { }
 try {
   handleAutoDownload = (await import("./lib/ourin-auto-download.js"))
@@ -947,6 +951,13 @@ async function messageHandler(msg, sock, options = {}) {
       try {
         const aiHandled = await handleAutoAI(m, sock);
         if (aiHandled) return;
+      } catch (e) { }
+    }
+
+    if (handleAutoVN && !m.isCommand && !m.fromMe) {
+      try {
+        const vnHandled = await handleAutoVN(m, sock);
+        if (vnHandled) return;
       } catch (e) { }
     }
 
