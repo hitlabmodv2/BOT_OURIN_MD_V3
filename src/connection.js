@@ -245,7 +245,16 @@ async function startConnection(options = {}) {
 
   const { state, saveCreds } = await useSingleFileAuthState(sessionFile);
 
-  const { version, isLatest } = await fetchLatestBaileysVersion();
+  let version = [2, 3000, 1033105955];
+  try {
+    const fetched = await Promise.race([
+      fetchLatestBaileysVersion(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 8000))
+    ]);
+    if (fetched?.version) version = fetched.version;
+  } catch {
+    // fallback ke versi hardcoded jika fetch gagal atau timeout
+  }
 
   const usePairingCode = config.session?.usePairingCode === true;
   const pairingNumber = config.session?.pairingNumber || "";
