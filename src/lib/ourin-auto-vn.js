@@ -1,26 +1,74 @@
 import { getDatabase } from "./ourin-database.js";
 import config from "../../config.js";
 import { getAllAudioBase64 } from "google-tts-api";
+import { getCommandsByCategory, getCategories } from "./ourin-plugins.js";
+import { getAssetBuffer } from "./ourin-asset-manager.js";
 import { exec } from "child_process";
 import { promisify } from "util";
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
 const execAsync = promisify(exec);
 
-const saluranId = () => config.saluran?.id || "120363312297133690@newsletter";
-const saluranName = () => config.saluran?.name || config.bot?.name || "Ourin-AI";
+function saluranId() { return config.saluran?.id || "120363312297133690@newsletter"; }
+function saluranName() { return config.saluran?.name || config.bot?.name || "Ourin-AI"; }
+function botName() { return config.bot?.name || "Ourin-AI"; }
 
-function getNewsletterCtx() {
-  return {
-    forwardingScore: 999,
-    isForwarded: true,
-    forwardedNewsletterMessageInfo: {
-      newsletterJid: saluranId(),
-      newsletterName: saluranName(),
-      serverMessageId: Math.floor(Math.random() * 1_000_000) + 1,
-    },
-  };
+function getTotalCmds() {
+  try {
+    const cats = getCategories();
+    const bycat = getCommandsByCategory();
+    return cats.reduce((s, c) => s + (bycat[c]?.length || 0), 0);
+  } catch { return 0; }
+}
+
+async function buildOrderQuoted(sock, m) {
+  try {
+    const ppBuf = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
+    const thumb = ppBuf
+      ? await sharp(ppBuf).resize(300, 300).jpeg({ quality: 80 }).toBuffer()
+      : null;
+
+    const totalCmds = getTotalCmds();
+    const botJid = sock.user?.id
+      ? sock.user.id.split(":")[0] + "@s.whatsapp.net"
+      : m.sender;
+
+    return {
+      key: {
+        fromMe: false,
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast",
+      },
+      message: {
+        orderMessage: {
+          orderId: "44444444444444",
+          thumbnail: thumb,
+          itemCount: totalCmds,
+          status: "INQUIRY",
+          surface: "CATALOG",
+          message: `★ ${botName()}`,
+          orderTitle: `📋 ${totalCmds} Commands`,
+          sellerJid: botJid,
+          token: "ourin-autovn-v1",
+          totalAmount1000: 3333333,
+          totalCurrencyCode: "IDR",
+          contextInfo: {
+            isForwarded: true,
+            forwardingScore: 9,
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: saluranId(),
+              newsletterName: saluranName(),
+              serverMessageId: 127,
+            },
+          },
+        },
+      },
+    };
+  } catch {
+    return m;
+  }
 }
 
 async function textToOgg(text) {
@@ -38,8 +86,7 @@ async function textToOgg(text) {
       timeout: 10000,
     });
 
-    const buffers = chunks.map((c) => Buffer.from(c.base64, "base64"));
-    const combined = Buffer.concat(buffers);
+    const combined = Buffer.concat(chunks.map((c) => Buffer.from(c.base64, "base64")));
     fs.writeFileSync(mp3Path, combined);
 
     await execAsync(
@@ -51,12 +98,12 @@ async function textToOgg(text) {
       const buf = fs.readFileSync(oggPath);
       try { fs.unlinkSync(mp3Path); } catch {}
       try { fs.unlinkSync(oggPath); } catch {}
-      return buf;
+      return { buf, mime: "audio/ogg; codecs=opus" };
     }
 
-    const fallback = fs.readFileSync(mp3Path);
+    const buf = fs.readFileSync(mp3Path);
     try { fs.unlinkSync(mp3Path); } catch {}
-    return fallback;
+    return { buf, mime: "audio/mpeg" };
   } catch (e) {
     try { if (fs.existsSync(mp3Path)) fs.unlinkSync(mp3Path); } catch {}
     try { if (fs.existsSync(oggPath)) fs.unlinkSync(oggPath); } catch {}
@@ -76,22 +123,22 @@ async function handleAutoVN(m, sock) {
     if (cfg.scope === "private" && m.isGroup) return false;
     if (cfg.scope === "group" && !m.isGroup) return false;
 
-    const replyText = cfg.text?.trim() ||
-      `Halo @${m.sender.split("@")[0]}! Pesan kamu sudah diterima ya.`;
+    const replyText = (cfg.text?.trim() || `Halo, pesan kamu sudah diterima ya.`)
+      .replace(/@\S+/g, "").trim();
 
-    const audioBuffer = await textToOgg(replyText.replace(/@\S+/g, "").trim());
-
-    const isOgg = audioBuffer[0] === 0x4f;
+    const [{ buf, mime }, quotedMsg] = await Promise.all([
+      textToOgg(replyText),
+      buildOrderQuoted(sock, m),
+    ]);
 
     await sock.sendMessage(
       m.chat,
       {
-        audio: audioBuffer,
-        mimetype: isOgg ? "audio/ogg; codecs=opus" : "audio/mpeg",
+        audio: buf,
+        mimetype: mime,
         ptt: true,
-        contextInfo: getNewsletterCtx(),
       },
-      { quoted: m }
+      { quoted: quotedMsg }
     );
 
     return true;
