@@ -1,3 +1,7 @@
+// Force stdout/stderr to flush immediately (penting untuk Pterodactyl / non-TTY)
+if (process.stdout._handle?.setBlocking) process.stdout._handle.setBlocking(true);
+if (process.stderr._handle?.setBlocking) process.stderr._handle.setBlocking(true);
+
 import path from "path";
 import fs from "fs";
 import config from "./config.js";
