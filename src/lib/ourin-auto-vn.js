@@ -1,114 +1,110 @@
 import { getDatabase } from "./ourin-database.js";
 import config from "../../config.js";
-import { getAllAudioBase64 } from "google-tts-api";
+import { getRandomAnimeAudio, getRandomAnimeAudioExcluding } from "./anime-audio-list.js";
 import { getCommandsByCategory, getCategories } from "./ourin-plugins.js";
 import { getAssetBuffer } from "./ourin-asset-manager.js";
-import { exec } from "child_process";
-import { promisify } from "util";
+import { spawn } from "child_process";
+import axios from "axios";
+import sharp from "sharp";
 import fs from "fs";
 import path from "path";
-import sharp from "sharp";
 
-const execAsync = promisify(exec);
-
-function saluranId() { return config.saluran?.id || "120363312297133690@newsletter"; }
+function saluranId()   { return config.saluran?.id   || "120363312297133690@newsletter"; }
 function saluranName() { return config.saluran?.name || config.bot?.name || "Ourin-AI"; }
-function botName() { return config.bot?.name || "Ourin-AI"; }
 
 function getTotalCmds() {
   try {
-    const cats = getCategories();
+    const cats  = getCategories();
     const bycat = getCommandsByCategory();
     return cats.reduce((s, c) => s + (bycat[c]?.length || 0), 0);
   } catch { return 0; }
 }
 
-async function buildOrderQuoted(sock, m) {
+async function downloadAndConvert(track) {
+  const tempDir  = path.join(process.cwd(), "temp");
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+  const destPath = path.join(tempDir, `autovn_${track.name}.ogg`);
+  if (fs.existsSync(destPath)) return destPath;
+
+  const mp3Path = path.join(tempDir, `autovn_dl_${track.name}.mp3`);
+
+  const res = await axios.get(track.url, { responseType: "arraybuffer", timeout: 30000 });
+  const buf = Buffer.from(res.data);
+  if (buf.length < 1024) throw new Error("File terlalu kecil");
+  fs.writeFileSync(mp3Path, buf);
+
+  return new Promise((resolve, reject) => {
+    const ff = spawn("ffmpeg", [
+      "-y", "-i", mp3Path,
+      "-c:a", "libopus", "-b:a", "48k", "-vbr", "on", "-ar", "48000", "-ac", "1",
+      destPath,
+    ]);
+    ff.on("close", (code) => {
+      try { fs.unlinkSync(mp3Path); } catch {}
+      if (code === 0) resolve(destPath);
+      else reject(new Error("FFmpeg error " + code));
+    });
+    ff.on("error", (err) => {
+      try { fs.unlinkSync(mp3Path); } catch {}
+      reject(err);
+    });
+  });
+}
+
+async function getAudioPath() {
+  const picked = getRandomAnimeAudio();
   try {
-    const ppBuf = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
-    const thumb = ppBuf
-      ? await sharp(ppBuf).resize(300, 300).jpeg({ quality: 80 }).toBuffer()
-      : null;
-
-    const totalCmds = getTotalCmds();
-    const botJid = sock.user?.id
-      ? sock.user.id.split(":")[0] + "@s.whatsapp.net"
-      : m.sender;
-
-    return {
-      key: {
-        fromMe: false,
-        participant: "0@s.whatsapp.net",
-        remoteJid: "status@broadcast",
-      },
-      message: {
-        orderMessage: {
-          orderId: "44444444444444",
-          thumbnail: thumb,
-          itemCount: totalCmds,
-          status: "INQUIRY",
-          surface: "CATALOG",
-          message: `★ ${botName()}`,
-          orderTitle: `📋 ${totalCmds} Commands`,
-          sellerJid: botJid,
-          token: "ourin-autovn-v1",
-          totalAmount1000: 3333333,
-          totalCurrencyCode: "IDR",
-          contextInfo: {
-            isForwarded: true,
-            forwardingScore: 9,
-            forwardedNewsletterMessageInfo: {
-              newsletterJid: saluranId(),
-              newsletterName: saluranName(),
-              serverMessageId: 127,
-            },
-          },
-        },
-      },
-    };
+    return await downloadAndConvert(picked);
   } catch {
-    return m;
+    const fallback = getRandomAnimeAudioExcluding(picked.name);
+    return await downloadAndConvert(fallback);
   }
 }
 
-async function textToOgg(text) {
-  const tempDir = path.join(process.cwd(), "temp");
-  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+async function buildOrderQuoted(sock, m) {
+  const totalCmds = getTotalCmds();
 
-  const mp3Path = path.join(tempDir, `autovn_${Date.now()}.mp3`);
-  const oggPath = path.join(tempDir, `autovn_${Date.now()}.ogg`);
-
+  let thumb = null;
   try {
-    const chunks = await getAllAudioBase64(text, {
-      lang: "id",
-      slow: false,
-      host: "https://translate.google.com",
-      timeout: 10000,
-    });
+    const ppBuf = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
+    if (ppBuf) thumb = await sharp(ppBuf).resize({ width: 300, height: 300 }).toBuffer();
+  } catch {}
 
-    const combined = Buffer.concat(chunks.map((c) => Buffer.from(c.base64, "base64")));
-    fs.writeFileSync(mp3Path, combined);
+  const botNum = config.session?.pairingNumber || sock.user?.id?.split(":")[0];
+  const sellerJid = botNum ? `${botNum}@s.whatsapp.net` : m.sender;
 
-    await execAsync(
-      `ffmpeg -y -i "${mp3Path}" -c:a libopus -b:a 64k -ac 1 -ar 48000 "${oggPath}"`,
-      { timeout: 30000 }
-    );
-
-    if (fs.existsSync(oggPath)) {
-      const buf = fs.readFileSync(oggPath);
-      try { fs.unlinkSync(mp3Path); } catch {}
-      try { fs.unlinkSync(oggPath); } catch {}
-      return { buf, mime: "audio/ogg; codecs=opus" };
-    }
-
-    const buf = fs.readFileSync(mp3Path);
-    try { fs.unlinkSync(mp3Path); } catch {}
-    return { buf, mime: "audio/mpeg" };
-  } catch (e) {
-    try { if (fs.existsSync(mp3Path)) fs.unlinkSync(mp3Path); } catch {}
-    try { if (fs.existsSync(oggPath)) fs.unlinkSync(oggPath); } catch {}
-    throw e;
-  }
+  return {
+    key: {
+      fromMe: false,
+      participant: "0@s.whatsapp.net",
+      remoteJid: "status@broadcast",
+    },
+    message: {
+      orderMessage: {
+        orderId: "44444444444444",
+        thumbnail: thumb,
+        itemCount: totalCmds,
+        status: "INQUIRY",
+        surface: "CATALOG",
+        message: `★ ${config.bot?.name || "Ourin-AI"}`,
+        orderTitle: `📋 ${totalCmds} Commands`,
+        sellerJid,
+        token: "ourin-menu-v8",
+        totalAmount1000: 3333333,
+        totalCurrencyCode: "IDR",
+        contextInfo: {
+          isForwarded: true,
+          forwardingScore: 9,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: saluranId(),
+            newsletterName: saluranName(),
+            serverMessageId: 127,
+          },
+        },
+      },
+    },
+  };
 }
 
 async function handleAutoVN(m, sock) {
@@ -117,25 +113,22 @@ async function handleAutoVN(m, sock) {
 
     if (m.isCommand || m.fromMe || m.isNewsletter || m.isBot) return false;
 
-    const cfg = db.setting("autoVN") || { enabled: false, scope: "private", text: "" };
+    const cfg = db.setting("autoVN") || { enabled: false, scope: "private" };
     if (!cfg.enabled) return false;
 
-    if (cfg.scope === "private" && m.isGroup) return false;
-    if (cfg.scope === "group" && !m.isGroup) return false;
+    if (cfg.scope === "private" && m.isGroup)  return false;
+    if (cfg.scope === "group"   && !m.isGroup) return false;
 
-    const replyText = (cfg.text?.trim() || `Halo, pesan kamu sudah diterima ya.`)
-      .replace(/@\S+/g, "").trim();
-
-    const [{ buf, mime }, quotedMsg] = await Promise.all([
-      textToOgg(replyText),
+    const [oggPath, quotedMsg] = await Promise.all([
+      getAudioPath(),
       buildOrderQuoted(sock, m),
     ]);
 
     await sock.sendMessage(
       m.chat,
       {
-        audio: buf,
-        mimetype: mime,
+        audio: fs.readFileSync(oggPath),
+        mimetype: "audio/ogg; codecs=opus",
         ptt: true,
       },
       { quoted: quotedMsg }
