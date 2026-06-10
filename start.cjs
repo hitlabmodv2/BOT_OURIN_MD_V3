@@ -8,9 +8,10 @@ if (process.stderr._handle && typeof process.stderr._handle.setBlocking === 'fun
   process.stderr._handle.setBlocking(true);
 }
 
+process.stdout.write('[BOOT] Starting Ourin-MD...\n');
 
 import('./index.js').catch((err) => {
-  process.stderr.write('[FATAL] Gagal memuat index.js: ' + (err?.message || String(err)) + '\n');
-  if (err?.stack) process.stderr.write(err.stack + '\n');
+  process.stdout.write('[FATAL] ' + (err?.message || String(err)) + '\n');
+  if (err?.stack) process.stdout.write(err.stack + '\n');
   process.exit(1);
 });
