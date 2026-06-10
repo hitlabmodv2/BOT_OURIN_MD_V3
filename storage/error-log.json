@@ -1,0 +1,74 @@
+[
+  {
+    "time": "2026-06-04T15:34:22.482Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] ReferenceError: getAssetBuffer is not defined\n    at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:435:9)",
+    "stack": "Error: [Handler Stack] ReferenceError: getAssetBuffer is not defined |     at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29) |     at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-04T15:34:38.662Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] ReferenceError: getAssetBuffer is not defined\n    at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:435:9)",
+    "stack": "Error: [Handler Stack] ReferenceError: getAssetBuffer is not defined |     at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29) |     at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-04T15:35:22.479Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] ReferenceError: getAssetBuffer is not defined\n    at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:435:9)",
+    "stack": "Error: [Handler Stack] ReferenceError: getAssetBuffer is not defined |     at Object.handler (file:///home/runner/workspace/plugins/main/sc.js:117:29) |     at messageHandler (file:///home/runner/workspace/src/handler.js:1677:18) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-06T11:34:45.927Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Cannot read properties of undefined (reading 'attrs')",
+    "stack": "Error: [GroupHandler] Error: Cannot read properties of undefined (reading 'attrs') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T11:34:47.929Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T11:34:49.931Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T11:34:51.935Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T12:51:26.426Z",
+    "source": "tebaklagu",
+    "message": "[tebaklagu] gagal kirim audio: Cannot read properties of undefined (reading 'fromMe')",
+    "stack": "Error: [tebaklagu] gagal kirim audio: Cannot read properties of undefined (reading 'fromMe') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at sendGameMessage (file:///home/runner/workspace/plugins/game/tebaklagu.js:174:17) |     at async Object.handler (file:///home/runner/workspace/plugins/game/tebaklagu.js:231:19)"
+  },
+  {
+    "time": "2026-06-06T12:53:55.423Z",
+    "source": "tebaklagu",
+    "message": "[tebaklagu] gagal kirim audio vn: Cannot read properties of undefined (reading 'fromMe')",
+    "stack": "Error: [tebaklagu] gagal kirim audio vn: Cannot read properties of undefined (reading 'fromMe') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at sendGameMessage (file:///home/runner/workspace/plugins/game/tebaklagu.js?t=1780750407338:173:17) |     at async Object.handler (file:///home/runner/workspace/plugins/game/tebaklagu.js?t=1780750407338:238:19)"
+  },
+  {
+    "time": "2026-06-06T14:12:14.972Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T14:22:04.413Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Cannot read properties of undefined (reading 'attrs')",
+    "stack": "Error: [GroupHandler] Error: Cannot read properties of undefined (reading 'attrs') |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  },
+  {
+    "time": "2026-06-06T14:22:06.416Z",
+    "source": "GroupHandler",
+    "message": "[GroupHandler] Error: Connection Closed",
+    "stack": "Error: [GroupHandler] Error: Connection Closed |     at console.error (file:///home/runner/workspace/index.js:185:57) |     at groupHandler (file:///home/runner/workspace/src/handler.js:1933:13) |     at async onGroupUpdate (file:///home/runner/workspace/index.js:446:9)"
+  }
+]

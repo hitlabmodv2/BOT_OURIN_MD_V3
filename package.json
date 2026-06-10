@@ -4,7 +4,8 @@
   "description": "WhatsApp Multi-Device Bot dengan sistem plugin modular",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "NODE_ENV=development node index.js",
+    "dev": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint plugins/"
   },
@@ -19,7 +20,7 @@
   "license": "ISC",
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
