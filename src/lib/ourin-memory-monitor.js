@@ -16,14 +16,6 @@ function startMemoryMonitor() {
 
     if (global.gc) global.gc();
 
-    if (mem.rss >= RSS_LIMIT) {
-      logger.warn(
-        "memory",
-        `RSS ${formatMB(mem.rss)} exceeded ${formatMB(RSS_LIMIT)} limit, restarting`,
-      );
-      process.exit(1);
-    }
-
     logger.system(
       "memory",
       `rss ${formatMB(mem.rss)} · heap ${formatMB(mem.heapUsed)}/${formatMB(mem.heapTotal)}`,
