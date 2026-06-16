@@ -22,7 +22,7 @@ const config = {
 
   session: {
     pairingNumber: "6289681008411", // Nomor WA yang akan di-pair, ini penting
-    usePairingCode: true, // true = Pairing Code, false = QR Code
+    usePairingCode: false, // true = Pairing Code, false = QR Code
       pairingCode: "WILYCODE", // Kode custom untuk pairing (maks 8 karakter huruf kapital)
   },
 
