@@ -245,16 +245,43 @@ async function startConnection(options = {}) {
 
   const { state, saveCreds } = await useSingleFileAuthState(sessionFile);
 
-  let version = [2, 3000, 1035194821];
+  const versionCacheFile = path.join(process.cwd(), "storage", "wa-version.json");
+
+  function loadCachedVersion() {
+    try {
+      if (fs.existsSync(versionCacheFile)) {
+        const raw = JSON.parse(fs.readFileSync(versionCacheFile, "utf-8"));
+        if (Array.isArray(raw.version) && raw.version.length === 3) return raw.version;
+      }
+    } catch {}
+    return null;
+  }
+
+  function saveCachedVersion(v) {
+    try {
+      const dir = path.dirname(versionCacheFile);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(versionCacheFile, JSON.stringify({ version: v, updatedAt: Date.now() }), "utf-8");
+    } catch {}
+  }
+
+  const STATIC_FALLBACK = [2, 3000, 1035194821];
+  let version = loadCachedVersion() || STATIC_FALLBACK;
+
   try {
     const fetched = await Promise.race([
       fetchLatestBaileysVersion(),
       new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 8000))
     ]);
-    if (fetched?.version) version = fetched.version;
+    if (fetched?.version) {
+      version = fetched.version;
+      saveCachedVersion(version);
+    }
   } catch {
-    // fallback ke versi hardcoded jika fetch gagal atau timeout
+    // pakai versi cache atau hardcoded
   }
+
+  colors.logger.info("bot", `WA version: ${version.join(".")}`);
 
   const usePairingCode = config.session?.usePairingCode === true;
   const pairingNumber = config.session?.pairingNumber || "";
