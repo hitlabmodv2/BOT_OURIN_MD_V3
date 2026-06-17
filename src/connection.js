@@ -414,6 +414,16 @@ async function startConnection(options = {}) {
         return;
       }
 
+      if (sc === 405) {
+        colors.logger.error(
+          "whatsapp",
+          "IP server diblokir sementara oleh WhatsApp (405) — tunggu 5 menit lalu restart manual",
+        );
+        connectionState.reconnectAttempts = 0;
+        setTimeout(() => process.exit(1), 5000);
+        return;
+      }
+
       if (sc === 440) {
         connectionState.reconnectAttempts++;
         if (connectionState.reconnectAttempts <= 3) {
