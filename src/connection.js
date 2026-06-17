@@ -245,7 +245,7 @@ async function startConnection(options = {}) {
 
   const { state, saveCreds } = await useSingleFileAuthState(sessionFile);
 
-  let version = [2, 3000, 1033105955];
+  let version = [2, 3000, 1035194821];
   try {
     const fetched = await Promise.race([
       fetchLatestBaileysVersion(),
@@ -260,7 +260,7 @@ async function startConnection(options = {}) {
   const pairingNumber = config.session?.pairingNumber || "";
 
   const sock = makeWASocket({
-    version: [2, 3000, 1033105955],
+    version,
     logger,
     printQRInTerminal:
       !usePairingCode && (config.session?.printQRInTerminal ?? true),
