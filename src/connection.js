@@ -1055,14 +1055,30 @@ async function startConnection(options = {}) {
       }
 
       if (isLid(jid)) {
-        jid = lidToJid(jid);
-        msg.key.remoteJid = jid;
+        const resolvedJid = lidToJid(jid);
+        if (resolvedJid) {
+          jid = resolvedJid;
+          msg.key.remoteJid = jid;
+        } else {
+          const altJid = msg.key.remoteJidAlt
+            ? decodeAndNormalize(msg.key.remoteJidAlt)
+            : null;
+          if (altJid && !isLid(altJid) && altJid.length >= 5) {
+            cacheLidJid(jid, altJid);
+            jid = altJid;
+            msg.key.remoteJid = jid;
+            console.log(`[LID-RESOLVE] PM LID resolved via remoteJidAlt: ${jid}`);
+          } else {
+            console.log(`[LID-UNRESOLVED] PM LID tidak bisa di-resolve: ${jid} — pesan di-skip`);
+            continue;
+          }
+        }
       }
 
       if (msg.key.participant && isLid(msg.key.participant)) {
         msg.key.participant = lidToJid(msg.key.participant);
       }
-      if (jid.endsWith("@broadcast")) {
+      if (jid && jid.endsWith("@broadcast")) {
         continue;
       }
       if (!jid || jid === "undefined" || jid.length < 5) {
