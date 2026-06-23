@@ -349,19 +349,6 @@ async function sendReplyVariant(sock, m, msg, text, options = {}) {
 
   // ── V1 — HYDRO ──────────────────────────────────────────────────
   if (variant === 1) {
-    const isPrivateChat = m?.chat && !m.chat.endsWith("@g.us") && !m.chat.endsWith("@newsletter");
-
-    // HYDRO tidak bekerja di PM — fallback ke plain text tanpa quoted
-    if (isPrivateChat) {
-      console.log(`[DBG-SEND-PM] Sending plain text to ${m.chat}`);
-      try {
-        return await sock.sendMessage(m.chat, { text: String(text) });
-      } catch (err) {
-        console.log(`[DBG-SEND-ERR] Error: ${err.message}`);
-        throw err;
-      }
-    }
-
     const saluranId    = config.saluran?.id   || "120363312297133690@newsletter";
     const saluranName  = config.saluran?.name || config.bot?.name || "Ourin-AI";
     const botName      = config.bot?.name     || "Ourin-AI";
