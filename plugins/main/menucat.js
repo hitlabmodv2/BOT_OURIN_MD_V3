@@ -1,6 +1,5 @@
 import * as botmodePlugin from "../group/botmode.js";
 import { getCasesByCategory } from "../../case/ourin.js";
-import { prepareWAMessageMedia } from "ourin";
 import config from "../../config.js";
 import {
   getCommandsByCategory,
@@ -27,7 +26,6 @@ const pluginConfig = {
   isEnabled: true,
 };
 
-// Emoji per kategori — lengkap sesuai semua folder di /plugins
 const CATEGORY_EMOJIS = {
   main: "🏠", utility: "🔧", tools: "🛠️", convert: "🔄", user: "📊",
   cek: "📁", game: "🎯", fun: "🎮", random: "🎲", rpg: "🗡️", clan: "⚔️",
@@ -41,7 +39,6 @@ const CATEGORY_EMOJIS = {
   premium: "💎", economy: "💰", linode: "☁️",
 };
 
-// Group kategori untuk navigasi menu
 const CATEGORY_GROUPS = [
   { label: "🏠 Umum & Tools",     cats: ["main", "utility", "tools", "convert", "user"] },
   { label: "📁 Cek & Status",     cats: ["cek"] },
@@ -56,126 +53,46 @@ const CATEGORY_GROUPS = [
   { label: "☁️ VPS & Panel",      cats: ["panel", "vps", "store"] },
   { label: "👑 Owner",             cats: ["owner"] },
 ];
-const _allGroupedCatsMC = CATEGORY_GROUPS.flatMap(g => g.cats);
 
-// Bangun sections untuk single_select "Lihat Semua Kategori" — semua kategori individual
-function buildAllCatSections(allCats, commandsByCategory, casesByCategory, prefix) {
+// Helper: max 24 rows & 10 sections per single_select (batas keras WA)
+function buildCatSections(groups, visibleCats, commandsByCategory, casesByCategory, prefix) {
   const sections = [];
-  for (const group of CATEGORY_GROUPS) {
+  let totalRows = 0;
+  for (const group of groups) {
     const rows = group.cats
-      .filter(cat => allCats.includes(cat))
+      .filter(cat => visibleCats.includes(cat))
       .map(cat => {
         const count = (commandsByCategory[cat] || []).length + (casesByCategory[cat] || []).length;
         if (count === 0) return null;
         return {
-          title: `${CATEGORY_EMOJIS[cat] || "📂"} MENU ${cat.toUpperCase()}`,
-          description: `${count} perintah tersedia`,
+          title: `${CATEGORY_EMOJIS[cat] || "📂"} ${cat.toUpperCase()}`,
+          description: `${count} perintah`,
           id: `${prefix}menucat ${cat}`,
         };
-      }).filter(Boolean);
-    if (rows.length > 0) sections.push({ title: group.label, rows });
-  }
-  const remaining = allCats.filter(cat => !_allGroupedCatsMC.includes(cat));
-  if (remaining.length > 0) {
-    const rows = remaining.map(cat => {
-      const count = (commandsByCategory[cat] || []).length + (casesByCategory[cat] || []).length;
-      if (count === 0) return null;
-      return {
-        title: `${CATEGORY_EMOJIS[cat] || "📂"} MENU ${cat.toUpperCase()}`,
-        description: `${count} perintah tersedia`,
-        id: `${prefix}menucat ${cat}`,
-      };
-    }).filter(Boolean);
-    if (rows.length > 0) sections.push({ title: "📂 Lainnya", rows });
+      })
+      .filter(Boolean);
+    if (rows.length === 0) continue;
+    const allowed = rows.slice(0, 24 - totalRows);
+    if (allowed.length === 0) break;
+    sections.push({ title: group.label, rows: allowed });
+    totalRows += allowed.length;
+    if (totalRows >= 24 || sections.length >= 10) break;
   }
   return sections;
 }
 
-// Bangun per-group nativeFlow buttons — sama persis dengan menu.js case 4
-function buildGroupedNavButtons(allCats, commandsByCategory, casesByCategory, prefix) {
-  const buttons = [];
-  for (const group of CATEGORY_GROUPS) {
-    const matched = group.cats.filter(cat => allCats.includes(cat));
-    if (matched.length === 0) continue;
-    const rows = matched.map(cat => {
-      const count = (commandsByCategory[cat] || []).length + (casesByCategory[cat] || []).length;
-      return {
-        title: `${CATEGORY_EMOJIS[cat] || "📂"} MENU ${cat.toUpperCase()}`,
-        description: `${count} perintah — ketuk untuk lihat daftar`,
-        id: `${prefix}menucat ${cat}`,
-      };
-    });
-    buttons.push({
-      name: "single_select",
-      buttonParamsJson: JSON.stringify({
-        title: group.label,
-        sections: [{ title: "Pilih kategori yang kamu inginkan", rows }],
-        icon: "REVIEW",
-      }),
-    });
-  }
-  const remaining = allCats.filter(cat => !_allGroupedCatsMC.includes(cat));
-  if (remaining.length > 0) {
-    buttons.push({
-      name: "single_select",
-      buttonParamsJson: JSON.stringify({
-        title: "📂 Lainnya",
-        sections: [{ title: "Kategori lainnya", rows: remaining.map(cat => {
-          const count = (commandsByCategory[cat] || []).length + (casesByCategory[cat] || []).length;
-          return {
-            title: `${CATEGORY_EMOJIS[cat] || "📂"} MENU ${cat.toUpperCase()}`,
-            description: `${count} perintah`,
-            id: `${prefix}menucat ${cat}`,
-          };
-        }) }],
-        icon: "REVIEW",
-      }),
-    });
-  }
-  return buttons;
-}
-
 function toSmallCaps(text) {
   const smallCaps = {
-    a: "ᴀ",
-    b: "ʙ",
-    c: "ᴄ",
-    d: "ᴅ",
-    e: "ᴇ",
-    f: "ꜰ",
-    g: "ɢ",
-    h: "ʜ",
-    i: "ɪ",
-    j: "ᴊ",
-    k: "ᴋ",
-    l: "ʟ",
-    m: "ᴍ",
-    n: "ɴ",
-    o: "ᴏ",
-    p: "ᴘ",
-    q: "ǫ",
-    r: "ʀ",
-    s: "s",
-    t: "ᴛ",
-    u: "ᴜ",
-    v: "ᴠ",
-    w: "ᴡ",
-    x: "x",
-    y: "ʏ",
-    z: "ᴢ",
+    a:"ᴀ",b:"ʙ",c:"ᴄ",d:"ᴅ",e:"ᴇ",f:"ꜰ",g:"ɢ",h:"ʜ",i:"ɪ",j:"ᴊ",
+    k:"ᴋ",l:"ʟ",m:"ᴍ",n:"ɴ",o:"ᴏ",p:"ᴘ",q:"ǫ",r:"ʀ",s:"s",t:"ᴛ",
+    u:"ᴜ",v:"ᴠ",w:"ᴡ",x:"x",y:"ʏ",z:"ᴢ",
   };
-  return text
-    .toLowerCase()
-    .split("")
-    .map((c) => smallCaps[c] || c)
-    .join("");
+  return text.toLowerCase().split("").map(c => smallCaps[c] || c).join("");
 }
 
 function createBracketBox(emoji, title, lines = []) {
   let text = `╭─〔 ${emoji} \`${title}\`\n`;
-  for (const line of lines) {
-    text += `┃ *${toSmallCaps(line)}*\n`;
-  }
+  for (const line of lines) text += `┃ *${toSmallCaps(line)}*\n`;
   text += `╰─⬣\n\n`;
   return text;
 }
@@ -184,11 +101,70 @@ function getCommandSymbols(cmdName) {
   const plugin = getPlugin(cmdName);
   if (!plugin || !plugin.config) return "";
   const symbols = [];
-  if (plugin.config.isOwner) symbols.push("Ⓞ");
+  if (plugin.config.isOwner)   symbols.push("Ⓞ");
   if (plugin.config.isPremium) symbols.push("ⓟ");
   if (plugin.config.limit && plugin.config.limit > 0) symbols.push("Ⓛ");
-  if (plugin.config.isAdmin) symbols.push("Ⓐ");
+  if (plugin.config.isAdmin)   symbols.push("Ⓐ");
   return symbols.length > 0 ? " " + symbols.join(" ") : "";
+}
+
+// Kirim response menucat via interceptor (generateWAMessageFromContent + additionalNodes otomatis)
+async function sendMenucatResponse(sock, m, txt, visibleCats, commandsByCategory, casesByCategory, extraContextInfo = {}) {
+  const prefix = config.command?.prefix || ".";
+  const imageBuffer = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
+
+  const sections1 = buildCatSections(CATEGORY_GROUPS.slice(0, 6), visibleCats, commandsByCategory, casesByCategory, prefix);
+  const sections2 = [
+    {
+      title: "⚡ Akses Cepat",
+      rows: [
+        { title: "🏠 Menu Utama", description: "Kembali ke menu utama", id: `${prefix}menu` },
+        { title: "📋 Semua Menu", description: "Lihat semua perintah", id: `${prefix}allmenu` },
+      ],
+    },
+    ...buildCatSections(CATEGORY_GROUPS.slice(6), visibleCats, commandsByCategory, casesByCategory, prefix),
+  ];
+
+  if (!imageBuffer) {
+    return m.reply(txt);
+  }
+
+  await sock.sendMessage(m.chat, {
+    image: imageBuffer,
+    caption: txt,
+    footer: "Pilih tombol di bawah untuk navigasi kategori 👇",
+    contextInfo: {
+      mentionedJid: [m.sender],
+      isForwarded: true,
+      forwardingScore: 9,
+      ...extraContextInfo,
+    },
+    interactiveButtons: [
+      {
+        name: "single_select",
+        buttonParamsJson: JSON.stringify({
+          title: "📂 Kategori Utama",
+          sections: sections1,
+          icon: "DEFAULT",
+        }),
+      },
+      {
+        name: "single_select",
+        buttonParamsJson: JSON.stringify({
+          title: "📦 Kategori Lainnya",
+          sections: sections2,
+          icon: "REVIEW",
+        }),
+      },
+      {
+        name: "quick_reply",
+        buttonParamsJson: JSON.stringify({
+          display_text: "🏠 Menu Utama",
+          id: `${prefix}menu`,
+        }),
+      },
+    ],
+  }, { quoted: m });
 }
 
 async function handler(m, { sock, db }) {
@@ -200,7 +176,6 @@ async function handler(m, { sock, db }) {
   const casesByCategory = getCasesByCategory();
   const savedVariant = db.setting("menucatVariant");
   const menucatVariant = savedVariant || config.ui?.menucatVariant || 2;
-  const greeting = getTimeGreeting();
 
   if (!categoryArg) {
     const groupData = m.isGroup ? db.getGroup(m.chat) || {} : {};
@@ -215,282 +190,79 @@ async function handler(m, { sock, db }) {
 
     try {
       if (botmodePlugin && botmodePlugin.MODES) {
-        const modes = botmodePlugin.MODES;
         modeExcludeMap = {};
-        for (const [key, val] of Object.entries(modes)) {
-          if (val.excludeCategories)
-            modeExcludeMap[key] = val.excludeCategories;
+        for (const [key, val] of Object.entries(botmodePlugin.MODES)) {
+          if (val.excludeCategories) modeExcludeMap[key] = val.excludeCategories;
         }
       }
-    } catch (e) { }
+    } catch {}
 
     const excludeCategories = modeExcludeMap[botMode] || modeExcludeMap.md;
-
-    const categoryOrder = [
-      "owner",
-      "main",
-      "utility",
-      "tools",
-      "fun",
-      "game",
-      "download",
-      "search",
-      "sticker",
-      "media",
-      "ai",
-      "group",
-      "religi",
-      "info",
-      "cek",
-      "economy",
-      "user",
-      "canvas",
-      "random",
-      "premium",
-      "jpm",
-      "pushkontak",
-      "panel",
-      "ephoto",
-      "store",
-    ];
-
-    const allCats = [
-      ...new Set([...categories, ...Object.keys(casesByCategory)]),
-    ];
-
+    const categoryOrder = ["owner","main","utility","tools","fun","game","download","search","sticker","media","ai","group","religi","info","cek","economy","user","canvas","random","premium","jpm","pushkontak","panel","ephoto","store"];
+    const allCats = [...new Set([...categories, ...Object.keys(casesByCategory)])];
     const sortedCats = allCats.sort((a, b) => {
-      const indexA = categoryOrder.indexOf(a);
-      const indexB = categoryOrder.indexOf(b);
-      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+      const iA = categoryOrder.indexOf(a), iB = categoryOrder.indexOf(b);
+      return (iA === -1 ? 999 : iA) - (iB === -1 ? 999 : iB);
     });
-
-    const visibleCats = sortedCats.filter((cat) => {
+    const visibleCats = sortedCats.filter(cat => {
       if (cat === "owner" && !m.isOwner) return false;
       if (excludeCategories.includes(cat.toLowerCase())) return false;
-      const total =
-        (commandsByCategory[cat] || []).length +
-        (casesByCategory[cat] || []).length;
-      return total > 0;
+      return ((commandsByCategory[cat] || []).length + (casesByCategory[cat] || []).length) > 0;
     });
 
-    let txt = ``;
-    txt += createBracketBox("🤖", "KETERANGAN", [
+    let txt = createBracketBox("🤖", "KETERANGAN", [
       "Ⓞ = Hanya untuk owner",
       "ⓟ = Hanya untuk premium",
       "Ⓛ = Membutuhkan limit",
       "Ⓐ = Hanya untuk admin",
     ]);
-
     for (const cat of visibleCats) {
-      const pluginCmds = commandsByCategory[cat] || [];
-      const caseCmds = casesByCategory[cat] || [];
-      const allCmds = [...pluginCmds, ...caseCmds];
+      const allCmds = [...(commandsByCategory[cat] || []), ...(casesByCategory[cat] || [])];
       if (allCmds.length === 0) continue;
-      const emoji = CATEGORY_EMOJIS[cat] || "📋";
-      const categoryName = toSmallCaps(cat);
-      const commandLines = allCmds.map((cmd) => {
-        const symbols = getCommandSymbols(cmd);
-        return `${prefix}${cmd}${symbols}`;
-      });
-      txt += createBracketBox(emoji, categoryName, commandLines);
+      txt += createBracketBox(CATEGORY_EMOJIS[cat] || "📋", toSmallCaps(cat), allCmds.map(cmd => `${prefix}${cmd}${getCommandSymbols(cmd)}`));
     }
 
-    const allCatSectionsNoArg = buildAllCatSections(visibleCats, commandsByCategory, casesByCategory, prefix);
-    const groupedNavBtnsNoArg = buildGroupedNavButtons(visibleCats, commandsByCategory, casesByCategory, prefix);
-
     try {
-      switch (menucatVariant) {
-        case 1:
-          await m.reply(txt);
-          break;
-        case 2: {
-          const media = await prepareWAMessageMedia(
-            { image: getAssetBuffer("ourin2") },
-            { upload: sock.waUploadToServer },
-          );
-          await sock.relayMessage(
-            m.chat,
-            {
-              viewOnceMessage: {
-                message: {
-                  messageContextInfo: {},
-                  interactiveMessage: {
-                    header: {
-                      title: "",
-                      subtitle: "",
-                      hasMediaAttachment: true,
-                      imageMessage: media.imageMessage,
-                    },
-                    body: { text: txt },
-                    footer: { text: "Pilih tombol di bawah untuk navigasi menu" },
-                    contextInfo: {
-                      isForwarded: true,
-                      forwardingScore: 9,
-                      participant: "0@s.whatsapp.net",
-                      quotedMessage: { conversation: `${config.bot?.name}` },
-                      mentionedJid: [`${m.sender}`],
-                    },
-                    nativeFlowMessage: {
-                      messageParamsJson: JSON.stringify({
-                        bottom_sheet: {
-                          in_thread_buttons_limit: 3,
-                          divider_indices: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999],
-                          list_title: "Pilih kategori menu yang kamu mau",
-                          button_title: "📂 Lihat Kategori",
-                        },
-                      }),
-                      buttons: [
-                        {
-                          name: "single_select",
-                          buttonParamsJson: JSON.stringify({
-                            title: "📂 Lihat Semua Kategori",
-                            sections: allCatSectionsNoArg,
-                            icon: "DEFAULT",
-                          }),
-                        },
-                        ...groupedNavBtnsNoArg,
-                        {
-                          name: "quick_reply",
-                          buttonParamsJson: JSON.stringify({
-                            display_text: "🏠 Menu Utama",
-                            id: m.prefix + "menu",
-                          }),
-                        },
-                      ],
-                    },
-                  },
-                },
-              },
-            },
-            {},
-          );
-          break;
-        }
-        default:
-          await m.reply(txt);
-          break;
+      if (menucatVariant === 1) {
+        await m.reply(txt);
+      } else {
+        await sendMenucatResponse(sock, m, txt, visibleCats, commandsByCategory, casesByCategory);
       }
-    } catch (err) {
+    } catch {
       await m.reply(txt);
     }
     return;
   }
 
-  const allCategories = [
-    ...new Set([...categories, ...Object.keys(casesByCategory)]),
-  ];
-  const matchedCat = allCategories.find((c) => c.toLowerCase() === categoryArg);
+  const allCategories = [...new Set([...categories, ...Object.keys(casesByCategory)])];
+  const matchedCat = allCategories.find(c => c.toLowerCase() === categoryArg);
 
   if (!matchedCat) {
-    return m.reply(
-      `❌ *KATEGORI TIDAK DITEMUKAN*\n\n> Kategori \`${categoryArg}\` tidak ada.\n> Ketik \`${prefix}menucat\` untuk list kategori.`,
-    );
+    return m.reply(`❌ *KATEGORI TIDAK DITEMUKAN*\n\n> Kategori \`${categoryArg}\` tidak ada.\n> Ketik \`${prefix}menucat\` untuk list kategori.`);
   }
-
   if (matchedCat === "owner" && !m.isOwner) {
     return m.reply(`❌ *AKSES DITOLAK*\n\n> Kategori ini hanya untuk owner.`);
   }
 
   const pluginCommands = commandsByCategory[matchedCat] || [];
-  const caseCommands = casesByCategory[matchedCat] || [];
-  const allCommands = [...pluginCommands, ...caseCommands];
+  const caseCommands   = casesByCategory[matchedCat]   || [];
+  const allCommands    = [...pluginCommands, ...caseCommands];
 
   if (allCommands.length === 0) {
-    return m.reply(
-      `❌ *KOSONG*\n\n> Kategori \`${matchedCat}\` tidak memiliki command.`,
-    );
+    return m.reply(`❌ *KOSONG*\n\n> Kategori \`${matchedCat}\` tidak memiliki command.`);
   }
 
-  const emoji = CATEGORY_EMOJIS[matchedCat] || "📁";
-  const categoryName = toSmallCaps(matchedCat);
-  const commandLines = allCommands.map((cmd) => {
-    const symbols = getCommandSymbols(cmd);
-    return `${prefix}${cmd}${symbols}`;
-  });
-
-  let txt = ``;
-  txt += createBracketBox(emoji, categoryName, commandLines);
+  let txt = createBracketBox(CATEGORY_EMOJIS[matchedCat] || "📁", toSmallCaps(matchedCat), allCommands.map(cmd => `${prefix}${cmd}${getCommandSymbols(cmd)}`));
   txt += `Total: \`${allCommands.length}\` commands`;
-  if (caseCommands.length > 0) {
-    txt += `\n(${pluginCommands.length} plugin + ${caseCommands.length} case)`;
-  }
-
-  const allCatSectionsWithArg = buildAllCatSections(allCategories, commandsByCategory, casesByCategory, prefix);
-  const groupedNavBtnsWithArg = buildGroupedNavButtons(allCategories, commandsByCategory, casesByCategory, prefix);
+  if (caseCommands.length > 0) txt += `\n(${pluginCommands.length} plugin + ${caseCommands.length} case)`;
 
   try {
-    switch (menucatVariant) {
-      case 1:
-        await m.reply(txt);
-        break;
-      case 2: {
-        const media = await prepareWAMessageMedia(
-          { image: getAssetBuffer("ourin2") },
-          { upload: sock.waUploadToServer },
-        );
-        await sock.relayMessage(
-          m.chat,
-          {
-            viewOnceMessage: {
-              message: {
-                messageContextInfo: {},
-                interactiveMessage: {
-                  header: {
-                    title: "",
-                    subtitle: "",
-                    hasMediaAttachment: true,
-                    imageMessage: media.imageMessage,
-                  },
-                  body: { text: txt },
-                  footer: { text: "Pilih tombol di bawah untuk navigasi menu" },
-                  contextInfo: {
-                    isForwarded: true,
-                    forwardingScore: 9,
-                    participant: "0@s.whatsapp.net",
-                    quotedMessage: { conversation: `${config.bot?.name}` },
-                    mentionedJid: [`${m.sender}`],
-                  },
-                  nativeFlowMessage: {
-                    messageParamsJson: JSON.stringify({
-                      bottom_sheet: {
-                        in_thread_buttons_limit: 3,
-                        divider_indices: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999],
-                        list_title: "Pilih kategori menu yang kamu mau",
-                        button_title: "📂 Lihat Kategori",
-                      },
-                    }),
-                    buttons: [
-                      {
-                        name: "single_select",
-                        buttonParamsJson: JSON.stringify({
-                          title: "📂 Lihat Semua Kategori",
-                          sections: allCatSectionsWithArg,
-                          icon: "DEFAULT",
-                        }),
-                      },
-                      ...groupedNavBtnsWithArg,
-                      {
-                        name: "quick_reply",
-                        buttonParamsJson: JSON.stringify({
-                          display_text: "🏠 Menu Utama",
-                          id: m.prefix + "menu",
-                        }),
-                      },
-                    ],
-                  },
-                },
-              },
-            },
-          },
-          {},
-        );
-        break;
-      }
-      default:
-        await m.reply(txt);
-        break;
+    if (menucatVariant === 1) {
+      await m.reply(txt);
+    } else {
+      await sendMenucatResponse(sock, m, txt, allCategories, commandsByCategory, casesByCategory);
     }
-  } catch (err) {
+  } catch {
     await m.reply(txt);
   }
 }
