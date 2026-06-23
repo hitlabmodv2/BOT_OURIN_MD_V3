@@ -753,6 +753,19 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
 ╰────────────────⬣
 
 _Tekan tombol di bawah untuk memilih kategori_ 👇`,
+            contextInfo: {
+              isForwarded: true,
+              forwardingScore: 9,
+              mentionedJid: [m.sender],
+              externalAdReply: {
+                title: config.bot?.name || "Wilybot",
+                body: `BOT WHATSAPP — ${totalCmds} Commands`,
+                sourceUrl: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                mediaType: 1,
+                renderLargerThumbnail: true,
+                showAdAttribution: false,
+              },
+            },
             interactiveButtons: [
               {
                 name: "single_select",
@@ -834,6 +847,14 @@ ${readmore}${s}`,
             isForwarded: true,
             forwardingScore: 9,
             mentionedJid: [m.sender],
+            externalAdReply: {
+              title: config.bot?.name || "Wilybot",
+              body: `BOT WHATSAPP — ${totalCmds} Commands`,
+              sourceUrl: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+              mediaType: 1,
+              renderLargerThumbnail: true,
+              showAdAttribution: false,
+            },
           },
           interactiveButtons: [
             {
