@@ -216,21 +216,16 @@ async function extendSocket(sock) {
         await sock.relayMessage(
           jid,
           {
-            viewOnceMessage: {
-              message: {
-                messageContextInfo: {},
-                interactiveMessage: {
-                  header: headerObj,
-                  body: { text: bodyText },
-                  footer: { text: footerText },
-                  contextInfo,
-                  nativeFlowMessage: {
-                    messageParamsJson: JSON.stringify({
-                      bottom_sheet: { in_thread_buttons_limit: 3, button_title: "Pilih" }
-                    }),
-                    buttons,
-                  },
-                },
+            interactiveMessage: {
+              header: headerObj,
+              body: { text: bodyText },
+              footer: { text: footerText },
+              contextInfo,
+              nativeFlowMessage: {
+                messageParamsJson: JSON.stringify({
+                  bottom_sheet: { in_thread_buttons_limit: 3, button_title: "Pilih" }
+                }),
+                buttons,
               },
             },
           },
