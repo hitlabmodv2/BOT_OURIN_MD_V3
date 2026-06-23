@@ -753,19 +753,6 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
 ╰────────────────⬣
 
 _Tekan tombol di bawah untuk memilih kategori_ 👇`,
-            contextInfo: {
-              isForwarded: true,
-              forwardingScore: 9,
-              mentionedJid: [m.sender],
-              externalAdReply: {
-                title: config.bot?.name || "Wilybot",
-                body: `BOT WHATSAPP — ${totalCmds} Commands`,
-                sourceUrl: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                mediaType: 1,
-                renderLargerThumbnail: true,
-                showAdAttribution: false,
-              },
-            },
             interactiveButtons: [
               {
                 name: "single_select",
@@ -820,15 +807,9 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
           s += "╰─⬣\n\n"
         });
         const readmore = String.fromCharCode(8206).repeat(4001)
-        const ownerNum = (botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "");
-        const thumbBuf2 = (() => {
-          try { return getAssetBuffer("ourin3") || getAssetBuffer("ourin2") || getAssetBuffer("ourin") || null; } catch { return null; }
-        })();
-        const thumbResized2 = thumbBuf2
-          ? await sharp(thumbBuf2).resize(300, 300, { fit: "cover" }).jpeg({ quality: 80 }).toBuffer()
-          : null;
         await sock.sendMessage(m.chat, {
-          text: `🥞 *Hello Brother*
+          image: getAssetBuffer("ourin") || { url: "https://gimita.id/ourin.png" },
+          caption: `🥞 *Hello Brother*
 
 Welcome to ${config.bot?.name}, Our bot will help you
 
@@ -853,15 +834,6 @@ ${readmore}${s}`,
             isForwarded: true,
             forwardingScore: 9,
             mentionedJid: [m.sender],
-            externalAdReply: {
-              title: config.bot?.name || "Wilybot",
-              body: `BOT WHATSAPP — ${totalCmds} Commands`,
-              sourceUrl: `https://wa.me/${ownerNum}`,
-              mediaType: 1,
-              renderLargerThumbnail: true,
-              showAdAttribution: false,
-              thumbnail: thumbResized2 || undefined,
-            },
           },
           interactiveButtons: [
             {
@@ -949,10 +921,27 @@ Welcome to ${config.bot?.name}, Our bot will help you
         break
 
       case 4: {
-        const fixedThumbBuf = (() => {
-          try { return getAssetBuffer("ourin3") || getAssetBuffer("ourin2") || getAssetBuffer("ourin") || null; } catch { return null; }
-        })();
-        if (!fixedThumbBuf) { await m.reply(text); break; }
+        let animeImageBuffer = null;
+        const ANIME_APIS = [
+          { url: "https://api.waifu.pics/sfw/waifu",  pick: d => d?.url },
+          { url: "https://api.waifu.pics/sfw/neko",   pick: d => d?.url },
+          { url: "https://nekos.best/api/v2/waifu",   pick: d => d?.results?.[0]?.url },
+          { url: "https://nekos.best/api/v2/kitsune", pick: d => d?.results?.[0]?.url },
+        ];
+        for (const api of ANIME_APIS) {
+          try {
+            const res = await axios.get(api.url, { timeout: 8000 });
+            const imgUrl = api.pick(res.data);
+            if (!imgUrl) continue;
+            const imgRes = await axios.get(imgUrl, { responseType: "arraybuffer", timeout: 10000 });
+            animeImageBuffer = Buffer.from(imgRes.data);
+            break;
+          } catch { continue; }
+        }
+        if (!animeImageBuffer) {
+          animeImageBuffer = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
+        }
+        if (!animeImageBuffer) { await m.reply(text); break; }
 
         const caption4 = `${greeting}, *${m.pushName}* 👋
 🌿 Selamat datang di *${config.bot?.name}*
@@ -982,23 +971,18 @@ Welcome to ${config.bot?.name}, Our bot will help you
 *│* 📅 ᴛᴀɴɢɢᴀʟ    : *${dateStr}*
 ╰────────────────⬣`;
 
-        const ownerNum4 = (botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "");
-        const thumbFixed4 = await sharp(fixedThumbBuf).resize(300, 300, { fit: "cover" }).jpeg({ quality: 80 }).toBuffer();
         await sock.sendMessage(m.chat, {
-          text: caption4,
+          image: animeImageBuffer,
+          caption: caption4,
           footer: `Tekan tombol di bawah untuk memilih kategori 👇`,
           contextInfo: {
             mentionedJid: [m.sender],
             isForwarded: true,
             forwardingScore: 9,
-            externalAdReply: {
-              title: config.bot?.name || "Wilybot",
-              body: `BOT WHATSAPP — ${totalCmds} Commands`,
-              sourceUrl: `https://wa.me/${ownerNum4}`,
-              mediaType: 1,
-              renderLargerThumbnail: true,
-              showAdAttribution: false,
-              thumbnail: thumbFixed4,
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: saluranId,
+              newsletterName: saluranName,
+              serverMessageId: 127,
             },
           },
           interactiveButtons: [
@@ -1032,8 +1016,8 @@ Welcome to ${config.bot?.name}, Our bot will help you
               name: "cta_url",
               buttonParamsJson: JSON.stringify({
                 display_text: "👑 Hubungi Owner",
-                url: `https://wa.me/${ownerNum4}`,
-                merchant_url: `https://wa.me/${ownerNum4}`,
+                url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
               }),
             },
           ],

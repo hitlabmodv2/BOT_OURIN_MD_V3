@@ -27,9 +27,9 @@ const config = {
   },
 
   bot: {
-    name: "Wilybot", // Nama bot
+    name: "𝗢𝗨𝗥𝗜𝗡 𝗔𝗜", // Nama bot
     version: "3", // Versi bot
-    developer: "Wily", // Nama developer
+    developer: "Zann", // Nama developer
   },
 
   // ini cuman di versi 3 kok, di versi 3.1 balik lagi ke assets semua
