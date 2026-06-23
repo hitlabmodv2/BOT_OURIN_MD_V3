@@ -497,12 +497,6 @@ Ada apa manggil aku @${m.sender.split("@")[0]}?`,
  */
 async function messageHandler(msg, sock, options = {}) {
   const isJadibot = options.isJadibot || false;
-  const _dbgJid = msg?.key?.remoteJid || "?";
-  const _dbgFromMe = msg?.key?.fromMe;
-  const _dbgIsGc = _dbgJid?.endsWith("@g.us");
-  if (!_dbgIsGc && _dbgJid !== "status@broadcast") {
-    console.log(`[DBG-PM-IN] jid=${_dbgJid} fromMe=${_dbgFromMe} type=${Object.keys(msg?.message||{})[0]||"?"}`);
-  }
   try {
     let m;
     try {
