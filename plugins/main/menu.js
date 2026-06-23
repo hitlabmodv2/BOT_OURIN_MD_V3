@@ -951,7 +951,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
         };
 
         const msg = generateWAMessageFromContent(m.chat, content, {
-          userJid: sock.user.jid,
+          userJid: sock.user?.id || sock.user?.jid,
         });
 
         await sock.relayMessage(m.chat, msg.message, {
@@ -1074,7 +1074,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
               }
             }
           }
-        }, { quoted: qvideo, userJid: sock.user.jid });
+        }, { quoted: qvideo, userJid: sock.user?.id || sock.user?.jid });
 
         await sock.relayMessage(m.chat, msg4.message, {
           messageId: msg4.key.id,
