@@ -351,13 +351,15 @@ async function sendReplyVariant(sock, m, msg, text, options = {}) {
   if (variant === 1) {
     const isPrivateChat = m?.chat && !m.chat.endsWith("@g.us") && !m.chat.endsWith("@newsletter");
 
-    // HYDRO (newsletter style) tidak bekerja di PM — otomatis fallback ke V2 (basic) untuk PM
+    // HYDRO tidak bekerja di PM — fallback ke plain text tanpa quoted
     if (isPrivateChat) {
-      return sock.sendMessage(
-        m.chat,
-        { text: String(text), contextInfo },
-        { quoted: fakeQuoted || quotedMsg },
-      );
+      console.log(`[DBG-SEND-PM] Sending plain text to ${m.chat}`);
+      try {
+        return await sock.sendMessage(m.chat, { text: String(text) });
+      } catch (err) {
+        console.log(`[DBG-SEND-ERR] Error: ${err.message}`);
+        throw err;
+      }
     }
 
     const saluranId    = config.saluran?.id   || "120363312297133690@newsletter";

@@ -497,16 +497,23 @@ Ada apa manggil aku @${m.sender.split("@")[0]}?`,
  */
 async function messageHandler(msg, sock, options = {}) {
   const isJadibot = options.isJadibot || false;
+  const _dbgJid = msg?.key?.remoteJid || "?";
+  const _dbgFromMe = msg?.key?.fromMe;
+  const _dbgIsGc = _dbgJid?.endsWith("@g.us");
+  if (!_dbgIsGc && _dbgJid !== "status@broadcast") {
+    console.log(`[DBG-PM-IN] jid=${_dbgJid} fromMe=${_dbgFromMe} type=${Object.keys(msg?.message||{})[0]||"?"}`);
+  }
   try {
     let m;
     try {
       m = await serialize(sock, msg);
     } catch (serializeErr) {
+      console.log(`[DBG-PM-ERR] serialize gagal untuk ${_dbgJid}: ${serializeErr.message}`);
       return;
     }
 
-    if (!m) return;
-    if (!m.message) return;
+    if (!m) { if (!_dbgIsGc) console.log(`[DBG-PM-NULL] m null untuk ${_dbgJid}`); return; }
+    if (!m.message) { if (!_dbgIsGc) console.log(`[DBG-PM-NOMSG] m.message null untuk ${_dbgJid}`); return; }
     if (!m.sender) m.sender = m.chat || "";
 
     if (global.giveawaySessions?.has(m.sender)) {

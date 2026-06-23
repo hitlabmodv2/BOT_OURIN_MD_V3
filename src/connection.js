@@ -853,7 +853,14 @@ async function startConnection(options = {}) {
       }
 
       const msgAge = Date.now() - msgTimestamp;
+      const _dbgPmJid = msg.key.remoteJid || "";
+      if (!_dbgPmJid.endsWith("@g.us") && _dbgPmJid !== "status@broadcast") {
+        console.log(`[DBG-TS] PM timestamp check: jid=${_dbgPmJid} fromMe=${msg.key.fromMe} type=${type} age=${Math.round(msgAge/1000)}s`);
+      }
       if (msgAge > 5 * 60 * 1000) {
+        if (!_dbgPmJid.endsWith("@g.us") && _dbgPmJid !== "status@broadcast") {
+          console.log(`[DBG-TS-DROP] Pesan DIBUANG terlalu lama: ${_dbgPmJid} age=${Math.round(msgAge/1000)}s`);
+        }
         continue;
       }
 
@@ -1060,6 +1067,9 @@ async function startConnection(options = {}) {
       }
       if (!jid || jid === "undefined" || jid.length < 5) {
         continue;
+      }
+      if (!jid.endsWith("@g.us")) {
+        console.log(`[DBG-CONN-PM] PM lolos filter: jid=${jid} fromMe=${msg.key.fromMe} type=${type} msgType=${msgType}`);
       }
       if (options.onRawMessage) {
         try {
