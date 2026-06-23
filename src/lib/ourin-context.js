@@ -349,6 +349,17 @@ async function sendReplyVariant(sock, m, msg, text, options = {}) {
 
   // ── V1 — HYDRO ──────────────────────────────────────────────────
   if (variant === 1) {
+    const isPrivateChat = m?.chat && !m.chat.endsWith("@g.us") && !m.chat.endsWith("@newsletter");
+
+    // HYDRO (newsletter style) tidak bekerja di PM — otomatis fallback ke V2 (basic) untuk PM
+    if (isPrivateChat) {
+      return sock.sendMessage(
+        m.chat,
+        { text: String(text), contextInfo },
+        { quoted: fakeQuoted || quotedMsg },
+      );
+    }
+
     const saluranId    = config.saluran?.id   || "120363312297133690@newsletter";
     const saluranName  = config.saluran?.name || config.bot?.name || "Ourin-AI";
     const botName      = config.bot?.name     || "Ourin-AI";
