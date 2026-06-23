@@ -1,0 +1,62 @@
+[
+  {
+    "time": "2026-06-23T07:20:31.249Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)"
+  },
+  {
+    "time": "2026-06-23T07:21:16.222Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)"
+  },
+  {
+    "time": "2026-06-23T07:21:17.325Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)"
+  },
+  {
+    "time": "2026-06-23T07:21:32.924Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)"
+  },
+  {
+    "time": "2026-06-23T07:21:39.059Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)"
+  },
+  {
+    "time": "2026-06-23T07:22:02.812Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-23T07:22:18.748Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-23T07:22:26.038Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-23T07:22:27.095Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-23T07:23:03.325Z",
+    "source": "Handler Stack",
+    "message": "[Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode')\n    at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40)\n    at messageHandler (file:///home/runner/workspace/src/handler.js:714:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Object.onMessage (file:///home/runner/workspace/index.js:438:9)",
+    "stack": "Error: [Handler Stack] TypeError: Cannot read properties of undefined (reading 'mode') |     at checkMode (file:///home/runner/workspace/src/lib/ourin-middleware.js:123:40) |     at messageHandler (file:///home/runner/workspace/src/handler.js:714:23) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  }
+]
