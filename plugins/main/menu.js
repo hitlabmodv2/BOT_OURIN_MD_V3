@@ -820,9 +820,15 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
           s += "╰─⬣\n\n"
         });
         const readmore = String.fromCharCode(8206).repeat(4001)
+        const ownerNum = (botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "");
+        const thumbBuf2 = (() => {
+          try { return getAssetBuffer("ourin2") || getAssetBuffer("ourin") || null; } catch { return null; }
+        })();
+        const thumbResized2 = thumbBuf2
+          ? await sharp(thumbBuf2).resize(300, 300, { fit: "cover" }).jpeg({ quality: 80 }).toBuffer()
+          : null;
         await sock.sendMessage(m.chat, {
-          image: getAssetBuffer("ourin") || { url: "https://gimita.id/ourin.png" },
-          caption: `🥞 *Hello Brother*
+          text: `🥞 *Hello Brother*
 
 Welcome to ${config.bot?.name}, Our bot will help you
 
@@ -850,10 +856,11 @@ ${readmore}${s}`,
             externalAdReply: {
               title: config.bot?.name || "Wilybot",
               body: `BOT WHATSAPP — ${totalCmds} Commands`,
-              sourceUrl: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+              sourceUrl: `https://wa.me/${ownerNum}`,
               mediaType: 1,
               renderLargerThumbnail: true,
               showAdAttribution: false,
+              thumbnail: thumbResized2 || undefined,
             },
           },
           interactiveButtons: [
