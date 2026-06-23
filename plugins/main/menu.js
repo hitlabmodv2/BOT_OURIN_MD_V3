@@ -961,6 +961,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
 
       case 4: {
         const ppss = getAssetBuffer("ourin2");
+        if (!ppss) { await m.reply(text); break; }
         const thumbnail = await sharp(ppss).resize(300, 300).toBuffer();
         const qvideo = {
           key: {

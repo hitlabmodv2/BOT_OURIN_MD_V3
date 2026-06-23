@@ -21,8 +21,8 @@
   "120363192554714254@g.us": {
     "chatStats": {
       "6289681008411@s.whatsapp.net": {
-        "count": 55,
-        "lastChat": 1782204719577,
+        "count": 57,
+        "lastChat": 1782205371648,
         "name": "Hen V1"
       },
       "6289688206739@s.whatsapp.net": {
@@ -263,5 +263,24 @@
         "name": "Hen V2"
       }
     }
+  },
+  "120363408420466353@g.us": {
+    "chatStats": {
+      "6289667923162@s.whatsapp.net": {
+        "count": 3,
+        "lastChat": 1782205598781,
+        "name": "Hen V2"
+      }
+    },
+    "jid": "120363408420466353@g.us",
+    "name": "Amalam",
+    "welcome": false,
+    "leave": false,
+    "goodbye": false,
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
   }
 }
