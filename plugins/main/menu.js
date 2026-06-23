@@ -925,26 +925,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
         break
 
       case 4: {
-        let animeImageBuffer = null;
-        const ANIME_APIS = [
-          { url: "https://api.waifu.pics/sfw/waifu",  pick: d => d?.url },
-          { url: "https://api.waifu.pics/sfw/neko",   pick: d => d?.url },
-          { url: "https://nekos.best/api/v2/waifu",   pick: d => d?.results?.[0]?.url },
-          { url: "https://nekos.best/api/v2/kitsune", pick: d => d?.results?.[0]?.url },
-        ];
-        for (const api of ANIME_APIS) {
-          try {
-            const res = await axios.get(api.url, { timeout: 8000 });
-            const imgUrl = api.pick(res.data);
-            if (!imgUrl) continue;
-            const imgRes = await axios.get(imgUrl, { responseType: "arraybuffer", timeout: 10000 });
-            animeImageBuffer = Buffer.from(imgRes.data);
-            break;
-          } catch { continue; }
-        }
-        if (!animeImageBuffer) {
-          animeImageBuffer = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
-        }
+        const animeImageBuffer = imageBuffer || getAssetBuffer("ourin2") || getAssetBuffer("ourin");
         if (!animeImageBuffer) { await m.reply(text); break; }
 
         const caption4 = `${greeting}, *${m.pushName}* 👋
