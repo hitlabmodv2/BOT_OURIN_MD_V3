@@ -499,10 +499,14 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
   let videoBuffer = null;
 
   try {
-    if (botConfig.assets && botConfig.assets["ourin"]) {
+    if (botConfig.assets && botConfig.assets["ourin-allmenu"]) {
+      imageBuffer = getAssetBuffer("ourin-allmenu");
+    } else if (botConfig.assets && botConfig.assets["ourin"]) {
       imageBuffer = getAssetBuffer("ourin");
     }
-    if (botConfig.assets && botConfig.assets["ourin2"]) {
+    if (botConfig.assets && botConfig.assets["ourin-allmenu"]) {
+      thumbBuffer = getAssetBuffer("ourin-allmenu");
+    } else if (botConfig.assets && botConfig.assets["ourin2"]) {
       thumbBuffer = getAssetBuffer("ourin2");
     }
   } catch (e) {
@@ -722,7 +726,7 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
       case 1:
         if (imageBuffer) {
           await sock.sendMessage(m.chat, {
-            image: getAssetBuffer("ourin") || {
+            image: imageBuffer || getAssetBuffer("ourin") || {
               url: "https://gimita.id/ourin.png",
             },
             caption: `${greeting}, *${m.pushName}* 👋
@@ -808,7 +812,7 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
         });
         const readmore = String.fromCharCode(8206).repeat(4001)
         await sock.sendMessage(m.chat, {
-          image: getAssetBuffer("ourin") || { url: "https://gimita.id/ourin.png" },
+          image: imageBuffer || getAssetBuffer("ourin") || { url: "https://gimita.id/ourin.png" },
           caption: `🥞 *Hello Brother*
 
 Welcome to ${config.bot?.name}, Our bot will help you
@@ -884,7 +888,7 @@ ${readmore}${s}`,
               },
             ],
             locationMessage: {
-              jpegThumbnail: await sharp(getAssetBuffer("ourin")).resize(300, 170).toBuffer(),
+              jpegThumbnail: await sharp(imageBuffer || getAssetBuffer("ourin")).resize(300, 170).toBuffer(),
               name: config.bot.name,
               address: `Versi saat ini: ${config.bot.version}`
             },
