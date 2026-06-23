@@ -962,10 +962,10 @@ Welcome to ${config.bot?.name}, Our bot will help you
       case 4: {
         let animeImageBuffer = null;
         const ANIME_APIS = [
-          { url: "https://api.waifu.pics/sfw/waifu",   pick: d => d?.url },
-          { url: "https://api.waifu.pics/sfw/neko",    pick: d => d?.url },
-          { url: "https://nekos.best/api/v2/waifu",    pick: d => d?.results?.[0]?.url },
-          { url: "https://nekos.best/api/v2/kitsune",  pick: d => d?.results?.[0]?.url },
+          { url: "https://api.waifu.pics/sfw/waifu",  pick: d => d?.url },
+          { url: "https://api.waifu.pics/sfw/neko",   pick: d => d?.url },
+          { url: "https://nekos.best/api/v2/waifu",   pick: d => d?.results?.[0]?.url },
+          { url: "https://nekos.best/api/v2/kitsune", pick: d => d?.results?.[0]?.url },
         ];
         for (const api of ANIME_APIS) {
           try {
@@ -981,27 +981,8 @@ Welcome to ${config.bot?.name}, Our bot will help you
           animeImageBuffer = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
         }
         if (!animeImageBuffer) { await m.reply(text); break; }
-        const media4 = await prepareWAMessageMedia(
-          { image: animeImageBuffer },
-          { upload: sock.waUploadToServer }
-        );
-        const singlePush = buildGroupedNativeButtons()
-        const msg4 = generateWAMessageFromContent(m.chat, {
-          viewOnceMessage: {
-            message: {
-              messageContextInfo: {},
-              interactiveMessage: {
-                header: {
-                  title: "",
-                  subtitle: "",
-                  hasMediaAttachment: true,
-                  imageMessage: media4.imageMessage
-                },
-                footer: {
-                  text: `Tekan tombol di bawah untuk memilih kategori 👇`
-                },
-                body: {
-                  text: `${greeting}, *${m.pushName}* 👋
+
+        const caption4 = `${greeting}, *${m.pushName}* 👋
 🌿 Selamat datang di *${config.bot?.name}*
 
 ╭─〔 🤖 *ɪɴꜰᴏ ʙᴏᴛ* 〕
@@ -1027,80 +1008,60 @@ Welcome to ${config.bot?.name}, Our bot will help you
 ╭─〔 🕒 *ᴡᴀᴋᴛᴜ & ᴛᴀɴɢɢᴀʟ* 〕
 *│* 🕐 ᴊᴀᴍ         : *${timeStr} WIB*
 *│* 📅 ᴛᴀɴɢɢᴀʟ    : *${dateStr}*
-╰────────────────⬣`
-                },
-                contextInfo: {
-                  mentionedJid: [m.sender],
-                  isForwarded: true,
-                  forwardingScore: 9,
-                  forwardedNewsletterMessageInfo: {
-                    newsletterJid: saluranId,
-                    newsletterName: saluranName,
-                    serverMessageId: 127,
-                  },
-                },
-                nativeFlowMessage: {
-                  messageParamsJson: JSON.stringify({
-                    bottom_sheet: {
-                      in_thread_buttons_limit: 3,
-                      divider_indices: [1, 2, 3, 4, 5, 6, 999],
-                      list_title: "Pilih kategori menu yang kamu mau",
-                      button_title: "📂 Lihat Kategori",
-                    },
-                    tap_target_configuration: {
-                      title: " X ",
-                      description: "bomboclard",
-                      canonical_url: "https://ourin.site",
-                      domain: "shop.example.com",
-                      button_index: 0,
-                    },
-                  }),
-                  buttons: [
-                    {
-                      name: "single_select",
-                      buttonParamsJson: JSON.stringify({
-                        title: "📂 Lihat Semua Kategori",
-                        sections: buildAllCategoriesSections(),
-                        icon: "DEFAULT",
-                      }),
-                    },
-                    {
-                      name: "single_select",
-                      buttonParamsJson: JSON.stringify({
-                        title: "⚡ Akses Cepat",
-                        sections: [
-                          {
-                            title: "⚡ Perintah Populer",
-                            rows: [
-                              { title: "📋 Semua Menu", description: "Lihat daftar lengkap semua perintah", id: `${m.prefix}allmenu` },
-                              { title: "👤 Profil Saya", description: "Cek info akun kamu", id: `${m.prefix}profil` },
-                              { title: "💰 Saldo Koin", description: "Cek koin yang kamu punya", id: `${m.prefix}saldo` },
-                              { title: "🎮 Status RPG", description: "Lihat status RPG kamu", id: `${m.prefix}rpg` },
-                              { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
-                            ]
-                          }
-                        ],
-                        icon: "REVIEW",
-                      }),
-                    },
-                    {
-                      name: "cta_url",
-                      buttonParamsJson: JSON.stringify({
-                        display_text: "👑 Hubungi Owner",
-                        url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                        merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                      }),
-                    },
-                  ]
-                }
-              }
-            }
-          }
-        }, { userJid: sock.user?.id || sock.user?.jid });
+╰────────────────⬣`;
 
-        await sock.relayMessage(m.chat, msg4.message, {
-          messageId: msg4.key.id,
-        });
+        await sock.sendMessage(m.chat, {
+          image: animeImageBuffer,
+          caption: caption4,
+          footer: `Tekan tombol di bawah untuk memilih kategori 👇`,
+          contextInfo: {
+            mentionedJid: [m.sender],
+            isForwarded: true,
+            forwardingScore: 9,
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: saluranId,
+              newsletterName: saluranName,
+              serverMessageId: 127,
+            },
+          },
+          interactiveButtons: [
+            {
+              name: "single_select",
+              buttonParamsJson: JSON.stringify({
+                title: "📂 Lihat Semua Kategori",
+                sections: buildAllCategoriesSections(),
+                icon: "DEFAULT",
+              }),
+            },
+            {
+              name: "single_select",
+              buttonParamsJson: JSON.stringify({
+                title: "⚡ Akses Cepat",
+                sections: [
+                  {
+                    title: "⚡ Perintah Populer",
+                    rows: [
+                      { title: "📋 Semua Menu", description: "Lihat semua perintah bot", id: `${m.prefix}allmenu` },
+                      { title: "👤 Profil Saya", description: "Cek info akun kamu", id: `${m.prefix}profil` },
+                      { title: "💰 Saldo Koin", description: "Cek koin yang kamu punya", id: `${m.prefix}saldo` },
+                      { title: "🎮 Status RPG", description: "Lihat status RPG kamu", id: `${m.prefix}rpg` },
+                      { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
+                    ],
+                  },
+                ],
+                icon: "REVIEW",
+              }),
+            },
+            {
+              name: "cta_url",
+              buttonParamsJson: JSON.stringify({
+                display_text: "👑 Hubungi Owner",
+                url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+              }),
+            },
+          ],
+        }, { quoted: m });
         break;
       }
       default:
