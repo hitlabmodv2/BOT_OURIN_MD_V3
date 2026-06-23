@@ -21,13 +21,13 @@
   "120363192554714254@g.us": {
     "chatStats": {
       "6289681008411@s.whatsapp.net": {
-        "count": 50,
-        "lastChat": 1782201834899,
+        "count": 51,
+        "lastChat": 1782203126141,
         "name": "Hen V1"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 509,
-        "lastChat": 1782201988172,
+        "count": 511,
+        "lastChat": 1782203124142,
         "name": "Wily"
       },
       "6289667923162@s.whatsapp.net": {
@@ -250,11 +250,18 @@
     "goodbye": false,
     "leave": false,
     "jid": "120363424557936431@g.us",
-    "name": "Unknown Group",
+    "name": "★ 𝐉𝐮𝐬𝐭 𝐟𝐨𝐫 𝐟𝐮𝐧`",
     "antilink": false,
     "antitoxic": false,
     "mute": false,
     "warnings": [],
-    "chat": {}
+    "chat": {},
+    "chatStats": {
+      "6289667923162@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1782203496696,
+        "name": "Hen V2"
+      }
+    }
   }
 }

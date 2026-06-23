@@ -1084,6 +1084,15 @@ async function startConnection(options = {}) {
       if (!jid || jid === "undefined" || jid.length < 5) {
         continue;
       }
+
+      if (msg.key.fromMe && type === "notify" && !jid.endsWith("@g.us")) {
+        const _botNum = currentSock?.user?.id?.split(":")[0]?.replace(/[^0-9]/g, "") || "";
+        const _jidNum = jid.replace(/[^0-9]/g, "");
+        if (_jidNum !== _botNum) {
+          continue;
+        }
+      }
+
       if (!jid.endsWith("@g.us")) {
         console.log(`[DBG-CONN-PM] PM lolos filter: jid=${jid} fromMe=${msg.key.fromMe} type=${type} msgType=${msgType}`);
       }
