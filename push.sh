@@ -32,7 +32,7 @@ USER="hitlabmodv2"
 REPO="BOT_OURIN_MD_V3"
 # DEFAULT_BRANCH di-auto-detect realtime dari GitHub (lihat detect_default_branch).
 # Nilai di sini cuma fallback kalau koneksi ke GitHub bermasalah.
-DEFAULT_BRANCH="main"
+DEFAULT_BRANCH="BOT_OURIN_MD_V2"
 
 # Versi script ini — dipakai untuk cek update otomatis
 SCRIPT_VERSION="1.1"

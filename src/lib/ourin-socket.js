@@ -186,6 +186,66 @@ async function simpleImageToWebp(buffer) {
 }
 
 async function extendSocket(sock) {
+  const _origSendMessage = sock.sendMessage.bind(sock);
+  sock.sendMessage = async function (jid, content, options = {}) {
+    if (content && content.interactiveButtons && Array.isArray(content.interactiveButtons)) {
+      const buttons = content.interactiveButtons;
+      try {
+        let headerObj = { title: "", subtitle: "", hasMediaAttachment: false };
+        if (content.image) {
+          try {
+            const media = await prepareWAMessageMedia(
+              { image: content.image },
+              { upload: sock.waUploadToServer }
+            );
+            headerObj = { title: "", subtitle: "", hasMediaAttachment: true, imageMessage: media.imageMessage };
+          } catch {}
+        } else if (content.video) {
+          try {
+            const media = await prepareWAMessageMedia(
+              { video: content.video },
+              { upload: sock.waUploadToServer }
+            );
+            headerObj = { title: "", subtitle: "", hasMediaAttachment: true, videoMessage: media.videoMessage };
+          } catch {}
+        }
+        const bodyText = content.caption || content.text || "";
+        const footerText = content.footer || config.bot?.name || "";
+        const contextInfo = content.contextInfo || {};
+        const msgId = generateMessageID();
+        await sock.relayMessage(
+          jid,
+          {
+            viewOnceMessage: {
+              message: {
+                messageContextInfo: {},
+                interactiveMessage: {
+                  header: headerObj,
+                  body: { text: bodyText },
+                  footer: { text: footerText },
+                  contextInfo,
+                  nativeFlowMessage: {
+                    messageParamsJson: JSON.stringify({
+                      bottom_sheet: { in_thread_buttons_limit: 3, button_title: "Pilih" }
+                    }),
+                    buttons,
+                  },
+                },
+              },
+            },
+          },
+          { messageId: msgId, ...(options.quoted ? { quoted: options.quoted } : {}) }
+        );
+        return;
+      } catch (err) {
+        console.error("[interactiveButtons] Gagal relay, fallback ke text:", err.message);
+        const fallbackText = content.caption || content.text || "";
+        return _origSendMessage(jid, { text: fallbackText, ...(content.contextInfo ? { contextInfo: content.contextInfo } : {}) }, options);
+      }
+    }
+    return _origSendMessage(jid, content, options);
+  };
+
   sock.sendImageAsSticker = async (jid, input, m, options = {}) => {
     const buffer = await resolveInput(input);
     let webpBuffer;
