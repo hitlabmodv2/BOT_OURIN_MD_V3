@@ -228,7 +228,10 @@ async function extendSocket(sock) {
               },
             },
           },
-          { ...(options.quoted ? { quoted: options.quoted } : {}) }
+          {
+            userJid: sock.user?.id || sock.user?.jid,
+            ...(options.quoted ? { quoted: options.quoted } : {}),
+          }
         );
         await sock.relayMessage(builtMsg.key.remoteJid, builtMsg.message, {
           messageId: builtMsg.key.id,

@@ -555,6 +555,28 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
 
     const _allGroupedCats = CATEGORY_GROUPS.flatMap(g => g.cats);
 
+    // Helper: bangun sections dari slice CATEGORY_GROUPS, maks 24 rows & 10 sections (batas WA)
+    const buildCatSectionsSlice = (groups) => {
+      const sections = [];
+      let totalRows = 0;
+      for (const group of groups) {
+        const rows = categories.sorted
+          .filter(({ cat }) => group.cats.includes(cat))
+          .map(({ cat, cmds, emoji }) => ({
+            title: `${getCatEmoji(cat, emoji)} ${cat.toUpperCase()}`,
+            description: `${cmds.length} perintah`,
+            id: `${m.prefix}menucat ${cat}`,
+          }));
+        if (rows.length === 0) continue;
+        const allowed = rows.slice(0, 24 - totalRows);
+        if (allowed.length === 0) break;
+        sections.push({ title: group.label, rows: allowed });
+        totalRows += allowed.length;
+        if (totalRows >= 24 || sections.length >= 10) break;
+      }
+      return sections;
+    };
+
     // Emoji per kategori — lengkap sesuai semua folder di /plugins
     const CAT_EMOJI = {
       main: "🏠", utility: "🔧", tools: "🛠️", convert: "🔄", user: "📊",
@@ -735,35 +757,26 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
               {
                 name: "single_select",
                 buttonParamsJson: JSON.stringify({
-                  title: "📂 Pilih Kategori",
-                  sections: buildGroupedSections(),
+                  title: "📂 Kategori Utama",
+                  sections: buildCatSectionsSlice(CATEGORY_GROUPS.slice(0, 6)),
                   icon: "DEFAULT",
                 })
               },
               {
                 name: "single_select",
                 buttonParamsJson: JSON.stringify({
-                  title: "📌 Akses Cepat",
+                  title: "📦 Kategori Lainnya",
                   sections: [
                     {
-                      title: "⚡ Perintah Populer",
+                      title: "⚡ Akses Cepat",
                       rows: [
-                        { title: "📋 Semua Menu", description: "Lihat daftar lengkap semua perintah", id: `${m.prefix}allmenu` },
+                        { title: "📋 Semua Menu", description: `${totalCmds} perintah`, id: `${m.prefix}allmenu` },
                         { title: "👤 Profil Saya", description: "Cek info akun kamu", id: `${m.prefix}profil` },
                         { title: "💰 Saldo Koin", description: "Cek koin yang kamu punya", id: `${m.prefix}saldo` },
-                        { title: "🎮 Status RPG", description: "Lihat status RPG kamu", id: `${m.prefix}rpg` },
-                        { title: "📜 Perintah Baru", description: "Lihat perintah terbaru bot", id: `${m.prefix}new` },
+                        { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
                       ]
                     },
-                    {
-                      title: "ℹ️ Info Bot",
-                      rows: [
-                        { title: "👑 Info Owner", description: "Informasi tentang owner bot", id: `${m.prefix}owner` },
-                        { title: "📦 Download Script", description: "Dapatkan script bot ini gratis", id: `${m.prefix}sc` },
-                        { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
-                        { title: "⏱️ Uptime Bot", description: "Berapa lama bot sudah aktif", id: `${m.prefix}uptime` },
-                      ]
-                    }
+                    ...buildCatSectionsSlice(CATEGORY_GROUPS.slice(6)),
                   ],
                   icon: "REVIEW",
                 })
@@ -784,7 +797,7 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
           await m.reply(text);
         }
         break;
-      case 2:
+      case 2: {
         let s = ""
         categories.sorted.map(({ cat, cmds, emoji }) => {
           s += `╭─☰ ${toMonoUpperBold(cat)}\n`
@@ -793,25 +806,10 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
           })
           s += "╰─⬣\n\n"
         });
-        const media = await prepareWAMessageMedia({
-          image: getAssetBuffer("ourin") || getAssetBuffer("ourin")
-        }, { upload: sock.waUploadToServer })
         const readmore = String.fromCharCode(8206).repeat(4001)
-        await sock.relayMessage(
-          m.chat,
-          {
-            viewOnceMessage: {
-              message: {
-                messageContextInfo: {},
-                interactiveMessage: {
-                  header: {
-                    title: "",
-                    subtitle: "",
-                    hasMediaAttachment: true,
-                    imageMessage: media.imageMessage
-                  },
-                  body: {
-                    text: `🥞 *Hello Brother*
+        await sock.sendMessage(m.chat, {
+          image: getAssetBuffer("ourin") || { url: "https://gimita.id/ourin.png" },
+          caption: `🥞 *Hello Brother*
 
 Welcome to ${config.bot?.name}, Our bot will help you
 
@@ -830,78 +828,41 @@ Welcome to ${config.bot?.name}, Our bot will help you
 > 🎏 *Koin*: ${user.koin || 0}
 > 🍬 *Register*: ${user.isRegistered ? "Sudah" : "Belum"}
 
-${readmore}${s}`
-                  },
-                  footer: {
-                    text: "Pilih tombol dibawah untuk info lebih lanjut"
-                  },
-                  contextInfo: {
-                    isForwarded: true,
-                    fprwardingScore: 9,
-                    participant: "0@s.whatsapp.net",
-                    quotedMessage: {
-                      conversation: `${config.bot?.name}`
-                    },
-                    mentionedJid: [
-                      `${m.sender}`
-                    ]
-                  },
-                  nativeFlowMessage: {
-                    messageParamsJson: JSON.stringify({
-                      limited_time_offer: {
-                        text: `${greeting}`,
-                        url: "Hai",
-                        copy_code: "Dibuat oleh " + config.bot?.developer,
-                        expiration_time: Date.now() + 1000000,
-                      },
-                      bottom_sheet: {
-                        in_thread_buttons_limit: 2,
-                        divider_indices: [1, 2, 3, 4, 5, 999],
-                        list_title: "Silahkan pilih menu yang kamu inginkan",
-                        button_title: "🍅 Selengkapnya",
-                      },
-                      tap_target_configuration: {
-                        title: " X ",
-                        description: "bomboclard",
-                        canonical_url: "https://ourin.site",
-                        domain: "shop.example.com",
-                        button_index: 0,
-                      },
-                    }),
-                    buttons: [
-                      {
-                        name: "single_select",
-                        buttonParamsJson: JSON.stringify({
-                          title: "📂 Semua Menu",
-                          sections: buildAllCategoriesSections(),
-                          icon: "DEFAULT",
-                        }),
-                      },
-                      {
-                        name: "quick_reply",
-                        buttonParamsJson: JSON.stringify({
-                          display_text: "📋 Lihat Semua Menu",
-                          id: `${m.prefix}allmenu`,
-                        }),
-                      },
-                      {
-                        name: "cta_url",
-                        buttonParamsJson: JSON.stringify({
-                          display_text: "👑 Hubungi Owner",
-                          url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                          merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                        }),
-                      },
-                    ]
-                  }
-                }
-              }
-            }
+${readmore}${s}`,
+          footer: "Pilih tombol dibawah untuk info lebih lanjut",
+          contextInfo: {
+            isForwarded: true,
+            forwardingScore: 9,
+            mentionedJid: [m.sender],
           },
-          {}
-        )
-
+          interactiveButtons: [
+            {
+              name: "single_select",
+              buttonParamsJson: JSON.stringify({
+                title: "📂 Kategori Utama",
+                sections: buildCatSectionsSlice(CATEGORY_GROUPS.slice(0, 6)),
+                icon: "DEFAULT",
+              }),
+            },
+            {
+              name: "quick_reply",
+              buttonParamsJson: JSON.stringify({
+                display_text: "📋 Lihat Semua Menu",
+                id: `${m.prefix}allmenu`,
+              }),
+            },
+            {
+              name: "cta_url",
+              buttonParamsJson: JSON.stringify({
+                display_text: "👑 Hubungi Owner",
+                url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+              }),
+            },
+          ],
+        }, { quoted: getVerifiedQuoted(botConfig, m) });
         break;
+      }
 
       case 3:
         const content = {
@@ -1028,26 +989,25 @@ Welcome to ${config.bot?.name}, Our bot will help you
             {
               name: "single_select",
               buttonParamsJson: JSON.stringify({
-                title: "📂 Lihat Semua Kategori",
-                sections: buildAllCategoriesSections(),
+                title: "📂 Kategori Utama",
+                sections: buildCatSectionsSlice(CATEGORY_GROUPS.slice(0, 6)),
                 icon: "DEFAULT",
               }),
             },
             {
               name: "single_select",
               buttonParamsJson: JSON.stringify({
-                title: "⚡ Akses Cepat",
+                title: "📦 Kategori Lainnya",
                 sections: [
                   {
-                    title: "⚡ Perintah Populer",
+                    title: "⚡ Akses Cepat",
                     rows: [
-                      { title: "📋 Semua Menu", description: "Lihat semua perintah bot", id: `${m.prefix}allmenu` },
+                      { title: "📋 Semua Menu", description: `${totalCmds} perintah`, id: `${m.prefix}allmenu` },
                       { title: "👤 Profil Saya", description: "Cek info akun kamu", id: `${m.prefix}profil` },
-                      { title: "💰 Saldo Koin", description: "Cek koin yang kamu punya", id: `${m.prefix}saldo` },
-                      { title: "🎮 Status RPG", description: "Lihat status RPG kamu", id: `${m.prefix}rpg` },
                       { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
                     ],
                   },
+                  ...buildCatSectionsSlice(CATEGORY_GROUPS.slice(6)),
                 ],
                 icon: "REVIEW",
               }),

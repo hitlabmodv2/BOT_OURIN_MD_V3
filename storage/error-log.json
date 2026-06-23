@@ -160,5 +160,23 @@
     "source": "console.error",
     "message": "\u001b[90mPromise:\u001b[39m {}",
     "stack": "Error: \u001b[90mPromise:\u001b[39m {} |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at process.<anonymous> (file:///home/runner/workspace/index.js:338:13) |     at process.emit (node:events:524:28)"
+  },
+  {
+    "time": "2026-06-23T10:05:04.586Z",
+    "source": "Menu",
+    "message": "[Menu] Error on command execution: firstHalf is not defined",
+    "stack": "Error: [Menu] Error on command execution: firstHalf is not defined |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at Object.handler (file:///home/runner/workspace/plugins/main/menu.js:1154:13) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-23T10:05:28.573Z",
+    "source": "Menu",
+    "message": "[Menu] Error on command execution: secondHalf is not defined",
+    "stack": "Error: [Menu] Error on command execution: secondHalf is not defined |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at Object.handler (file:///home/runner/workspace/plugins/main/menu.js?t=1782209105803:1154:13) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  },
+  {
+    "time": "2026-06-23T10:05:47.585Z",
+    "source": "Menu",
+    "message": "[Menu] Error on command execution: secondHalf is not defined",
+    "stack": "Error: [Menu] Error on command execution: secondHalf is not defined |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at Object.handler (file:///home/runner/workspace/plugins/main/menu.js?t=1782209105803:1154:13) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
   }
 ]
