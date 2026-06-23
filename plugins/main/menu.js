@@ -1069,8 +1069,10 @@ Welcome to ${config.bot?.name}, Our bot will help you
         };
         const sendVN = async (quotedMsg) => {
           const oggPath = await convertToVN();
+          const audioBuffer = fs.readFileSync(oggPath);
+          try { fs.unlinkSync(oggPath); } catch {}
           await sock.sendMessage(m.chat, {
-            audio: fs.readFileSync(oggPath),
+            audio: audioBuffer,
             mimetype: "audio/ogg; codecs=opus",
             ptt: true,
           }, { quoted: quotedMsg });

@@ -319,6 +319,8 @@ async function handler(m, { sock, config: botConfig, db }) {
     };
 
     const oggPath = await getOgg();
+    const audioBuffer = fs.readFileSync(oggPath);
+    try { fs.unlinkSync(oggPath); } catch {}
 
     const qpoll = {
       key: { participant: "0@s.whatsapp.net" },
@@ -326,7 +328,7 @@ async function handler(m, { sock, config: botConfig, db }) {
     };
 
     await sock.sendMessage(m.chat, {
-      audio: fs.readFileSync(oggPath),
+      audio: audioBuffer,
       mimetype: "audio/ogg; codecs=opus",
       ptt: true,
     }, { quoted: qpoll });
