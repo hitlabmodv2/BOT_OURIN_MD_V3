@@ -999,18 +999,25 @@ Welcome to ${config.bot?.name}, Our bot will help you
 *│* 📅 ᴛᴀɴɢɢᴀʟ    : *${dateStr}*
 ╰────────────────⬣`;
 
+        const ownerNum4 = (botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "");
+        const thumbAnime = animeImageBuffer
+          ? await sharp(animeImageBuffer).resize(300, 300, { fit: "cover" }).jpeg({ quality: 80 }).toBuffer()
+          : null;
         await sock.sendMessage(m.chat, {
-          image: animeImageBuffer,
-          caption: caption4,
+          text: caption4,
           footer: `Tekan tombol di bawah untuk memilih kategori 👇`,
           contextInfo: {
             mentionedJid: [m.sender],
             isForwarded: true,
             forwardingScore: 9,
-            forwardedNewsletterMessageInfo: {
-              newsletterJid: saluranId,
-              newsletterName: saluranName,
-              serverMessageId: 127,
+            externalAdReply: {
+              title: config.bot?.name || "Wilybot",
+              body: `BOT WHATSAPP — ${totalCmds} Commands`,
+              sourceUrl: `https://wa.me/${ownerNum4}`,
+              mediaType: 1,
+              renderLargerThumbnail: true,
+              showAdAttribution: false,
+              thumbnail: thumbAnime || undefined,
             },
           },
           interactiveButtons: [
@@ -1044,8 +1051,8 @@ Welcome to ${config.bot?.name}, Our bot will help you
               name: "cta_url",
               buttonParamsJson: JSON.stringify({
                 display_text: "👑 Hubungi Owner",
-                url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
-                merchant_url: `https://wa.me/${(botConfig.owner?.number?.[0] || "").toString().replace(/[^0-9]/g, "")}`,
+                url: `https://wa.me/${ownerNum4}`,
+                merchant_url: `https://wa.me/${ownerNum4}`,
               }),
             },
           ],
