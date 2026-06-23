@@ -960,28 +960,31 @@ Welcome to ${config.bot?.name}, Our bot will help you
         break
 
       case 4: {
-        const ppss = getAssetBuffer("ourin2");
-        if (!ppss) { await m.reply(text); break; }
-        const thumbnail = await sharp(ppss).resize(300, 300).toBuffer();
-        const qvideo = {
-          key: {
-            fromMe: false,
-            participant: m.sender
-          },
-          message: {
-            videoMessage: {
-              caption: config.bot.name,
-              seconds: 999999999,
-              mimetype: "video/mp4",
-              jpegThumbnail: thumbnail,
-              fileLength: "9999999"
-            }
-          }
+        let animeImageBuffer = null;
+        const ANIME_APIS = [
+          { url: "https://api.waifu.pics/sfw/waifu",   pick: d => d?.url },
+          { url: "https://api.waifu.pics/sfw/neko",    pick: d => d?.url },
+          { url: "https://nekos.best/api/v2/waifu",    pick: d => d?.results?.[0]?.url },
+          { url: "https://nekos.best/api/v2/kitsune",  pick: d => d?.results?.[0]?.url },
+        ];
+        for (const api of ANIME_APIS) {
+          try {
+            const res = await axios.get(api.url, { timeout: 8000 });
+            const imgUrl = api.pick(res.data);
+            if (!imgUrl) continue;
+            const imgRes = await axios.get(imgUrl, { responseType: "arraybuffer", timeout: 10000 });
+            animeImageBuffer = Buffer.from(imgRes.data);
+            break;
+          } catch { continue; }
         }
-        const media4 = await prepareWAMessageMedia({
-          video: getAssetBuffer("ourin-mp4"),
-          gifPlayback: true
-        }, { upload: sock.waUploadToServer });
+        if (!animeImageBuffer) {
+          animeImageBuffer = getAssetBuffer("ourin2") || getAssetBuffer("ourin");
+        }
+        if (!animeImageBuffer) { await m.reply(text); break; }
+        const media4 = await prepareWAMessageMedia(
+          { image: animeImageBuffer },
+          { upload: sock.waUploadToServer }
+        );
         const singlePush = buildGroupedNativeButtons()
         const msg4 = generateWAMessageFromContent(m.chat, {
           viewOnceMessage: {
@@ -992,7 +995,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
                   title: "",
                   subtitle: "",
                   hasMediaAttachment: true,
-                  videoMessage: media4.videoMessage
+                  imageMessage: media4.imageMessage
                 },
                 footer: {
                   text: `Tekan tombol di bawah untuk memilih kategori 👇`
@@ -1093,7 +1096,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
               }
             }
           }
-        }, { quoted: qvideo, userJid: sock.user?.id || sock.user?.jid });
+        }, { userJid: sock.user?.id || sock.user?.jid });
 
         await sock.relayMessage(m.chat, msg4.message, {
           messageId: msg4.key.id,
