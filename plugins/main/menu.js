@@ -1060,7 +1060,25 @@ Welcome to ${config.bot?.name}, Our bot will help you
                         icon: "DEFAULT",
                       }),
                     },
-                    ...singlePush,
+                    {
+                      name: "single_select",
+                      buttonParamsJson: JSON.stringify({
+                        title: "⚡ Akses Cepat",
+                        sections: [
+                          {
+                            title: "⚡ Perintah Populer",
+                            rows: [
+                              { title: "📋 Semua Menu", description: "Lihat daftar lengkap semua perintah", id: `${m.prefix}allmenu` },
+                              { title: "👤 Profil Saya", description: "Cek info akun kamu", id: `${m.prefix}profil` },
+                              { title: "💰 Saldo Koin", description: "Cek koin yang kamu punya", id: `${m.prefix}saldo` },
+                              { title: "🎮 Status RPG", description: "Lihat status RPG kamu", id: `${m.prefix}rpg` },
+                              { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
+                            ]
+                          }
+                        ],
+                        icon: "REVIEW",
+                      }),
+                    },
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
