@@ -212,8 +212,7 @@ async function extendSocket(sock) {
         const bodyText = content.caption || content.text || "";
         const footerText = content.footer || config.bot?.name || "";
         const contextInfo = content.contextInfo || {};
-        const msgId = generateMessageID();
-        await sock.relayMessage(
+        const builtMsg = generateWAMessageFromContent(
           jid,
           {
             interactiveMessage: {
@@ -229,8 +228,24 @@ async function extendSocket(sock) {
               },
             },
           },
-          { messageId: msgId, ...(options.quoted ? { quoted: options.quoted } : {}) }
+          { ...(options.quoted ? { quoted: options.quoted } : {}) }
         );
+        await sock.relayMessage(builtMsg.key.remoteJid, builtMsg.message, {
+          messageId: builtMsg.key.id,
+          additionalNodes: [
+            {
+              tag: "biz",
+              attrs: {},
+              content: [
+                {
+                  tag: "interactive",
+                  attrs: { type: "native_flow", v: "1" },
+                  content: [{ tag: "native_flow", attrs: { v: "9", name: "mixed" } }],
+                },
+              ],
+            },
+          ],
+        });
         return;
       } catch (err) {
         console.error("[interactiveButtons] Gagal relay, fallback ke text:", err.message);
