@@ -502,12 +502,11 @@ async function messageHandler(msg, sock, options = {}) {
     try {
       m = await serialize(sock, msg);
     } catch (serializeErr) {
-      console.log(`[DBG-PM-ERR] serialize gagal untuk ${_dbgJid}: ${serializeErr.message}`);
       return;
     }
 
-    if (!m) { if (!_dbgIsGc) console.log(`[DBG-PM-NULL] m null untuk ${_dbgJid}`); return; }
-    if (!m.message) { if (!_dbgIsGc) console.log(`[DBG-PM-NOMSG] m.message null untuk ${_dbgJid}`); return; }
+    if (!m) { return; }
+    if (!m.message) { return; }
     if (!m.sender) m.sender = m.chat || "";
 
     if (global.giveawaySessions?.has(m.sender)) {
