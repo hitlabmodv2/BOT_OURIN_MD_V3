@@ -33,12 +33,28 @@ function truncateText(ctx, text, maxWidth) {
 }
 
 // ─── Helper: Load Avatar Safely ───────────────────────────────────────────────
+// Menerima Buffer (pre-downloaded) atau URL string
 // Mengembalikan image object atau null (kalau semua gagal → tampilkan inisial)
 async function loadAvatarSafe(avatarUrl) {
   const { loadImage } = await _getCanvas();
   const localFallback = path.join(process.cwd(), "assets", "image", "pp-kosong.jpg");
 
-  // Deteksi URL "kosong" (fallback CDN/default blank) — langsung skip ke null
+  // Handle Buffer yang sudah di-download sebelumnya (paling reliable)
+  if (Buffer.isBuffer(avatarUrl)) {
+    try {
+      const img = await loadImage(avatarUrl);
+      if (img) return img;
+    } catch { /* lanjut ke local fallback */ }
+    try {
+      if (fs.existsSync(localFallback)) {
+        const img = await loadImage(fs.readFileSync(localFallback));
+        if (img) return img;
+      }
+    } catch { }
+    return null;
+  }
+
+  // Deteksi URL "kosong" (fallback CDN/default blank) — langsung skip ke local fallback
   const isBlankUrl = !avatarUrl ||
     avatarUrl.includes("pp%20kosong") ||
     avatarUrl.includes("pp-kosong") ||

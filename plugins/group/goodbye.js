@@ -73,6 +73,7 @@ async function buildGoodbyeMessage(
   customMsg = null,
   groupOwner = "",
   prefix = ".",
+  author = null,
 ) {
   const farewells = [
     `Sayonara`,
@@ -133,18 +134,24 @@ Doakan yang terbaik untuknya ya.`,
       prefix,
     );
   }
+  const authorNum = author ? author.split("@")[0] : null;
+  const leftBy = authorNum
+    ? `> ⚡ *Dikick oleh* : @${authorNum}`
+    : `> 🚪 *Keluar* : Sendiri`;
+
   let msg = `👋🏻 *SAYONARA MEMBER* 👋🏻\n\n`;
   msg += `${header}\n`;
   msg += `${emoji} ${farewell}, *@${username}* 🤍\n\n`;
   msg += `📌 *INFO GROUP*\n`;
   msg += `> 🏠 *Nama* : ${groupName}\n`;
   msg += `> 👥 *Sisa Member* : ${memberCount}\n`;
-  msg += `> 📅 *Tanggal* : ${now.format("DD/MM/YYYY")}\n\n`;
+  msg += `> 📅 *Tanggal* : ${now.format("DD/MM/YYYY")}\n`;
+  msg += `${leftBy}\n\n`;
   msg += `💌 *Pesan*\n> 「 ${quote} 」\n\n🌸 _Sampai jumpa lagi, tomodachi._ 🤍`;
 
   return msg;
 }
-async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force = false) {
+async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force = false, author = null) {
   try {
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
@@ -177,11 +184,21 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
     const memberCount = groupMeta?.participants?.length || 0;
     const groupName = groupMeta?.subject || "Grup";
     let userName = realParticipant?.split("@")[0] || "User";
-    let ppUrl =
-      "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    let ppUrl = null;
+    let ppBuffer = null;
     try {
-      ppUrl = (await sock.profilePictureUrl(realParticipant, "image")) || ppUrl;
+      ppUrl = await sock.profilePictureUrl(realParticipant, "image");
+      const { default: axios } = await import("axios");
+      const r = await axios.get(ppUrl, {
+        responseType: "arraybuffer",
+        timeout: 6000,
+        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+      });
+      if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
     } catch { }
+    const ppUrlStr = ppUrl || ppDefault;
+    const ppForCanvas = ppBuffer || ppUrlStr;
     const text = await buildGoodbyeMessage(
       realParticipant,
       groupMeta?.subject,
@@ -190,6 +207,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       groupData?.goodbyeMsg,
       groupMeta?.owner?.split("@")[0] || "",
       config.command?.prefix || ".",
+      author,
     );
     const saluranId = config.saluran?.id || "120363400911374213@newsletter";
     const saluranName = config.saluran?.name || config.bot?.name || "Ourin-AI";
@@ -216,7 +234,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
             cards: [
               {
                 header: {
-                  imageMessage: { url: ppUrl },
+                  imageMessage: { url: ppUrlStr },
                 },
                 body: {
                   text: cardBody,
@@ -284,12 +302,12 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
           url: "",
           title: `Goodbye from ${groupName}`,
           description: `👋 Sayonara ${userName}!`,
-          image: ppUrl,
+          image: ppUrlStr,
           previewType: 0,
         },
         {
           contextInfo: {
-            mentionedJid: [realParticipant],
+            mentionedJid: [realParticipant, ...(author ? [author] : [])],
           }
         }
       );
@@ -309,7 +327,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       try {
         canvasBuffer = await createGoodbyeCard(
           userName,
-          ppUrl,
+          ppForCanvas,
           groupName,
           memberCount.toLocaleString(),
         );
@@ -320,10 +338,10 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         await sock.sendMessage(groupJid, {
           image: canvasBuffer,
           caption: text,
-          mentions: [realParticipant],
+          mentions: [realParticipant, ...(author ? [author] : [])],
           contextInfo: {
             ...saluranCtx(),
-            mentionedJid: [realParticipant],
+            mentionedJid: [realParticipant, ...(author ? [author] : [])],
             forwardedNewsletterMessageInfo: {
               newsletterJid: saluranId,
               newsletterName: saluranName,
@@ -335,10 +353,10 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         // Fallback teks biasa kalau canvas gagal
         await sock.sendMessage(groupJid, {
           text: text,
-          mentions: [realParticipant],
+          mentions: [realParticipant, ...(author ? [author] : [])],
           contextInfo: {
             ...saluranCtx(),
-            mentionedJid: [realParticipant],
+            mentionedJid: [realParticipant, ...(author ? [author] : [])],
           },
         });
       }

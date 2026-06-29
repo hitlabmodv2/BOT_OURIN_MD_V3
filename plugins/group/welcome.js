@@ -67,6 +67,7 @@ async function buildWelcomeMessage(
   customMsg = null,
   groupOwner = "",
   prefix = ".",
+  author = null,
 ) {
   const greetings = [
     `Akhirnya datang juga`,
@@ -127,6 +128,11 @@ Tanoshii jikan o issho ni sugoso ne~`,
       prefix,
     );
   }
+  const authorNum = author ? author.split("@")[0] : null;
+  const joinedBy = authorNum
+    ? `> 📨 *Diundang oleh* : @${authorNum}`
+    : `> 🔗 *Bergabung via* : Link Undangan`;
+
   let msg = `👋🏻 *WELCOME MEMBER BARU* 👋🏻\n\n`;
   msg += `${header}\n`;
   msg += `${emoji} ${greeting}, *@${username}* 💫\n\n`;
@@ -134,6 +140,7 @@ Tanoshii jikan o issho ni sugoso ne~`,
   msg += `> 🏠 *Nama* : ${groupName}\n`;
   msg += `> 👥 *Member* : ${memberCount}\n`;
   msg += `> 📅 *Tanggal* : ${moment().tz("Asia/Jakarta").format("DD/MM/YYYY")}\n`;
+  msg += `${joinedBy}\n`;
 
   if (groupDesc) {
     msg += `\n📝 *Deskripsi*\n> ❝ ${groupDesc.slice(0, 120)}${groupDesc.length > 120 ? "..." : ""} ❞\n`;
@@ -143,7 +150,7 @@ Tanoshii jikan o issho ni sugoso ne~`,
 
   return msg;
 }
-async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force = false) {
+async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force = false, author = null) {
   try {
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
@@ -156,11 +163,20 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     const memberCount = groupMeta?.participants?.length || 0;
     const groupName = groupMeta?.subject || "Grup";
     let userName = realParticipant?.split("@")[0] || "User";
-    let ppUrl =
-      "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    let ppUrl = null;
+    let ppBuffer = null;
     try {
       ppUrl = await sock.profilePictureUrl(realParticipant, "image");
+      const r = await axios.get(ppUrl, {
+        responseType: "arraybuffer",
+        timeout: 6000,
+        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+      });
+      if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
     } catch { }
+    const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    const ppUrlStr = ppUrl || ppDefault;
+    const ppForCanvas = ppBuffer || ppUrlStr;
     const text = await buildWelcomeMessage(
       realParticipant,
       groupMeta?.subject,
@@ -169,6 +185,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       groupData?.welcomeMsg,
       groupMeta?.owner?.split("@")[0] || "",
       config.command?.prefix || ".",
+      author,
     );
     const saluranId = config.saluran?.id || "120363400911374213@newsletter";
     const saluranName = config.saluran?.name || config.bot?.name || "Ourin-AI";
@@ -195,7 +212,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
             cards: [
               {
                 header: {
-                  imageMessage: { url: ppUrl },
+                  imageMessage: { url: ppUrlStr },
                 },
                 body: {
                   text: cardBody,
@@ -262,12 +279,12 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
           url: "",
           title: `Welcome to ${groupName}`,
           description: `👋 Halo ${userName}!`,
-          image: ppUrl,
+          image: ppUrlStr,
           previewType: 0,
         },
         {
           contextInfo: {
-            mentionedJid: [realParticipant],
+            mentionedJid: [realParticipant, ...(author ? [author] : [])],
           }
         }
       );
@@ -286,7 +303,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       try {
         canvasBuffer = await createWideDiscordCard(
           userName,
-          ppUrl,
+          ppForCanvas,
           groupName,
           memberCount.toLocaleString(),
         );
@@ -297,10 +314,10 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         await sock.sendMessage(groupJid, {
           image: canvasBuffer,
           caption: text,
-          mentions: [realParticipant],
+          mentions: [realParticipant, ...(author ? [author] : [])],
           contextInfo: {
             ...saluranCtx(),
-            mentionedJid: [realParticipant],
+            mentionedJid: [realParticipant, ...(author ? [author] : [])],
             forwardedNewsletterMessageInfo: {
               newsletterJid: saluranId,
               newsletterName: saluranName,
@@ -312,10 +329,10 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         // Fallback teks biasa kalau canvas gagal
         await sock.sendMessage(groupJid, {
           text: text,
-          mentions: [realParticipant],
+          mentions: [realParticipant, ...(author ? [author] : [])],
           contextInfo: {
             ...saluranCtx(),
-            mentionedJid: [realParticipant],
+            mentionedJid: [realParticipant, ...(author ? [author] : [])],
           },
         });
       }

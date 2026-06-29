@@ -1897,11 +1897,11 @@ async function groupHandler(update, sock) {
       participant = participantJid;
 
       if (action === "add" && sendWelcomeMessage) {
-        await sendWelcomeMessage(sock, groupJid, participant, groupMeta);
+        await sendWelcomeMessage(sock, groupJid, participant, groupMeta, false, update.author || null);
       }
 
       if (action === "remove" && sendGoodbyeMessage) {
-        await sendGoodbyeMessage(sock, groupJid, participant, groupMeta);
+        await sendGoodbyeMessage(sock, groupJid, participant, groupMeta, false, update.author || null);
       }
 
       const saluranId = config.saluran?.id || "120363400911374213@newsletter";
