@@ -48,25 +48,24 @@ function collectPluginFiles(pluginsDir) {
   return files;
 }
 
-export async function validatePlugins(pluginsDir) {
-  const files = collectPluginFiles(pluginsDir);
-  if (files.length === 0) return;
-
-  const tasks = files.map((f) => () => checkFileSyntax(f));
-  const results = await runBatch(tasks, 20);
-  const broken = results.filter(Boolean);
-
-  if (broken.length === 0) {
-    logger.success("validator", `${files.length} plugin files — semua syntax OK`);
-    return;
+function collectFlatFiles(dir) {
+  const files = [];
+  if (!fs.existsSync(dir)) return files;
+  for (const file of fs.readdirSync(dir)) {
+    if (file.endsWith(".js") && !file.startsWith("_")) {
+      files.push(path.join(dir, file));
+    }
   }
+  return files;
+}
 
+function printBrokenBox(label, broken) {
   const cGray = chalk.gray;
   const cRed = chalk.redBright;
   const cYellow = chalk.yellowBright;
 
   console.log("");
-  console.log(`  ${cGray("╭─")} ${cRed("⚠ PLUGIN SYNTAX ERROR")} ${cGray("─────────────────╮")}`);
+  console.log(`  ${cGray("╭─")} ${cRed(`⚠ ${label} SYNTAX ERROR`)} ${cGray("─────────────────╮")}`);
   for (const { file, error } of broken) {
     const rel = path.relative(process.cwd(), file);
     console.log(`  ${cGray("│")} ${cYellow(rel)}`);
@@ -75,4 +74,34 @@ export async function validatePlugins(pluginsDir) {
   }
   console.log(`  ${cGray("╰─")} ${cRed(`${broken.length} file rusak — akan di-skip saat load`)} ${cGray("─╯")}`);
   console.log("");
+}
+
+async function validateGroup(label, files) {
+  if (files.length === 0) return 0;
+  const tasks = files.map((f) => () => checkFileSyntax(f));
+  const results = await runBatch(tasks, 20);
+  const broken = results.filter(Boolean);
+  if (broken.length === 0) {
+    logger.success("validator", `${files.length} ${label} files — semua syntax OK`);
+  } else {
+    printBrokenBox(label, broken);
+  }
+  return broken.length;
+}
+
+export async function validatePlugins(pluginsDir) {
+  const pluginFiles = collectPluginFiles(pluginsDir);
+  await validateGroup("plugin", pluginFiles);
+}
+
+export async function validateCore(srcDir) {
+  const libFiles = collectFlatFiles(path.join(srcDir, "lib"));
+  const scraperFiles = collectFlatFiles(path.join(srcDir, "scraper"));
+  const rootSrcFiles = collectFlatFiles(srcDir);
+
+  await Promise.all([
+    validateGroup("src/lib", libFiles),
+    validateGroup("src/scraper", scraperFiles),
+    ...(rootSrcFiles.length ? [validateGroup("src", rootSrcFiles)] : []),
+  ]);
 }
