@@ -143,11 +143,11 @@ Tanoshii jikan o issho ni sugoso ne~`,
 
   return msg;
 }
-async function sendWelcomeMessage(sock, groupJid, participant, groupMeta) {
+async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force = false) {
   try {
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
-    if (groupData?.welcome !== true) return false;
+    if (!force && groupData?.welcome !== true) return false;
     const welcomeType = db.setting("welcomeType") || 1;
     const realParticipant = resolveAnyLidToJid(
       participant,
@@ -304,20 +304,8 @@ async function handler(m, { sock }) {
     m.react("🧪");
     try {
       const groupMeta = await sock.groupMetadata(m.chat);
-      const memberCount = groupMeta?.participants?.length || 0;
-      const text = await buildWelcomeMessage(
-        m.sender,
-        groupMeta?.subject,
-        groupMeta?.descOwner,
-        memberCount,
-        groupData?.welcomeMsg,
-        groupMeta?.owner?.split("@")[0] || "",
-        m.prefix,
-      );
-      await sock.sendMessage(m.chat, {
-        text: `🧪 *[SIMULASI WELCOME]*\n_Begini tampilan welcome kalau ada member baru masuk:_\n\n${text}`,
-        mentions: [m.sender],
-      });
+      await sock.sendMessage(m.chat, { text: `🧪 *[SIMULASI WELCOME]* — Tampilan asli saat member baru masuk:` });
+      await sendWelcomeMessage(sock, m.chat, m.sender, groupMeta, true);
       m.react("✅");
     } catch (err) {
       m.react("❌");

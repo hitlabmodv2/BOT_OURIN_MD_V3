@@ -144,11 +144,11 @@ Doakan yang terbaik untuknya ya.`,
 
   return msg;
 }
-async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta) {
+async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force = false) {
   try {
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
-    if (groupData?.goodbye !== true && groupData?.leave !== true) return false;
+    if (!force && groupData?.goodbye !== true && groupData?.leave !== true) return false;
     const goodbyeType = db.setting("goodbyeType") || 1;
     if (groupMeta?.participants) {
       cacheParticipantLids(groupMeta.participants);
@@ -345,20 +345,8 @@ async function handler(m, { sock }) {
     m.react("🧪");
     try {
       const groupMeta = await sock.groupMetadata(m.chat);
-      const memberCount = groupMeta?.participants?.length || 0;
-      const text = await buildGoodbyeMessage(
-        m.sender,
-        groupMeta?.subject,
-        groupMeta?.descOwner,
-        memberCount,
-        groupData?.goodbyeMsg,
-        groupMeta?.owner?.split("@")[0] || "",
-        m.prefix,
-      );
-      await sock.sendMessage(m.chat, {
-        text: `🧪 *[SIMULASI GOODBYE]*\n_Begini tampilan goodbye kalau ada member yang keluar:_\n\n${text}`,
-        mentions: [m.sender],
-      });
+      await sock.sendMessage(m.chat, { text: `🧪 *[SIMULASI GOODBYE]* — Tampilan asli saat member keluar:` });
+      await sendGoodbyeMessage(sock, m.chat, m.sender, groupMeta, true);
       m.react("✅");
     } catch (err) {
       m.react("❌");
