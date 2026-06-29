@@ -290,6 +290,10 @@ async function handler(m, { sock }) {
         return await send(sock, chatId, '❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
     }
 
+    if (!sentMsg?.key) {
+        return await send(sock, chatId, '❌ *Gagal memuat gambar!*\n\n> Coba lagi nanti ya.')
+    }
+
     const session = createSession(chatId, GAME_TYPE, question, sentMsg.key, TIMEOUT_MS)
     session.hintUsers = {}   // per-user hint counter: { senderId: count }
     session.startedBy = senderId
