@@ -112,6 +112,8 @@ async function handler(m, { sock }) {
     sentMsg = await m.reply(text);
   }
 
+  if (!sentMsg?.key) return await m.reply('❌ *Gagal memulai game!*\n\n> Coba lagi nanti ya.');
+
   const session = createSession(chatId, "family100", question, sentMsg.key, 120000);
   session.answered = [];
   session.answeredBy = {};

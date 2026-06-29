@@ -258,6 +258,10 @@ async function handler(m, { sock }) {
         return await send(sock, chatId, '❌ *Gagal memuat lagu!*\n\n> Coba lagi nanti ya.')
     }
 
+    if (!sentMsg?.key) {
+        return await send(sock, chatId, '❌ *Gagal memuat lagu!*\n\n> Coba lagi nanti ya.')
+    }
+
     const session = createSession(chatId, GAME_TYPE, question, sentMsg.key, TIMEOUT_MS)
     session.hintUsers = {}
     session.startedBy = senderId
