@@ -47,8 +47,8 @@ const pluginConfig = {
   alias: ["wc"],
   category: "group",
   description: "Mengatur welcome message untuk grup",
-  usage: ".welcome <on/off>",
-  example: ".welcome on",
+  usage: ".welcome <on/off/test>",
+  example: ".welcome test",
   isOwner: false,
   isPremium: false,
   isGroup: true,
@@ -299,6 +299,31 @@ async function handler(m, { sock }) {
   const sub2 = args[1]?.toLowerCase();
   const groupData = db.getGroup(m.chat) || {};
   const currentStatus = groupData.welcome === true;
+  if (sub === "test") {
+    m.react("🧪");
+    try {
+      const groupMeta = await sock.groupMetadata(m.chat);
+      const memberCount = groupMeta?.participants?.length || 0;
+      const text = await buildWelcomeMessage(
+        m.sender,
+        groupMeta?.subject,
+        groupMeta?.descOwner,
+        memberCount,
+        groupData?.welcomeMsg,
+        groupMeta?.owner?.split("@")[0] || "",
+        m.prefix,
+      );
+      await sock.sendMessage(m.chat, {
+        text: `🧪 *[SIMULASI WELCOME]*\n_Begini tampilan welcome kalau ada member baru masuk:_\n\n${text}`,
+        mentions: [m.sender],
+      });
+      m.react("✅");
+    } catch (err) {
+      m.react("❌");
+      return m.reply(te(m.prefix, m.command, m.pushName));
+    }
+    return;
+  }
   if (sub === "on" && sub2 === "all") {
     if (!m.isOwner) {
       return m.reply(config.messages.ownerOnly);
@@ -386,6 +411,7 @@ async function handler(m, { sock }) {
     `> \`${m.prefix}welcome off\` → Nonaktifkan\n` +
     `> \`${m.prefix}welcome on all\` → Global ON (owner)\n` +
     `> \`${m.prefix}welcome off all\` → Global OFF (owner)\n` +
+    `> \`${m.prefix}welcome test\` → Simulasi welcome\n` +
     `> \`${m.prefix}setwelcome\` → Custom pesan\n` +
     `> \`${m.prefix}resetwelcome\` → Reset default`,
   );

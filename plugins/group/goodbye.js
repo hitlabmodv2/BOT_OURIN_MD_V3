@@ -53,8 +53,8 @@ const pluginConfig = {
   alias: ["bye", "leave"],
   category: "group",
   description: "Mengatur goodbye message untuk grup",
-  usage: ".goodbye <on/off>",
-  example: ".goodbye on",
+  usage: ".goodbye <on/off/test>",
+  example: ".goodbye test",
   isOwner: false,
   isPremium: false,
   isGroup: true,
@@ -141,8 +141,6 @@ Doakan yang terbaik untuknya ya.`,
   msg += `> 👥 *Sisa Member* : ${memberCount}\n`;
   msg += `> 📅 *Tanggal* : ${now.format("DD/MM/YYYY")}\n\n`;
   msg += `💌 *Pesan*\n> 「 ${quote} 」\n\n🌸 _Sampai jumpa lagi, tomodachi._ 🤍`;
-
-  return msg;
 
   return msg;
 }
@@ -342,6 +340,31 @@ async function handler(m, { sock }) {
   const sub2 = args[1]?.toLowerCase();
   const groupData = db.getGroup(m.chat) || {};
   const currentStatus = groupData.goodbye === true;
+  if (sub === "test") {
+    m.react("🧪");
+    try {
+      const groupMeta = await sock.groupMetadata(m.chat);
+      const memberCount = groupMeta?.participants?.length || 0;
+      const text = await buildGoodbyeMessage(
+        m.sender,
+        groupMeta?.subject,
+        groupMeta?.descOwner,
+        memberCount,
+        groupData?.goodbyeMsg,
+        groupMeta?.owner?.split("@")[0] || "",
+        m.prefix,
+      );
+      await sock.sendMessage(m.chat, {
+        text: `🧪 *[SIMULASI GOODBYE]*\n_Begini tampilan goodbye kalau ada member yang keluar:_\n\n${text}`,
+        mentions: [m.sender],
+      });
+      m.react("✅");
+    } catch (err) {
+      m.react("❌");
+      return m.reply(te(m.prefix, m.command, m.pushName));
+    }
+    return;
+  }
   if (sub === "on" && sub2 === "all") {
     if (!m.isOwner) {
       return m.reply(`❌ Hanya owner yang bisa menggunakan fitur ini!`);
@@ -429,6 +452,7 @@ async function handler(m, { sock }) {
     `> \`${m.prefix}goodbye off\` → Nonaktifkan\n` +
     `> \`${m.prefix}goodbye on all\` → Global ON (owner)\n` +
     `> \`${m.prefix}goodbye off all\` → Global OFF (owner)\n` +
+    `> \`${m.prefix}goodbye test\` → Simulasi goodbye\n` +
     `> \`${m.prefix}setgoodbye\` → Custom pesan\n` +
     `> \`${m.prefix}resetgoodbye\` → Reset default`,
   );
