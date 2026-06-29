@@ -1,0 +1,287 @@
+
+> ourin-md@3.0.0 start
+> NODE_ENV=development node index.js
+
+[1G[0K[AssetManager] 29 assets cached
+
+  [90m╭──────────────────────────╮[39m
+  [90m│[39m [92m>>[39m [97m𝗢𝗨𝗥𝗜𝗡 𝗔𝗜[39m  [90mv3[39m   [90m│[39m
+  [90m│[39m    [90mmode · public[39m         [90m│[39m
+  [90m╰──────────────────────────╯[39m
+
+[90m[[39m [92mOK[39m [90m][39m [97msystem[39m [90mAnti-Crash Protection is Active[39m
+[90m[[39m [92mOK[39m [90m][39m [97mdatabase[39m [90mMulti-file database siap (debounced write setiap 5s)[39m
+[90m[[39m [92mOK[39m [90m][39m [97mdatabase[39m [90mDatabase initialized | Mode: public | Premium: 0 | Banned: 0[39m
+
+  [90m╭─[39m [91m⚠ src SYNTAX ERROR[39m [90m─────────────────╮[39m
+  [90m│[39m [93msrc/connection.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/handler.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m╰─[39m [91m2 file rusak — akan di-skip saat load[39m [90m─╯[39m
+
+
+  [90m╭─[39m [91m⚠ src/scraper SYNTAX ERROR[39m [90m─────────────────╮[39m
+  [90m│[39m [93msrc/scraper/aio.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/claudehaiku.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/dafont.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/dailymotion.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/deepseek.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/douyin.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/dramabox.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/feeb.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/gemini.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/geminiVision.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/google.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/gpt5.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/gpt52.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/gsmarena.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/hd.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/hdvid.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/hdvid2.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/hokinfo.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/ig.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/img2img.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/img2prompt.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/imgdrop.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/imglarger.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/konachan.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/kusonime.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/likee.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/logic-bell.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/lufemboy.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/mconverter.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/mediafire.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/pindl.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/qwen3.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/reddit.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/rednote.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/reelsvideo.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/removebackground.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/seaart.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/sfiledl.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/soundcloud.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/soundclouddl.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/spotify.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/tempmail.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/terabox.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/tiktok.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/tiktoksearch.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/topmedia.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/twitter.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/txt2img.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/txt2img2.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/unlimitedai.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/upscaler.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/videy.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/wallpapersearch.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/wink.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/wwchar.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/youtube.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/yt.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/scraper/ytdl.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m╰─[39m [91m58 file rusak — akan di-skip saat load[39m [90m─╯[39m
+
+
+  [90m╭─[39m [91m⚠ src/lib SYNTAX ERROR[39m [90m─────────────────╮[39m
+  [90m│[39m [93msrc/lib/anime-audio-list.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-agent.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-apimanager.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-asset-manager.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-auto-ai.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-auto-anime.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-auto-backup.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-auto-download.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-auto-jpm.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-backup.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-builder.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-carbon.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-channels.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-context.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-data-pruner.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-database.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-error-notifier.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-error.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-exif.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-ffmpeg.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-fisch-data.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-fisch.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-formatter.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-game-data.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-game-queue.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-game-ulartangga.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-games.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-group-protection.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-http.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-jadibot-database.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-jadibot-manager.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-jpm-helper.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-latex.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-level.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-lid.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-logger.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-memory-monitor.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-message.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-middleware.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-minecraft-data.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-minecraft.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-notif-scheduler.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-otp-service.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-panel-jeda.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-performance.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-pinterest.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-plugins.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-premium-db.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-profile-picture.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-reconnect.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-roles-cpanel.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-roles-digitalocean.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-roles-linode.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-scheduler.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-serialize.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-sholat-api.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-sholat-scheduler.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-similarity.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-single-file-auth.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-socket.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-startup-validator.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-sticker-command.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-store-backup.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-temp-cleaner.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-time.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-tmpfiles.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-uploader.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-utils.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m│[39m [93msrc/lib/ourin-welcome-card.js[39m
+  [90m│[39m   [90mCommand failed: /nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-…[39m
+  [90m╰─[39m [91m69 file rusak — akan di-skip saat load[39m [90m─╯[39m
+
+
+[90m[[39m [97mSYS[39m [90m][39m [97msystem[39m [90mReceived TERMINATE signal (SIGTERM)[39m
+[1G[0K⠙[1G[0K
