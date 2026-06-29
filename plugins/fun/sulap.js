@@ -36,6 +36,8 @@ async function handler(m, { sock }) {
             `Siapa yang ingin dihilangkan?\n\n` +
             `> Reply pesan ini + mention orangnya`)
 
+    if (!sent?.key?.id) return
+
     global.sulapSessions.set(sent.key.id, {
         admin: m.sender,
         chat: m.chat,

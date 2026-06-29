@@ -99,9 +99,9 @@ async function uploadTo0x0_alt(buffer, filename) {
 
   if (!res.ok) throw new Error("Uguu gagal");
   const data = await res.json();
-  if (!data?.data?.url) throw new Error("Invalid response");
+  if (!data?.data?.url && !data?.files?.[0]?.url) throw new Error("Invalid response");
 
-  return { host: "Uguu", url: data.files[0].url, expires: "60 menit" };
+  return { host: "Uguu", url: data.files?.[0]?.url || data.data.url, expires: "60 menit" };
 }
 
 async function uploadToImgDrop(buffer, filename) {

@@ -100,16 +100,18 @@ async function handler(m, { sock, skipDeduct }) {
     q = raw.replace(/--idch\s+\S+/, "").trim();
   }
 
-  if (!q)
-    skipDeduct?.()
+  if (!q) {
+    skipDeduct?.();
     return m.reply(
       `🎵 *PLAY SALURAN*\n\n\`${m.prefix}playch <judul lagu>\`\n\`${m.prefix}playch --idch <id_saluran> <judul lagu>\``,
     );
-  if (!chId)
-    skipDeduct?.()
+  }
+  if (!chId) {
+    skipDeduct?.();
     return m.reply(
       `❌ Saluran belum diatur. Gunakan \`--idch <id>\` atau atur di config.js`,
     );
+  }
 
   m.react("🔎");
   try {

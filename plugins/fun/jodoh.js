@@ -123,9 +123,11 @@ async function handler(m, { sock, skipDeduct }) {
       usedRegistration = true;
     } else {
       const shuffled = registeredInGroup.sort(() => Math.random() - 0.5);
-      person1 = shuffled[0];
-      person2 = shuffled[1];
-      usedRegistration = true;
+      if (shuffled.length >= 2) {
+        person1 = shuffled[0];
+        person2 = shuffled[1];
+        usedRegistration = true;
+      }
     }
   }
 
@@ -134,6 +136,7 @@ async function handler(m, { sock, skipDeduct }) {
       ? registeredMembers
       : memberJids;
     const shuffled = candidateMembers.sort(() => Math.random() - 0.5);
+    if (shuffled.length < 2) return m.reply("❌ Anggota grup tidak cukup untuk bermain jodoh-jodohan.");
     person1 = shuffled[0];
     person2 = shuffled[1];
   }

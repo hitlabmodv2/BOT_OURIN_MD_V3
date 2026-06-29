@@ -60,7 +60,7 @@ async function handler(m, { sock, skipDeduct }) {
       await new Promise((resolve) => setTimeout(resolve, 6000));
       result = await get(uplot);
     }
-    if (!result) {
+    if (!result || !result.downloadUrls?.length) {
       skipDeduct?.()
       m.react("❌");
       return m.reply(`❌ Gagal enhance gambar. Coba lagi nanti.`);
