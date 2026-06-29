@@ -22,7 +22,7 @@
   "premiumUsers": [],
   "similarity": true,
   "botRules": null,
-  "goodbyeType": 6,
+  "goodbyeType": 5,
   "onlyAdmin": false,
   "selfAdmin": false,
   "publicAdmin": false,
@@ -199,6 +199,10 @@
     "6285111419724@s.whatsapp.net": {
       "jid": "6285111419724@s.whatsapp.net",
       "name": "Felicia Putri"
+    },
+    "66842603068@s.whatsapp.net": {
+      "jid": "66842603068@s.whatsapp.net",
+      "name": "ᴮíᵗ.ˡʸ/~ᡣᴿʸûû"
     }
   },
   "notiflimit": true,

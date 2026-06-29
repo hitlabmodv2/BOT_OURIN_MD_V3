@@ -44,11 +44,13 @@ async function handler(m, { sock, db }) {
   if (variant && /^v?[1-6]$/.test(variant)) {
     const id = parseInt(variant.replace("v", ""));
     db.setting("welcomeType", id);
+    db.setting("goodbyeType", id); // sync goodbye ikut welcome
     await db.save();
     await m.reply(
-      `✅ *WELCOME TYPE DIUBAH*\n\n` +
+      `✅ *WELCOME & GOODBYE TYPE DIUBAH*\n\n` +
         `${VARIANTS[id].emoji} *V${id} — ${VARIANTS[id].name}*\n` +
-        `_${VARIANTS[id].desc}_`,
+        `_${VARIANTS[id].desc}_\n\n` +
+        `> Welcome & Goodbye sekarang pakai type yang sama.`,
     );
     return;
   }

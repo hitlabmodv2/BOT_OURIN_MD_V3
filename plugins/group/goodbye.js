@@ -149,7 +149,8 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
     if (!force && groupData?.goodbye !== true && groupData?.leave !== true) return false;
-    const goodbyeType = db.setting("goodbyeType") || 1;
+    // Ikuti welcomeType agar tampilan goodbye selalu sama dengan welcome
+    const goodbyeType = db.setting("welcomeType") || 1;
     if (groupMeta?.participants) {
       cacheParticipantLids(groupMeta.participants);
     }
@@ -275,15 +276,16 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         },
       });
     } else if (goodbyeType === 5) {
+      // Struktur identik dengan welcome type 5, beda teks saja
       await sock.sendPreview(
         groupJid,
         {
-          caption: "https://goodbye.guys " + text,
-          url: "https://goodbye.guys",
+          caption: "" + text,
+          url: "",
           title: `Goodbye from ${groupName}`,
-          description: `👋 Sayonara @${userName}!`,
+          description: `👋 Sayonara ${userName}!`,
           image: ppUrl,
-          previewType: 1,
+          previewType: 0,
         },
         {
           contextInfo: {
@@ -292,6 +294,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         }
       );
     } else if (goodbyeType === 6) {
+      // Sama dengan welcome type 6 (GIF)
       await sock.sendMessage(groupJid, {
         video: getAssetBuffer("ourin-mp4") || { url: "https://files.catbox.moe/k28dhp.mp4" },
         gifPlayback: true,
@@ -301,6 +304,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         }
       });
     } else {
+      // Type 1 (default): Canvas card + caption teks
       let canvasBuffer = null;
       try {
         canvasBuffer = await createGoodbyeCard(
@@ -312,20 +316,32 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       } catch (e) {
         console.error("Goodbye Canvas Error:", e.message);
       }
-      await sock.sendMessage(groupJid, {
-        image: canvasBuffer,
-        caption: text,
-        mentions: [realParticipant],
-        contextInfo: {
-          ...saluranCtx(),
-          mentionedJid: [realParticipant],
-          forwardedNewsletterMessageInfo: {
-            newsletterJid: saluranId,
-            newsletterName: saluranName,
-            serverMessageId: 127,
+      if (canvasBuffer) {
+        await sock.sendMessage(groupJid, {
+          image: canvasBuffer,
+          caption: text,
+          mentions: [realParticipant],
+          contextInfo: {
+            ...saluranCtx(),
+            mentionedJid: [realParticipant],
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: saluranId,
+              newsletterName: saluranName,
+              serverMessageId: 127,
+            },
           },
-        },
-      });
+        });
+      } else {
+        // Fallback teks biasa kalau canvas gagal
+        await sock.sendMessage(groupJid, {
+          text: text,
+          mentions: [realParticipant],
+          contextInfo: {
+            ...saluranCtx(),
+            mentionedJid: [realParticipant],
+          },
+        });
+      }
     }
     return true;
   } catch (error) {

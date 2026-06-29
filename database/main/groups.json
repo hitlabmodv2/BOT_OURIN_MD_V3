@@ -21,18 +21,18 @@
   "120363192554714254@g.us": {
     "chatStats": {
       "6289681008411@s.whatsapp.net": {
-        "count": 88,
-        "lastChat": 1782719142361,
+        "count": 104,
+        "lastChat": 1782722074639,
         "name": "Hen V1"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 642,
-        "lastChat": 1782720416228,
+        "count": 698,
+        "lastChat": 1782722894496,
         "name": "Wily"
       },
       "6289667923162@s.whatsapp.net": {
-        "count": 124,
-        "lastChat": 1782720415926,
+        "count": 150,
+        "lastChat": 1782722894124,
         "name": "Hen V2"
       },
       "120363192554714254@g.us": {
@@ -43,9 +43,9 @@
     },
     "jid": "120363192554714254@g.us",
     "name": "Private Botz Tempat uji coba fitur",
-    "welcome": false,
-    "leave": false,
-    "goodbye": false,
+    "welcome": true,
+    "leave": true,
+    "goodbye": true,
     "antilink": false,
     "antitoxic": false,
     "mute": false,
@@ -89,8 +89,8 @@
         "name": "Hen V2"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 67,
-        "lastChat": 1782719864421,
+        "count": 69,
+        "lastChat": 1782721296645,
         "name": "Wily"
       },
       "6282139672290@s.whatsapp.net": {
@@ -139,8 +139,8 @@
         "name": "yaeeeeee"
       },
       "6285175463174@s.whatsapp.net": {
-        "count": 4,
-        "lastChat": 1782720174199,
+        "count": 5,
+        "lastChat": 1782721741801,
         "name": "sunshine.jpeg"
       },
       "18258961472@s.whatsapp.net": {
@@ -291,6 +291,11 @@
         "count": 1,
         "lastChat": 1782717655952,
         "name": "Felicia Putri"
+      },
+      "66842603068@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1782722560281,
+        "name": "ᴮíᵗ.ˡʸ/~ᡣᴿʸûû"
       }
     }
   },

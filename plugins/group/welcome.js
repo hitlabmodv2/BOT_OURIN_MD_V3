@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import config from "../../config.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { createWideDiscordCard } from "../../src/lib/ourin-welcome-card.js";
+import { createWideDiscordCard, createWelcomeCardV4 } from "../../src/lib/ourin-welcome-card.js";
 import { resolveAnyLidToJid } from "../../src/lib/ourin-lid.js";
 import path from "path";
 import fs from "fs";
@@ -258,8 +258,8 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       await sock.sendPreview(
         groupJid,
         {
-          caption: "https://welcome.guys " + text,
-          url: "https://welcome.guys",
+          caption: "" + text,
+          url: "",
           title: `Welcome to ${groupName}`,
           description: `👋 Halo ${userName}!`,
           image: ppUrl,
@@ -281,10 +281,44 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         }
       });
     } else {
-      await sock.sendMessage(groupJid, {
-        text: text,
-        mentions: [realParticipant],
-      });
+      // Type 1 (default): Canvas card + caption teks
+      let canvasBuffer = null;
+      try {
+        canvasBuffer = await createWideDiscordCard(
+          userName,
+          ppUrl,
+          groupName,
+          memberCount.toLocaleString(),
+        );
+      } catch (e) {
+        console.error("Welcome Canvas Error:", e.message);
+      }
+      if (canvasBuffer) {
+        await sock.sendMessage(groupJid, {
+          image: canvasBuffer,
+          caption: text,
+          mentions: [realParticipant],
+          contextInfo: {
+            ...saluranCtx(),
+            mentionedJid: [realParticipant],
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: saluranId,
+              newsletterName: saluranName,
+              serverMessageId: 127,
+            },
+          },
+        });
+      } else {
+        // Fallback teks biasa kalau canvas gagal
+        await sock.sendMessage(groupJid, {
+          text: text,
+          mentions: [realParticipant],
+          contextInfo: {
+            ...saluranCtx(),
+            mentionedJid: [realParticipant],
+          },
+        });
+      }
     }
     return true;
   } catch (error) {
