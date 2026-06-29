@@ -300,6 +300,7 @@ async function handler(m, { sock }) {
   const groupData = db.getGroup(m.chat) || {};
   const currentStatus = groupData.welcome === true;
   if (sub === "test") {
+    if (!m.isOwner) return m.reply(config.messages.ownerOnly);
     m.react("🧪");
     try {
       const groupMeta = await sock.groupMetadata(m.chat);
