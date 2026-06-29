@@ -21,6 +21,7 @@ async function upscaler(path) {
       { headers },
     );
 
+    if (!create.data?.data?.id) throw new Error("Gagal membuat task upscale");
     const id = create.data.data.id;
 
     for (let i = 0; i < 10; i++) {

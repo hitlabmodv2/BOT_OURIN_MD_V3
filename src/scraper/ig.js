@@ -86,6 +86,7 @@ async function fastDLDownload(igUrl) {
 }
 
 function formatStoryResult(data) {
+  if (!data?.result?.length) throw new Error("Data story tidak ditemukan");
   const result = data.result[0];
   const media = [];
   if (result.video_versions?.length > 0)
