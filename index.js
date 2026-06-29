@@ -13,6 +13,7 @@ import {
   handleAntiRemoveFromUpsert,
 } from "./src/handler.js";
 import { loadPlugins, pluginStore } from "./src/lib/ourin-plugins.js";
+import { validatePlugins } from "./src/lib/ourin-startup-validator.js";
 import { initDatabase, getDatabase } from "./src/lib/ourin-database.js";
 import {
   initScheduler,
@@ -399,6 +400,7 @@ async function main() {
   );
 
   const pluginsPath = path.join(process.cwd(), "plugins");
+  await validatePlugins(pluginsPath);
   const pluginCount = await loadPlugins(pluginsPath);
   logger.success("plugin", `${pluginCount} modules loaded successfully`);
 
