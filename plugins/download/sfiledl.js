@@ -39,7 +39,7 @@ async function handler(m, { sock, skipDeduct }) {
     try {
         const { data } = await f(`https://api.neoxr.eu/api/sfile?url=${encodeURIComponent(url)}&apikey=${config.APIkey.neoxr}`)
 
-        if (!data.url) {
+        if (!data?.url) {
             m.react('❌')
             return m.reply(`❌ Gagal mendapatkan link download. File mungkin tidak tersedia.`)
         }

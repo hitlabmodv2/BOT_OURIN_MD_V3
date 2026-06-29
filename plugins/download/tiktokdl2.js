@@ -16,7 +16,7 @@ async function getToken() {
     const res = await axios.get('https://savett.cc/en1/download')
     return {
         csrf: res.data.match(/name="csrf_token" value="([^"]+)"/)?.[1],
-        cookie: res.headers['set-cookie'].map(v => v.split(';')[0]).join('; ')
+        cookie: (res.headers['set-cookie'] || []).map(v => v.split(';')[0]).join('; ')
     }
 }
 

@@ -3,6 +3,8 @@ import axios from "axios";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
 import { saluranCtx } from "../../src/lib/ourin-context.js";
+import path from "path";
+import fs from "fs";
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
 const pluginConfig = {

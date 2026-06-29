@@ -52,9 +52,10 @@ async function getVideoDownloadUrl(url) {
 async function handler(m, { sock, skipDeduct }) {
   const url = m.text?.trim();
   if (!url) { skipDeduct?.(); return m.reply(`Contoh: ${m.prefix}ytmp4 https://youtube.com/watch?v=xxx`); }
-  if (!url.includes("youtube.com") && !url.includes("youtu.be"))
+  if (!url.includes("youtube.com") && !url.includes("youtu.be")) {
     skipDeduct?.();
     return m.reply("❌ URL harus YouTube");
+  }
 
   m.react("🕕");
 

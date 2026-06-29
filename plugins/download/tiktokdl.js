@@ -135,6 +135,10 @@ async function handler(m, { sock, skipDeduct }) {
       let zann = await result.data.find(
         (e) => e.type == "nowatermark_hd" || e.type == "nowatermark",
       );
+      if (!zann?.url) {
+        m.react("❌");
+        return m.reply("❌ Gagal mendapatkan link video TikTok. Coba lagi nanti.");
+      }
       const adawfjawjdja = await sock.sendMedia(
         m.chat,
         zann.url,
