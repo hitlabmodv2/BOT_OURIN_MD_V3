@@ -4,19 +4,20 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { logger, chalk } from "./ourin-logger.js";
 
+
+
 const execFileAsync = promisify(execFile);
 
 async function checkFileSyntax(filePath) {
   try {
-    const code = fs.readFileSync(filePath, "utf-8");
-    await execFileAsync(process.execPath, ["--input-type=module", "--check"], {
-      input: code,
+    await execFileAsync(process.execPath, ["--check", filePath], {
       timeout: 5000,
     });
     return null;
   } catch (err) {
-    const msg = (err.stderr || err.message || "").split("\n")[0].trim();
-    return { file: filePath, error: msg };
+    const raw = (err.stderr || err.stdout || err.message || "").trim();
+    const firstLine = raw.split("\n").find((l) => l.includes("SyntaxError") || l.includes("error")) || raw.split("\n")[0];
+    return { file: filePath, error: firstLine.trim() };
   }
 }
 
