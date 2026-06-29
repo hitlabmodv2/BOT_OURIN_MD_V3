@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2614,
+  "commandsExecuted": 2619,
   "command_totalchat": 3,
   "command_menu": 283,
   "command_fb": 4,
@@ -194,8 +194,8 @@
   "command_delstickercmd": 2,
   "command_ganti-ourin-v9.jpg": 1,
   "command_setwelcometype": 4,
-  "command_welcome": 10,
-  "command_goodbye": 7,
+  "command_welcome": 13,
+  "command_goodbye": 9,
   "command_goodbyetype": 6,
   "command_setgoodbyetype": 1,
   "command_fakeff": 2,

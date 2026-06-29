@@ -604,6 +604,50 @@ async function extendSocket(sock) {
     return await sock.sendMessage(jid, { text, ...options }, { quoted });
   };
 
+  sock.sendPreview = async function (jid, content = {}, options = {}) {
+    const {
+      caption = "",
+      url = "",
+      title = "",
+      description = "",
+      jpegThumbnail,
+      image,
+      previewType = 0,
+    } = content;
+    const { contextInfo: extraCtx, ...restOptions } = options;
+    let thumbBuffer = jpegThumbnail instanceof Buffer ? jpegThumbnail : null;
+    if (!thumbBuffer && image && typeof image === "string") {
+      try {
+        const resp = await axios.get(image, {
+          responseType: "arraybuffer",
+          timeout: 6000,
+        });
+        thumbBuffer = Buffer.from(resp.data);
+      } catch { }
+    }
+    const sent = await sock.sendMessage(
+      jid,
+      {
+        text: caption,
+        contextInfo: {
+          ...(extraCtx || {}),
+          externalAdReply: {
+            title,
+            body: description,
+            thumbnailUrl: url,
+            mediaUrl: url,
+            renderLargerThumbnail: previewType === 0,
+            showAdAttribution: false,
+            mediaType: 1,
+            ...(thumbBuffer ? { thumbnail: thumbBuffer } : {}),
+          },
+        },
+      },
+      restOptions,
+    );
+    return sent?.key?.id;
+  };
+
   sock.sendContact = async (jid, contacts, options = {}) => {
     const contactArray = Array.isArray(contacts) ? contacts : [contacts];
     const vcards = contactArray.map((c) => {

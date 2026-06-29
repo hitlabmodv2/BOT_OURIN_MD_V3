@@ -1,0 +1,8 @@
+[
+  {
+    "time": "2026-06-29T08:01:59.557Z",
+    "source": "console.error",
+    "message": "Welcome Error: sock.sendPreview is not a function",
+    "stack": "Error: Welcome Error: sock.sendPreview is not a function |     at console.error (file:///home/runner/workspace/index.js:189:57) |     at sendWelcomeMessage (file:///home/runner/workspace/plugins/group/welcome.js:291:13) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+  }
+]
