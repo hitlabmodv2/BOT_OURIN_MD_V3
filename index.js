@@ -456,14 +456,6 @@ async function main() {
       }
     },
 
-    onParticipantsUpdate: async (update, sock) => {
-      try {
-        await groupHandler(update, sock);
-      } catch (error) {
-        logger.error("PARTICIPANTS", error.message);
-      }
-    },
-
     onMessageUpdate: async (updates, sock) => {
       try {
         await messageUpdateHandler(updates, sock);

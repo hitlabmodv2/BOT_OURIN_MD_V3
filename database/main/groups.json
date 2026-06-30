@@ -1,8 +1,8 @@
 {
   "120363288769564494@g.us": {
-    "welcome": false,
-    "goodbye": false,
-    "leave": false,
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
     "jid": "120363288769564494@g.us",
     "name": "Unknown Group",
     "antilink": false,
@@ -16,7 +16,8 @@
         "lastChat": 1780918416529,
         "name": "rawrrrr wel wel wel"
       }
-    }
+    },
+    "welcomeType": 5
   },
   "120363192554714254@g.us": {
     "chatStats": {
@@ -50,12 +51,13 @@
     "antitoxic": false,
     "mute": false,
     "warnings": [],
-    "chat": {}
+    "chat": {},
+    "welcomeType": 5
   },
   "120363151527417055@g.us": {
-    "welcome": false,
-    "goodbye": false,
-    "leave": false,
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
     "jid": "120363151527417055@g.us",
     "name": "YT : ZansPiw Oficial GROUP CHAT💢",
     "antilink": false,
@@ -79,7 +81,8 @@
         "lastChat": 1780918274308,
         "name": "Alfi Anjar T"
       }
-    }
+    },
+    "welcomeType": 5
   },
   "120363383540766761@g.us": {
     "chatStats": {
@@ -89,8 +92,8 @@
         "name": "Hen V2"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 69,
-        "lastChat": 1782721296645,
+        "count": 70,
+        "lastChat": 1782799790466,
         "name": "Wily"
       },
       "6282139672290@s.whatsapp.net": {
@@ -154,8 +157,8 @@
         "name": "Fuma Kotaro"
       },
       "120363383540766761@g.us": {
-        "count": 1,
-        "lastChat": 1780572538648,
+        "count": 2,
+        "lastChat": 1782799441433,
         "name": "Unknown"
       },
       "6288279119895@s.whatsapp.net": {
@@ -171,14 +174,15 @@
     },
     "jid": "120363383540766761@g.us",
     "name": "USER AUTO READ STORY [V-2] ✅",
-    "welcome": false,
-    "leave": false,
-    "goodbye": false,
+    "welcome": true,
+    "leave": true,
+    "goodbye": true,
     "antilink": false,
     "antitoxic": false,
     "mute": false,
     "warnings": [],
-    "chat": {}
+    "chat": {},
+    "welcomeType": 5
   },
   "120363416720662222@g.us": {
     "welcome": false,
@@ -202,14 +206,15 @@
     },
     "jid": "120363364751674871@g.us",
     "name": "Unknown Group",
-    "welcome": false,
-    "leave": false,
-    "goodbye": false,
+    "welcome": true,
+    "leave": true,
+    "goodbye": true,
     "antilink": false,
     "antitoxic": false,
     "mute": false,
     "warnings": [],
-    "chat": {}
+    "chat": {},
+    "welcomeType": 5
   },
   "120363363036005418@g.us": {
     "chatStats": {
@@ -236,19 +241,20 @@
     },
     "jid": "120363363036005418@g.us",
     "name": "Unknown Group",
-    "welcome": false,
-    "leave": false,
-    "goodbye": false,
+    "welcome": true,
+    "leave": true,
+    "goodbye": true,
     "antilink": false,
     "antitoxic": false,
     "mute": false,
     "warnings": [],
-    "chat": {}
+    "chat": {},
+    "welcomeType": 5
   },
   "120363424557936431@g.us": {
-    "welcome": false,
-    "goodbye": false,
-    "leave": false,
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
     "jid": "120363424557936431@g.us",
     "name": "★ 𝐉𝐮𝐬𝐭 𝐟𝐨𝐫 𝐟𝐮𝐧`",
     "antilink": false,
@@ -297,21 +303,80 @@
         "lastChat": 1782722560281,
         "name": "ᴮíᵗ.ˡʸ/~ᡣᴿʸûû"
       }
-    }
+    },
+    "welcomeType": 5
   },
   "120363408420466353@g.us": {
     "chatStats": {
       "6289667923162@s.whatsapp.net": {
-        "count": 9,
-        "lastChat": 1782206350173,
+        "count": 12,
+        "lastChat": 1782799646663,
         "name": "Hen V2"
+      },
+      "6289688206739@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1782799648243,
+        "name": "Wily"
       }
     },
     "jid": "120363408420466353@g.us",
     "name": "Amalam",
-    "welcome": false,
-    "leave": false,
-    "goodbye": false,
+    "welcome": true,
+    "leave": true,
+    "goodbye": true,
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {},
+    "welcomeType": 5
+  },
+  "120363286035357195@g.us": {
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
+    "welcomeType": 5,
+    "jid": "120363286035357195@g.us",
+    "name": "Unknown Group",
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
+  },
+  "120363428460360783@g.us": {
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
+    "welcomeType": 5,
+    "jid": "120363428460360783@g.us",
+    "name": "Unknown Group",
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
+  },
+  "120363419402989015@g.us": {
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
+    "welcomeType": 5,
+    "jid": "120363419402989015@g.us",
+    "name": "Unknown Group",
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
+  },
+  "120363425027620505@g.us": {
+    "welcome": true,
+    "goodbye": true,
+    "leave": true,
+    "welcomeType": 5,
+    "jid": "120363425027620505@g.us",
+    "name": "Unknown Group",
     "antilink": false,
     "antitoxic": false,
     "mute": false,
