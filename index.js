@@ -13,7 +13,6 @@ import {
   handleAntiRemoveFromUpsert,
 } from "./src/handler.js";
 import { loadPlugins, pluginStore } from "./src/lib/ourin-plugins.js";
-import { validatePlugins, validateCore } from "./src/lib/ourin-startup-validator.js";
 import { initDatabase, getDatabase } from "./src/lib/ourin-database.js";
 import {
   initScheduler,
@@ -401,10 +400,6 @@ async function main() {
 
   const srcPath = path.join(process.cwd(), "src");
   const pluginsPath = path.join(process.cwd(), "plugins");
-  await validateCore(srcPath);
-  // Plugin validation dijalankan di background — tidak block boot
-  // Plugin rusak tetap di-skip otomatis oleh hot-reload loader
-  validatePlugins(pluginsPath).catch(() => {});
   const pluginCount = await loadPlugins(pluginsPath);
   logger.success("plugin", `${pluginCount} modules loaded successfully`);
 
