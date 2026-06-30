@@ -165,6 +165,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     let userName = realParticipant?.split("@")[0] || "User";
     let ppUrl = null;
     let ppBuffer = null;
+    const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
     try {
       ppUrl = await sock.profilePictureUrl(realParticipant, "image");
       const r = await axios.get(ppUrl, {
@@ -174,7 +175,17 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       });
       if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
     } catch { }
-    const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    // Fallback: kalau PP user gagal, download gambar default sebagai buffer
+    if (!ppBuffer) {
+      try {
+        const r = await axios.get(ppDefault, {
+          responseType: "arraybuffer",
+          timeout: 6000,
+          headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+        });
+        if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
+      } catch { }
+    }
     const ppUrlStr = ppUrl || ppDefault;
     const ppForCanvas = ppBuffer || ppUrlStr;
     const text = await buildWelcomeMessage(
@@ -276,10 +287,10 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         groupJid,
         {
           caption: "" + text,
-          url: "",
+          url: ppUrlStr,
           title: `Welcome to ${groupName}`,
           description: `👋 Halo ${userName}!`,
-          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : { image: ppUrlStr }),
+          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : {}),
           previewType: 0,
         },
         {

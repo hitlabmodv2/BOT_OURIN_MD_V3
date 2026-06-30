@@ -210,7 +210,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 1764,
+    "exp": 1779,
     "level": 1,
     "koin": 716,
     "saldo": 0,
@@ -220,7 +220,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-06-08T07:11:40.845Z",
+    "lastSeen": "2026-06-30T06:14:55.401Z",
     "cooldowns": {
       "tebaklagu": 1780753809394
     },

@@ -197,6 +197,18 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       });
       if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
     } catch { }
+    // Fallback: kalau PP user gagal, download gambar default sebagai buffer
+    if (!ppBuffer) {
+      try {
+        const { default: axios } = await import("axios");
+        const r = await axios.get(ppDefault, {
+          responseType: "arraybuffer",
+          timeout: 6000,
+          headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+        });
+        if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
+      } catch { }
+    }
     const ppUrlStr = ppUrl || ppDefault;
     const ppForCanvas = ppBuffer || ppUrlStr;
     const text = await buildGoodbyeMessage(
@@ -299,10 +311,10 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         groupJid,
         {
           caption: "" + text,
-          url: "",
+          url: ppUrlStr,
           title: `Goodbye from ${groupName}`,
           description: `👋 Sayonara ${userName}!`,
-          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : { image: ppUrlStr }),
+          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : {}),
           previewType: 0,
         },
         {
