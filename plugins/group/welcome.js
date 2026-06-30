@@ -166,7 +166,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     let userName = realParticipant?.split("@")[0] || "User";
     let ppUrl = null;
     let ppBuffer = null;
-    const ppDefault = "https://cdn.phototourl.com/free/2026-06-30-f5a5cffe-9102-4252-8c2b-2551e01eaf36.png";
+    const ppDefault = "https://cdn.phototourl.com/free/2026-06-30-52ff5a67-1fab-485b-9775-12401482283c.jpg";
     const ppKosongPath = path.join(process.cwd(), "assets/image/pp-kosong.jpg");
 
     // Coba beberapa kandidat JID sampai berhasil ambil PP
