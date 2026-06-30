@@ -729,6 +729,12 @@ async function messageHandler(msg, sock, options = {}) {
         );
       } else if (modeCheck.isOnlyThisGroup && m.isCommand) {
         await m.reply(modeCheck.onlyThisGroupMessage);
+      } else if (modeCheck.isPmBlocked && m.isCommand) {
+        await m.reply(
+          `⚠️ *Bot hanya aktif di Grup*\n\n` +
+          `Maaf, bot sedang dalam mode khusus grup dan tidak menerima perintah lewat *Private Message*.\n\n` +
+          `> Silakan gunakan bot di dalam grup ya! 🌸`
+        );
       }
       return;
     }

@@ -147,7 +147,7 @@ function checkMode(m, getActiveJadibots) {
     };
   }
 
-  if (onlyGc && !m.isGroup && !m.isOwner) return { allowed: false };
+  if (onlyGc && !m.isGroup && !m.isOwner) return { allowed: false, isPmBlocked: true };
   if (onlyPc && m.isGroup && !m.isOwner) return { allowed: false };
 
   const onlyThisGroup = db.setting("onlyThisGroup");
@@ -221,6 +221,7 @@ function checkMode(m, getActiveJadibots) {
 
     if (selfAdmin) {
       if (m.fromMe || m.isOwner) return { allowed: true };
+      if (!m.isGroup) return { allowed: true }; // PM tidak punya konsep admin grup — selalu izinkan
       if (m.isGroup && m.isAdmin) return { allowed: true };
       return { allowed: false };
     }
