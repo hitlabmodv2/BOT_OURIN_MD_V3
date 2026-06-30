@@ -155,7 +155,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
     if (!force && groupData?.welcome !== true) return false;
-    const welcomeType = db.setting("welcomeType") || 1;
+    const welcomeType = groupData?.welcomeType || db.setting("welcomeType") || 1;
     const realParticipant = resolveAnyLidToJid(
       participant,
       groupMeta?.participants || [],

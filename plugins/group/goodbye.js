@@ -156,8 +156,8 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
     const db = getDatabase();
     const groupData = db.getGroup(groupJid);
     if (!force && groupData?.goodbye !== true && groupData?.leave !== true) return false;
-    // Ikuti welcomeType agar tampilan goodbye selalu sama dengan welcome
-    const goodbyeType = db.setting("welcomeType") || 1;
+    // Ikuti welcomeType per-grup jika ada, fallback ke global setting
+    const goodbyeType = groupData?.welcomeType || db.setting("welcomeType") || 1;
     if (groupMeta?.participants) {
       cacheParticipantLids(groupMeta.participants);
     }
