@@ -166,6 +166,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     let ppUrl = null;
     let ppBuffer = null;
     const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    const ppKosongPath = path.join(process.cwd(), "assets/image/pp-kosong.jpg");
     try {
       ppUrl = await sock.profilePictureUrl(realParticipant, "image");
       const r = await axios.get(ppUrl, {
@@ -173,19 +174,23 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         timeout: 6000,
         headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
       });
-      if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
-    } catch { }
-    // Fallback: kalau PP user gagal, download gambar default sebagai buffer
+      if (r.data && r.data.byteLength > 500) {
+        ppBuffer = Buffer.from(r.data);
+        console.log(`[Welcome] PP user berhasil: ${r.data.byteLength} bytes`);
+      }
+    } catch (e) {
+      console.log(`[Welcome] PP user gagal: ${e.message}`);
+    }
+    // Fallback: pakai pp-kosong.jpg lokal (pasti ada, tidak perlu download)
     if (!ppBuffer) {
       try {
-        const r = await axios.get(ppDefault, {
-          responseType: "arraybuffer",
-          timeout: 6000,
-          headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
-        });
-        if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
+        if (fs.existsSync(ppKosongPath)) {
+          ppBuffer = fs.readFileSync(ppKosongPath);
+          console.log(`[Welcome] Fallback pp-kosong.jpg: ${ppBuffer.byteLength} bytes`);
+        }
       } catch { }
     }
+    console.log(`[Welcome] ppBuffer status: ${ppBuffer ? `ada (${ppBuffer.byteLength} bytes)` : "NULL - thumbnail akan kosong"}`);
     const ppUrlStr = ppUrl || ppDefault;
     const ppForCanvas = ppBuffer || ppUrlStr;
     const text = await buildWelcomeMessage(

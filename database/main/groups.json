@@ -309,14 +309,19 @@
   "120363408420466353@g.us": {
     "chatStats": {
       "6289667923162@s.whatsapp.net": {
-        "count": 15,
-        "lastChat": 1782799884502,
+        "count": 16,
+        "lastChat": 1782800270768,
         "name": "Hen V2"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 2,
-        "lastChat": 1782799884938,
+        "count": 4,
+        "lastChat": 1782800490056,
         "name": "Wily"
+      },
+      "120363408420466353@g.us": {
+        "count": 1,
+        "lastChat": 1782800274625,
+        "name": "Unknown"
       }
     },
     "jid": "120363408420466353@g.us",
