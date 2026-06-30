@@ -10,6 +10,8 @@ import te from "../../src/lib/ourin-error.js";
 import { saluranCtx } from "../../src/lib/ourin-context.js";
 import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
 import { setPpCache, getPpCache } from "../../src/lib/ourin-pp-cache.js";
+import { recordJoin, getHistory, buildHistoryBlock } from "../../src/lib/ourin-member-history.js";
+import { Button } from "../../src/lib/ourin-builder.js";
 function resolvePlaceholders(
   template,
   username,
@@ -79,45 +81,32 @@ async function buildWelcomeMessage(
     `Yokoso~`,
     `Ohayou~`,
   ];
-  const quotes = [
-    `Jangan jadi silent reader ya!`,
-    `Santai aja, anggap rumah sendiri!`,
-    `Yuk langsung gas ngobrol!`,
-    `Siap-siap rame bareng!`,
-    `Jangan malu-malu, kita semua temen!`,
-    `Kalau bingung mulai, nyapa aja dulu 😄`,
-  ];
-  const emojis = ["🎐", "🌸", "✨", "💫", "🪸", "🔥", "💖"];
   const headers = [
-    `🎐 Ohayou~ minna-san!
-Hari ini kita kedatangan tomodachi baru 🌱
-Yuk sambut bareng-bareng~`,
-    `🌸 Ohayou minna-san!
-Satu teman baru akhirnya join ✨
-Semoga betah dan langsung nimbrung ya~`,
-    `✨ Ohayou~!
-Tomodachi baru datang bawa vibes baru 💫
-Yoroshiku ne~ mari seru-seruan bareng!`,
-    `🪸 Ohayou minna-san!
-Grup ini nambah satu keluarga lagi 🤍
-Tanoshii jikan o issho ni sugoso ne~`,
+    `_🎐 Ohayou~ minna-san!_\n_Hari ini kita kedatangan tomodachi baru_ 🌱\n_Yuk sambut bareng-bareng~_`,
+    `_🌸 Ohayou minna-san!_\n_Satu teman baru akhirnya join_ ✨\n_Semoga betah dan langsung nimbrung ya~_`,
+    `_✨ Ohayou~!_\n_Tomodachi baru datang bawa vibes baru_ 💫\n_Yoroshiku ne~ mari seru-seruan bareng!_`,
+    `_🪸 Ohayou minna-san!_\n_Grup ini nambah satu keluarga lagi_ 🤍\n_Tanoshii jikan o issho ni sugoso ne~_`,
   ];
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-  const header = headers[Math.floor(Math.random() * headers.length)];
-  const username = participant?.split("@")[0] || "User";
-  const now = moment().tz("Asia/Jakarta");
-  const dayNames = {
-    Sunday: "Minggu",
-    Monday: "Senin",
-    Tuesday: "Selasa",
-    Wednesday: "Rabu",
-    Thursday: "Kamis",
-    Friday: "Jumat",
-    Saturday: "Sabtu",
-  };
-  const dayId = dayNames[now.format("dddd")] || now.format("dddd");
+  const quotes = [
+    `Jangan jadi _silent reader_ ya, langsung gas ngobrol! 😄`,
+    `Santai aja, anggap rumah sendiri dan langsung nimbrung!`,
+    `Semua orang di sini temen, jangan malu-malu ya!`,
+    `Yuk langsung kenalan sama member yang lain!`,
+    `Kalau bingung mulai dari mana, nyapa aja dulu~`,
+  ];
+  const playfulLines = [
+    `~Tadi grupnya agak sepi...~ Sekarang rame lagi! 🎉`,
+    `~Nungguin member baru...~ Akhirnya datang juga! 🎊`,
+    `~Kata siapa grup ini sepi?~ Buktinya ada member baru! ✨`,
+    `~Kursinya masih kosong...~ Sekarang sudah terisi! 🌸`,
+  ];
+  const greeting    = greetings[Math.floor(Math.random() * greetings.length)];
+  const header      = headers[Math.floor(Math.random() * headers.length)];
+  const quote       = quotes[Math.floor(Math.random() * quotes.length)];
+  const playfulLine = playfulLines[Math.floor(Math.random() * playfulLines.length)];
+  const username    = participant?.split("@")[0] || "User";
+  const now         = moment().tz("Asia/Jakarta");
+
   if (customMsg) {
     return resolvePlaceholders(
       customMsg,
@@ -129,25 +118,31 @@ Tanoshii jikan o issho ni sugoso ne~`,
       prefix,
     );
   }
+
   const authorNum = author ? author.split("@")[0] : null;
-  const joinedBy = authorNum
-    ? `> 📨 *Diundang oleh* : @${authorNum}`
-    : `> 🔗 *Bergabung via* : Link Undangan`;
+  const joinedBy  = authorNum
+    ? `- 📨 *Diundang oleh* : @${authorNum}`
+    : `- 🔗 *Bergabung via* : Link Undangan`;
 
-  let msg = `👋🏻 *WELCOME MEMBER BARU* 👋🏻\n\n`;
-  msg += `${header}\n`;
-  msg += `${emoji} ${greeting}, *@${username}* 💫\n\n`;
-  msg += `📌 *INFO GROUP*\n`;
-  msg += `> 🏠 *Nama* : ${groupName}\n`;
-  msg += `> 👥 *Member* : ${memberCount}\n`;
-  msg += `> 📅 *Tanggal* : ${moment().tz("Asia/Jakarta").format("DD/MM/YYYY")}\n`;
-  msg += `${joinedBy}\n`;
-
-  if (groupDesc) {
-    msg += `\n📝 *Deskripsi*\n> ❝ ${groupDesc.slice(0, 120)}${groupDesc.length > 120 ? "..." : ""} ❞\n`;
-  }
-
-  msg += `\n✨ *Tips Hari Ini*\n> 「 ${quote} 」\n\n🌸 _Yoroshiku ne~ semoga betah ya!_ 🤍`;
+  let msg = ``;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `  🌸 *WELCOME MEMBER BARU* 🌸\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `${header}\n\n`;
+  msg += `✦ ${greeting}, *@${username}* 💫\n`;
+  msg += `${playfulLine}\n\n`;
+  msg += `*📋 Info Member:*\n`;
+  msg += `- 🏠 *Grup*    : ${groupName}\n`;
+  msg += `- 👥 *Member*  : ${memberCount} orang\n`;
+  msg += `- 📅 *Tanggal* : ${now.format("DD/MM/YYYY")}\n`;
+  msg += `- 🕐 *Waktu*   : \`${now.format("HH:mm")} WIB\`\n`;
+  msg += `${joinedBy}\n\n`;
+  msg += `*📌 Yang perlu kamu tau:*\n`;
+  msg += `1. Hormati semua member di grup\n`;
+  msg += `2. Dilarang spam & promosi tanpa izin\n`;
+  msg += `3. Gunakan bahasa yang sopan & santun\n\n`;
+  msg += `> 💬 _${quote}_\n\n`;
+  msg += `🌸 _Yoroshiku ne~ semoga betah ya!_ 🤍`;
 
   return msg;
 }
@@ -162,6 +157,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       groupMeta?.participants || [],
     );
     const memberCount = groupMeta?.participants?.length || 0;
+    const adminCount = groupMeta?.participants?.filter(p => p.admin).length || 0;
     const groupName = groupMeta?.subject || "Grup";
     let userName = realParticipant?.split("@")[0] || "User";
     let ppUrl = null;
@@ -177,24 +173,28 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       phoneNum ? `${phoneNum}@s.whatsapp.net` : null,
     ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
 
-    // Delay 3 detik agar WA server sempat sync keanggotaan grup baru
-    if (!force) await new Promise((r) => setTimeout(r, 3000));
-
-    // Cek cache dulu (dari sesi sebelumnya)
+    // Fetch PP dan build teks secara paralel agar lebih cepat
     const cachedPpUrl = getPpCache(realParticipant) || getPpCache(participant);
     if (cachedPpUrl) ppUrl = cachedPpUrl;
 
-    if (!ppUrl) {
+    // Fetch PP URL dengan timeout cepat
+    const fetchPpUrl = async () => {
+      if (ppUrl) return ppUrl;
       for (const jid of ppJidCandidates) {
-        if (ppUrl) break;
         for (const ppType of ["image", "preview"]) {
           try {
-            const url = await sock.profilePictureUrl(jid, ppType);
-            if (url && url.startsWith("http")) { ppUrl = url; break; }
+            const url = await Promise.race([
+              sock.profilePictureUrl(jid, ppType),
+              new Promise((_, rej) => setTimeout(() => rej(new Error("pp timeout")), 3000)),
+            ]);
+            if (url && url.startsWith("http")) return url;
           } catch { }
         }
       }
-    }
+      return null;
+    };
+
+    ppUrl = await fetchPpUrl();
 
     if (ppUrl) {
       // Simpan ke cache untuk dipakai goodbye nanti
@@ -203,7 +203,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       try {
         const r = await axios.get(ppUrl, {
           responseType: "arraybuffer",
-          timeout: 8000,
+          timeout: 3000,
           headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
         });
         if (r.data && r.data.byteLength > 500) {
@@ -215,7 +215,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     // Fallback: download dari ppDefault URL, kalau gagal pakai file lokal
     if (!ppBuffer) {
       try {
-        const r = await axios.get(ppDefault, { responseType: "arraybuffer", timeout: 8000 });
+        const r = await axios.get(ppDefault, { responseType: "arraybuffer", timeout: 3000 });
         if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
       } catch { }
     }
@@ -321,22 +321,24 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         },
       });
     } else if (welcomeType === 5) {
-      await sock.sendPreview(
-        groupJid,
-        {
-          caption: "" + text,
-          url: ppUrlStr,
-          title: `Welcome to ${groupName}`,
-          description: `👋 Halo ${userName}!`,
-          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : {}),
-          previewType: 0,
-        },
-        {
-          contextInfo: {
-            mentionedJid: [realParticipant, ...(author ? [author] : [])],
-          }
-        }
-      );
+      // Catat join ke riwayat, lalu ambil histori sebelumnya
+      recordJoin(groupJid, realParticipant);
+      const history = getHistory(groupJid, realParticipant);
+      const historyBlock = buildHistoryBlock(history, "welcome");
+      const statsLine = `\n\n〔 📊 *INFO GRUP* 〕\n┃ 👥 *Anggota*  : ${memberCount} orang\n┃ 👑 *Admin*    : ${adminCount} orang\n┗━━━━━━━━━━━━━━━`;
+      const prefix = config.command?.prefix || ".";
+      // Satu pesan: foto profil + teks + button sekaligus
+      await new Button(sock)
+        .setImage(ppBuffer || ppUrlStr)
+        .setTitle(`👥 ${memberCount} Anggota  •  👑 ${adminCount} Admin`)
+        .setBody(text + statsLine + historyBlock)
+        .setFooter(config.bot?.name || "Ourin AI")
+        .addSelection("🔍 Lihat Fitur Utama")
+        .makeSection("📌 Fitur Penting")
+        .makeRow("", "📋 Menu Bot", "Lihat semua command & fitur bot", `${prefix}menu`)
+        .makeRow("", "👑 Info Owner", "Kontak & info owner bot", `${prefix}owner`)
+        .setContextInfo({ mentionedJid: [realParticipant, ...(author ? [author] : [])] })
+        .send(groupJid);
     } else if (welcomeType === 6) {
       await sock.sendMessage(groupJid, {
         video: getAssetBuffer("ourin-mp4") || { url: "https://files.catbox.moe/k28dhp.mp4" },

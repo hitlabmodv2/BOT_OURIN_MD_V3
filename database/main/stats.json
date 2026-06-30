@@ -1,8 +1,8 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2658,
+  "commandsExecuted": 2664,
   "command_totalchat": 3,
-  "command_menu": 283,
+  "command_menu": 284,
   "command_fb": 4,
   "command_brat": 18,
   "command_antidocument": 2,
@@ -414,5 +414,5 @@
   "command_autosholat": 3,
   "command_gc": 6,
   "command_toimg": 1,
-  "command_welgod": 4
+  "command_welgod": 9
 }

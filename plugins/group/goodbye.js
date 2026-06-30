@@ -16,6 +16,8 @@ import fs from "fs";
 import te from "../../src/lib/ourin-error.js";
 import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
 import { setPpCache, getPpCache } from "../../src/lib/ourin-pp-cache.js";
+import { recordLeave, getHistory, buildHistoryBlock } from "../../src/lib/ourin-member-history.js";
+import { Button } from "../../src/lib/ourin-builder.js";
 function resolvePlaceholders(
   template,
   username,
@@ -108,22 +110,26 @@ Semoga hari-harimu selalu hangat.`,
 Satu bintang berpindah langit malam ini.
 Doakan yang terbaik untuknya ya.`,
   ];
-  const farewell = farewells[Math.floor(Math.random() * farewells.length)];
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-  const header = headers[Math.floor(Math.random() * headers.length)];
-  const username = participant?.split("@")[0] || "User";
-  const now = moment().tz("Asia/Jakarta");
-  const dayNames = {
-    Sunday: "Minggu",
-    Monday: "Senin",
-    Tuesday: "Selasa",
-    Wednesday: "Rabu",
-    Thursday: "Kamis",
-    Friday: "Jumat",
-    Saturday: "Sabtu",
-  };
-  const dayId = dayNames[now.format("dddd")] || now.format("dddd");
+  const farewell    = farewells[Math.floor(Math.random() * farewells.length)];
+  const quote       = quotes[Math.floor(Math.random() * quotes.length)];
+  const emoji       = emojis[Math.floor(Math.random() * emojis.length)];
+  const header      = headers[Math.floor(Math.random() * headers.length)];
+  const username    = participant?.split("@")[0] || "User";
+  const now         = moment().tz("Asia/Jakarta");
+  const playfulLines = [
+    `~Masih di sini tadi...~ Ternyata sudah pergi. 🥀`,
+    `~Kata siapa dia belum pergi?~ Nyatanya sudah. 💫`,
+    `~Sepertinya masih online...~ Tapi sudah tidak ada. 🌙`,
+    `~Nunggu dia balik lagi...~ Semoga ya suatu saat nanti. 🤍`,
+  ];
+  const closings = [
+    `1. Pintu grup selalu terbuka untukmu\n2. Kenangan di sini tidak akan terlupakan\n3. Semoga sukses di luar sana! 🌟`,
+    `1. Terima kasih sudah pernah bersama\n2. Semoga jalanmu selalu dimudahkan\n3. Sampai bertemu lagi suatu hari! 🌸`,
+    `1. Pergi bukan berarti dilupakan\n2. Doamu selalu kami tunggu\n3. Jaga kesehatan ya di luar sana! 💪`,
+  ];
+  const playfulLine = playfulLines[Math.floor(Math.random() * playfulLines.length)];
+  const closing     = closings[Math.floor(Math.random() * closings.length)];
+
   if (customMsg) {
     return resolvePlaceholders(
       customMsg,
@@ -135,20 +141,29 @@ Doakan yang terbaik untuknya ya.`,
       prefix,
     );
   }
-  const authorNum = author ? author.split("@")[0] : null;
-  const leftBy = authorNum
-    ? `> ⚡ *Dikick oleh* : @${authorNum}`
-    : `> 🚪 *Keluar* : Sendiri`;
 
-  let msg = `👋🏻 *SAYONARA MEMBER* 👋🏻\n\n`;
-  msg += `${header}\n`;
-  msg += `${emoji} ${farewell}, *@${username}* 🤍\n\n`;
-  msg += `📌 *INFO GROUP*\n`;
-  msg += `> 🏠 *Nama* : ${groupName}\n`;
-  msg += `> 👥 *Sisa Member* : ${memberCount}\n`;
-  msg += `> 📅 *Tanggal* : ${now.format("DD/MM/YYYY")}\n`;
+  const authorNum = author ? author.split("@")[0] : null;
+  const leftBy    = authorNum
+    ? `- ⚡ *Dikick oleh* : @${authorNum}`
+    : `- 🚪 *Keluar*      : Sendiri`;
+
+  let msg = ``;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `  🌙 *SAYONARA MEMBER* 🌙\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `_${header}_\n\n`;
+  msg += `${emoji} ${farewell}, *@${username}* 🤍\n`;
+  msg += `${playfulLine}\n\n`;
+  msg += `*📋 Info Member:*\n`;
+  msg += `- 🏠 *Grup*        : ${groupName}\n`;
+  msg += `- 👥 *Sisa Member* : ${memberCount} orang\n`;
+  msg += `- 📅 *Tanggal*     : ${now.format("DD/MM/YYYY")}\n`;
+  msg += `- 🕐 *Waktu*       : \`${now.format("HH:mm")} WIB\`\n`;
   msg += `${leftBy}\n\n`;
-  msg += `💌 *Pesan*\n> 「 ${quote} 」\n\n🌸 _Sampai jumpa lagi, tomodachi._ 🤍`;
+  msg += `> 💌 _${quote}_\n\n`;
+  msg += `*🌟 Untuk @${username}:*\n`;
+  msg += `${closing}\n\n`;
+  msg += `🌸 _Sampai jumpa lagi, tomodachi._ 🤍`;
 
   return msg;
 }
@@ -183,6 +198,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       }
     }
     const memberCount = groupMeta?.participants?.length || 0;
+    const adminCount = groupMeta?.participants?.filter(p => p.admin).length || 0;
     const groupName = groupMeta?.subject || "Grup";
     let userName = realParticipant?.split("@")[0] || "User";
     const ppDefault = "https://cdn.phototourl.com/free/2026-06-30-f5a5cffe-9102-4252-8c2b-2551e01eaf36.png";
@@ -203,13 +219,16 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
     const cachedPpUrl = getPpCache(realParticipant) || getPpCache(participant);
     if (cachedPpUrl) ppUrl = cachedPpUrl;
 
-    // Kalau tidak ada di cache, coba fetch langsung (berhasil kalau PP-nya public)
+    // Kalau tidak ada di cache, coba fetch langsung dengan timeout cepat
     if (!ppUrl) {
       for (const jid of ppJidCandidates) {
         if (ppUrl) break;
         for (const ppType of ["image", "preview"]) {
           try {
-            const url = await sock.profilePictureUrl(jid, ppType);
+            const url = await Promise.race([
+              sock.profilePictureUrl(jid, ppType),
+              new Promise((_, rej) => setTimeout(() => rej(new Error("pp timeout")), 3000)),
+            ]);
             if (url && url.startsWith("http")) { ppUrl = url; break; }
           } catch { }
         }
@@ -220,7 +239,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       try {
         const r = await axios.get(ppUrl, {
           responseType: "arraybuffer",
-          timeout: 8000,
+          timeout: 3000,
           headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
         });
         if (r.data && r.data.byteLength > 500) {
@@ -232,7 +251,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
     // Fallback: download dari ppDefault URL, kalau gagal pakai file lokal
     if (!ppBuffer) {
       try {
-        const r = await axios.get(ppDefault, { responseType: "arraybuffer", timeout: 8000 });
+        const r = await axios.get(ppDefault, { responseType: "arraybuffer", timeout: 3000 });
         if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
       } catch { }
     }
@@ -338,23 +357,24 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         },
       });
     } else if (goodbyeType === 5) {
-      // Struktur identik dengan welcome type 5, beda teks saja
-      await sock.sendPreview(
-        groupJid,
-        {
-          caption: "" + text,
-          url: ppUrlStr,
-          title: `Goodbye from ${groupName}`,
-          description: `👋 Sayonara ${userName}!`,
-          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : {}),
-          previewType: 0,
-        },
-        {
-          contextInfo: {
-            mentionedJid: [realParticipant, ...(author ? [author] : [])],
-          }
-        }
-      );
+      // Catat leave ke riwayat, lalu ambil histori
+      recordLeave(groupJid, realParticipant);
+      const history = getHistory(groupJid, realParticipant);
+      const historyBlock = buildHistoryBlock(history, "goodbye");
+      const statsLine = `\n\n〔 📊 *INFO GRUP* 〕\n┃ 👥 *Anggota*  : ${memberCount} orang\n┃ 👑 *Admin*    : ${adminCount} orang\n┗━━━━━━━━━━━━━━━`;
+      const prefix = config.command?.prefix || ".";
+      // Satu pesan: foto profil + teks + button sekaligus
+      await new Button(sock)
+        .setImage(ppBuffer || ppUrlStr)
+        .setTitle(`👥 ${memberCount} Anggota  •  👑 ${adminCount} Admin`)
+        .setBody(text + statsLine + historyBlock)
+        .setFooter(config.bot?.name || "Ourin AI")
+        .addSelection("🔍 Lihat Fitur Utama")
+        .makeSection("📌 Fitur Penting")
+        .makeRow("", "📋 Menu Bot", "Lihat semua command & fitur bot", `${prefix}menu`)
+        .makeRow("", "👑 Info Owner", "Kontak & info owner bot", `${prefix}owner`)
+        .setContextInfo({ mentionedJid: [realParticipant, ...(author ? [author] : [])] })
+        .send(groupJid);
     } else if (goodbyeType === 6) {
       // Sama dengan welcome type 6 (GIF)
       await sock.sendMessage(groupJid, {
