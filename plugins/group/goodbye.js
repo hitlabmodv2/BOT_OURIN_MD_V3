@@ -15,6 +15,7 @@ import path from "path";
 import fs from "fs";
 import te from "../../src/lib/ourin-error.js";
 import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
+import { setPpCache, getPpCache } from "../../src/lib/ourin-pp-cache.js";
 function resolvePlaceholders(
   template,
   username,
@@ -198,14 +199,20 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       phoneNum ? `${phoneNum}@s.whatsapp.net` : null,
     ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
 
-    console.log(`[Goodbye] Kandidat JID untuk PP: ${ppJidCandidates.join(" | ")}`);
-    for (const jid of ppJidCandidates) {
-      if (ppUrl) break;
-      for (const ppType of ["image", "preview"]) {
-        try {
-          const url = await sock.profilePictureUrl(jid, ppType);
-          if (url && url.startsWith("http")) { ppUrl = url; break; }
-        } catch { }
+    // Cek cache PP dari saat user masih di grup
+    const cachedPpUrl = getPpCache(realParticipant) || getPpCache(participant);
+    if (cachedPpUrl) ppUrl = cachedPpUrl;
+
+    // Kalau tidak ada di cache, coba fetch langsung (berhasil kalau PP-nya public)
+    if (!ppUrl) {
+      for (const jid of ppJidCandidates) {
+        if (ppUrl) break;
+        for (const ppType of ["image", "preview"]) {
+          try {
+            const url = await sock.profilePictureUrl(jid, ppType);
+            if (url && url.startsWith("http")) { ppUrl = url; break; }
+          } catch { }
+        }
       }
     }
 
@@ -218,13 +225,8 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         });
         if (r.data && r.data.byteLength > 500) {
           ppBuffer = Buffer.from(r.data);
-          console.log(`[Goodbye] PP user OK: ${ppBuffer.byteLength} bytes`);
         }
-      } catch (e) {
-        console.log(`[Goodbye] Download PP gagal: ${e.message}`);
-      }
-    } else {
-      console.log(`[Goodbye] profilePictureUrl gagal semua (PP mungkin private)`);
+      } catch { }
     }
 
     // Fallback: pp-kosong.jpg lokal

@@ -9,6 +9,7 @@ import axios from "axios";
 import te from "../../src/lib/ourin-error.js";
 import { saluranCtx } from "../../src/lib/ourin-context.js";
 import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
+import { setPpCache, getPpCache } from "../../src/lib/ourin-pp-cache.js";
 function resolvePlaceholders(
   template,
   username,
@@ -176,18 +177,29 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       phoneNum ? `${phoneNum}@s.whatsapp.net` : null,
     ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
 
-    console.log(`[Welcome] Kandidat JID untuk PP: ${ppJidCandidates.join(" | ")}`);
-    for (const jid of ppJidCandidates) {
-      if (ppUrl) break;
-      for (const ppType of ["image", "preview"]) {
-        try {
-          const url = await sock.profilePictureUrl(jid, ppType);
-          if (url && url.startsWith("http")) { ppUrl = url; break; }
-        } catch { }
+    // Delay 2 detik agar WA server sempat sync keanggotaan grup baru
+    if (!force) await new Promise((r) => setTimeout(r, 2000));
+
+    // Cek cache dulu (dari sesi sebelumnya)
+    const cachedPpUrl = getPpCache(realParticipant) || getPpCache(participant);
+    if (cachedPpUrl) ppUrl = cachedPpUrl;
+
+    if (!ppUrl) {
+      for (const jid of ppJidCandidates) {
+        if (ppUrl) break;
+        for (const ppType of ["image", "preview"]) {
+          try {
+            const url = await sock.profilePictureUrl(jid, ppType);
+            if (url && url.startsWith("http")) { ppUrl = url; break; }
+          } catch { }
+        }
       }
     }
 
     if (ppUrl) {
+      // Simpan ke cache untuk dipakai goodbye nanti
+      setPpCache(realParticipant, ppUrl);
+      if (participant !== realParticipant) setPpCache(participant, ppUrl);
       try {
         const r = await axios.get(ppUrl, {
           responseType: "arraybuffer",
@@ -196,13 +208,8 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         });
         if (r.data && r.data.byteLength > 500) {
           ppBuffer = Buffer.from(r.data);
-          console.log(`[Welcome] PP user OK: ${ppBuffer.byteLength} bytes`);
         }
-      } catch (e) {
-        console.log(`[Welcome] Download PP gagal: ${e.message}`);
-      }
-    } else {
-      console.log(`[Welcome] profilePictureUrl gagal semua (PP mungkin private)`);
+      } catch { }
     }
 
     // Fallback: pp-kosong.jpg lokal
