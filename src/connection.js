@@ -433,11 +433,51 @@ async function startConnection(options = {}) {
       const statusMsg = STATUS_MESSAGES[sc] || `❔ Unknown (kode: ${sc})`;
       colors.logger.warn("whatsapp", `terputus — ${statusMsg}`);
       if (sc === DisconnectReason.loggedOut || sc === 401) {
-        colors.logger.error(
+        colors.logger.warn(
           "whatsapp",
-          "sesi habis — hapus folder storage lalu restart",
+          "🔐 Logout terdeteksi dari perangkat tertaut — menghapus sesi secara otomatis...",
         );
         connectionState.reconnectAttempts = 0;
+        connectionState.isConnected = false;
+        connectionState.isReady = false;
+
+        // Hapus session.json secara otomatis (real-time cleanup)
+        try {
+          const sessionFile = path.join(
+            process.cwd(),
+            "storage",
+            (config.session?.folderName || "session") + ".json",
+          );
+          const sessionFolder = path.join(
+            process.cwd(),
+            "storage",
+            config.session?.folderName || "session",
+          );
+          if (fs.existsSync(sessionFile)) {
+            fs.rmSync(sessionFile, { force: true });
+            colors.logger.success("whatsapp", `✅ File sesi dihapus: ${sessionFile}`);
+          }
+          if (fs.existsSync(sessionFolder)) {
+            fs.rmSync(sessionFolder, { recursive: true, force: true });
+          }
+        } catch (cleanErr) {
+          colors.logger.error("whatsapp", "Gagal hapus file sesi:", cleanErr.message);
+        }
+
+        // Tutup socket dengan bersih
+        try {
+          connectionState.sock?.end(undefined);
+        } catch (_) { }
+        connectionState.sock = null;
+        connectionState.connectedAt = null;
+
+        colors.logger.error(
+          "whatsapp",
+          "🚪 Sesi berakhir — bot akan keluar. Silakan restart untuk login ulang.",
+        );
+
+        // Exit setelah 2 detik agar log sempat tampil
+        setTimeout(() => process.exit(0), 2000);
         return;
       }
 
@@ -1362,25 +1402,40 @@ function getUptime() {
  */
 async function logout() {
   try {
-    const sessionPath = path.join(
+    const sessionFolder = path.join(
       process.cwd(),
       "storage",
       config.session?.folderName || "session",
     );
+    const sessionFile = path.join(
+      process.cwd(),
+      "storage",
+      (config.session?.folderName || "session") + ".json",
+    );
 
+    // Beritahu server WA bahwa kita logout
     if (connectionState.sock) {
-      await connectionState.sock.logout();
+      try {
+        await connectionState.sock.logout();
+      } catch (_) { }
     }
 
-    if (fs.existsSync(sessionPath)) {
-      fs.rmSync(sessionPath, { recursive: true, force: true });
+    // Hapus session.json (single-file auth)
+    if (fs.existsSync(sessionFile)) {
+      fs.rmSync(sessionFile, { force: true });
+    }
+
+    // Hapus folder session lama (multi-file, jika masih ada)
+    if (fs.existsSync(sessionFolder)) {
+      fs.rmSync(sessionFolder, { recursive: true, force: true });
     }
 
     connectionState.isConnected = false;
+    connectionState.isReady = false;
     connectionState.sock = null;
     connectionState.connectedAt = null;
 
-    colors.logger.success("koneksi", "Keluar dan sesi dihapus");
+    colors.logger.success("koneksi", "✅ Keluar — sesi dihapus sepenuhnya");
     return true;
   } catch (error) {
     colors.logger.error("koneksi", "Gagal logout:", error.message);
