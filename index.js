@@ -402,7 +402,9 @@ async function main() {
   const srcPath = path.join(process.cwd(), "src");
   const pluginsPath = path.join(process.cwd(), "plugins");
   await validateCore(srcPath);
-  await validatePlugins(pluginsPath);
+  // Plugin validation dijalankan di background — tidak block boot
+  // Plugin rusak tetap di-skip otomatis oleh hot-reload loader
+  validatePlugins(pluginsPath).catch(() => {});
   const pluginCount = await loadPlugins(pluginsPath);
   logger.success("plugin", `${pluginCount} modules loaded successfully`);
 

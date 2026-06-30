@@ -21,7 +21,7 @@ async function checkFileSyntax(filePath) {
   }
 }
 
-async function runBatch(tasks, concurrency = 20) {
+async function runBatch(tasks, concurrency = 100) {
   const results = [];
   for (let i = 0; i < tasks.length; i += concurrency) {
     const batch = tasks.slice(i, i + concurrency);
