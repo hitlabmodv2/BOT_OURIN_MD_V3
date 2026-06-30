@@ -279,7 +279,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
           url: "",
           title: `Welcome to ${groupName}`,
           description: `👋 Halo ${userName}!`,
-          image: ppUrlStr,
+          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : { image: ppUrlStr }),
           previewType: 0,
         },
         {

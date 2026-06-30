@@ -302,7 +302,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
           url: "",
           title: `Goodbye from ${groupName}`,
           description: `👋 Sayonara ${userName}!`,
-          image: ppUrlStr,
+          ...(ppBuffer ? { jpegThumbnail: ppBuffer } : { image: ppUrlStr }),
           previewType: 0,
         },
         {
