@@ -32,7 +32,8 @@ async function handler(m, { sock }) {
     let ppUrl
     try {
         ppUrl = await sock.profilePictureUrl(target, 'image')
-    } catch {
+    } catch { /* no-op */ }
+    if (typeof ppUrl !== 'string' || !/^https?:\/\//.test(ppUrl)) {
         ppUrl = 'https://files.catbox.moe/ejy4ky.jpg'
     }
 
