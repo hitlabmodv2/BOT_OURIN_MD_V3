@@ -177,8 +177,8 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
       phoneNum ? `${phoneNum}@s.whatsapp.net` : null,
     ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
 
-    // Delay 2 detik agar WA server sempat sync keanggotaan grup baru
-    if (!force) await new Promise((r) => setTimeout(r, 2000));
+    // Delay 3 detik agar WA server sempat sync keanggotaan grup baru
+    if (!force) await new Promise((r) => setTimeout(r, 3000));
 
     // Cek cache dulu (dari sesi sebelumnya)
     const cachedPpUrl = getPpCache(realParticipant) || getPpCache(participant);
