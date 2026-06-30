@@ -185,7 +185,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
     const memberCount = groupMeta?.participants?.length || 0;
     const groupName = groupMeta?.subject || "Grup";
     let userName = realParticipant?.split("@")[0] || "User";
-    const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
+    const ppDefault = "https://cdn.phototourl.com/free/2026-06-30-f5a5cffe-9102-4252-8c2b-2551e01eaf36.png";
     let ppUrl = null;
     let ppBuffer = null;
     const ppKosongPath = path.join(process.cwd(), "assets/image/pp-kosong.jpg");
@@ -229,7 +229,13 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       } catch { }
     }
 
-    // Fallback: pp-kosong.jpg lokal
+    // Fallback: download dari ppDefault URL, kalau gagal pakai file lokal
+    if (!ppBuffer) {
+      try {
+        const r = await axios.get(ppDefault, { responseType: "arraybuffer", timeout: 8000 });
+        if (r.data && r.data.byteLength > 500) ppBuffer = Buffer.from(r.data);
+      } catch { }
+    }
     if (!ppBuffer) {
       try {
         if (fs.existsSync(ppKosongPath)) ppBuffer = fs.readFileSync(ppKosongPath);
