@@ -167,30 +167,50 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
     let ppBuffer = null;
     const ppDefault = "https://cdn.gimita.id/download/pp%20kosong%20wa%20default%20(1)_1769506608569_52b57f5b.jpg";
     const ppKosongPath = path.join(process.cwd(), "assets/image/pp-kosong.jpg");
-    try {
-      ppUrl = await sock.profilePictureUrl(realParticipant, "image");
-      const r = await axios.get(ppUrl, {
-        responseType: "arraybuffer",
-        timeout: 6000,
-        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
-      });
-      if (r.data && r.data.byteLength > 500) {
-        ppBuffer = Buffer.from(r.data);
-        console.log(`[Welcome] PP user berhasil: ${r.data.byteLength} bytes`);
+
+    // Coba beberapa kandidat JID sampai berhasil ambil PP
+    const phoneNum = realParticipant?.split("@")[0]?.split(":")[0];
+    const ppJidCandidates = [
+      realParticipant,
+      participant,
+      phoneNum ? `${phoneNum}@s.whatsapp.net` : null,
+    ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
+
+    console.log(`[Welcome] Kandidat JID untuk PP: ${ppJidCandidates.join(" | ")}`);
+    for (const jid of ppJidCandidates) {
+      if (ppUrl) break;
+      for (const ppType of ["image", "preview"]) {
+        try {
+          const url = await sock.profilePictureUrl(jid, ppType);
+          if (url && url.startsWith("http")) { ppUrl = url; break; }
+        } catch { }
       }
-    } catch (e) {
-      console.log(`[Welcome] PP user gagal: ${e.message}`);
     }
-    // Fallback: pakai pp-kosong.jpg lokal (pasti ada, tidak perlu download)
+
+    if (ppUrl) {
+      try {
+        const r = await axios.get(ppUrl, {
+          responseType: "arraybuffer",
+          timeout: 8000,
+          headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+        });
+        if (r.data && r.data.byteLength > 500) {
+          ppBuffer = Buffer.from(r.data);
+          console.log(`[Welcome] PP user OK: ${ppBuffer.byteLength} bytes`);
+        }
+      } catch (e) {
+        console.log(`[Welcome] Download PP gagal: ${e.message}`);
+      }
+    } else {
+      console.log(`[Welcome] profilePictureUrl gagal semua (PP mungkin private)`);
+    }
+
+    // Fallback: pp-kosong.jpg lokal
     if (!ppBuffer) {
       try {
-        if (fs.existsSync(ppKosongPath)) {
-          ppBuffer = fs.readFileSync(ppKosongPath);
-          console.log(`[Welcome] Fallback pp-kosong.jpg: ${ppBuffer.byteLength} bytes`);
-        }
+        if (fs.existsSync(ppKosongPath)) ppBuffer = fs.readFileSync(ppKosongPath);
       } catch { }
     }
-    console.log(`[Welcome] ppBuffer status: ${ppBuffer ? `ada (${ppBuffer.byteLength} bytes)` : "NULL - thumbnail akan kosong"}`);
     const ppUrlStr = ppUrl || ppDefault;
     const ppForCanvas = ppBuffer || ppUrlStr;
     const text = await buildWelcomeMessage(
