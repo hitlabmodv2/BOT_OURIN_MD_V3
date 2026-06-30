@@ -471,13 +471,13 @@ async function startConnection(options = {}) {
         connectionState.sock = null;
         connectionState.connectedAt = null;
 
-        colors.logger.error(
+        colors.logger.warn(
           "whatsapp",
-          "🚪 Sesi berakhir — bot akan keluar. Silakan restart untuk login ulang.",
+          "🔄 Sesi berakhir — menampilkan QR/Pairing Code baru dalam 3 detik...",
         );
 
-        // Exit setelah 2 detik agar log sempat tampil
-        setTimeout(() => process.exit(0), 2000);
+        // Langsung reconnect → tampilkan QR atau pairing code tanpa restart manual
+        setTimeout(() => startConnection(options), 3000);
         return;
       }
 
