@@ -208,11 +208,20 @@ async function sendImageWithBtn(sock, chatId, imageBuffer, caption, buttons, quo
       quotedMsg ? { quoted: quotedMsg } : {},
     );
   } catch {
-    return await sock.sendMessage(
-      chatId,
-      { image: imageBuffer, caption },
-      quotedMsg ? { quoted: quotedMsg } : {},
-    );
+    try {
+      return await sock.sendMessage(
+        chatId,
+        { image: imageBuffer, caption },
+        quotedMsg ? { quoted: quotedMsg } : {},
+      );
+    } catch {
+      // Fallback teks saja jika gambar gagal dikirim
+      return await sock.sendMessage(
+        chatId,
+        { text: caption },
+        quotedMsg ? { quoted: quotedMsg } : {},
+      );
+    }
   }
 }
 
@@ -374,11 +383,15 @@ class OurinGames {
               { quoted: m },
             );
           } catch {
-            sentMsg = await sendGamePreview(
-              sock, chatId, text,
-              `${cfg.emoji} ${cfg.title}`, "Jawab dari deskripsi!",
-              { quoted: m },
-            );
+            try {
+              sentMsg = await sendGamePreview(
+                sock, chatId, text,
+                `${cfg.emoji} ${cfg.title}`, "Jawab dari deskripsi!",
+                { quoted: m },
+              );
+            } catch {
+              sentMsg = await sock.sendMessage(chatId, { text }, { quoted: m });
+            }
           }
         }
       } else {
@@ -401,13 +414,21 @@ class OurinGames {
             { quoted: m },
           );
         } catch {
-          sentMsg = await sendGamePreview(
-            sock, chatId, text,
-            `${cfg.emoji} ${cfg.title}`, "Jawab pertanyaan!",
-            { quoted: m },
-          );
+          try {
+            sentMsg = await sendGamePreview(
+              sock, chatId, text,
+              `${cfg.emoji} ${cfg.title}`, "Jawab pertanyaan!",
+              { quoted: m },
+            );
+          } catch {
+            sentMsg = await sock.sendMessage(chatId, { text }, { quoted: m });
+          }
         }
       }
+
+      // Guard: pastikan sentMsg selalu ada sebelum createSession
+      // Kalau semua metode kirim gagal, pakai key pesan masuk sebagai fallback
+      if (!sentMsg) sentMsg = { key: m.key };
 
       createSession(chatId, gameType, question, sentMsg.key, cfg.timeout);
 

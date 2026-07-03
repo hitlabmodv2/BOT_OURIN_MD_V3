@@ -27,23 +27,35 @@ function formatViews(n) {
 }
 
 async function getPlayAudioDownload(url) {
+  // API 1: nexray (timeout 10 detik)
   try {
     const { data } = await axios.get(
       `https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(url)}`,
+      { timeout: 10000 },
     );
     const download = data?.result?.url;
     const title = data?.result?.title;
-    if (download) {
-      return { download, title };
-    }
+    if (download) return { download, title };
   } catch {}
 
+  // API 2: siputzx (timeout 10 detik)
+  try {
+    const { data } = await axios.get(
+      `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(url)}`,
+      { timeout: 10000 },
+    );
+    const download = data?.data?.url || data?.data?.dl;
+    const title = data?.data?.title;
+    if (download) return { download, title };
+  } catch {}
+
+  // API 3: ytdl scraper internal
   const fallback = await ytdl(url, "mp3");
   if (fallback?.status && fallback?.dl) {
     return { download: fallback.dl, title: fallback.title, isFallback: true };
   }
 
-  throw new Error(fallback?.mess || "Gagal mendapatkan audio play URL");
+  throw new Error(fallback?.mess || "Semua sumber audio tidak tersedia");
 }
 
 async function handler(m, { sock, text, skipDeduct }) {

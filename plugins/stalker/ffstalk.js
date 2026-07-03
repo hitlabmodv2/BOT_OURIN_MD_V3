@@ -80,6 +80,14 @@ async function handler(m, { sock, skipDeduct }) {
     skipDeduct?.(error)
     console.log(error?.response?.data || error.message);
     m.react("☢");
+    const msg = error?.message || "";
+    if (msg.includes("suspended") || msg.includes("Account has been suspended")) {
+      return m.reply(
+        `⚠️ *Fitur Sementara Tidak Tersedia*\n\n` +
+        `Layanan Free Fire Stalk sedang dalam gangguan dari sisi server.\n\n` +
+        `> Coba lagi dalam beberapa saat ya!`
+      );
+    }
     m.reply(te(m.prefix, m.command, m.pushName));
   }
 }

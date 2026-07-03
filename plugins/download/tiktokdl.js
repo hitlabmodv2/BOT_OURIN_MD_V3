@@ -49,18 +49,19 @@ async function tiktokDl(url) {
   if (res?.duration == 0) {
     res.images.forEach((v) => data.push({ type: "photo", url: v }));
   } else {
-    data.push(
+    // Operator precedence fix: kurung dulu agar tidak jadi "https://...undefined"
+  data.push(
       {
         type: "watermark",
-        url: "https://www.tikwm.com" + res?.wmplay || "/undefined",
+        url: res?.wmplay ? ("https://www.tikwm.com" + res.wmplay) : null,
       },
       {
         type: "nowatermark",
-        url: "https://www.tikwm.com" + res?.play || "/undefined",
+        url: res?.play ? ("https://www.tikwm.com" + res.play) : null,
       },
       {
         type: "nowatermark_hd",
-        url: "https://www.tikwm.com" + res?.hdplay || "/undefined",
+        url: res?.hdplay ? ("https://www.tikwm.com" + res.hdplay) : null,
       },
     );
   }
@@ -132,8 +133,8 @@ async function handler(m, { sock, skipDeduct }) {
   try {
     const result = await tiktokDl(text);
     if (result.durations > 0 && result.duration !== "0 Seconds") {
-      let zann = await result.data.find(
-        (e) => e.type == "nowatermark_hd" || e.type == "nowatermark",
+      let zann = result.data.find(
+        (e) => (e.type == "nowatermark_hd" || e.type == "nowatermark") && e.url,
       );
       if (!zann?.url) {
         m.react("❌");

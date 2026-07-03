@@ -22,18 +22,18 @@
   "120363192554714254@g.us": {
     "chatStats": {
       "6289681008411@s.whatsapp.net": {
-        "count": 105,
-        "lastChat": 1782723377969,
+        "count": 106,
+        "lastChat": 1783091251506,
         "name": "Hen V1"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 700,
-        "lastChat": 1782723375660,
+        "count": 713,
+        "lastChat": 1783091539410,
         "name": "Wily"
       },
       "6289667923162@s.whatsapp.net": {
-        "count": 150,
-        "lastChat": 1782722894124,
+        "count": 151,
+        "lastChat": 1783091588781,
         "name": "Hen V2"
       },
       "120363192554714254@g.us": {
@@ -237,6 +237,11 @@
         "count": 1,
         "lastChat": 1780825313494,
         "name": "gaku'al"
+      },
+      "6285892146223@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1783090824927,
+        "name": "raaaa??𝐌𝐑𝐂|𝐑𝐎𝐑|𝐀𝐋𝐒"
       }
     },
     "jid": "120363363036005418@g.us",
@@ -284,9 +289,9 @@
         "name": "m s s"
       },
       "6285878402951@s.whatsapp.net": {
-        "count": 1,
-        "lastChat": 1782211823565,
-        "name": "Benson Boone"
+        "count": 3,
+        "lastChat": 1783091061171,
+        "name": "FrankiOe"
       },
       "6282190334045@s.whatsapp.net": {
         "count": 1,
@@ -302,6 +307,11 @@
         "count": 1,
         "lastChat": 1782722560281,
         "name": "ᴮíᵗ.ˡʸ/~ᡣᴿʸûû"
+      },
+      "6285868716246@s.whatsapp.net": {
+        "count": 2,
+        "lastChat": 1783090568851,
+        "name": "Jake Gyllenhaal"
       }
     },
     "welcomeType": 5
@@ -309,8 +319,8 @@
   "120363408420466353@g.us": {
     "chatStats": {
       "6289667923162@s.whatsapp.net": {
-        "count": 33,
-        "lastChat": 1782804646662,
+        "count": 35,
+        "lastChat": 1783090305236,
         "name": "Hen V2"
       },
       "6289688206739@s.whatsapp.net": {
@@ -382,6 +392,59 @@
     "welcomeType": 5,
     "jid": "120363425027620505@g.us",
     "name": "Unknown Group",
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
+  },
+  "120363429130850802@g.us": {
+    "chatStats": {
+      "6289505370237@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1783090570799,
+        "name": "woowaaa(⁠.⁠⁠❛⁠⁠ᴗ⁠⁠❛⁠.⁠)"
+      }
+    },
+    "jid": "120363429130850802@g.us",
+    "name": "Unknown Group",
+    "welcome": false,
+    "leave": false,
+    "goodbye": false,
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
+  },
+  "120363427374078962@g.us": {
+    "chatStats": {
+      "6283825581006@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1783090683975,
+        "name": "pina"
+      },
+      "6282227824121@s.whatsapp.net": {
+        "count": 17,
+        "lastChat": 1783091560458,
+        "name": "_0117"
+      },
+      "6282322177539@s.whatsapp.net": {
+        "count": 4,
+        "lastChat": 1783091375335,
+        "name": "rapzz||𝐂𝐀𝐒𝐓𝐔𝐒||MPRUYY"
+      },
+      "6285119446913@s.whatsapp.net": {
+        "count": 12,
+        "lastChat": 1783091521231,
+        "name": "Bogasari"
+      }
+    },
+    "jid": "120363427374078962@g.us",
+    "name": "Unknown Group",
+    "welcome": false,
+    "leave": false,
+    "goodbye": false,
     "antilink": false,
     "antitoxic": false,
     "mute": false,
