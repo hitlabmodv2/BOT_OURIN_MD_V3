@@ -4,6 +4,11 @@ async function getSharp() {
   if (!_sharp) _sharp = (await import("sharp")).default;
   return _sharp;
 }
+let _CliTable = null;
+async function getCliTable() {
+  if (!_CliTable) _CliTable = (await import("cli-table3")).default;
+  return _CliTable;
+}
 import crypto from "crypto";
 import archiver from "archiver";
 import {
@@ -602,6 +607,64 @@ async function extendSocket(sock) {
   };
   sock.sendText = async function (jid, text, quoted, options = {}) {
     return await sock.sendMessage(jid, { text, ...options }, { quoted });
+  };
+
+  function renderAsciiTable(headers, rows) {
+    const Table = _CliTable;
+    const table = new Table({
+      head: headers,
+      wordWrap: true,
+    });
+    for (const row of rows) table.push(row);
+    return table.toString();
+  }
+
+  sock.sendTable = async function (
+    jid,
+    title,
+    headers,
+    rows,
+    quoted,
+    options = {},
+  ) {
+    await getCliTable();
+    const rendered = renderAsciiTable(headers, rows);
+    const parts = [];
+    const heading = options.headerText || title;
+    if (heading) parts.push(heading);
+    if (options.text) parts.push(options.text);
+    parts.push("```" + rendered + "```");
+    if (options.footer) parts.push(`_${options.footer}_`);
+    return await sock.sendText(jid, parts.join("\n\n"), quoted);
+  };
+
+  sock.sendTableV2 = async function (jid, tableData, quoted, options = {}) {
+    await getCliTable();
+    const data = Array.isArray(tableData) ? [...tableData] : [];
+    const title = data.shift() || "";
+    const headerLine = data.shift() || "";
+    const headers = headerLine
+      .split("|")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const rows = [];
+    for (const line of data) {
+      const subLines = String(line).split(";;");
+      for (const sub of subLines) {
+        const cells = sub
+          .split("|")
+          .map((s) => s.trim());
+        if (cells.some(Boolean)) rows.push(cells);
+      }
+    }
+    const rendered = renderAsciiTable(headers, rows);
+    const parts = [];
+    const heading = options.headerText || options.title || title;
+    if (heading) parts.push(heading);
+    if (options.text) parts.push(options.text);
+    parts.push("```" + rendered + "```");
+    if (options.footer) parts.push(`_${options.footer}_`);
+    return await sock.sendText(jid, parts.join("\n\n"), quoted);
   };
 
   sock.sendPreview = async function (jid, content = {}, options = {}) {
