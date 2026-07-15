@@ -51,26 +51,19 @@ async function handler(m, { sock }) {
 
         const sorted = Object.entries(cats).sort((a, b) => b[1].total - a[1].total)
 
-        const tableData = sorted.map(([cat, data]) => {
-            const pct = ((data.total / total) * 100).toFixed(1)
-            return [
-                `${ICONS[cat] || '📦'} ${cat.toUpperCase()}`,
-                data.total.toString(),
-                `${pct}%`
-            ]
-        })
-
-        await sock.sendTable(
-            m.chat,
+        const table = [
             'Distribusi Fitur',
-            ['Kategori', 'Jumlah', 'Persen'],
-            tableData,
-            m,
-            {
-                headerText: `Total: ${total} | Aktif: ${enabled} | Kategori: ${sorted.length}`,
-                footer: `Total ${total} fitur tersedia`
-            }
-        )
+            'Kategori | Jumlah | Persen',
+            ...sorted.map(([cat, data]) => {
+                const pct = ((data.total / total) * 100).toFixed(1)
+                return `${ICONS[cat] || '📦'} ${cat.toUpperCase()} | ${data.total} | ${pct}%`
+            })
+        ]
+
+        await sock.sendTableV2(m.chat, table, m, {
+            title: `Total: ${total} | Aktif: ${enabled} | Kategori: ${sorted.length}`,
+            footer: `Total ${total} fitur tersedia`
+        })
 
     } catch (error) {
         await m.react('☢')
