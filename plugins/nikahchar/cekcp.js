@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, getChildren, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, getChildren, getStatus, STATUS_MENIKAH, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
   name: "cekcp",
@@ -33,20 +33,22 @@ async function handler(m, { sock }) {
     }
 
     const love = spouse.love || 0;
-    const children = getChildren(user).length;
-    const married = spouse.marriedAt
-      ? new Date(spouse.marriedAt).toLocaleDateString("id-ID")
-      : "Tidak diketahui";
+    const isMenikah = getStatus(spouse) === STATUS_MENIKAH;
+    const children = isMenikah ? getChildren(user).length : 0;
+    const since = spouse.marriedAt || spouse.jadianAt;
+    const sinceLabel = since ? new Date(since).toLocaleDateString("id-ID") : "Tidak diketahui";
 
     let caption = `💑 *ᴘᴀsᴀɴɢᴀɴ ᴋᴀᴍᴜ*\n\n`;
     caption += `• *Nama:* ${spouse.nickname || spouse.name}\n`;
     if (spouse.nickname) caption += `• _Nama asli: ${spouse.name}_\n`;
     caption += `• *ID Karakter:* ${spouse.id}\n`;
     caption += `• *URL:* ${spouse.url || "-"}\n`;
+    caption += `• *💍 Status:* ${isMenikah ? "Menikah" : "Pacaran"}\n`;
     caption += `• *💕 Love:* ${love}/${MAX_LOVE}\n`;
-    caption += `• *👶 Anak:* ${children}\n`;
-    caption += `• *💍 Menikah sejak:* ${married}\n\n`;
-    caption += `> _Naikkan Love lewat \`${m.prefix}pasuang <jumlah>\`, atau ganti panggilan lewat \`${m.prefix}setcpnama <nama>\`._`;
+    if (isMenikah) caption += `• *👶 Anak:* ${children}\n`;
+    caption += `• *${isMenikah ? "💍 Menikah" : "💌 Jadian"} sejak:* ${sinceLabel}\n\n`;
+    caption += `> _Naikkan Love lewat \`${m.prefix}jalan\`/\`${m.prefix}pasuang <jumlah>\`, atau ganti panggilan lewat \`${m.prefix}setcpnama <nama>\`._\n`;
+    caption += `> _Detail lengkap (hunger, rumah, dll): \`${m.prefix}ps\`._`;
 
     await m.react("💑");
 

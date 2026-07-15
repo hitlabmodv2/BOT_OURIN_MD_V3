@@ -34,8 +34,8 @@ async function handler(m, { sock }) {
     if (action !== "buy") {
       let txt = `🛒 *ᴍᴀʀᴋᴇᴛ*\n`;
       txt += `_Beli item buat pasangan/anak karaktermu. Item masuk ke inventory._\n\n`;
-      Object.entries(ITEMS).forEach(([key, item], i) => {
-        txt += `${i + 1}. ${item.emoji} *${key}* — Rp ${item.price.toLocaleString("id-ID")}\n`;
+      Object.entries(ITEMS).forEach(([key, item]) => {
+        txt += `• ${item.emoji} \`${key}\` — Rp ${item.price.toLocaleString("id-ID")}\n`;
       });
       txt += `\n> \`${m.prefix}market buy <item> <jumlah>\`\n> _Contoh: \`${m.prefix}market buy cokelat 2\`_`;
       await m.react("🛒");
@@ -47,7 +47,7 @@ async function handler(m, { sock }) {
     const item = ITEMS[itemKey];
 
     if (!item) {
-      return m.reply(`❌ Item *${itemKey}* tidak ada di market.\n> \`${m.prefix}market\` untuk lihat daftar item.`);
+      return m.reply(`❌ Item *${itemKey}* tidak ada di market.\n> _Lihat daftar item lewat \`${m.prefix}market\`._`);
     }
 
     const totalCost = item.price * amount;

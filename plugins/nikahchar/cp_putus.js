@@ -30,6 +30,7 @@ async function handler(m, { sock }) {
     }
 
     const childCount = (user.rpg.children || []).length;
+    const lostWallet = spouse.wallet || 0;
     removeRegistryEntry(spouse.id);
     clearSpouse(user);
     user.rpg.children = [];
@@ -38,8 +39,9 @@ async function handler(m, { sock }) {
     await m.react("💔");
     await m.reply(
       `💔 *ᴘᴜᴛᴜs*\n\n` +
-        `Status: ~menikah dengan *${spouse.nickname || spouse.name}*~ → *lajang*\n\n` +
-        `_Karakter ini sekarang bisa dilamar orang lain, dan ${childCount} anak kalian ikut terhapus dari catatan._ 😢\n\n` +
+        `Status: ~bareng *${spouse.nickname || spouse.name}*~ → *lajang*\n\n` +
+        `_Karakter ini sekarang bisa dilamar orang lain, ${childCount} anak kalian ikut terhapus dari catatan, dan sisa uang jajan pasangan (Rp ${lostWallet.toLocaleString("id-ID")}) ikut hangus._ 😢\n` +
+        `_Rumah kamu tetap aman kok, gak ikut kejual._\n\n` +
         `> \`${m.prefix}char <nama>\` kalau mau cari pasangan baru.`,
     );
   } catch (error) {

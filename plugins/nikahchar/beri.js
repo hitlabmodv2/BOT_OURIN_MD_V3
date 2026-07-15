@@ -26,7 +26,7 @@ async function handler(m, { sock }) {
     const amount = parseInt(args[1]);
 
     if (!childId || !amount || amount <= 0) {
-      return m.reply(`👉 \`${m.prefix}beri <id anak> <jumlah>\`\n> _Setiap Rp 1.000 menaikkan kebahagiaan +1 (maks 100)._\n> Lihat id anak dengan \`${m.prefix}anak\``);
+      return m.reply(`👉 \`${m.prefix}beri <id anak> <jumlah>\`\n> _Setiap Rp 1.000 menaikkan kebahagiaan +1 (maks 100)._\n> _Lihat id anak dengan \`${m.prefix}anak\`._`);
     }
 
     const user = db.getUser(m.sender) || db.setUser(m.sender);

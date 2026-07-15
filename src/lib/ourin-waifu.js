@@ -14,6 +14,172 @@ const REGISTRY_KEY = "charRegistry";
 const CHILD_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6 jam
 const MAX_LOVE = 1000;
 
+// ===== Sistem pacaran -> nikah, rumah, & uang jajan pasangan =====
+const STATUS_PACARAN = "pacaran";
+const STATUS_MENIKAH = "menikah";
+const LOVE_TO_MARRY = 500; // minimal love buat naik status ke menikah
+const HUNGER_MAX = 100;
+const HUNGER_DECAY_PER_HOUR = 3; // hunger turun 3 poin / jam kalau gak diurus
+const NEGLECT_LOVE_DECAY_PER_HOUR = 4; // love turun kalau hunger di titik 0 kelamaan
+const WALLET_FOOD_COST_PER_HOUR = 1500; // "uang jajan" otomatis kepotong buat beli makan sendiri
+const WALLET_FOOD_HUNGER_GAIN = HUNGER_DECAY_PER_HOUR; // nutupin decay 1 jam kalau ada saldo
+const MAX_DECAY_TICK_HOURS = 240; // cap simulasi biar gak infinite-loop kalau bot mati lama
+
+const RING_TIERS = [
+  { key: "kuningan", name: "Cincin Kuningan", price: 75000, loveBonus: 20 },
+  { key: "perak", name: "Cincin Perak", price: 250000, loveBonus: 50 },
+  { key: "emas", name: "Cincin Emas", price: 750000, loveBonus: 120 },
+  { key: "berlian", name: "Cincin Berlian", price: 2500000, loveBonus: 300 },
+];
+
+const HOUSE_TIERS = [
+  { key: "kontrakan", name: "Kontrakan Petak", price: 500000, quality: "Sederhana", listrikPerWeek: 15000 },
+  { key: "rumahsubsidi", name: "Rumah Subsidi", price: 2000000, quality: "Standar", listrikPerWeek: 35000 },
+  { key: "rumahminimalis", name: "Rumah Minimalis", price: 6000000, quality: "Nyaman", listrikPerWeek: 60000 },
+  { key: "villa", name: "Villa Mewah", price: 20000000, quality: "Mewah", listrikPerWeek: 150000 },
+];
+
+const LISTRIK_GRACE_MS = 7 * 24 * 60 * 60 * 1000; // 7 hari telat baru kena efek
+
+function findRingTier(key) {
+  if (!key) return null;
+  const k = String(key).toLowerCase().trim();
+  return RING_TIERS.find((r) => r.key === k || r.name.toLowerCase() === k) || null;
+}
+
+function findHouseTier(key) {
+  if (!key) return null;
+  const k = String(key).toLowerCase().trim();
+  return HOUSE_TIERS.find((h) => h.key === k || h.name.toLowerCase() === k) || null;
+}
+
+/** Pastikan objek spouse punya semua field relationship (backward-compat utk data lama) */
+function ensureRelationshipFields(spouse) {
+  if (!spouse) return spouse;
+  // Spouse lama (sebelum fitur ini ada) langsung berstatus "menikah" biar gak mundur status.
+  if (!spouse.status) spouse.status = STATUS_MENIKAH;
+  if (typeof spouse.hunger !== "number") spouse.hunger = HUNGER_MAX;
+  if (!spouse.hungerAt) spouse.hungerAt = spouse.marriedAt || Date.now();
+  if (typeof spouse.wallet !== "number") spouse.wallet = 0;
+  if (!spouse.ring) spouse.ring = null;
+  return spouse;
+}
+
+function getStatus(spouse) {
+  ensureRelationshipFields(spouse);
+  return spouse.status;
+}
+
+function setStatus(spouse, status) {
+  ensureRelationshipFields(spouse);
+  spouse.status = status;
+}
+
+/**
+ * Jalankan simulasi lapar & "ditinggal karena ditelantarkan" secara lazy —
+ * dipanggil di awal handler command yang butuh data pasangan up-to-date.
+ * Tidak butuh cron job; cukup dihitung dari selisih waktu tiap kali dipanggil.
+ */
+function tickRelationship(user) {
+  const spouse = getSpouse(user);
+  if (!spouse) return { leftYou: false };
+  ensureRelationshipFields(spouse);
+
+  const now = Date.now();
+  let elapsedHours = (now - spouse.hungerAt) / 3600000;
+  if (elapsedHours <= 0) return { leftYou: false };
+  elapsedHours = Math.min(elapsedHours, MAX_DECAY_TICK_HOURS);
+
+  let wholeHours = Math.floor(elapsedHours);
+  const remainderMs = (elapsedHours - wholeHours) * 3600000;
+
+  while (wholeHours > 0) {
+    if (spouse.wallet >= WALLET_FOOD_COST_PER_HOUR) {
+      // Pasangan beli makan sendiri pakai uang jajan yang dikasih
+      spouse.wallet -= WALLET_FOOD_COST_PER_HOUR;
+      spouse.hunger = Math.min(HUNGER_MAX, spouse.hunger + WALLET_FOOD_HUNGER_GAIN);
+    } else {
+      spouse.hunger = Math.max(0, spouse.hunger - HUNGER_DECAY_PER_HOUR);
+      if (spouse.hunger <= 0) {
+        spouse.love = Math.max(-100, (spouse.love || 0) - NEGLECT_LOVE_DECAY_PER_HOUR);
+      }
+    }
+    wholeHours--;
+  }
+  spouse.hungerAt = now - remainderMs;
+
+  if ((spouse.love || 0) <= -50) {
+    // Pasangan minggat karena kelamaan ditelantarkan
+    const name = spouse.nickname || spouse.name;
+    removeRegistryEntry(spouse.id);
+    clearSpouse(user);
+    user.rpg.children = [];
+    return { leftYou: true, name };
+  }
+
+  return { leftYou: false };
+}
+
+function getHunger(spouse) {
+  ensureRelationshipFields(spouse);
+  return Math.round(spouse.hunger);
+}
+
+/** Kasih makan langsung pakai uang (bukan lewat wallet pasangan) */
+function feedSpouseDirectly(spouse, hungerAmount) {
+  ensureRelationshipFields(spouse);
+  spouse.hunger = Math.min(HUNGER_MAX, spouse.hunger + hungerAmount);
+  return spouse.hunger;
+}
+
+function getWallet(spouse) {
+  ensureRelationshipFields(spouse);
+  return spouse.wallet;
+}
+
+function addWallet(spouse, amount) {
+  ensureRelationshipFields(spouse);
+  spouse.wallet = Math.max(0, spouse.wallet + amount);
+  return spouse.wallet;
+}
+
+function addLove(spouse, amount) {
+  spouse.love = Math.max(0, Math.min(MAX_LOVE, (spouse.love || 0) + amount));
+  return spouse.love;
+}
+
+function getHouse(user) {
+  return ensureRpg(user).house || null;
+}
+
+function setHouse(user, house) {
+  ensureRpg(user).house = house;
+}
+
+function isElectricityOverdue(user) {
+  const house = getHouse(user);
+  if (!house) return false;
+  const dueAt = house.lastPaidAt + 7 * 24 * 60 * 60 * 1000;
+  return Date.now() - dueAt > LISTRIK_GRACE_MS;
+}
+
+/** Cek syarat naik status dari pacaran ke menikah */
+function canPropose(user) {
+  const spouse = getSpouse(user);
+  if (!spouse) return { ok: false, reason: "Belum punya pasangan karakter." };
+  if (getStatus(spouse) === STATUS_MENIKAH) return { ok: false, reason: "Kalian sudah menikah." };
+  if ((spouse.love || 0) < LOVE_TO_MARRY) {
+    return {
+      ok: false,
+      reason: `Love kalian masih ${spouse.love || 0}/${LOVE_TO_MARRY} (minimal buat lamar nikah). Sering-sering ajak jalan / makan berdua dulu.`,
+    };
+  }
+  if (!getHouse(user)) {
+    return { ok: false, reason: "Kamu belum punya rumah. Beli dulu lewat perintah rumah." };
+  }
+  return { ok: true, reason: null };
+}
+
 function ensureRpg(user) {
   if (!user.rpg) user.rpg = {};
   return user.rpg;
@@ -184,7 +350,7 @@ function renderCharacterCard(c) {
   txt += `> _2 data di atas memang tidak disediakan API karakter MyAnimeList, bukan bug._\n\n`;
   txt += `*Tautan MyAnimeList:*\n${c.url}\n\n`;
   txt += `*Tentang karakter ini:*\n`;
-  txt += `${(c.about || "_Deskripsi tidak tersedia._").slice(0, 400)}`;
+  txt += `${c.about || "_Deskripsi tidak tersedia._"}`;
   return txt;
 }
 
@@ -236,4 +402,26 @@ export {
   getWishlist,
   getPasMode,
   getDisplayName,
+  // relationship progression (pacaran -> menikah), rumah, & wallet pasangan
+  STATUS_PACARAN,
+  STATUS_MENIKAH,
+  LOVE_TO_MARRY,
+  HUNGER_MAX,
+  RING_TIERS,
+  HOUSE_TIERS,
+  findRingTier,
+  findHouseTier,
+  ensureRelationshipFields,
+  getStatus,
+  setStatus,
+  tickRelationship,
+  getHunger,
+  feedSpouseDirectly,
+  getWallet,
+  addWallet,
+  addLove,
+  getHouse,
+  setHouse,
+  isElectricityOverdue,
+  canPropose,
 };

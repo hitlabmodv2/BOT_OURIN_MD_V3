@@ -31,7 +31,7 @@ async function handler(m, { sock }) {
     db.save();
 
     await m.react("✅");
-    await m.reply(`✅ Panggilan pasanganmu: ~${oldNickname}~ dihapus.\nKembali ke nama asli: *${spouse.name}*.`);
+    await m.reply(`✅ Panggilan pasanganmu: ~${oldNickname}~ → *${spouse.name}* _(nama asli)_`);
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

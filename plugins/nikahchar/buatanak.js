@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, CHILD_COOLDOWN_MS } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, getStatus, tickRelationship, STATUS_MENIKAH, CHILD_COOLDOWN_MS } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
   name: "buatanak",
@@ -28,7 +28,18 @@ async function handler(m, { sock }) {
     const spouse = user ? getSpouse(user) : null;
 
     if (!spouse) {
-      return m.reply(`❌ Kamu belum menikah dengan karakter.\n> _Lamar dulu pakai \`${m.prefix}lamar <id>\`._`);
+      return m.reply(`❌ Kamu belum punya pasangan karakter.\n> _Ajak pacaran dulu pakai \`${m.prefix}lamar <id>\`._`);
+    }
+
+    const left = tickRelationship(user);
+    if (left.leftYou) {
+      db.save();
+      await m.react("💔");
+      return m.reply(`💔 *${left.name}* udah minggat karena kelamaan ditelantarkan (hunger habis).`);
+    }
+
+    if (getStatus(spouse) !== STATUS_MENIKAH) {
+      return m.reply(`❌ Kalian masih *pacaran*, belum menikah.\n> _Naikkan love ke 500+, beli rumah, lalu \`${m.prefix}nikahcp\` dulu._`);
     }
 
     const cooldownKey = "buatanak";
