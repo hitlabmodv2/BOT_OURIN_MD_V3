@@ -24,7 +24,7 @@ async function handler(m, { sock }) {
   try {
     const nickname = (m.args || []).join(" ").trim();
     if (!nickname) {
-      return m.reply(`👉 \`${m.prefix}setcpnama <nama panggilan>\``);
+      return m.reply(`👉 \`${m.prefix}setcpnama <nama panggilan>\`\n> _Panggilan ini akan muncul di \`${m.prefix}cekcp\`, \`${m.prefix}namaj\`, dll. Maksimal 30 karakter._`);
     }
     if (nickname.length > 30) {
       return m.reply(`❌ Nama panggilan maksimal 30 karakter.`);
@@ -33,14 +33,19 @@ async function handler(m, { sock }) {
     const user = db.getUser(m.sender);
     const spouse = user ? getSpouse(user) : null;
     if (!spouse) {
-      return m.reply(`❌ Kamu belum punya pasangan karakter.`);
+      return m.reply(`❌ Kamu belum punya pasangan karakter.\n> _Lamar dulu dengan \`${m.prefix}lamar <id>\`._`);
     }
 
+    const oldNickname = spouse.nickname;
     spouse.nickname = nickname;
     db.save();
 
     await m.react("✅");
-    await m.reply(`✅ Pasanganmu sekarang dipanggil *${nickname}* 💕`);
+    await m.reply(
+      oldNickname
+        ? `✅ Panggilan pasanganmu: ~${oldNickname}~ → *${nickname}* 💕`
+        : `✅ Pasanganmu sekarang dipanggil *${nickname}* 💕`,
+    );
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

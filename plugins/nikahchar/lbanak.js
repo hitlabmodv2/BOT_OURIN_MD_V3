@@ -29,12 +29,15 @@ async function handler(m, { sock }) {
       .slice(0, 10);
 
     if (!ranked.length) {
-      return m.reply(`📊 Belum ada user yang punya anak.`);
+      return m.reply(`📊 Belum ada user yang punya anak.\n> _Coba \`${m.prefix}buatanak <nama>\` untuk jadi yang pertama!_`);
     }
 
-    let txt = `👶 *ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ ᴀɴᴀᴋ*\n\n`;
+    let txt = `👶 *ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ ᴀɴᴀᴋ*\n`;
+    txt += `_Top 10 user dengan anak terbanyak dari sistem nikah karakter._\n\n`;
+    const medals = ["🥇", "🥈", "🥉"];
     ranked.forEach((u, i) => {
-      txt += `${i + 1}. ${u.name} — ${u.count} anak\n`;
+      const rank = medals[i] || `${i + 1}.`;
+      txt += `${rank} *${u.name}* — ${u.count} anak\n`;
     });
 
     await m.react("📊");

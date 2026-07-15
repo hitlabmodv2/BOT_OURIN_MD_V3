@@ -32,7 +32,7 @@ async function handler(m, { sock }) {
 
   if (!query) {
     return m.reply(
-      `💌 *ʟᴀᴍᴀʀ ᴋᴀʀᴀᴋᴛᴇʀ*\n\n> Cari karakter dulu dengan \`${m.prefix}char <nama>\`\n> Lalu lamar pakai ID-nya:\n> \`${m.prefix}lamar <id>\``,
+      `💌 *ʟᴀᴍᴀʀ ᴋᴀʀᴀᴋᴛᴇʀ*\n\n_Fitur ini membuatmu "menikah" dengan karakter anime dari MyAnimeList. Cukup 2 langkah:_\n\n1. Cari karakternya dulu:\n\`\`\`${m.prefix}char <nama karakter>\`\`\`\n2. Lamar pakai ID yang muncul di hasil pencarian:\n\`\`\`${m.prefix}lamar <id>\`\`\`\n\n> _Contoh: \`${m.prefix}lamar 116275\`_`,
     );
   }
 
@@ -41,7 +41,7 @@ async function handler(m, { sock }) {
 
   if (getSpouse(user)) {
     return m.reply(
-      `❌ Kamu sudah punya pasangan karakter: *${getSpouse(user).name}*\n> Putus dulu dengan \`${m.prefix}cp_putus\` kalau mau lamar yang lain.`,
+      `❌ Kamu sudah punya pasangan karakter: *${getSpouse(user).name}*\n_Satu akun hanya boleh punya 1 pasangan karakter dalam satu waktu._\n> Putus dulu dengan \`${m.prefix}cp_putus\` kalau mau lamar yang lain.`,
     );
   }
 
@@ -51,7 +51,7 @@ async function handler(m, { sock }) {
     const raw = await searchCharacter(query);
     if (!raw) {
       await m.react("❌");
-      return m.reply(`❌ Karakter *${query}* tidak ditemukan.`);
+      return m.reply(`❌ Karakter *${query}* tidak ditemukan.\n> _Coba cek dulu namanya lewat \`${m.prefix}char <nama>\`._`);
     }
 
     const c = formatCharacter(raw);
@@ -61,7 +61,7 @@ async function handler(m, { sock }) {
       const ownerNumber = existingOwner.split("@")[0] || existingOwner;
       await m.react("💔");
       return m.reply(
-        `💔 Karakter *${c.name}* (ID: ${c.id}) sudah dilamar oleh orang lain!\n\nHubungi pemiliknya: wa.me/${ownerNumber}`,
+        `💔 Karakter *${c.name}* (ID: ${c.id}) sudah dilamar oleh orang lain!\n_Setiap karakter cuma bisa dimiliki oleh 1 orang._\n\n👉 Hubungi pemiliknya: wa.me/${ownerNumber}`,
       );
     }
 
@@ -82,7 +82,10 @@ async function handler(m, { sock }) {
       `💒 *LAMARAN BERHASIL!* 💒\n\n` +
         `Selamat! Kamu resmi menikah dengan:\n` +
         `👤 *${c.name}* (ID: ${c.id})\n\n` +
-        `Gunakan \`${m.prefix}cekcp\` untuk melihat info pasanganmu.`,
+        `_Selanjutnya kamu bisa:_\n` +
+        `1. \`${m.prefix}cekcp\` — lihat info pasanganmu\n` +
+        `2. \`${m.prefix}setcpnama <nama>\` — beri panggilan sayang\n` +
+        `3. \`${m.prefix}buatanak <nama>\` — coba punya anak bersama`,
     );
   } catch (error) {
     if (error instanceof WaifuServiceError) {

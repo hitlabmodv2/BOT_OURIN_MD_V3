@@ -22,7 +22,7 @@ async function handler(m, { sock }) {
   try {
     const newName = (m.args || []).join(" ").trim();
     if (!newName) {
-      return m.reply(`👉 \`${m.prefix}gantinama <nama baru>\``);
+      return m.reply(`👉 \`${m.prefix}gantinama <nama baru>\`\n> _Ini nama panggilanmu sendiri di game (bukan nama WhatsApp), maksimal 25 karakter._`);
     }
     if (newName.length > 25) {
       return m.reply(`❌ Nama maksimal 25 karakter.`);
@@ -35,7 +35,7 @@ async function handler(m, { sock }) {
     db.save();
 
     await m.react("✅");
-    await m.reply(`✅ Nama kamu diganti dari *${oldName}* menjadi *${newName}*.`);
+    await m.reply(`✅ Nama kamu diganti: ~${oldName}~ → *${newName}*`);
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

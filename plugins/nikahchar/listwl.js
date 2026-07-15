@@ -35,7 +35,7 @@ async function handler(m, { sock }) {
 
     if (action === "add") {
       const query = args.slice(1).join(" ").trim();
-      if (!query) return m.reply(`👉 \`${m.prefix}listwl add <id/nama karakter>\``);
+      if (!query) return m.reply(`👉 \`${m.prefix}listwl add <id/nama karakter>\`\n> _Simpan karakter idaman dulu sebelum benar-benar melamarnya._`);
 
       const raw = await searchCharacter(query);
       if (!raw) return m.reply(`❌ Karakter *${query}* tidak ditemukan.`);
@@ -51,12 +51,13 @@ async function handler(m, { sock }) {
       user.rpg.wishlist.push({ id: c.id, name: c.name });
       db.save();
       await m.react("✅");
-      return m.reply(`✅ *${c.name}* (ID: ${c.id}) ditambahkan ke wishlist kamu!`);
+      return m.reply(`✅ *${c.name}* (ID: ${c.id}) ditambahkan ke wishlist kamu!\n> _Wishlist: ${user.rpg.wishlist.length}/20_`);
     }
 
     if (action === "del" || action === "delete" || action === "hapus") {
       const id = args[1];
       const before = user.rpg.wishlist.length;
+      const removed = user.rpg.wishlist.find((w) => String(w.id) === String(id));
       user.rpg.wishlist = user.rpg.wishlist.filter((w) => String(w.id) !== String(id));
       db.save();
 
@@ -64,17 +65,17 @@ async function handler(m, { sock }) {
         return m.reply(`❌ ID *${id}* tidak ada di wishlist kamu.`);
       }
       await m.react("✅");
-      return m.reply(`✅ Karakter dengan ID *${id}* dihapus dari wishlist.`);
+      return m.reply(`✅ ~*${removed?.name || id}*~ dihapus dari wishlist.`);
     }
 
     const wishlist = getWishlist(user);
     if (!wishlist.length) {
-      return m.reply(`📋 Wishlist kamu masih kosong.\n> \`${m.prefix}listwl add <nama karakter>\``);
+      return m.reply(`📋 Wishlist kamu masih kosong.\n\n_Cara pakai:_\n1. \`${m.prefix}listwl add <nama karakter>\` — simpan karakter idaman\n2. \`${m.prefix}listwl\` — lihat isinya kapan saja`);
     }
 
     let txt = `📋 *ᴡɪsʜʟɪsᴛ ᴋᴀᴍᴜ* (${wishlist.length}/20)\n\n`;
     wishlist.forEach((w, i) => {
-      txt += `${i + 1}. ${w.name} — ID: ${w.id}\n`;
+      txt += `${i + 1}. *${w.name}* — ID: \`${w.id}\`\n`;
     });
     txt += `\n> \`${m.prefix}lamar <id>\` untuk melamar\n> \`${m.prefix}listwl del <id>\` untuk hapus`;
 

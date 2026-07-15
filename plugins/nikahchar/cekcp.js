@@ -28,7 +28,7 @@ async function handler(m, { sock }) {
     if (!spouse) {
       await m.react("💔");
       return m.reply(
-        `💔 Kamu belum punya pasangan karakter.\n> Cari & lamar karakter dengan \`${m.prefix}char <nama>\` lalu \`${m.prefix}lamar <id>\``,
+        `💔 Kamu belum punya pasangan karakter.\n\n_Langkah untuk mendapatkan pasangan:_\n1. \`${m.prefix}char <nama>\` — cari karakternya\n2. \`${m.prefix}lamar <id>\` — lamar karakter itu`,
       );
     }
 
@@ -39,13 +39,14 @@ async function handler(m, { sock }) {
       : "Tidak diketahui";
 
     let caption = `💑 *ᴘᴀsᴀɴɢᴀɴ ᴋᴀᴍᴜ*\n\n`;
-    caption += `*Nama:* ${spouse.nickname || spouse.name}\n`;
-    if (spouse.nickname) caption += `*Nama Asli:* ${spouse.name}\n`;
-    caption += `*ID Karakter:* ${spouse.id}\n`;
-    caption += `*URL:* ${spouse.url || "-"}\n`;
-    caption += `*💕 Love:* ${love}/${MAX_LOVE}\n`;
-    caption += `*👶 Anak:* ${children}\n`;
-    caption += `*💍 Menikah sejak:* ${married}`;
+    caption += `• *Nama:* ${spouse.nickname || spouse.name}\n`;
+    if (spouse.nickname) caption += `• _Nama asli: ${spouse.name}_\n`;
+    caption += `• *ID Karakter:* ${spouse.id}\n`;
+    caption += `• *URL:* ${spouse.url || "-"}\n`;
+    caption += `• *💕 Love:* ${love}/${MAX_LOVE}\n`;
+    caption += `• *👶 Anak:* ${children}\n`;
+    caption += `• *💍 Menikah sejak:* ${married}\n\n`;
+    caption += `> _Naikkan Love lewat \`${m.prefix}pasuang <jumlah>\`, atau ganti panggilan lewat \`${m.prefix}setcpnama <nama>\`._`;
 
     await m.react("💑");
 

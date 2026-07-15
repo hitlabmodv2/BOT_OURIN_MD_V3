@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2690,
+  "commandsExecuted": 2698,
   "command_totalchat": 3,
   "command_menu": 288,
   "command_fb": 4,
@@ -419,5 +419,12 @@
   "command_susun": 1,
   "command_tebakjkt48": 1,
   "command_mode": 2,
-  "command_errornotif": 1
+  "command_errornotif": 1,
+  "command_cekcp": 1,
+  "command_anak": 2,
+  "command_buatanak": 1,
+  "command_lamar": 1,
+  "command_menikah": 1,
+  "command_pap": 1,
+  "command_char": 1
 }

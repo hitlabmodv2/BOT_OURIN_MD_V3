@@ -25,7 +25,7 @@ async function handler(m, { sock }) {
     const spouse = user ? getSpouse(user) : null;
 
     if (!spouse) {
-      return m.reply(`❌ Kamu belum punya pasangan karakter buat di-pap.`);
+      return m.reply(`❌ Kamu belum punya pasangan karakter buat di-pap.\n> _Lamar dulu dengan \`${m.prefix}lamar <id>\`._`);
     }
     if (!spouse.image) {
       return m.reply(`❌ Pasanganmu tidak punya foto tersimpan.`);
@@ -34,7 +34,7 @@ async function handler(m, { sock }) {
     await m.react("📸");
     await sock.sendMessage(
       m.chat,
-      { image: { url: spouse.image }, caption: `📸 ${spouse.nickname || spouse.name}` },
+      { image: { url: spouse.image }, caption: `📸 *${spouse.nickname || spouse.name}*` },
       { quoted: m },
     );
   } catch (error) {

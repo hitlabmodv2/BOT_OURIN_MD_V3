@@ -24,13 +24,14 @@ async function handler(m, { sock }) {
     const user = db.getUser(m.sender);
     const spouse = user ? getSpouse(user) : null;
     if (!spouse) return m.reply(`❌ Kamu belum punya pasangan karakter.`);
-    if (!spouse.nickname) return m.reply(`❌ Kamu belum set nama panggilan.`);
+    if (!spouse.nickname) return m.reply(`❌ Kamu belum set nama panggilan.\n> _Set dulu lewat \`${m.prefix}setcpnama <nama>\`._`);
 
+    const oldNickname = spouse.nickname;
     spouse.nickname = null;
     db.save();
 
     await m.react("✅");
-    await m.reply(`✅ Nama panggilan pasanganmu dihapus. Kembali ke *${spouse.name}*.`);
+    await m.reply(`✅ Panggilan pasanganmu: ~${oldNickname}~ dihapus.\nKembali ke nama asli: *${spouse.name}*.`);
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

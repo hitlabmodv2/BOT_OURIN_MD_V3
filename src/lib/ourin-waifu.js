@@ -86,14 +86,16 @@ function formatCharacter(char) {
 }
 
 function renderCharacterCard(c) {
-  let txt = `*Nama:* ${c.name}\n`;
-  txt += `*Nama Kanji:* ${c.nameKanji || "Tidak tersedia"}\n\n`;
-  txt += `*Tanggal Lahir:* Tidak diketahui\n`;
-  txt += `*Gender:* Tidak diketahui\n`;
-  txt += `*ID:* ${c.id}\n`;
-  txt += `*URL:*\n${c.url}\n\n`;
-  txt += `*INFORMASI:*\n`;
-  txt += `${(c.about || "Deskripsi tidak tersedia.").slice(0, 400)}`;
+  let txt = `👤 *${c.name}*\n`;
+  txt += `_${c.nameKanji || "Nama kanji tidak tersedia"}_\n\n`;
+  txt += `• *ID:* ${c.id} _(id ini yang dipakai di \`.lamar\`/\`.setcp\`)_\n`;
+  txt += `• *Favorit di MyAnimeList:* ${(c.favorites || 0).toLocaleString("id-ID")} ❤️\n`;
+  txt += `• *Tanggal Lahir:* Tidak diketahui\n`;
+  txt += `• *Gender:* Tidak diketahui\n`;
+  txt += `> _2 data di atas memang tidak disediakan API karakter MyAnimeList, bukan bug._\n\n`;
+  txt += `*Tautan MyAnimeList:*\n${c.url}\n\n`;
+  txt += `*Tentang karakter ini:*\n`;
+  txt += `${(c.about || "_Deskripsi tidak tersedia._").slice(0, 400)}`;
   return txt;
 }
 

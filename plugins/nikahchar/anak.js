@@ -25,14 +25,15 @@ async function handler(m, { sock }) {
     const children = user ? getChildren(user) : [];
 
     if (!children.length) {
-      return m.reply(`👶 Kamu belum punya anak.\n> Coba \`${m.prefix}buatanak\` bersama pasanganmu.`);
+      return m.reply(`👶 Kamu belum punya anak.\n> _Coba \`${m.prefix}buatanak <nama>\` bersama pasanganmu (butuh pasangan dulu)._`);
     }
 
     let txt = `👶 *ᴅᴀꜰᴛᴀʀ ᴀɴᴀᴋ ᴋᴀᴍᴜ* (${children.length})\n\n`;
-    for (const c of children) {
-      txt += `• *${c.name}* — ID: ${c.id} — 😊 ${c.happiness ?? 50}/100\n`;
-    }
-    txt += `\n> \`${m.prefix}cekanak <id>\` untuk detail\n> \`${m.prefix}beri <id> <jumlah>\` untuk menaikkan kebahagiaan`;
+    children.forEach((c, i) => {
+      txt += `${i + 1}. *${c.name}* — ID: \`${c.id}\` — 😊 ${c.happiness ?? 50}/100\n`;
+    });
+    txt += `\n_Angka kebahagiaan naik kalau kamu rutin memberi mereka uang._\n`;
+    txt += `> \`${m.prefix}cekanak <id>\` untuk detail\n> \`${m.prefix}beri <id> <jumlah>\` untuk menaikkan kebahagiaan`;
 
     await m.react("👶");
     await m.reply(txt);

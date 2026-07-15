@@ -24,7 +24,7 @@ async function handler(m, { sock }) {
   try {
     const target = m.mentionedJid?.[0] || m.quoted?.sender;
     if (!target) {
-      return m.reply(`👉 Tag orang yang mau dicek pasangannya!\n\`Contoh: ${m.prefix}cekpas @user\``);
+      return m.reply(`👉 *Cara pakai:*\n\`\`\`${m.prefix}cekpas @user\`\`\`\n> _Tag atau reply pesan orang yang mau dicek pasangannya._`);
     }
 
     const targetUser = db.getUser(target);
@@ -40,15 +40,15 @@ async function handler(m, { sock }) {
     if (getPasMode(targetUser) === "private") {
       await m.react("🔒");
       return m.reply(
-        `🔒 @${target.split("@")[0]} mengunci info pasangannya (mode private).`,
+        `🔒 @${target.split("@")[0]} mengunci info pasangannya (mode _private_).\n> _Orang itu mengatur \`${m.prefix}setpasmode private\`, jadi kamu tidak bisa melihatnya._`,
         { mentions: [target] },
       );
     }
 
     let caption = `💑 *ᴘᴀsᴀɴɢᴀɴ @${target.split("@")[0]}*\n\n`;
-    caption += `*Nama:* ${spouse.nickname || spouse.name}\n`;
-    caption += `*ID Karakter:* ${spouse.id}\n`;
-    caption += `*💕 Love:* ${spouse.love || 0}`;
+    caption += `• *Nama:* ${spouse.nickname || spouse.name}\n`;
+    caption += `• *ID Karakter:* ${spouse.id}\n`;
+    caption += `• *💕 Love:* ${spouse.love || 0}`;
 
     await m.react("💑");
     await sock.reply(m.chat, caption, m, { mentions: [target] });

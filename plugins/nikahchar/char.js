@@ -28,7 +28,7 @@ async function handler(m, { sock }) {
 
   if (!query) {
     return m.reply(
-      `🔎 *ᴄᴀʀɪ ᴋᴀʀᴀᴋᴛᴇʀ*\n\n> Masukkan nama atau ID karakter MyAnimeList\n\n\`Contoh: ${m.prefix}char Albedo\`\n\`Contoh: ${m.prefix}char 116275\``,
+      `🔎 *ᴄᴀʀɪ ᴋᴀʀᴀᴋᴛᴇʀ*\n\n_Cari data karakter anime dari MyAnimeList sebelum melamarnya. Bisa pakai nama atau ID langsung:_\n\n\`\`\`${m.prefix}char Albedo\`\`\`\n\`\`\`${m.prefix}char 116275\`\`\`\n\n> _Setelah ketemu, catat ID-nya lalu lamar dengan \`${m.prefix}lamar <id>\`._`,
     );
   }
 
@@ -38,7 +38,7 @@ async function handler(m, { sock }) {
     const raw = await searchCharacter(query);
     if (!raw) {
       await m.react("❌");
-      return m.reply(`❌ Karakter *${query}* tidak ditemukan di MyAnimeList.`);
+      return m.reply(`❌ Karakter *${query}* tidak ditemukan di MyAnimeList.\n> _Coba periksa lagi ejaan namanya, atau cari pakai ID kalau tahu._`);
     }
 
     const c = formatCharacter(raw);
@@ -47,9 +47,9 @@ async function handler(m, { sock }) {
     let caption = renderCharacterCard(c);
     caption += `\n\n`;
     if (owner) {
-      caption += `💔 Karakter ini *sudah dilamar* oleh orang lain.\n> \`${m.prefix}cekpas\` untuk cek siapa pemiliknya.`;
+      caption += `💔 Status: *sudah dilamar* oleh orang lain.\n> \`${m.prefix}cekpas\` untuk cek siapa pemiliknya.`;
     } else {
-      caption += `💌 Karakter ini masih *available*!\n> \`${m.prefix}lamar ${c.id}\` untuk melamarnya.`;
+      caption += `💌 Status: masih *available*!\n> \`${m.prefix}lamar ${c.id}\` untuk melamarnya.`;
     }
 
     await m.react("✅");

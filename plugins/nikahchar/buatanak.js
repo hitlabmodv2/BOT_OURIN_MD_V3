@@ -28,7 +28,7 @@ async function handler(m, { sock }) {
     const spouse = user ? getSpouse(user) : null;
 
     if (!spouse) {
-      return m.reply(`❌ Kamu belum menikah dengan karakter. Lamar dulu pakai \`${m.prefix}lamar\`.`);
+      return m.reply(`❌ Kamu belum menikah dengan karakter.\n> _Lamar dulu pakai \`${m.prefix}lamar <id>\`._`);
     }
 
     const cooldownKey = "buatanak";
@@ -37,7 +37,7 @@ async function handler(m, { sock }) {
     const now = Date.now();
     if (now - lastTry < CHILD_COOLDOWN_MS) {
       const remainMin = Math.ceil((CHILD_COOLDOWN_MS - (now - lastTry)) / 60000);
-      return m.reply(`⏳ Sabar dulu! Coba lagi dalam ${remainMin} menit.`);
+      return m.reply(`⏳ Sabar dulu! Coba lagi dalam ${remainMin} menit.\n> _Cooldown fitur ini adalah ${CHILD_COOLDOWN_MS / 3600000} jam sekali percobaan._`);
     }
 
     user.rpg.cooldowns[cooldownKey] = now;
@@ -46,7 +46,7 @@ async function handler(m, { sock }) {
     if (!success) {
       db.save();
       await m.react("😢");
-      return m.reply(`😢 Belum berhasil kali ini... Coba lagi nanti ya!`);
+      return m.reply(`😢 Belum berhasil kali ini... Coba lagi nanti ya!\n> _Peluang berhasil sekitar 60% setiap percobaan._`);
     }
 
     const requestedName = (m.args || []).join(" ").trim();
@@ -65,7 +65,12 @@ async function handler(m, { sock }) {
 
     await m.react("👶");
     await m.reply(
-      `👶 *sᴇʟᴀᴍᴀᴛ!* Kamu dan *${spouse.nickname || spouse.name}* dikaruniai anak bernama *${childName}*!\n\n> ID Anak: ${child.id}\n> \`${m.prefix}anak\` untuk lihat semua anakmu.`,
+      `👶 *sᴇʟᴀᴍᴀᴛ!* Kamu dan *${spouse.nickname || spouse.name}* dikaruniai anak bernama *${childName}*!\n\n` +
+        `• *ID Anak:* ${child.id}\n` +
+        `• *Kebahagiaan awal:* ${child.happiness}/100\n\n` +
+        `_Selanjutnya:_\n` +
+        `1. \`${m.prefix}anak\` — lihat semua anakmu\n` +
+        `2. \`${m.prefix}beri ${child.id} <jumlah>\` — naikkan kebahagiaannya`,
     );
   } catch (error) {
     await m.react("☢");

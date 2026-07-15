@@ -23,13 +23,13 @@ async function handler(m, { sock }) {
   try {
     const amount = parseInt(m.args?.[0]);
     if (!amount || amount <= 0) {
-      return m.reply(`👉 \`${m.prefix}pasuang <jumlah>\``);
+      return m.reply(`👉 \`${m.prefix}pasuang <jumlah>\`\n\n_Cara main:_\n1. Pertaruhkan sejumlah koin\n2. 50% kesempatan menang 1.8x + Love pasangan +20\n3. Kalau kalah, koin hilang & Love -5`);
     }
 
     const user = db.getUser(m.sender) || db.setUser(m.sender);
     const spouse = getSpouse(user);
     if (!spouse) {
-      return m.reply(`❌ Kamu belum punya pasangan karakter.`);
+      return m.reply(`❌ Kamu belum punya pasangan karakter.\n> _Fitur ini butuh pasangan, lamar dulu dengan \`${m.prefix}lamar <id>\`._`);
     }
 
     const balance = user.koin || 0;
@@ -42,20 +42,22 @@ async function handler(m, { sock }) {
 
     if (win) {
       const winnings = Math.floor(amount * 1.8);
+      const loveBefore = spouse.love || 0;
       user.koin += winnings;
-      spouse.love = Math.min(MAX_LOVE, (spouse.love || 0) + 20);
+      spouse.love = Math.min(MAX_LOVE, loveBefore + 20);
       db.save();
       await m.react("🎉");
       return m.reply(
-        `🎉 *ᴍᴇɴᴀɴɢ!* Kamu dan *${spouse.nickname || spouse.name}* dapat Rp ${winnings.toLocaleString("id-ID")}!\n> 💕 Love +20`,
+        `🎉 *ᴍᴇɴᴀɴɢ!* Kamu dan *${spouse.nickname || spouse.name}* dapat Rp ${winnings.toLocaleString("id-ID")}!\n> 💕 Love: ~${loveBefore}~ → *${spouse.love}*`,
       );
     }
 
-    spouse.love = Math.max(0, (spouse.love || 0) - 5);
+    const loveBefore = spouse.love || 0;
+    spouse.love = Math.max(0, loveBefore - 5);
     db.save();
     await m.react("😢");
     return m.reply(
-      `😢 *ᴋᴀʟᴀʜ...* Kamu kehilangan Rp ${amount.toLocaleString("id-ID")}.\n> 💔 Love -5`,
+      `😢 *ᴋᴀʟᴀʜ...* Kamu kehilangan Rp ${amount.toLocaleString("id-ID")}.\n> 💔 Love: ~${loveBefore}~ → *${spouse.love}*`,
     );
   } catch (error) {
     await m.react("☢");

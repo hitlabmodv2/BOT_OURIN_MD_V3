@@ -32,11 +32,12 @@ async function handler(m, { sock }) {
     const action = args[0]?.toLowerCase();
 
     if (action !== "buy") {
-      let txt = `🛒 *ᴍᴀʀᴋᴇᴛ*\n\n`;
-      for (const [key, item] of Object.entries(ITEMS)) {
-        txt += `${item.emoji} *${key}* — Rp ${item.price.toLocaleString("id-ID")}\n`;
-      }
-      txt += `\n> \`${m.prefix}market buy <item> <jumlah>\`\n> Item hasil beli masuk ke inventory, bisa dipakai lewat \`${m.prefix}gift\``;
+      let txt = `🛒 *ᴍᴀʀᴋᴇᴛ*\n`;
+      txt += `_Beli item buat pasangan/anak karaktermu. Item masuk ke inventory._\n\n`;
+      Object.entries(ITEMS).forEach(([key, item], i) => {
+        txt += `${i + 1}. ${item.emoji} *${key}* — Rp ${item.price.toLocaleString("id-ID")}\n`;
+      });
+      txt += `\n> \`${m.prefix}market buy <item> <jumlah>\`\n> _Contoh: \`${m.prefix}market buy cokelat 2\`_`;
       await m.react("🛒");
       return m.reply(txt);
     }
@@ -54,7 +55,7 @@ async function handler(m, { sock }) {
     const balance = user.koin || 0;
 
     if (balance < totalCost) {
-      return m.reply(`❌ Saldo tidak cukup. Butuh Rp ${totalCost.toLocaleString("id-ID")}, kamu punya Rp ${balance.toLocaleString("id-ID")}.`);
+      return m.reply(`❌ Saldo tidak cukup.\n> Butuh *Rp ${totalCost.toLocaleString("id-ID")}*, kamu punya *Rp ${balance.toLocaleString("id-ID")}*.`);
     }
 
     user.koin -= totalCost;

@@ -34,7 +34,7 @@ async function handler(m, { sock }) {
     const query = target ? args.slice(target ? 1 : 0).join(" ").trim() : args.join(" ").trim();
 
     if (!target || !query) {
-      return m.reply(`👉 \`${m.prefix}setcp @user <id/nama karakter>\``);
+      return m.reply(`👉 *[Owner]* \`${m.prefix}setcp @user <id/nama karakter>\`\n> _Paksa pasangkan seorang user dengan karakter tertentu, tanpa lewat proses lamar biasa._`);
     }
 
     const raw = await searchCharacter(query);
@@ -44,7 +44,7 @@ async function handler(m, { sock }) {
     const targetClean = target.replace(/@.+/g, "");
     const existingOwner = getRegistryOwner(c.id);
     if (existingOwner && existingOwner !== targetClean) {
-      return m.reply(`❌ Karakter ini sudah dimiliki oleh nomor lain.`);
+      return m.reply(`❌ Karakter ini sudah dimiliki oleh nomor lain.\n> _Setiap karakter cuma bisa dimiliki 1 orang, hapus dulu kepemilikan lamanya kalau mau dipindah._`);
     }
 
     let targetUser = db.getUser(target) || db.setUser(target);

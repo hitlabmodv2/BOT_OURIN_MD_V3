@@ -29,6 +29,7 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Kamu belum punya pasangan karakter untuk diputus.`);
     }
 
+    const childCount = (user.rpg.children || []).length;
     removeRegistryEntry(spouse.id);
     clearSpouse(user);
     user.rpg.children = [];
@@ -36,7 +37,10 @@ async function handler(m, { sock }) {
 
     await m.react("💔");
     await m.reply(
-      `💔 *ᴘᴜᴛᴜs*\n\nKamu resmi putus dengan *${spouse.nickname || spouse.name}*.\nAnak-anak kalian ikut terhapus dari catatan. 😢`,
+      `💔 *ᴘᴜᴛᴜs*\n\n` +
+        `Status: ~menikah dengan *${spouse.nickname || spouse.name}*~ → *lajang*\n\n` +
+        `_Karakter ini sekarang bisa dilamar orang lain, dan ${childCount} anak kalian ikut terhapus dari catatan._ 😢\n\n` +
+        `> \`${m.prefix}char <nama>\` kalau mau cari pasangan baru.`,
     );
   } catch (error) {
     await m.react("☢");

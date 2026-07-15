@@ -25,12 +25,12 @@ async function handler(m, { sock }) {
     const spouse = user ? getSpouse(user) : null;
 
     if (!spouse) {
-      return m.reply(`💔 Kamu belum punya jodoh. Cari dengan \`${m.prefix}char\` lalu \`${m.prefix}lamar\`.`);
+      return m.reply(`💔 Kamu belum punya jodoh.\n> _Cari dengan \`${m.prefix}char <nama>\` lalu lamar dengan \`${m.prefix}lamar <id>\`._`);
     }
 
     await m.react("💞");
     await m.reply(
-      `💞 *ɴᴀᴍᴀ ᴊᴏᴅᴏʜ*\n\n> ${spouse.nickname ? `${spouse.nickname} (${spouse.name})` : spouse.name}`,
+      `💞 *ɴᴀᴍᴀ ᴊᴏᴅᴏʜ*\n\n${spouse.nickname ? `*${spouse.nickname}* _(nama asli: ${spouse.name})_` : `*${spouse.name}*`}\n\n> _Detail lengkap: \`${m.prefix}cekcp\`_`,
     );
   } catch (error) {
     await m.react("☢");

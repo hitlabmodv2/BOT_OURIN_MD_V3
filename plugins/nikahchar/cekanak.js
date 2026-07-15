@@ -26,7 +26,7 @@ async function handler(m, { sock }) {
     const children = user ? getChildren(user) : [];
 
     if (!query) {
-      return m.reply(`👉 \`${m.prefix}cekanak <id / nama anak>\`\n> Lihat semua anak dengan \`${m.prefix}anak\``);
+      return m.reply(`👉 \`${m.prefix}cekanak <id / nama anak>\`\n> _Lihat semua anak dengan \`${m.prefix}anak\` dulu untuk tahu ID-nya._`);
     }
 
     const child = children.find(
@@ -34,16 +34,17 @@ async function handler(m, { sock }) {
     );
 
     if (!child) {
-      return m.reply(`❌ Anak dengan id/nama *${query}* tidak ditemukan.`);
+      return m.reply(`❌ Anak dengan id/nama *${query}* tidak ditemukan.\n> _Cek daftar anakmu lewat \`${m.prefix}anak\`._`);
     }
 
     const born = new Date(child.bornAt).toLocaleDateString("id-ID");
     await m.react("👶");
     await m.reply(
       `👶 *${child.name}*\n\n` +
-        `*ID:* ${child.id}\n` +
-        `*Kebahagiaan:* ${child.happiness ?? 50}/100\n` +
-        `*Lahir:* ${born}`,
+        `• *ID:* \`${child.id}\`\n` +
+        `• *Kebahagiaan:* ${child.happiness ?? 50}/100\n` +
+        `• *Lahir:* ${born}\n\n` +
+        `> _Naikkan kebahagiaannya lewat \`${m.prefix}beri ${child.id} <jumlah>\`._`,
     );
   } catch (error) {
     await m.react("☢");

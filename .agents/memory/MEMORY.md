@@ -1,1 +1,2 @@
 - [Wikipedia image URL strategy](wikipedia-image-urls.md) — direct non-thumb URLs work in production; 429 only during bulk testing
+- [Debounced auth writes need flush-on-exit](debounced-write-flush-on-exit.md) — WA session/QR loop bug traced to this pattern
