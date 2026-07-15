@@ -614,6 +614,9 @@ async function extendSocket(sock) {
     const table = new Table({
       head: headers,
       wordWrap: true,
+      // Disable ANSI color codes — cli-table3 colors head/border by default,
+      // which renders as garbled escape sequences in WhatsApp text messages.
+      style: { head: [], border: [], compact: false },
     });
     for (const row of rows) table.push(row);
     return table.toString();
