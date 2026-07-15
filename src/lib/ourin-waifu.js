@@ -1,7 +1,14 @@
 import axios from "axios";
+import * as cheerio from "cheerio";
 import { getDatabase } from "./ourin-database.js";
 
+const MAL_BASE = "https://myanimelist.net";
+// Kept for backwards-compat (old exports referenced this); no longer used for requests.
 const JIKAN_BASE = "https://api.jikan.moe/v4";
+const MAL_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+};
 const REGISTRY_KEY = "charRegistry";
 const CHILD_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6 jam
 const MAX_LOVE = 1000;
@@ -43,31 +50,98 @@ class WaifuServiceError extends Error {
   }
 }
 
-/** Cari karakter di Jikan (MyAnimeList) API berdasarkan nama atau ID */
+async function fetchMalHtml(path, params) {
+  const { data } = await axios.get(`${MAL_BASE}${path}`, {
+    params,
+    headers: MAL_HEADERS,
+    timeout: 15000,
+  });
+  return data;
+}
+
+/** Cari id+nama karakter pertama dari halaman pencarian character.php di MyAnimeList */
+async function searchCharacterIdByName(query) {
+  const html = await fetchMalHtml("/character.php", { q: query });
+  const $ = cheerio.load(html);
+
+  let found = null;
+  $("table a[href*='/character/']").each((_, el) => {
+    if (found) return;
+    const href = $(el).attr("href") || "";
+    const match = href.match(/\/character\/(\d+)\//);
+    const name = $(el).text().trim();
+    if (match && name) found = { id: match[1], name };
+  });
+  return found;
+}
+
+/** Ambil detail lengkap karakter langsung dari halaman /character/<id> di MyAnimeList */
+async function getCharacterDetailById(id) {
+  const html = await fetchMalHtml(`/character/${id}`);
+  const $ = cheerio.load(html);
+
+  // MAL balas HTTP 200 dengan halaman "Invalid ID provided." untuk id yang tidak ada,
+  // jadi status code saja tidak cukup untuk deteksi "tidak ditemukan".
+  const h2 = $("h2.normal_header").first();
+  if (!h2.length) return null;
+
+  const kanji = h2.find("small").first().text().replace(/[()]/g, "").trim() || null;
+  const name = h2.clone().children().remove().end().text().trim();
+
+  let about = "";
+  let node = h2.get(0).nextSibling;
+  let guard = 0;
+  while (node && guard < 4000) {
+    if (node.type === "tag" && (node.name === "div" || node.name === "h2")) break;
+    if (node.type === "text") about += node.data;
+    else if (node.type === "tag" && node.name === "br") about += "\n";
+    node = node.nextSibling;
+    guard++;
+  }
+  about = about.replace(/&quot;/g, '"').replace(/\n{3,}/g, "\n\n").trim();
+
+  const favMatch = $("body")
+    .text()
+    .match(/Member Favorites:\s*([\d,]+)/);
+  const favorites = favMatch ? parseInt(favMatch[1].replace(/,/g, ""), 10) : 0;
+
+  const image =
+    $('meta[property="og:image"]').attr("content") ||
+    $(".borderClass img.lazyload").first().attr("data-src") ||
+    null;
+
+  return {
+    mal_id: Number(id),
+    name,
+    name_kanji: kanji,
+    url: `${MAL_BASE}/character/${id}`,
+    images: { jpg: { image_url: image } },
+    about: about || null,
+    favorites,
+  };
+}
+
+/** Cari karakter langsung dari MyAnimeList (bukan Jikan) berdasarkan nama atau ID */
 async function searchCharacter(query) {
   if (!query) return null;
-  const isId = /^\d+$/.test(query.trim());
+  const trimmed = query.trim();
+  const isId = /^\d+$/.test(trimmed);
 
   try {
     if (isId) {
-      const { data } = await axios.get(`${JIKAN_BASE}/characters/${query.trim()}`, {
-        timeout: 15000,
-      });
-      return data?.data || null;
+      return await getCharacterDetailById(trimmed);
     }
 
-    const { data } = await axios.get(`${JIKAN_BASE}/characters`, {
-      params: { q: query, limit: 1, order_by: "favorites", sort: "desc" },
-      timeout: 15000,
-    });
-    return data?.data?.[0] || null;
+    const found = await searchCharacterIdByName(trimmed);
+    if (!found) return null;
+    return await getCharacterDetailById(found.id);
   } catch (err) {
     const status = err.response?.status;
     if (status === 404) return null;
-    // Jikan proxies MyAnimeList; 5xx / timeouts mean the upstream service
-    // itself is unavailable, which is different from "character not found".
+    // Timeout / 5xx / jaringan berarti MyAnimeList sendiri lagi gangguan,
+    // beda kasus dari "karakter tidak ditemukan".
     throw new WaifuServiceError(
-      "Layanan pencarian karakter (MyAnimeList/Jikan) sedang gangguan, coba lagi nanti.",
+      "Layanan pencarian karakter (MyAnimeList) sedang gangguan, coba lagi nanti.",
     );
   }
 }
