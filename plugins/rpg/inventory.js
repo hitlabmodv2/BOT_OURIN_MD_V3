@@ -49,6 +49,21 @@ const ITEMS = {
   chakra: { emote: "🌀", name: "Chakra" },
   scroll: { emote: "📜", name: "Scroll Ninja" },
   bowlramen: { emote: "🍜", name: "Ramen" },
+
+  kelinci: { emote: "🐰", name: "Kelinci" },
+  rusa: { emote: "🦌", name: "Rusa" },
+  babihutan: { emote: "🐗", name: "Babi Hutan" },
+  rubah: { emote: "🦊", name: "Rubah" },
+  beruang: { emote: "🐻", name: "Beruang" },
+  singa: { emote: "🦁", name: "Singa" },
+
+  // Key lama, disisakan supaya stok user lama tetap kelihatan di .inv
+  daging_kelinci: { emote: "🐰", name: "Kelinci (daging)" },
+  daging_rusa: { emote: "🦌", name: "Rusa (daging)" },
+  daging_babi: { emote: "🐗", name: "Babi Hutan (daging)" },
+  bulu_rubah: { emote: "🦊", name: "Rubah (bulu)" },
+  cakar_beruang: { emote: "🐻", name: "Beruang (cakar)" },
+  taring_singa: { emote: "🦁", name: "Singa (taring)" },
 };
 
 async function handler(m, { sock }) {
@@ -84,6 +99,20 @@ async function handler(m, { sock }) {
     "🌿 *Hasil Dungeon*": ["herb", "leather", "mysterybox"],
     "🧪 *Potions & Buffs*": ["potion", "mpotion", "stamina"],
     "⛩️ *Perlengkapan Shinobi*": ["kunai", "shuriken", "chakra", "scroll", "bowlramen"],
+    "🏹 *Hasil Buruan*": [
+      "kelinci",
+      "rusa",
+      "babihutan",
+      "rubah",
+      "beruang",
+      "singa",
+      "daging_kelinci",
+      "daging_rusa",
+      "daging_babi",
+      "bulu_rubah",
+      "cakar_beruang",
+      "taring_singa",
+    ],
   };
 
   for (const [catName, items] of Object.entries(categories)) {

@@ -38,13 +38,16 @@ async function handler(m, { sock, skipDeduct }) {
   await m.reply(`Mengendap-endap masuk ke hutan... 🤫🌳\nSiapin panah dan bidik dengan teliti! 🏹👀`);
   await new Promise((r) => setTimeout(r, 3000));
 
+  // PENTING: key di sini HARUS sama persis dengan key sellable di shop.js
+  // (ITEMS) dan inventory.js (ITEMS/categories) -- ini yang bikin hasil buruan
+  // beneran bisa dijual manual pakai ".shop sell <key> <jumlah>" atau ".sellall".
   const animals = [
-    { name: "🐰 Kelinci", item: "daging_kelinci", chance: 80, min: 1, max: 3, exp: 50, money: 500 },
-    { name: "🦌 Rusa", item: "daging_rusa", chance: 50, min: 1, max: 2, exp: 100, money: 1500 },
-    { name: "🐗 Babi Hutan", item: "daging_babi", chance: 40, min: 1, max: 2, exp: 150, money: 2000 },
-    { name: "🦊 Rubah", item: "bulu_rubah", chance: 30, min: 1, max: 1, exp: 200, money: 3000 },
-    { name: "🐻 Beruang", item: "cakar_beruang", chance: 15, min: 1, max: 1, exp: 500, money: 10000 },
-    { name: "🦁 Singa", item: "taring_singa", chance: 5, min: 1, max: 1, exp: 1000, money: 25000 },
+    { name: "🐰 Kelinci", item: "kelinci", chance: 80, min: 1, max: 3, exp: 50 },
+    { name: "🦌 Rusa", item: "rusa", chance: 50, min: 1, max: 2, exp: 100 },
+    { name: "🐗 Babi Hutan", item: "babihutan", chance: 40, min: 1, max: 2, exp: 150 },
+    { name: "🦊 Rubah", item: "rubah", chance: 30, min: 1, max: 1, exp: 200 },
+    { name: "🐻 Beruang", item: "beruang", chance: 15, min: 1, max: 1, exp: 500 },
+    { name: "🦁 Singa", item: "singa", chance: 5, min: 1, max: 1, exp: 1000 },
   ];
 
   const caught = animals.filter((a) => Math.random() * 100 <= a.chance);
@@ -57,17 +60,14 @@ async function handler(m, { sock, skipDeduct }) {
 
   let results = [];
   let totalExp = 0;
-  let totalMoney = 0;
 
   for (const animal of caught.slice(0, 3)) {
     const qty = Math.floor(Math.random() * (animal.max - animal.min + 1)) + animal.min;
     user.inventory[animal.item] = (user.inventory[animal.item] || 0) + qty;
     totalExp += animal.exp * qty;
-    totalMoney += animal.money * qty;
-    results.push({ name: animal.name, qty, money: animal.money * qty });
+    results.push({ name: animal.name, item: animal.item, qty });
   }
 
-  user.koin = (user.koin || 0) + totalMoney;
   const levelResult = await addExpWithLevelCheck(sock, m, db, user, totalExp);
 
   db.save();
@@ -76,10 +76,10 @@ async function handler(m, { sock, skipDeduct }) {
 
   let txt = `CROOT! Kena sasaran kak! 🎯🏹\n\nKamu pulang bawa hasil buruan nih:\n`;
   for (const r of results) {
-    txt += `• ${r.name}: *+${r.qty} ekor*\n`;
+    txt += `• ${r.name}: *+${r.qty} ekor* (key: \`${r.item}\`)\n`;
   }
-  txt += `\nHasil buruannya otomatis kejual ya! 🎉\n`;
-  txt += `💸 Koin: *+Rp ${totalMoney.toLocaleString("id-ID")}*\n`;
+  txt += `\nHasil buruan udah masuk ke tas kamu (\`.inv\`)! 🎒\n`;
+  txt += `Mau dijual? Ketik \`.shop sell <key> <jumlah>\` (misal \`.shop sell rusa 1\`) atau \`.sellall\` buat jual semua sekaligus.\n\n`;
   txt += `📈 EXP: *+${totalExp}*\n`;
   txt += `⚡ Stamina terpakai: *-${staminaCost}*\n\n`;
   txt += `Mantap banget, besok-besok berburu lagi ya kak! 🔥🥩`;

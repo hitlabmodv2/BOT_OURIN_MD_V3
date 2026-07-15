@@ -3,7 +3,7 @@ import { addExpWithLevelCheck } from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "hunt",
-  alias: ["berburu", "hunting"],
+  alias: ["hunting"],
   category: "rpg",
   description: "Berburu hewan untuk mendapatkan daging dan kulit",
   usage: ".hunt",

@@ -52,7 +52,10 @@ async function handler(m, { sock, skipDeduct }) {
   for (const drop of drops) {
     const qty = Math.floor(Math.random() * (drop.max - drop.min + 1)) + drop.min;
     if (qty > 0) {
-      user.inventory[drop.item] = (user.inventory[drop.item] || 0) + qty;
+      // Rongsokan otomatis dijual ke pengepul (lihat teks di bawah), jadi TIDAK
+      // disimpan ke inventory -- item seperti "botol"/"kaleng" tidak ada di
+      // katalog shop/inventory manapun, jadi kalau disimpan bakal jadi item
+      // hantu yang nggak kelihatan di .inv dan nggak bisa dijual manual.
       results.push({ name: drop.name, qty });
       moneyEarned += qty * Math.floor(Math.random() * 50 + 10);
     }

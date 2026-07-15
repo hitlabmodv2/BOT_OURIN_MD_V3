@@ -38,6 +38,21 @@ const SELL_PRICES = {
   bear: 1000,
   lion: 2000,
   dragon: 10000,
+
+  kelinci: 500,
+  rusa: 1500,
+  babihutan: 2000,
+  rubah: 3000,
+  beruang: 10000,
+  singa: 25000,
+
+  // Key lama, disisakan supaya stok user lama tetap bisa dijual via .sellall
+  daging_kelinci: 500,
+  daging_rusa: 1500,
+  daging_babi: 2000,
+  bulu_rubah: 3000,
+  cakar_beruang: 10000,
+  taring_singa: 25000,
 };
 
 async function handler(m, { sock }) {

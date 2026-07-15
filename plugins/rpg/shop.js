@@ -58,6 +58,22 @@ const ITEMS = {
   chakra: { price: 500, type: "sellable", name: "🌀 Chakra" },
   scroll: { price: 2000, type: "sellable", name: "📜 Scroll Ninja" },
   bowlramen: { price: 800, type: "sellable", name: "🍜 Ramen" },
+
+  kelinci: { price: 500, type: "sellable", name: "🐰 Kelinci" },
+  rusa: { price: 1500, type: "sellable", name: "🦌 Rusa" },
+  babihutan: { price: 2000, type: "sellable", name: "🐗 Babi Hutan" },
+  rubah: { price: 3000, type: "sellable", name: "🦊 Rubah" },
+  beruang: { price: 10000, type: "sellable", name: "🐻 Beruang" },
+  singa: { price: 25000, type: "sellable", name: "🦁 Singa" },
+
+  // Key lama (sebelum item hasil buru dirapikan) -- disisakan supaya
+  // stok yang sudah nyangkut di inventory user lama tetap bisa dijual.
+  daging_kelinci: { price: 500, type: "sellable", name: "🐰 Kelinci (daging)" },
+  daging_rusa: { price: 1500, type: "sellable", name: "🦌 Rusa (daging)" },
+  daging_babi: { price: 2000, type: "sellable", name: "🐗 Babi Hutan (daging)" },
+  bulu_rubah: { price: 3000, type: "sellable", name: "🦊 Rubah (bulu)" },
+  cakar_beruang: { price: 10000, type: "sellable", name: "🐻 Beruang (cakar)" },
+  taring_singa: { price: 25000, type: "sellable", name: "🦁 Singa (taring)" },
 };
 
 async function handler(m, { sock }) {
