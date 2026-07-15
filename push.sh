@@ -46,7 +46,7 @@ IGNORE_BRANCHES="replit-agent HEAD"
 # File log riwayat push (disimpan lokal, tidak ke-upload ke GitHub)
 PUSH_LOG_FILE=".push_history.log"
 
-# Batas ukuran file (MB) — file > limit akan di-skip kecuali berada di node_modules.
+# Batas ukuran folder node_modules (MB) — folder >= nilai ini akan di-skip saat push.
 # Ubah angka ini kalau mau lebih ketat atau lebih longgar.
 NM_SKIP_MB=5
 
@@ -1329,8 +1329,8 @@ _sbar_sweep 1 8 0.03 "Inisialisasi ..."
   _log_total=0; _log_ok=0; _log_fail=0
   if [ -f "${PUSH_LOG_FILE}" ] && [ -s "${PUSH_LOG_FILE}" ]; then
     _log_total=$(wc -l < "${PUSH_LOG_FILE}" | tr -d ' ')
-    _log_ok=$(grep -c '| OK ' "${PUSH_LOG_FILE}" 2>/dev/null || echo 0)
-    _log_fail=$(grep -c '| FAIL ' "${PUSH_LOG_FILE}" 2>/dev/null || echo 0)
+    _log_ok=$(grep -c '| OK ' "${PUSH_LOG_FILE}" 2>/dev/null; true)
+    _log_fail=$(grep -c '| FAIL ' "${PUSH_LOG_FILE}" 2>/dev/null; true)
   fi
 
   _btn_login='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"🌿 Branches","url":"https://github.com/'"${USER}"'/'"${REPO}"'/branches"}],[{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits"},{"text":"🚀 Releases","url":"https://github.com/'"${USER}"'/'"${REPO}"'/releases"}],[{"text":"⚙️ Settings","url":"https://github.com/'"${USER}"'/'"${REPO}"'/settings"},{"text":"📈 Insights","url":"https://github.com/'"${USER}"'/'"${REPO}"'/pulse"}]]}'
@@ -1418,78 +1418,215 @@ _do_check_update &
 
 # ===== Auto-classify commit (Conventional Commits) =====
 classify_commit() {
-  local files status_lines
-  status_lines=$(git diff --cached --name-status)
-  files=$(echo "$status_lines" | awk '{print $2}')
+  local files status_lines added modified deleted total
+  status_lines=$(git diff --cached --name-status 2>/dev/null)
+  [ -z "$status_lines" ] && { echo "chore: update files"; return; }
 
-  local added modified deleted
-  added=$(echo "$status_lines"   | awk '$1=="A"' | wc -l | tr -d ' ')
-  modified=$(echo "$status_lines" | awk '$1=="M"' | wc -l | tr -d ' ')
-  deleted=$(echo "$status_lines"  | awk '$1=="D"' | wc -l | tr -d ' ')
+  files=$(echo "$status_lines" | awk '{print $NF}')
+  total=$(echo "$files" | grep -c '.' 2>/dev/null; true)
+  added=$(echo "$status_lines"    | awk '$1~/^A/' | wc -l | tr -d ' ')
+  modified=$(echo "$status_lines" | awk '$1~/^M/' | wc -l | tr -d ' ')
+  deleted=$(echo "$status_lines"  | awk '$1~/^D/' | wc -l | tr -d ' ')
 
+  # ── Scope detection (folder dominan) ────────────────────────────────────────
   local scope="" scope_count=0
-  declare -A scope_map=(
-    [src/scrape/]="scrape"
-    [src/handler/]="handler"
-    [src/helper/]="helper"
-    [src/db/]="db"
-    [src/lib/]="lib"
-    [data/]="data"
-    [sessions/]="session"
-    [attached_assets/]="assets"
-    [.agents/]="agents"
-    [jadibot/]="jadibot"
-  )
-
-  for prefix in "${!scope_map[@]}"; do
-    local cnt
-    cnt=$(echo "$files" | grep -c "^${prefix}" || true)
-    if [ "$cnt" -gt "$scope_count" ]; then
-      scope_count=$cnt
-      scope="${scope_map[$prefix]}"
+  for _pfx in "src/handler/" "src/helper/" "src/lib/" "src/db/" \
+              "data/" "sessions/" "attached_assets/" ".agents/" \
+              "jadibot/" "scrape/"; do
+    local _cnt
+    _cnt=$(echo "$files" | grep -c "^${_pfx}" 2>/dev/null; true)
+    if [ "$_cnt" -gt "$scope_count" ]; then
+      scope_count=$_cnt
+      case "$_pfx" in
+        src/handler/)     scope="handler" ;;
+        src/helper/)      scope="helper"  ;;
+        src/lib/)         scope="lib"     ;;
+        src/db/)          scope="db"      ;;
+        data/)            scope="data"    ;;
+        sessions/)        scope="session" ;;
+        attached_assets/) scope="assets"  ;;
+        .agents/)         scope="agents"  ;;
+        jadibot/)         scope="jadibot" ;;
+        scrape/)          scope="scrape"  ;;
+      esac
     fi
   done
-
-  if echo "$files" | grep -qE '^(package\.json|package-lock\.json)$'; then
+  if echo "$files" | grep -qE '(package\.json|package-lock\.json)'; then
     [ -z "$scope" ] && scope="deps"
   fi
-  if echo "$files" | grep -qE '^(\.gitignore|push\.sh|index\.js|config\.json|Dockerfile|fly\.toml|\.npmrc)$'; then
+  if echo "$files" | grep -qE '(\.gitignore|push\.sh|index\.js|config\.json|\.npmrc|\.replit)'; then
     [ -z "$scope" ] && scope="config"
   fi
 
+  # ── Theme / subject detection — sesuai struktur project nyata ───────────────
+  # Pakai full path (files) + basename (names) lowercase
+  local _names _all _fpath
+  _names=$(echo "$files" | xargs -n1 basename 2>/dev/null | tr '[:upper:]' '[:lower:]' | tr '_.-' '   ')
+  _all=$(echo "$files" | tr '[:upper:]' '[:lower:]' | tr '_.-' '   ')
+  _fpath=$(echo "$files" | tr '[:upper:]' '[:lower:]')  # full path tanpa strip karakter
+
+  # ── Label map untuk folder data/ — tambah entry baru kapanpun tanpa ubah logic ──
+  # Format: "nama_folder=Label Tampil"
+  # Folder baru yang TIDAK ada di sini → nama folder aslinya langsung dipakai (dinamis)
+  local -A _DATA_LABEL=(
+    [alqanimenotif]="Al-Quran anime notification"
+    [animasu]="anime streaming"
+    [an1game]="game features"
+    [infowibu]="weeb info"
+    [malnews]="MAL news"
+    [swtrack]="SW tracker"
+    [tmail]="temporary mail"
+    [tvonenews]="TVONE news"
+    [ceksw]="SW checker"
+    [kv]="key-value store"
+    [users]="user data"
+    [system]="system config"
+    [ai]="AI history data"
+    [gemini]="Gemini AI data"
+  )
+
+  local subject=""
+
+  # ── Deteksi data/ subfolder — OTOMATIS untuk folder lama & baru ──────────────
+  # Ambil semua subfolder data/ yang ada di staged files, pilih yang paling banyak filenya
+  local _data_sub="" _data_sub_cnt=0
+  local _tmp_sub
+  while IFS= read -r _tmp_sub; do
+    [ -z "$_tmp_sub" ] && continue
+    local _c
+    _c=$(echo "$_fpath" | grep -c "^data/${_tmp_sub}/" 2>/dev/null; true)
+    if [ "$_c" -gt "$_data_sub_cnt" ]; then
+      _data_sub_cnt=$_c
+      _data_sub="$_tmp_sub"
+    fi
+  done < <(echo "$_fpath" | grep -oE '^data/[^/]+' | sed 's|^data/||' | sort -u 2>/dev/null)
+
+  if [ -n "$_data_sub" ]; then
+    # Cek dulu di label map; kalau tidak ada, pakai nama folder asli (auto-detect)
+    if [ -n "${_DATA_LABEL[$_data_sub]+x}" ]; then
+      subject="${_DATA_LABEL[$_data_sub]}"
+    else
+      # Nama folder baru: ubah - dan _ jadi spasi, capitalize tiap kata
+      subject=$(echo "$_data_sub" | tr '_-' '  ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2)); print}')
+    fi
+  fi
+
+  # ── Deteksi src/helper & src/db (berbasis nama file, keyword-based) ──────────
+  if [ -z "$subject" ]; then
+    if   echo "$_fpath $_names" | grep -qiE 'aipromptfb|aipromptfacebook';                   then subject="Facebook AI prompt"
+    elif echo "$_fpath $_names" | grep -qiE 'aiprompt|aireact|aistickerstory|aitools';        then subject="AI prompt feature"
+    elif echo "$_fpath $_names" | grep -qiE 'gemini';                                         then subject="Gemini AI"
+    elif echo "$_fpath $_names" | grep -qiE 'imagesearch|imagesear';                          then subject="image search"
+    elif echo "$_fpath $_names" | grep -qiE 'jadibotSettings|jadibots';                       then subject="jadibot settings"
+    elif echo "$_fpath $_names" | grep -qiE 'jadibot';                                        then subject="jadibot"
+    elif echo "$_fpath $_names" | grep -qiE 'crashguard';                                     then subject="crash guard"
+    elif echo "$_fpath $_names" | grep -qiE 'authstate';                                      then subject="auth state"
+    elif echo "$_fpath $_names" | grep -qiE 'memorymonitor';                                  then subject="memory monitor"
+    elif echo "$_fpath $_names" | grep -qiE 'browserswitch';                                  then subject="browser switcher"
+    elif echo "$_fpath $_names" | grep -qiE 'hotreload';                                      then subject="hot reload"
+    elif echo "$_fpath $_names" | grep -qiE 'cleaner|injector|inject';                        then subject="bot utility"
+    elif echo "$_fpath $_names" | grep -qiE 'botstats|botstat';                               then subject="bot statistics"
+    elif echo "$_fpath $_names" | grep -qiE 'errorlog';                                       then subject="error logger"
+    elif echo "$_fpath $_names" | grep -qiE 'datadb|userdb';                                  then subject="database"
+    # ── src/helper lain yang belum ada di atas: ambil nama file tanpa ekstensi ──
+    elif echo "$_fpath" | grep -qE 'src/(helper|db|lib)/'; then
+      local _src_name
+      _src_name=$(echo "$_fpath" | grep -oE 'src/(helper|db|lib)/[^/]+' | \
+                  head -1 | xargs -n1 basename 2>/dev/null | sed 's/\.[^.]*$//' | \
+                  sed 's/\([A-Z]\)/ \1/g' | tr '[:upper:]' '[:lower:]' | sed 's/^ //')
+      [ -n "$_src_name" ] && subject="$_src_name"
+    fi
+  fi
+
+  # ── Deteksi attached_assets & session (generik) ───────────────────────────────
+  if [ -z "$subject" ]; then
+    if   echo "$_fpath" | grep -qE 'attached_assets';                          then subject="bot media assets"
+    elif echo "$_all $_names" | grep -qiE 'session|sesi';                      then subject="session data"
+    elif echo "$_all $_names" | grep -qiE 'swstats|swstat';                    then subject="bot statistics"
+    elif echo "$_all $_names" | grep -qiE 'stat|statistik';                    then subject="statistics"
+    elif echo "$_all $_names" | grep -qiE 'contact|kontak|sender';             then subject="contact list"
+    fi
+  fi
+
+  # ── Verb detection: dari nama file & perubahan git ──────────────────────────
+  local verb=""
+  if   echo "$_all $_names" | grep -qiE 'fix|perbaik|repair|resolve|correct'; then verb="Fix"
+  elif echo "$_all $_names" | grep -qiE 'restore|revert|rollback|kembalikan'; then verb="Restore"
+  elif echo "$_all $_names" | grep -qiE 'remove|hapus|delete|eliminat|temporary|temp'; then verb="Remove"
+  elif echo "$_all $_names" | grep -qiE 'enhance|improve|better|optimis|higher|increas|upgrade'; then verb="Enhance"
+  elif echo "$_all $_names" | grep -qiE 'refactor|restructur|reorganiz|migrat|cleanup|cleaner'; then verb="Refactor"
+  elif echo "$_all $_names" | grep -qiE 'update|sync|refresh|bump'; then verb="Update"
+  elif echo "$_all $_names" | grep -qiE 'add|tambah|new|baru|init'; then verb="Add"
+  elif [ "$deleted" -gt 0 ] && [ "$added" -eq 0 ]; then verb="Remove"
+  elif [ "$added" -gt "$modified" ] && [ "$added" -gt 0 ]; then verb="Add"
+  elif [ "$modified" -gt 0 ]; then verb="Update"
+  else verb="Update"
+  fi
+
+  # ── Conventional commit type ─────────────────────────────────────────────────
   local type=""
-  if echo "$files" | grep -qE '^(package\.json|package-lock\.json)$' && [ "$scope_count" -le 1 ]; then
-    type="deps"
-  elif [ "$added" -ge "$modified" ] && [ "$added" -gt 0 ] && \
-       echo "$files" | grep -qE '^src/(scrape|handler|helper|lib)/'; then
-    type="feat"
-  elif [ "$scope" = "data" ] || [ "$scope" = "session" ]; then
-    type="chore"
-  elif [ "$scope" = "config" ]; then
-    type="chore"
-  elif [ "$scope" = "assets" ] || [ "$scope" = "agents" ]; then
-    type="chore"
-  elif [ "$modified" -gt 0 ] && echo "$files" | grep -qE '^src/'; then
-    type="fix"
-  else
-    type="chore"
+  case "$verb" in
+    Add)               type="feat"     ;;
+    Fix|Restore)       type="fix"      ;;
+    Enhance)           type="perf"     ;;
+    Remove|Refactor)   type="refactor" ;;
+    *)                 type="chore"    ;;
+  esac
+  # data / session / assets / config → selalu chore
+  case "$scope" in data|session|config|assets|agents) type="chore" ;; esac
+
+  # ── Context qualifier (detail tambahan sesuai isi file) ──────────────────────
+  local context=""
+  if   echo "$_all $_names" | grep -qiE 'display|tampil|show|view'; then context=" display and functionality"
+  elif echo "$_all $_names" | grep -qiE 'caption|teks|text'; then context=" captions"
+  elif echo "$_all $_names" | grep -qiE 'notif|notification'; then context=" notification"
+  elif echo "$_all $_names" | grep -qiE 'option|setting|resolution|resolusi'; then context=" options"
+  elif echo "$_all $_names" | grep -qiE 'function|fitur|feature|functionality'; then context=" functionality"
+  elif echo "$_all $_names" | grep -qiE 'midnight|tengah malam'; then context=" and midnight display"
+  elif echo "$_all $_names" | grep -qiE 'accuracy|akurasi'; then context=" accuracy"
+  elif echo "$_all $_names" | grep -qiE 'sticker|story|react'; then context=" reactions and stickers"
+  elif echo "$_all $_names" | grep -qiE 'history|riwayat'; then context=" history"
   fi
 
-  local sample summary total
-  total=$(echo "$files" | wc -l | tr -d ' ')
-  sample=$(echo "$files" | head -3 | xargs -n1 basename 2>/dev/null | tr '\n' ', ' | sed 's/, $//')
-
-  if [ "$total" -le 3 ]; then
-    summary="$sample"
-  else
-    summary="$sample +$((total - 3)) file lain"
+  # ── Multi-area qualifier ──────────────────────────────────────────────────────
+  local extra=""
+  if [ -n "$subject" ]; then
+    if echo "$_fpath $_names" | grep -qiE 'botstats|swstats|statistik' && \
+       [ "$subject" != "bot statistics" ] && [ "$subject" != "statistics" ]; then
+      extra=" and bot statistics"
+    elif echo "$_all $_names" | grep -qiE 'session|sesi' && \
+         [ "$subject" != "session data" ]; then
+      extra=" and session data"
+    fi
   fi
 
-  if [ -n "$scope" ]; then
-    echo "${type}(${scope}): ${summary}"
+  # ── Bangun pesan akhir ────────────────────────────────────────────────────────
+  local body="" _verb_lc
+  _verb_lc=$(echo "$verb" | tr '[:upper:]' '[:lower:]')
+  if [ -n "$subject" ]; then
+    body="${verb} ${subject}${context}${extra}"
   else
-    echo "${type}: ${summary}"
+    # Fallback: nama file (max 2) + jumlah sisa
+    local _sample
+    _sample=$(echo "$files" | head -2 | xargs -n1 basename 2>/dev/null | tr '\n' ', ' | sed 's/, $//')
+    if [ "$total" -le 2 ]; then
+      body="${_verb_lc}: ${_sample}"
+    else
+      body="${_verb_lc}: ${_sample} +$((total - 2)) file lain"
+    fi
   fi
+
+  # ── Output final ─────────────────────────────────────────────────────────────
+  if [ -n "$scope" ] && [ "$scope_count" -ge 2 ]; then
+    echo "${type}(${scope}): ${body}"
+  else
+    echo "${type}: ${body}"
+  fi
+}
+
+# Alias untuk kompatibilitas (dipanggil di beberapa tempat sebagai generate_commit_msg)
+generate_commit_msg() {
+  classify_commit "$@"
 }
 
 # ===== Bersihkan stale index.lock (sisa run sebelumnya yang ke-interrupt) =====
@@ -1522,7 +1659,7 @@ scan_changes() {
 scan_ignored_recent() {
   IGN_LIST=""; IGN_TOTAL=0
   # Folder yang sering jadi target user pengen upload tapi ke-ignore
-  local watch_paths=("data" "jadibot" "sessions/hisoka" "src" ".agents" "attached_assets")
+  local watch_paths=("data" "jadibot" "sessions" "src" ".agents" "attached_assets")
 
   local now mtime ageS rel
   now=$(date +%s)
@@ -1646,10 +1783,10 @@ preview_staged_confirm() {
 
   local _tot _add _mod _del _ren
   _tot=$(echo "$_staged_list" | wc -l | tr -d ' ')
-  _add=$(echo "$_staged_list" | grep -c '^A' 2>/dev/null || echo 0)
-  _mod=$(echo "$_staged_list" | grep -c '^M' 2>/dev/null || echo 0)
-  _del=$(echo "$_staged_list" | grep -c '^D' 2>/dev/null || echo 0)
-  _ren=$(echo "$_staged_list" | grep -c '^R' 2>/dev/null || echo 0)
+  _add=$(echo "$_staged_list" | grep -c '^A' 2>/dev/null; true)
+  _mod=$(echo "$_staged_list" | grep -c '^M' 2>/dev/null; true)
+  _del=$(echo "$_staged_list" | grep -c '^D' 2>/dev/null; true)
+  _ren=$(echo "$_staged_list" | grep -c '^R' 2>/dev/null; true)
 
   echo ""
   # Header ringkas — baris ini TETAP ada (tidak di-clear)
@@ -1708,7 +1845,7 @@ preview_staged_confirm() {
 
 # ===== Scan staged area, unstage file yang terlalu besar (>50MB default) =====
 # Dipanggil setelah git add -A, sebelum commit.
-# Mencegah GitHub reject (max 100MB per file) kecuali file berada di node_modules.
+# Mencegah GitHub reject (max 100MB per file).
 _skip_large_staged_files() {
   local limit_mb="${LARGE_FILE_LIMIT_MB:-50}"
   local limit_bytes=$(( limit_mb * 1024 * 1024 ))
@@ -1717,10 +1854,6 @@ _skip_large_staged_files() {
   while IFS= read -r _sf; do
     [ -z "$_sf" ] && continue
     [ -f "$_sf" ] || continue
-    # Node_modules tetap dipush meskipun file besar.
-    case "$_sf" in
-      node_modules/*) continue ;; 
-    esac
     local _fsize
     _fsize=$(stat -c%s "$_sf" 2>/dev/null || stat -f%z "$_sf" 2>/dev/null || echo 0)
     if [ "$_fsize" -gt "$limit_bytes" ]; then
@@ -1745,28 +1878,25 @@ prepare_stage() {
   local err_log
   err_log=$(mktemp)
 
-  # Hapus file sesi lama dari git (yang sekarang di-ignore) — recursive.
-  # Pakai ls-files tanpa pola → list semua tracked, lalu filter.
+  # Untrack file session format lama (folder-based) — sekarang pakai single file .json
   git ls-files 2>/dev/null | grep -E '^sessions/hisoka/' | while read -r f; do
-    case "$f" in
-      sessions/hisoka/creds.json|sessions/hisoka/contacts.json|sessions/hisoka/groups.json) ;;
-      *) git rm --cached -q "$f" 2>>"$err_log" || true ;;
-    esac
+    git rm --cached -q "$f" 2>>"$err_log" || true
   done
 
-  # node_modules: tidak lagi di-untrack secara otomatis.
-  # Jika folder node_modules ingin di-upload ke GitHub, cukup commit seperti file biasa.
+  # node_modules: SELALU untrack penuh — tidak pernah di-upload ke GitHub.
+  # User cukup jalankan `npm install` setelah clone.
+  if git ls-files --error-unmatch node_modules/ >/dev/null 2>&1; then
+    git rm -r --cached -q node_modules/ 2>>"$err_log" || true
+  fi
 
-  # sessions/hisoka: untrack file JUNK saja (bukan file penting koneksi bot).
-  # File penting: creds, contacts, groups, settings, app-state-sync-*, identity-key-*, device-list-*, lid-mapping-*
-  local _hisoka_junk_list
-  _hisoka_junk_list=$(git ls-files sessions/hisoka/ 2>/dev/null | grep -vE \
-    '(creds|contacts|groups|settings|app-state-sync-(key|version)-|identity-key-|device-list-|lid-mapping-)' || true)
-  if [ -n "$_hisoka_junk_list" ]; then
+  # Untrack semua sisa file session folder lama jika masih ada
+  local _hisoka_folder_list
+  _hisoka_folder_list=$(git ls-files sessions/hisoka/ 2>/dev/null || true)
+  if [ -n "$_hisoka_folder_list" ]; then
     local _junk_count
-    _junk_count=$(echo "$_hisoka_junk_list" | wc -l | tr -d ' ')
-    echo -e "  ${C_YELLOW}🧹 Untrack ${_junk_count} file cache WA yang tidak penting...${C_RESET}"
-    echo "$_hisoka_junk_list" | xargs -P4 -r git rm --cached -q 2>>"$err_log" || true
+    _junk_count=$(echo "$_hisoka_folder_list" | wc -l | tr -d ' ')
+    echo -e "  ${C_YELLOW}🧹 Untrack ${_junk_count} file session folder lama (sudah migrasi ke single-file)...${C_RESET}"
+    echo "$_hisoka_folder_list" | xargs -P4 -r git rm --cached -q 2>>"$err_log" || true
   fi
 
   # ⚠️  KEAMANAN: Auto-untrack .token.secret agar token asli tidak pernah ke-commit.
@@ -1775,36 +1905,16 @@ prepare_stage() {
     git rm --cached -q .token.secret 2>>"$err_log" || true
   fi
 
-  # 🚫 Untrack folder internal Replit/.cache/.local sebelum staging.
-  # Folder ini tidak perlu di GitHub sama sekali.
-  local _internal_dirs=(".cache" ".local" "attached_assets")
-  for _dir in "${_internal_dirs[@]}"; do
-    if git ls-files --error-unmatch "$_dir" >/dev/null 2>&1; then
-      local _cnt
-      _cnt=$(git ls-files "$_dir" 2>/dev/null | wc -l | tr -d ' ')
-      echo -e "  ${C_YELLOW}🗑️  Untrack ${_cnt} file '$_dir' dari git (folder tetap di disk)...${C_RESET}"
-      git rm --cached -rq "$_dir" 2>>"$err_log" || true
-    fi
-  done
-
-  # Stage SEMUA perubahan (baru, modified, deleted, rename) — termasuk file/folder
-  # yang biasanya di-ignore oleh .gitignore (pakai -f / --force).
-  if ! git add -fA 2>>"$err_log"; then
-    echo -e "  ${C_RED}❌ git add -fA gagal${C_RESET}"
+  # Stage SEMUA perubahan (baru, modified, deleted, rename).
+  if ! git add -A 2>>"$err_log"; then
+    echo -e "  ${C_RED}❌ git add -A gagal${C_RESET}"
     sed 's/^/    /' "$err_log" | tail -10
     rm -f "$err_log"
     return 1
   fi
 
-  # Pastikan file SENSITIF tidak pernah masuk stage — blokir paksa setelah git add -fA.
+  # Pastikan .token.secret TIDAK pernah masuk stage — blokir paksa setelah git add -A.
   git rm --cached -q .token.secret 2>/dev/null || true
-  git rm --cached -q .token        2>/dev/null || true
-  git rm --cached -q .repo.last    2>/dev/null || true
-
-  # Blokir paksa folder internal Replit — tidak boleh ke GitHub sekalipun ter-stage oleh -fA.
-  for _dir in ".cache" ".local" "attached_assets"; do
-    git rm --cached -rq "$_dir" 2>/dev/null || true
-  done
 
   # Auto-skip file terlalu besar (>50MB) — cegah GitHub reject.
   _skip_large_staged_files
@@ -1812,46 +1922,33 @@ prepare_stage() {
   # Force-add file penting yang biasanya di-ignore.
   # CATATAN: .token.secret SENGAJA TIDAK di-force-add (keamanan token).
   for forced in package-lock.json .env \
-                sessions/hisoka/creds.json \
-                sessions/hisoka/contacts.json \
-                sessions/hisoka/groups.json \
-                sessions/hisoka/settings.json \
-                .agents \
+                attached_assets .agents \
                 jadibot \
                 data \
                 .replit; do
     [ -e "$forced" ] || continue
     git add -f "$forced" 2>>"$err_log" || true
   done
-  # Force-add app-state-sync-* (pakai glob karena nama file dinamis)
-  for _ass in sessions/hisoka/app-state-sync-*.json; do
-    [ -e "$_ass" ] || continue
-    git add -f "$_ass" 2>>"$err_log" || true
+
+  # Force-add session file tunggal (format baru: sessions/hisoka.json, dsb)
+  for _sf in sessions/*.json; do
+    [ -e "$_sf" ] || continue
+    git add -f "$_sf" 2>>"$err_log" || true
   done
 
-  # Auto-add file koneksi bot yang BELUM pernah di-upload (untracked saja).
-  # File yang sudah tracked akan otomatis ke-stage via git add -A di atas.
-  # Pola: identity-key-*, device-list-*, lid-mapping-*
-  local _new_session_files _new_count
-  _new_session_files=$(git ls-files --others --exclude-standard sessions/hisoka/ 2>/dev/null | \
-    grep -E '(identity-key-|device-list-|lid-mapping-)' || true)
-  _new_count=0
-  if [ -n "$_new_session_files" ]; then
-    _new_count=$(echo "$_new_session_files" | grep -c '.' || echo 0)
-    echo -e "  ${C_CYAN}📱 Auto-add ${_new_count} file session baru (belum pernah di-upload)...${C_RESET}"
-    echo "$_new_session_files" | xargs -P4 -r git add -f 2>>"$err_log" || true
-    # Verifikasi: pastikan file benar-benar ter-stage setelah git add
-    local _staged_check
-    _staged_check=$(echo "$_new_session_files" | while IFS= read -r _sf; do
-      git ls-files --cached "$_sf" 2>/dev/null
-    done | grep -c '.' || echo 0)
-    _new_count="$_staged_check"
-  fi
-  # Simpan ke global agar bisa ditampilkan di summary/banner
+  # Hitung berapa session file baru yang berhasil di-stage
+  local _new_count
+  _new_count=$(git diff --cached --name-only 2>/dev/null | grep -c '^sessions/'; true)
   _PUSH_SESSION_NEW="$_new_count"
 
-  # node_modules sekarang boleh di-upload dan tidak di-untrack otomatis.
-  # Biarkan file node_modules tetap staged jika sudah ditambahkan.
+  # node_modules TIDAK di-upload — sudah di-exclude penuh via .gitignore.
+  # Pastikan tidak ada sisa tracking dari commit lama.
+  if git ls-files --error-unmatch node_modules/ >/dev/null 2>&1; then
+    git rm -r --cached -q node_modules/ 2>/dev/null || true
+    echo -e "  ${C_YELLOW}📦 node_modules di-untrack dari git (tidak di-upload). Jalankan npm install setelah clone.${C_RESET}"
+  else
+    echo -e "  ${C_DIM}   node_modules: tidak di-upload (excluded via .gitignore) ✓${C_RESET}"
+  fi
 
   # Kalau ada error non-fatal, tampilkan singkat (tapi jangan stop).
   if [ -s "$err_log" ]; then
@@ -1900,7 +1997,7 @@ fetch_branches() {
 
       # Kalau hasil < per_page, berarti halaman terakhir
       local count
-      count=$(echo "$chunk" | grep -c '"name":' 2>/dev/null || echo "0")
+      count=$(echo "$chunk" | grep -c '"name":' 2>/dev/null; true"0")
       [ "$count" -lt "$per_page" ] && break
       page=$((page + 1))
     else
@@ -2228,7 +2325,7 @@ const fs=require('fs');
 try{const pj=JSON.parse(fs.readFileSync('package.json','utf8'));
 console.log(Object.keys(pj.dependencies||{}).length);}catch(e){console.log(0);}
 " 2>/dev/null)
-    [ -n "$_ver_missing" ] && _ver_missing_count=$(echo "$_ver_missing" | grep -c '.' || echo 0)
+    [ -n "$_ver_missing" ] && _ver_missing_count=$(echo "$_ver_missing" | grep -c '.'; true)
     _ver_ok=$(( _ver_total - _ver_missing_count ))
   fi
   if [ "$_nm_exit" = "0" ]; then
@@ -2478,11 +2575,12 @@ show_main_menu() {
   printf "  ${C_GREEN} p${C_RESET} › %-16s  ${C_MAGENTA} l${C_RESET} › %s\n" "Quick Push"     "Riwayat push"
   printf "  ${C_YELLOW} c${C_RESET} › %-16s  ${C_CYAN} n${C_RESET} › %-16s  %b\n" \
     "Bersihkan history" "$_nm_label" "$_nm_status_str"
+  printf "  ${C_RED} d${C_RESET} › %-16s  ${C_MAGENTA} r${C_RESET} › %s\n" "Hapus file/folder" "Restore/undo hapus"
   if [ -n "$_upd_ver" ]; then
     printf "  ${C_GREEN} u${C_RESET} › ${C_BOLD}%-16s${C_RESET}  ${C_DIM}versi sekarang: %s → baru: %s${C_RESET}\n" \
       "Update script" "$SCRIPT_VERSION" "$_upd_ver"
   fi
-  printf "  ${C_RED} 0${C_RESET} › %s\n"                                      "Keluar"
+  printf "  ${C_RED} 0${C_RESET} › %s\n" "Keluar"
   echo -e "  ${C_DIM}──────────────────────────────────${C_RESET}"
   printf "  ${C_BOLD}▸ ${C_RESET}"
 
@@ -2509,6 +2607,8 @@ show_main_menu() {
     l|L) action_view_push_log ;;
     c|C) action_cleanup_node_modules ;;
     n|N) action_install_node_modules ;;
+    d|D) action_delete_file_folder ;;
+    r|R) action_restore_deleted ;;
     u|U) action_self_update "$_upd_ver" "$_upd_url" ;;
     0|q|Q|exit) goodbye_prompt ;;
     *)
@@ -2656,9 +2756,22 @@ action_view_push_log() {
 
   # ── Statistik ringkas ─────────────────────────────────────────────────────
   local _ok _force _fail
-  _ok=$(grep -c    ' OK |OK ' "$PUSH_LOG_FILE" 2>/dev/null || echo 0)
-  _force=$(grep -c 'OK(force)' "$PUSH_LOG_FILE" 2>/dev/null || echo 0)
-  _fail=$(grep -c  ' FAIL '    "$PUSH_LOG_FILE" 2>/dev/null || echo 0)
+  _ok=$(grep -c    ' OK |OK ' "$PUSH_LOG_FILE" 2>/dev/null; true)
+  _force=$(grep -c 'OK(force)' "$PUSH_LOG_FILE" 2>/dev/null; true)
+  _fail=$(grep -c  ' FAIL '    "$PUSH_LOG_FILE" 2>/dev/null; true)
+
+  local _ts_vpl; _ts_vpl=$(date '+%H:%M:%S %d %b %Y')
+  local _btn_vpl='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}],[{"text":"🟢 GitHub Actions","url":"https://github.com/'"${USER}"'/'"${REPO}"'/actions"},{"text":"📋 Semua Branch","url":"https://github.com/'"${USER}"'/'"${REPO}"'/branches"}]]}'
+  send_telegram_photo "https://cdn.myanimelist.net/images/anime/1337/99013.jpg" "📋 <b>RIWAYAT PUSH DILIHAT</b>
+━━━━━━━━━━━━━━━━━━━━
+👤 <code>${USER}</code>
+📁 <code>${USER}/${REPO}</code>
+📊 Total push  : <b>${_total}</b>
+✅ Berhasil    : <b>${_ok}</b>
+⚡ Force push  : <b>${_force}</b>
+❌ Gagal       : <b>${_fail}</b>
+━━━━━━━━━━━━━━━━━━━━
+🕐 ${_ts_vpl}" "$_btn_vpl" 2>/dev/null &
 
   clear >/dev/tty 2>/dev/null || true
   echo -e "${C_BOLD}╭──────────────────────────────────╮${C_RESET}"
@@ -2946,6 +3059,18 @@ action_check_token() {
     [ -n "$rate_limit" ]     && echo -e "  ${C_DIM}Limit    ${C_RESET}${rate_limit} req/jam"
     [ -n "$rate_remaining" ] && echo -e "  ${C_DIM}Sisa     ${C_RESET}${C_CYAN}${rate_remaining}${C_RESET}"
     [ -n "$rate_reset_fmt" ] && echo -e "  ${C_DIM}Reset    ${C_RESET}${rate_reset_fmt}"
+    local _ts_ct; _ts_ct=$(date '+%H:%M:%S %d %b %Y')
+    local _btn_ct='{"inline_keyboard":[[{"text":"🔑 Kelola Token","url":"https://github.com/settings/tokens"},{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"}],[{"text":"🔐 Security","url":"https://github.com/settings/security"},{"text":"👤 Profile","url":"https://github.com/'"${gh_login}"'"}]]}'
+    send_telegram_photo "https://cdn.myanimelist.net/images/anime/1517/100633.jpg" "🔍 <b>CEK TOKEN — VALID ✅</b>
+━━━━━━━━━━━━━━━━━━━━
+👤 Login    : <code>${gh_login}</code>
+🏷 Nama     : ${gh_name}
+🔑 Token    : <code>${tok_masked}</code>
+📋 Jenis    : ${tok_type_label}
+⚡ Rate sisa: <b>${rate_remaining}/${rate_limit}</b>
+📁 <code>${USER}/${REPO}</code>
+━━━━━━━━━━━━━━━━━━━━
+🕐 ${_ts_ct}" "$_btn_ct" 2>/dev/null &
   else
     local api_msg
     api_msg=$(echo "$body" | grep -o '"message": *"[^"]*"' | head -1 | sed 's/"message": *"//;s/"//')
@@ -2953,6 +3078,17 @@ action_check_token() {
     [ -n "$api_msg" ] && echo -e "  ${C_DIM}   GitHub: ${api_msg}${C_RESET}"
     echo ""
     echo -e "  ${C_YELLOW}💡 Pilih opsi 1/2/3 di menu token untuk menyimpan token baru.${C_RESET}"
+    local _ts_ct_fail; _ts_ct_fail=$(date '+%H:%M:%S %d %b %Y')
+    local _btn_ct_fail='{"inline_keyboard":[[{"text":"🔑 Buat Token Baru","url":"https://github.com/settings/tokens/new"},{"text":"⚙️ Settings","url":"https://github.com/settings/profile"}],[{"text":"🔐 Security","url":"https://github.com/settings/security"},{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"}]]}'
+    send_telegram_photo "https://cdn.myanimelist.net/images/anime/1286/99889.jpg" "🔍 <b>CEK TOKEN — TIDAK VALID ❌</b>
+━━━━━━━━━━━━━━━━━━━━
+🔑 Token    : <code>${tok_masked}</code>
+📋 Jenis    : ${tok_type_label}
+❌ HTTP     : <b>${http_code}</b>
+⚠️ Pesan    : ${api_msg}
+📁 <code>${USER}/${REPO}</code>
+━━━━━━━━━━━━━━━━━━━━
+🕐 ${_ts_ct_fail}" "$_btn_ct_fail" 2>/dev/null &
   fi
 
   echo ""
@@ -3369,6 +3505,18 @@ action_list_branches() {
     echo -e "  ${C_RED}❌ Tidak ada branch ditemukan.${C_RESET}"
     prompt_back_or_exit; return
   fi
+
+  local _lb_total=${#all_names[@]}
+  local _ts_lb; _ts_lb=$(date '+%H:%M:%S %d %b %Y')
+  local _btn_lb='{"inline_keyboard":[[{"text":"📋 Lihat Branches","url":"https://github.com/'"${USER}"'/'"${REPO}"'/branches"},{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"}],[{"text":"🔀 Buat PR","url":"https://github.com/'"${USER}"'/'"${REPO}"'/compare"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}]]}'
+  send_telegram_photo "https://cdn.myanimelist.net/images/anime/1935/127974.jpg" "📊 <b>STATUS BRANCH DILIHAT</b>
+━━━━━━━━━━━━━━━━━━━━
+👤 <code>${USER}</code>
+📁 <code>${USER}/${REPO}</code>
+🌿 Total branch : <b>${_lb_total}</b>
+✅ Default      : <code>${DEFAULT_BRANCH}</code>
+━━━━━━━━━━━━━━━━━━━━
+🕐 ${_ts_lb}" "$_btn_lb" 2>/dev/null &
 
   # ── Pisahkan default dari yang lain ────────────────────────────────────
   local def_sha=""
@@ -4679,6 +4827,7 @@ action_list_repos() {
   local lr_per_page=10
   local lr_filter="all"   # all | public | private
   local lr_sort="updated" # updated | created | full_name | pushed
+  local _lr_notif_sent=0
 
   while true; do
     # ── Fetch data dari GitHub API ───────────────────────────────────────
@@ -4723,6 +4872,19 @@ action_list_repos() {
 
     relogin_if_needed "$http_code" "ambil daftar repo" || continue
     if [ "$http_code" = "200" ]; then mini_bar_ok "Data repo dimuat"; else mini_bar_fail "HTTP ${http_code}"; fi
+    if [ "$http_code" = "200" ] && [ "$_lr_notif_sent" = "0" ]; then
+      _lr_notif_sent=1
+      local _ts_lr; _ts_lr=$(date '+%H:%M:%S %d %b %Y')
+      local _btn_lr='{"inline_keyboard":[[{"text":"👤 Profil GitHub","url":"https://github.com/'"${USER}"'"},{"text":"📦 Semua Repo","url":"https://github.com/'"${USER}"'?tab=repositories"}],[{"text":"➕ Buat Repo Baru","url":"https://github.com/new"},{"text":"📁 Repo Aktif","url":"https://github.com/'"${USER}"'/'"${REPO}"'"}]]}'
+      send_telegram_photo "https://w.wallhaven.cc/full/96/wallhaven-96k7j8.jpg" "📋 <b>SEMUA REPO DILIHAT</b>
+━━━━━━━━━━━━━━━━━━━━
+👤 <code>${USER}</code>
+🔍 Filter    : <b>${lr_filter}</b>
+📊 Urutan    : <b>${lr_sort}</b>
+📁 Repo aktif: <code>${USER}/${REPO}</code>
+━━━━━━━━━━━━━━━━━━━━
+🕐 ${_ts_lr}" "$_btn_lr" 2>/dev/null &
+    fi
     if [ "$http_code" != "200" ]; then
       clear >/dev/tty 2>/dev/null || true
       echo -e "${C_BOLD}╭──────────────────────────────────╮${C_RESET}"
@@ -4763,7 +4925,7 @@ action_list_repos() {
     if [ "$total_count" = "0" ] || [ -z "$total_count" ]; then
       # Fallback: hitung baris yang kembali
       local cur_count
-      cur_count=$(printf '%s' "$repo_lines" | grep -c '|' 2>/dev/null || echo 0)
+      cur_count=$(printf '%s' "$repo_lines" | grep -c '|' 2>/dev/null; true)
       total_count="$cur_count"
     fi
 
@@ -6093,6 +6255,794 @@ action_cleanup_node_modules() {
 💾 Pack: ${pack_size} → ${pack_size_after}
 ✅ ${_ok} branch ter-force-push
 🕐 ${_ts_cl}" "$_btn_cl" 2>/dev/null &
+
+  prompt_back_or_exit
+}
+
+# ===== Action: Hapus file/folder (lokal + git) =====
+action_delete_file_folder() {
+  clear >/dev/tty 2>/dev/null || true
+  echo -e "${C_BOLD}╭──────────────────────────────────╮${C_RESET}"
+  echo -e "${C_BOLD}│   🗑️   HAPUS FILE / FOLDER        │${C_RESET}"
+  echo -e "${C_BOLD}╰──────────────────────────────────╯${C_RESET}"
+  echo ""
+  echo -e "  ${C_DIM}branch target : ${C_RESET}${C_GREEN}${C_BOLD}${DEFAULT_BRANCH}${C_RESET}"
+  echo ""
+
+  # ── Realtime: pastikan working tree ada di branch default & up-to-date ──
+  # Ini WAJIB biar hapus file selalu nyambung ke branch yang benar (tidak nyasar
+  # ke branch lain) dan tidak menyebabkan push gagal (non-fast-forward / conflict).
+  mini_bar_start "Sinkronisasi ke branch ${DEFAULT_BRANCH} ..." 0.02
+  local _sync_log; _sync_log=$(mktemp)
+  local _cur_branch_df
+  _cur_branch_df=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+
+  if [ "$_cur_branch_df" != "$DEFAULT_BRANCH" ]; then
+    if git checkout -q "$DEFAULT_BRANCH" >"$_sync_log" 2>&1; then
+      :
+    elif git checkout -q -B "$DEFAULT_BRANCH" "origin/${DEFAULT_BRANCH}" >"$_sync_log" 2>&1; then
+      :
+    else
+      mini_bar_fail "Gagal pindah ke ${DEFAULT_BRANCH}"
+      echo -e "  ${C_RED}❌ Tidak bisa checkout branch ${C_BOLD}${DEFAULT_BRANCH}${C_RESET}${C_RED}.${C_RESET}"
+      echo -e "  ${C_DIM}$(tail -3 "$_sync_log" 2>/dev/null)${C_RESET}"
+      echo -e "  ${C_YELLOW}💡 Ada perubahan belum di-commit? Simpan/push dulu, lalu coba lagi.${C_RESET}"
+      rm -f "$_sync_log"
+      prompt_back_or_exit
+      return
+    fi
+  fi
+
+  git fetch origin "$DEFAULT_BRANCH" --quiet >>"$_sync_log" 2>&1 || true
+  if git rev-parse --verify -q "refs/remotes/origin/${DEFAULT_BRANCH}" >/dev/null 2>&1; then
+    git merge -q --ff-only "origin/${DEFAULT_BRANCH}" >>"$_sync_log" 2>&1 || true
+  fi
+  mini_bar_ok "Siap di branch ${DEFAULT_BRANCH}"
+  rm -f "$_sync_log"
+  echo ""
+
+  # ── Realtime browser bernomor/abjad, persis isi repo di branch ini ──
+  # Level ganjil pakai abjad (a,b,c...), level genap pakai angka (1,2,3...)
+  # supaya kayak "1" (root) -> masuk -> "1a","1b" -> masuk lagi -> "1a1","1a2" dst.
+  _dfb_idx_to_letter() {
+    local n=$(( $1 + 1 )) s=""
+    while [ "$n" -gt 0 ]; do
+      local rem=$(( (n - 1) % 26 ))
+      s="$(printf "\\$(printf '%03o' $((97 + rem)))")$s"
+      n=$(( (n - 1) / 26 ))
+    done
+    printf '%s' "$s"
+  }
+
+  local -a paths=()
+  local _cur_rel="" _depth=0
+  local -a _nav_stack=()
+  local -A _dfb_path=()
+  local -A _dfb_isdir=()
+  local _recent_mode=0
+
+  while true; do
+    clear >/dev/tty 2>/dev/null || true
+    echo -e "${C_BOLD}╭──────────────────────────────────╮${C_RESET}"
+    echo -e "${C_BOLD}│   🗑️   HAPUS FILE / FOLDER        │${C_RESET}"
+    echo -e "${C_BOLD}╰──────────────────────────────────╯${C_RESET}"
+    echo ""
+
+    _dfb_path=(); _dfb_isdir=()
+    local -a _dirs=() _files=()
+    local _te="" _full="" _code=""
+
+    if [ "$_recent_mode" -eq 1 ]; then
+      echo -e "  ${C_DIM}branch : ${C_RESET}${C_GREEN}${DEFAULT_BRANCH}${C_RESET}   ${C_DIM}mode : ${C_RESET}${C_BOLD}File terbaru diubah${C_RESET}"
+      echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
+
+      local -a _recent_list=()
+      mapfile -t _recent_list < <(
+        find . -path ./.git -prune -o -type f -printf '%T@ %p\n' -print 2>/dev/null \
+          | grep -v '^\.git$' \
+          | sort -rn \
+          | awk '{ $1=""; sub(/^ /,""); print }' \
+          | sed 's#^\./##' \
+          | awk '!seen[$0]++' \
+          | head -n 20
+      )
+
+      local i=0
+      for _te in "${_recent_list[@]}"; do
+        [ -z "$_te" ] && continue
+        _code="$((i + 1))"
+        _dfb_path["$_code"]="$_te"
+        if [ -d "$_te" ]; then
+          _dfb_isdir["$_code"]=1
+          _dirs+=("$_te")
+          echo -e "     ${C_YELLOW}${C_BOLD}${_code}${C_RESET} › ${C_YELLOW}📁 ${_te}/${C_RESET}"
+        else
+          _dfb_isdir["$_code"]=0
+          _files+=("$_te")
+          local _mt
+          _mt=$(date -r "$_te" '+%d-%m %H:%M' 2>/dev/null)
+          echo -e "     ${C_CYAN}${C_BOLD}${_code}${C_RESET} › ${C_RESET}📄 ${_te}${C_RESET} ${C_DIM}(${_mt})${C_RESET}"
+        fi
+        i=$((i + 1))
+      done
+
+      if [ "$i" -eq 0 ]; then
+        echo -e "     ${C_DIM}(tidak ada file ditemukan)${C_RESET}"
+      fi
+      echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
+      echo -e "  ${C_DIM}Menampilkan ${i} file yang paling baru diubah${C_RESET}"
+      echo ""
+      echo -e "  ${C_DIM}• Ketik kode untuk langsung dihapus, boleh gabung spasi (misal: ${C_RESET}${C_BOLD}1 2${C_RESET}${C_DIM}).${C_RESET}"
+      echo -e "  ${C_DIM}• ${C_RESET}${C_BOLD}b${C_RESET}${C_DIM} = keluar dari mode ini, kembali browsing folder.${C_RESET}"
+      echo -e "  ${C_DIM}0 = kembali ke menu${C_RESET}"
+    else
+      echo -e "  ${C_DIM}branch : ${C_RESET}${C_GREEN}${DEFAULT_BRANCH}${C_RESET}   ${C_DIM}folder : ${C_RESET}${C_BOLD}/${_cur_rel}${C_RESET}"
+      echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
+
+      local -a _entries=()
+      if [ -z "$_cur_rel" ]; then
+        mapfile -t _entries < <(ls -A -- . 2>/dev/null | grep -v '^\.git$' | sort)
+      else
+        mapfile -t _entries < <(ls -A -- "$_cur_rel" 2>/dev/null | sort)
+      fi
+
+      for _te in "${_entries[@]}"; do
+        [ -z "$_te" ] && continue
+        _full="$_te"
+        [ -n "$_cur_rel" ] && _full="${_cur_rel}/${_te}"
+        if [ -d "$_full" ]; then
+          _dirs+=("$_te")
+        else
+          _files+=("$_te")
+        fi
+      done
+
+      local -a _ordered=("${_dirs[@]}" "${_files[@]}")
+      local i=0
+      for _te in "${_ordered[@]}"; do
+        if [ $((_depth % 2)) -eq 0 ]; then
+          _code="$((i + 1))"
+        else
+          _code="$(_dfb_idx_to_letter "$i")"
+        fi
+        _full="$_te"
+        [ -n "$_cur_rel" ] && _full="${_cur_rel}/${_te}"
+        _dfb_path["$_code"]="$_full"
+        if [ -d "$_full" ]; then
+          _dfb_isdir["$_code"]=1
+          echo -e "     ${C_YELLOW}${C_BOLD}${_code}${C_RESET} › ${C_YELLOW}📁 ${_te}/${C_RESET}"
+        else
+          _dfb_isdir["$_code"]=0
+          echo -e "     ${C_CYAN}${C_BOLD}${_code}${C_RESET} › ${C_RESET}📄 ${_te}${C_RESET}"
+        fi
+        i=$((i + 1))
+      done
+
+      if [ "${#_ordered[@]}" -eq 0 ]; then
+        echo -e "     ${C_DIM}(folder kosong)${C_RESET}"
+      fi
+
+      echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
+      echo -e "  ${C_DIM}Total: ${#_dirs[@]} folder, ${#_files[@]} file${C_RESET}"
+      echo ""
+      echo -e "  ${C_DIM}• Ketik kode folder (misal ${C_RESET}${C_BOLD}1${C_RESET}${C_DIM}) untuk masuk ke folder itu.${C_RESET}"
+      echo -e "  ${C_DIM}• Ketik kode file/folder untuk dihapus, boleh gabung spasi (misal: ${C_RESET}${C_BOLD}2 1a 1b${C_RESET}${C_DIM}).${C_RESET}"
+      echo -e "  ${C_DIM}• Kalau mau hapus folder langsung tanpa masuk, kasih awalan ${C_RESET}${C_BOLD}x${C_RESET}${C_DIM} (misal: ${C_RESET}${C_BOLD}x1${C_RESET}${C_DIM}).${C_RESET}"
+      echo -e "  ${C_DIM}• Ketik ${C_RESET}${C_BOLD}@${C_RESET}${C_DIM} untuk lihat file yang paling baru diubah.${C_RESET}"
+      if [ "${#_nav_stack[@]}" -gt 0 ]; then
+        echo -e "  ${C_DIM}• ${C_RESET}${C_BOLD}b${C_RESET}${C_DIM} = kembali ke folder sebelumnya.${C_RESET}"
+      fi
+      echo -e "  ${C_DIM}0 = kembali ke menu${C_RESET}"
+    fi
+
+    echo ""
+    printf "  ${C_BOLD}▸ ${C_RESET}"
+    local raw_input=""
+    read -r raw_input </dev/tty
+    raw_input=$(printf '%s' "$raw_input" | tr -d '\r')
+
+    if [ -z "$raw_input" ] || [ "$raw_input" = "0" ]; then
+      echo -e "  ${C_YELLOW}↩ Dibatalkan.${C_RESET}"
+      sleep 1
+      return
+    fi
+
+    if [ "$raw_input" = "@" ]; then
+      _recent_mode=1
+      continue
+    fi
+
+    if [ "$raw_input" = "b" ] || [ "$raw_input" = "B" ] || [ "$raw_input" = ".." ]; then
+      if [ "$_recent_mode" -eq 1 ]; then
+        _recent_mode=0
+      elif [ "${#_nav_stack[@]}" -gt 0 ]; then
+        _cur_rel="${_nav_stack[-1]}"
+        unset '_nav_stack[-1]'
+        _depth=$((_depth - 1))
+      fi
+      continue
+    fi
+
+    local -a _tokens=()
+    read -r -a _tokens <<< "$raw_input"
+
+    # Kalau input cuma 1 token dan itu kode folder tanpa awalan "x" → masuk folder
+    # (tidak berlaku di mode recent, karena hasil listnya bukan hierarki lokal)
+    if [ "$_recent_mode" -eq 0 ] && [ "${#_tokens[@]}" -eq 1 ]; then
+      local _t="${_tokens[0]}"
+      if [ -n "${_dfb_isdir[$_t]+x}" ] && [ "${_dfb_isdir[$_t]}" -eq 1 ]; then
+        _nav_stack+=("$_cur_rel")
+        _cur_rel="${_dfb_path[$_t]}"
+        _depth=$((_depth + 1))
+        continue
+      fi
+    fi
+
+    # Selain itu: kumpulkan jadi daftar path untuk dihapus
+    local -a _bad_tokens=()
+    paths=()
+    local _tok=""
+    for _tok in "${_tokens[@]}"; do
+      local _key="$_tok"
+      case "$_tok" in
+        x*|X*) _key="${_tok:1}" ;;
+      esac
+      if [ -n "${_dfb_path[$_key]+x}" ]; then
+        paths+=("${_dfb_path[$_key]}")
+      elif [ -n "${_dfb_path[$_tok]+x}" ]; then
+        paths+=("${_dfb_path[$_tok]}")
+      else
+        _bad_tokens+=("$_tok")
+      fi
+    done
+
+    if [ "${#_bad_tokens[@]}" -gt 0 ]; then
+      echo -e "  ${C_RED}⚠️  Kode tidak dikenal: ${_bad_tokens[*]}${C_RESET}"
+      sleep 1.2
+      continue
+    fi
+
+    if [ "${#paths[@]}" -eq 0 ]; then
+      echo -e "  ${C_YELLOW}⚠️  Tidak ada yang dipilih.${C_RESET}"
+      sleep 1
+      continue
+    fi
+
+    break
+  done
+
+  # ── Daftar path/pattern yang WAJIB dilindungi — tidak boleh dihapus ─────
+  local -a FORBIDDEN=(
+    "." ".." "" "/"
+    ".git" ".git/"
+    ".token" ".token.secret"
+    "push.sh" ".gitignore" ".env"
+    "node_modules" "sessions"
+    "package.json" "package-lock.json"
+  )
+
+  local -a valid_paths=()
+  local -a skipped_paths=()
+  local total_size_kb=0
+
+  for p in "${paths[@]}"; do
+    [ -z "$p" ] && continue
+    # Normalisasi: buang trailing slash & prefix "./" untuk perbandingan
+    local p_norm="${p%/}"
+    p_norm="${p_norm#./}"
+
+    # Cegah path absolut atau path traversal keluar folder project
+    case "$p" in
+      /*)
+        skipped_paths+=("$p  (path absolut tidak diizinkan)")
+        continue
+        ;;
+    esac
+    case "$p_norm" in
+      *..*)
+        skipped_paths+=("$p  (path traversal tidak diizinkan)")
+        continue
+        ;;
+    esac
+
+    local is_forbidden=0
+    local f=""
+    for f in "${FORBIDDEN[@]}"; do
+      [ -n "$f" ] && [ "$p_norm" = "$f" ] && is_forbidden=1 && break
+    done
+    if [ "$is_forbidden" -eq 1 ]; then
+      skipped_paths+=("$p  (dilindungi — tidak boleh dihapus lewat menu ini)")
+      continue
+    fi
+
+    if [ ! -e "$p" ]; then
+      skipped_paths+=("$p  (tidak ditemukan)")
+      continue
+    fi
+
+    valid_paths+=("$p")
+    local _sz
+    _sz=$(du -sk -- "$p" 2>/dev/null | awk '{print $1}')
+    total_size_kb=$(( total_size_kb + ${_sz:-0} ))
+  done
+
+  echo ""
+  if [ "${#skipped_paths[@]}" -gt 0 ]; then
+    echo -e "  ${C_YELLOW}⚠️  Dilewati:${C_RESET}"
+    local s=""
+    for s in "${skipped_paths[@]}"; do
+      echo -e "     ${C_DIM}- ${s}${C_RESET}"
+    done
+    echo ""
+  fi
+
+  if [ "${#valid_paths[@]}" -eq 0 ]; then
+    echo -e "  ${C_RED}❌ Tidak ada path valid untuk dihapus.${C_RESET}"
+    prompt_back_or_exit
+    return
+  fi
+
+  local size_human
+  if [ "$total_size_kb" -ge 1024 ]; then
+    size_human="$(awk "BEGIN{printf \"%.1f\", ${total_size_kb}/1024}") MB"
+  else
+    size_human="${total_size_kb} KB"
+  fi
+
+  echo -e "  ${C_BOLD}Akan dihapus (${#valid_paths[@]} item, total ~${size_human}):${C_RESET}"
+  local v=""
+  for v in "${valid_paths[@]}"; do
+    if [ -d "$v" ]; then
+      local _sub_count
+      _sub_count=$(find "$v" -type f 2>/dev/null | wc -l | tr -d ' ')
+      echo -e "     ${C_RED}📁 ${v}/${C_RESET} ${C_DIM}(${_sub_count} file di dalamnya)${C_RESET}"
+    else
+      local _fsz_h
+      _fsz_h=$(du -sh -- "$v" 2>/dev/null | awk '{print $1}')
+      echo -e "     ${C_RED}📄 ${v}${C_RESET} ${C_DIM}(${_fsz_h:-?})${C_RESET}"
+    fi
+  done
+
+  # ── Preview isi file teks (bukan folder/binary) sebelum benar-benar hapus ──
+  local -a _preview_files=()
+  for v in "${valid_paths[@]}"; do
+    [ -f "$v" ] && _preview_files+=("$v")
+  done
+  if [ "${#_preview_files[@]}" -gt 0 ]; then
+    echo ""
+    echo -e "  ${C_DIM}──────────────────────────────────${C_RESET}"
+    echo -e "  ${C_BOLD}👁  Preview isi file (sebelum dihapus):${C_RESET}"
+    local _pv=""
+    for _pv in "${_preview_files[@]}"; do
+      echo -e "  ${C_DIM}──────────────────────────────────${C_RESET}"
+      echo -e "  ${C_CYAN}${_pv}${C_RESET}"
+      if grep -qI '' -- "$_pv" 2>/dev/null; then
+        local _pv_lines
+        _pv_lines=$(wc -l < "$_pv" 2>/dev/null | tr -d ' ')
+        head -n 5 -- "$_pv" 2>/dev/null | sed 's/^/     /'
+        if [ -n "$_pv_lines" ] && [ "$_pv_lines" -gt 5 ]; then
+          echo -e "     ${C_DIM}... ($((_pv_lines - 5)) baris lagi)${C_RESET}"
+        fi
+      else
+        echo -e "     ${C_DIM}(file biner, tidak bisa ditampilkan sebagai teks)${C_RESET}"
+      fi
+    done
+    echo -e "  ${C_DIM}──────────────────────────────────${C_RESET}"
+  fi
+
+  echo ""
+  echo -e "  ${C_RED}⚠️  File/folder akan dihapus permanen dari disk (dan dari git kalau ter-track).${C_RESET}"
+  echo -e "  ${C_YELLOW}   Ketik ${C_RESET}${C_BOLD}HAPUS${C_RESET}${C_YELLOW} untuk konfirmasi, atau 0 untuk batal:${C_RESET}"
+  printf "  ${C_BOLD}▸ ${C_RESET}"
+  local confirm_word=""
+  read -r confirm_word </dev/tty
+  if [ "$confirm_word" != "HAPUS" ]; then
+    echo -e "  ${C_YELLOW}↩ Dibatalkan.${C_RESET}"
+    sleep 1
+    return
+  fi
+
+  echo ""
+  local ok_count=0 fail_count=0
+  local -a deleted_list=()
+  for v in "${valid_paths[@]}"; do
+    mini_bar_start "Menghapus ${v} ..." 0.015
+    if git ls-files --error-unmatch -- "$v" >/dev/null 2>&1; then
+      git rm -r -q -f -- "$v" >/dev/null 2>&1
+    else
+      rm -rf -- "$v" 2>/dev/null
+    fi
+    # Kalau folder ter-track sebagian (bukan file tunggal), pastikan bersih dari disk juga
+    [ -e "$v" ] && rm -rf -- "$v" 2>/dev/null
+
+    if [ ! -e "$v" ]; then
+      mini_bar_ok "${v} terhapus"
+      ok_count=$(( ok_count + 1 ))
+      deleted_list+=("$v")
+    else
+      mini_bar_fail "${v} gagal (cek permission)"
+      fail_count=$(( fail_count + 1 ))
+    fi
+  done
+
+  echo ""
+  echo -e "  ${C_GREEN}✅ Berhasil dihapus: ${ok_count}${C_RESET}   ${C_RED}❌ Gagal: ${fail_count}${C_RESET}"
+
+  if [ "$ok_count" -gt 0 ]; then
+    echo ""
+    echo -e "  ${C_CYAN}▸ Langsung dorong ke GitHub (branch ${C_RESET}${C_GREEN}${DEFAULT_BRANCH}${C_RESET}${C_CYAN}) secara realtime...${C_RESET}"
+    {
+      echo ""
+      echo -e "  ${C_CYAN}▸ Staging perubahan...${C_RESET}"
+      if prepare_stage; then
+        local _msg
+        _msg="chore: hapus $(printf '%s, ' "${deleted_list[@]}" | sed 's/, $//')"
+        if [ "${#_msg}" -gt 200 ]; then
+          _msg="chore: hapus ${ok_count} file/folder"
+        fi
+        git commit -m "$_msg" --allow-empty >/dev/null 2>&1 || true
+
+        echo -e "  ${C_CYAN}▸ Push ke ${C_RESET}${C_GREEN}${DEFAULT_BRANCH}${C_RESET}${C_CYAN}...${C_RESET}"
+        local _push_out _push_ok=0
+        _push_out=$(git push "${REMOTE_URL:-origin}" "HEAD:${DEFAULT_BRANCH}" 2>&1)
+        [ $? -eq 0 ] && _push_ok=1
+
+        # Push ditolak (non-fast-forward) → branch remote sudah maju duluan.
+        # Realtime fix: sambung histori remote tanpa menimpa commit orang lain.
+        if [ "$_push_ok" -ne 1 ]; then
+          echo -e "  ${C_YELLOW}⚠️  Branch divergent, sambung histori remote...${C_RESET}"
+          mini_bar_start "Fetch remote ${DEFAULT_BRANCH} ..." 0.02
+          git fetch origin "$DEFAULT_BRANCH" --quiet 2>/dev/null || true
+          mini_bar_ok "Fetch selesai"
+
+          local _tree _remote_parent _new_commit
+          _tree=$(git rev-parse "HEAD^{tree}" 2>/dev/null)
+          _remote_parent=$(git rev-parse "refs/remotes/origin/${DEFAULT_BRANCH}" 2>/dev/null)
+
+          if [ -n "$_tree" ] && [ -n "$_remote_parent" ]; then
+            mini_bar_start "Sambung histori remote ..." 0.01
+            _new_commit=$(GIT_AUTHOR_NAME="$(git log -1 --format='%an')" \
+                          GIT_AUTHOR_EMAIL="$(git log -1 --format='%ae')" \
+                          GIT_COMMITTER_NAME="$(git log -1 --format='%cn')" \
+                          GIT_COMMITTER_EMAIL="$(git log -1 --format='%ce')" \
+                          git commit-tree "$_tree" -p "$_remote_parent" -m "$_msg" 2>/dev/null)
+            mini_bar_ok "Histori tersambung"
+          fi
+
+          if [ -n "${_new_commit:-}" ]; then
+            git update-ref "refs/heads/${DEFAULT_BRANCH}" "$_new_commit" 2>/dev/null || true
+            _push_out=$(git push "${REMOTE_URL:-origin}" "HEAD:${DEFAULT_BRANCH}" 2>&1)
+            [ $? -eq 0 ] && _push_ok=1
+          fi
+        fi
+
+        if [ "$_push_ok" -eq 1 ]; then
+          echo -e "  ${C_GREEN}✅ Push berhasil!${C_RESET}"
+          log_push_event "$DEFAULT_BRANCH" "OK" "$_msg" "$ok_count"
+          local _ts_del; _ts_del=$(date '+%H:%M:%S %d %b %Y')
+          local _del_list_txt; _del_list_txt=$(printf '  • %s\n' "${deleted_list[@]}")
+          local _del_commit_sha; _del_commit_sha=$(git rev-parse HEAD 2>/dev/null || echo "")
+          local _btn_del='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}],[{"text":"♻️ Lihat Commit Hapus","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commit/'"${_del_commit_sha}"'"},{"text":"🌿 Tree Branch","url":"https://github.com/'"${USER}"'/'"${REPO}"'/tree/'"${DEFAULT_BRANCH}"'"}]]}'
+          send_telegram_photo "https://w.wallhaven.cc/full/v9/wallhaven-v9jz53.png" "🗑 <b>FILE/FOLDER DIHAPUS</b>
+━━━━━━━━━━━━━━━━━━━━
+📁 <code>${USER}/${REPO}</code>
+🌿 Branch : <code>${DEFAULT_BRANCH}</code>
+🔖 Commit : <code>${_del_commit_sha:0:7}</code>
+🗑 ${ok_count} item dihapus:
+${_del_list_txt}
+━━━━━━━━━━━━━━━━━━━━
+♻️ Bisa restore lewat menu <b>r</b> di script
+🕐 ${_ts_del}" "$_btn_del" 2>/dev/null &
+
+          # ── Quick undo: tawarkan restore langsung tanpa masuk menu terpisah ──
+          local _del_commit_hash; _del_commit_hash=$(git rev-parse HEAD 2>/dev/null)
+          echo ""
+          echo -e "  ${C_DIM}──────────────────────────────────${C_RESET}"
+          echo -e "  ${C_YELLOW}↩️  Salah hapus? Ketik ${C_RESET}${C_BOLD}undo${C_RESET}${C_YELLOW} sekarang untuk langsung restore, atau Enter untuk lanjut.${C_RESET}"
+          printf "  ${C_BOLD}▸ ${C_RESET}"
+          local _undo_now=""
+          read -r _undo_now </dev/tty
+          _undo_now=$(printf '%s' "$_undo_now" | tr -d '\r')
+
+          if [ "$_undo_now" = "undo" ] || [ "$_undo_now" = "UNDO" ]; then
+            if [ -n "$_del_commit_hash" ]; then
+              echo ""
+              echo -e "  ${C_CYAN}▸ Restore ${ok_count} item dari commit ${_del_commit_hash:0:7} ...${C_RESET}"
+              local _ok_u=0 _fail_u=0
+              local -a _restored_list_u=()
+              local _uf=""
+              for _uf in "${deleted_list[@]}"; do
+                mini_bar_start "Restore ${_uf} ..." 0.015
+                if git checkout "${_del_commit_hash}~1" -- "$_uf" >/dev/null 2>&1; then
+                  mini_bar_ok "${_uf} dikembalikan"
+                  _ok_u=$((_ok_u + 1))
+                  _restored_list_u+=("$_uf")
+                else
+                  mini_bar_fail "${_uf} gagal di-restore"
+                  _fail_u=$((_fail_u + 1))
+                fi
+              done
+
+              echo ""
+              echo -e "  ${C_GREEN}✅ Berhasil restore: ${_ok_u}${C_RESET}   ${C_RED}❌ Gagal: ${_fail_u}${C_RESET}"
+
+              if [ "$_ok_u" -gt 0 ]; then
+                echo -e "  ${C_CYAN}▸ Commit & push hasil undo secara realtime...${C_RESET}"
+                if prepare_stage; then
+                  local _msg_u
+                  _msg_u="revert: undo hapus $(printf '%s, ' "${_restored_list_u[@]}" | sed 's/, $//')"
+                  if [ "${#_msg_u}" -gt 200 ]; then
+                    _msg_u="revert: undo hapus ${_ok_u} file/folder (dari ${_del_commit_hash:0:7})"
+                  fi
+                  git commit -m "$_msg_u" --allow-empty >/dev/null 2>&1 || true
+
+                  local _push_out_u _push_ok_u=0
+                  _push_out_u=$(git push "${REMOTE_URL:-origin}" "HEAD:${DEFAULT_BRANCH}" 2>&1)
+                  [ $? -eq 0 ] && _push_ok_u=1
+
+                  if [ "$_push_ok_u" -ne 1 ]; then
+                    echo -e "  ${C_YELLOW}⚠️  Branch divergent, sambung histori remote...${C_RESET}"
+                    git fetch origin "$DEFAULT_BRANCH" --quiet 2>/dev/null || true
+                    local _tree_u _remote_parent_u _new_commit_u
+                    _tree_u=$(git rev-parse "HEAD^{tree}" 2>/dev/null)
+                    _remote_parent_u=$(git rev-parse "refs/remotes/origin/${DEFAULT_BRANCH}" 2>/dev/null)
+                    if [ -n "$_tree_u" ] && [ -n "$_remote_parent_u" ]; then
+                      _new_commit_u=$(GIT_AUTHOR_NAME="$(git log -1 --format='%an')" \
+                                    GIT_AUTHOR_EMAIL="$(git log -1 --format='%ae')" \
+                                    GIT_COMMITTER_NAME="$(git log -1 --format='%cn')" \
+                                    GIT_COMMITTER_EMAIL="$(git log -1 --format='%ce')" \
+                                    git commit-tree "$_tree_u" -p "$_remote_parent_u" -m "$_msg_u" 2>/dev/null)
+                    fi
+                    if [ -n "${_new_commit_u:-}" ]; then
+                      git update-ref "refs/heads/${DEFAULT_BRANCH}" "$_new_commit_u" 2>/dev/null || true
+                      _push_out_u=$(git push "${REMOTE_URL:-origin}" "HEAD:${DEFAULT_BRANCH}" 2>&1)
+                      [ $? -eq 0 ] && _push_ok_u=1
+                    fi
+                  fi
+
+                  if [ "$_push_ok_u" -eq 1 ]; then
+                    echo -e "  ${C_GREEN}✅ Undo berhasil di-push!${C_RESET}"
+                    log_push_event "$DEFAULT_BRANCH" "OK" "$_msg_u" "$_ok_u"
+                    local _ts_u; _ts_u=$(date '+%H:%M:%S %d %b %Y')
+                    local _undo_list_txt; _undo_list_txt=$(printf '  • %s\n' "${_restored_list_u[@]}")
+                    local _undo_commit_sha; _undo_commit_sha=$(git rev-parse HEAD 2>/dev/null || echo "")
+                    local _btn_u _commit_line_u=""
+                    if [ -n "$_undo_commit_sha" ]; then
+                      _btn_u='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}],[{"text":"♻️ Lihat Commit Restore","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commit/'"${_undo_commit_sha}"'"},{"text":"🌿 Tree Branch","url":"https://github.com/'"${USER}"'/'"${REPO}"'/tree/'"${DEFAULT_BRANCH}"'"}]]}'
+                      _commit_line_u="
+🔖 Commit: <code>${_undo_commit_sha:0:7}</code>"
+                    else
+                      _btn_u='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}]]}'
+                    fi
+                    send_telegram_photo "https://w.wallhaven.cc/full/v9/wallhaven-v9jz53.png" "♻️ <b>QUICK UNDO — FILE DI-RESTORE</b>
+━━━━━━━━━━━━━━━━━━━━
+📁 <code>${USER}/${REPO}</code>
+🌿 Branch: <code>${DEFAULT_BRANCH}</code>
+↩️ ${_ok_u} item dikembalikan (undo cepat):
+${_undo_list_txt}${_commit_line_u}
+🕐 ${_ts_u}" "$_btn_u" 2>/dev/null &
+                  else
+                    echo -e "  ${C_RED}❌ Push undo gagal.${C_RESET}"
+                    echo -e "  ${C_DIM}$(printf '%s' "$_push_out_u" | tail -3)${C_RESET}"
+                    log_push_event "$DEFAULT_BRANCH" "FAIL" "$_msg_u" "$_ok_u"
+                  fi
+                else
+                  echo -e "  ${C_RED}❌ Gagal staging perubahan undo. Cek error di atas.${C_RESET}"
+                fi
+              fi
+            else
+              echo -e "  ${C_RED}❌ Tidak bisa undo, commit hapus tidak ditemukan.${C_RESET}"
+            fi
+          fi
+        else
+          echo -e "  ${C_RED}❌ Push gagal.${C_RESET}"
+          echo -e "  ${C_DIM}$(printf '%s' "$_push_out" | tail -3)${C_RESET}"
+          log_push_event "$DEFAULT_BRANCH" "FAIL" "$_msg" "$ok_count"
+        fi
+      else
+        echo -e "  ${C_RED}❌ Gagal staging perubahan. Cek error di atas.${C_RESET}"
+      fi
+    }
+  fi
+
+  prompt_back_or_exit
+}
+
+# ===== Action: Restore/undo file/folder yang terhapus =====
+action_restore_deleted() {
+  clear >/dev/tty 2>/dev/null || true
+  echo -e "${C_BOLD}╭──────────────────────────────────╮${C_RESET}"
+  echo -e "${C_BOLD}│   ♻️   RESTORE FILE TERHAPUS      │${C_RESET}"
+  echo -e "${C_BOLD}╰──────────────────────────────────╯${C_RESET}"
+  echo ""
+  echo -e "  ${C_DIM}branch : ${C_RESET}${C_GREEN}${DEFAULT_BRANCH}${C_RESET}"
+  echo ""
+
+  # ── Realtime: sync dulu ke branch default biar histori commit akurat ──
+  mini_bar_start "Sinkronisasi ke branch ${DEFAULT_BRANCH} ..." 0.02
+  local _sync_log; _sync_log=$(mktemp)
+  local _cur_branch_rf
+  _cur_branch_rf=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+  if [ "$_cur_branch_rf" != "$DEFAULT_BRANCH" ]; then
+    if ! git checkout -q "$DEFAULT_BRANCH" >"$_sync_log" 2>&1; then
+      git checkout -q -B "$DEFAULT_BRANCH" "origin/${DEFAULT_BRANCH}" >"$_sync_log" 2>&1
+    fi
+  fi
+  git fetch origin "$DEFAULT_BRANCH" --quiet >>"$_sync_log" 2>&1 || true
+  if git rev-parse --verify -q "refs/remotes/origin/${DEFAULT_BRANCH}" >/dev/null 2>&1; then
+    git merge -q --ff-only "origin/${DEFAULT_BRANCH}" >>"$_sync_log" 2>&1 || true
+  fi
+  mini_bar_ok "Siap di branch ${DEFAULT_BRANCH}"
+  rm -f "$_sync_log"
+  echo ""
+
+  # ── Cari commit hasil hapus dari menu ini (pesan diawali "chore: hapus") ──
+  local -a _del_hashes=() _del_msgs=() _del_dates=()
+  local _line=""
+  while IFS=$'\t' read -r _h _s _d; do
+    [ -z "$_h" ] && continue
+    _del_hashes+=("$_h")
+    _del_msgs+=("$_s")
+    _del_dates+=("$_d")
+  done < <(git log "$DEFAULT_BRANCH" --grep='^chore: hapus' --pretty=format:'%H%x09%s%x09%ad' --date=format:'%d %b %Y %H:%M' -n 15 2>/dev/null)
+
+  if [ "${#_del_hashes[@]}" -eq 0 ]; then
+    echo -e "  ${C_YELLOW}📭 Tidak ada riwayat penghapusan file/folder yang tercatat.${C_RESET}"
+    prompt_back_or_exit
+    return
+  fi
+
+  echo -e "  ${C_BOLD}Riwayat penghapusan terakhir:${C_RESET}"
+  echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
+  local idx=0
+  for idx in "${!_del_hashes[@]}"; do
+    printf "  ${C_GREEN}%2d${C_RESET} › ${C_RESET}%s ${C_DIM}(%s, %s)${C_RESET}\n" \
+      "$((idx + 1))" "${_del_msgs[$idx]}" "${_del_dates[$idx]}" "${_del_hashes[$idx]:0:7}"
+  done
+  echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
+  echo -e "  ${C_DIM}0 = kembali ke menu${C_RESET}"
+  echo ""
+  printf "  ${C_BOLD}▸ Pilih nomor untuk restore: ${C_RESET}"
+  local _pick_r=""
+  read -r _pick_r </dev/tty
+  _pick_r=$(printf '%s' "$_pick_r" | tr -d '\r')
+
+  if [ -z "$_pick_r" ] || [ "$_pick_r" = "0" ]; then
+    echo -e "  ${C_YELLOW}↩ Dibatalkan.${C_RESET}"
+    sleep 1
+    return
+  fi
+
+  case "$_pick_r" in
+    ''|*[!0-9]*)
+      echo -e "  ${C_RED}✖ Input tidak valid.${C_RESET}"
+      sleep 1
+      return
+      ;;
+  esac
+
+  local _sel_idx=$((_pick_r - 1))
+  if [ "$_sel_idx" -lt 0 ] || [ "$_sel_idx" -ge "${#_del_hashes[@]}" ]; then
+    echo -e "  ${C_RED}✖ Nomor tidak ada di daftar.${C_RESET}"
+    sleep 1
+    return
+  fi
+
+  local _target_hash="${_del_hashes[$_sel_idx]}"
+  local _target_msg="${_del_msgs[$_sel_idx]}"
+
+  # ── Ambil daftar file yang dihapus di commit itu (diff-filter=D) ──
+  local -a _restore_files=()
+  mapfile -t _restore_files < <(git show --diff-filter=D --name-only --pretty=format: "$_target_hash" 2>/dev/null | sed '/^$/d')
+
+  if [ "${#_restore_files[@]}" -eq 0 ]; then
+    echo -e "  ${C_YELLOW}⚠️  Tidak ditemukan file yang dihapus di commit ini (mungkin sudah pernah di-restore).${C_RESET}"
+    prompt_back_or_exit
+    return
+  fi
+
+  echo ""
+  echo -e "  ${C_BOLD}File/folder yang akan di-restore (${#_restore_files[@]} item):${C_RESET}"
+  local _rf=""
+  for _rf in "${_restore_files[@]}"; do
+    echo -e "     ${C_GREEN}📄 ${_rf}${C_RESET}"
+  done
+  echo ""
+  echo -e "  ${C_YELLOW}Ketik ${C_RESET}${C_BOLD}RESTORE${C_RESET}${C_YELLOW} untuk konfirmasi, atau 0 untuk batal:${C_RESET}"
+  printf "  ${C_BOLD}▸ ${C_RESET}"
+  local _confirm_r=""
+  read -r _confirm_r </dev/tty
+  if [ "$_confirm_r" != "RESTORE" ]; then
+    echo -e "  ${C_YELLOW}↩ Dibatalkan.${C_RESET}"
+    sleep 1
+    return
+  fi
+
+  echo ""
+  local _ok_r=0 _fail_r=0
+  local -a _restored_list=()
+  for _rf in "${_restore_files[@]}"; do
+    mini_bar_start "Restore ${_rf} ..." 0.015
+    if git checkout "${_target_hash}~1" -- "$_rf" >/dev/null 2>&1; then
+      mini_bar_ok "${_rf} dikembalikan"
+      _ok_r=$((_ok_r + 1))
+      _restored_list+=("$_rf")
+    else
+      mini_bar_fail "${_rf} gagal di-restore"
+      _fail_r=$((_fail_r + 1))
+    fi
+  done
+
+  echo ""
+  echo -e "  ${C_GREEN}✅ Berhasil restore: ${_ok_r}${C_RESET}   ${C_RED}❌ Gagal: ${_fail_r}${C_RESET}"
+
+  if [ "$_ok_r" -gt 0 ]; then
+    echo ""
+    echo -e "  ${C_CYAN}▸ Commit & push hasil restore secara realtime...${C_RESET}"
+    echo -e "  ${C_CYAN}▸ Staging perubahan...${C_RESET}"
+    if prepare_stage; then
+      local _msg_r
+      _msg_r="revert: restore $(printf '%s, ' "${_restored_list[@]}" | sed 's/, $//')"
+      if [ "${#_msg_r}" -gt 200 ]; then
+        _msg_r="revert: restore ${_ok_r} file/folder (dari ${_target_hash:0:7})"
+      fi
+      git commit -m "$_msg_r" --allow-empty >/dev/null 2>&1 || true
+
+      echo -e "  ${C_CYAN}▸ Push ke ${C_RESET}${C_GREEN}${DEFAULT_BRANCH}${C_RESET}${C_CYAN}...${C_RESET}"
+      local _push_out_r _push_ok_r=0
+      _push_out_r=$(git push "${REMOTE_URL:-origin}" "HEAD:${DEFAULT_BRANCH}" 2>&1)
+      [ $? -eq 0 ] && _push_ok_r=1
+
+      if [ "$_push_ok_r" -ne 1 ]; then
+        echo -e "  ${C_YELLOW}⚠️  Branch divergent, sambung histori remote...${C_RESET}"
+        git fetch origin "$DEFAULT_BRANCH" --quiet 2>/dev/null || true
+        local _tree_r _remote_parent_r _new_commit_r
+        _tree_r=$(git rev-parse "HEAD^{tree}" 2>/dev/null)
+        _remote_parent_r=$(git rev-parse "refs/remotes/origin/${DEFAULT_BRANCH}" 2>/dev/null)
+        if [ -n "$_tree_r" ] && [ -n "$_remote_parent_r" ]; then
+          _new_commit_r=$(GIT_AUTHOR_NAME="$(git log -1 --format='%an')" \
+                        GIT_AUTHOR_EMAIL="$(git log -1 --format='%ae')" \
+                        GIT_COMMITTER_NAME="$(git log -1 --format='%cn')" \
+                        GIT_COMMITTER_EMAIL="$(git log -1 --format='%ce')" \
+                        git commit-tree "$_tree_r" -p "$_remote_parent_r" -m "$_msg_r" 2>/dev/null)
+        fi
+        if [ -n "${_new_commit_r:-}" ]; then
+          git update-ref "refs/heads/${DEFAULT_BRANCH}" "$_new_commit_r" 2>/dev/null || true
+          _push_out_r=$(git push "${REMOTE_URL:-origin}" "HEAD:${DEFAULT_BRANCH}" 2>&1)
+          [ $? -eq 0 ] && _push_ok_r=1
+        fi
+      fi
+
+      if [ "$_push_ok_r" -eq 1 ]; then
+        echo -e "  ${C_GREEN}✅ Push berhasil!${C_RESET}"
+        log_push_event "$DEFAULT_BRANCH" "OK" "$_msg_r" "$_ok_r"
+        local _ts_r; _ts_r=$(date '+%H:%M:%S %d %b %Y')
+        local _restore_list_txt; _restore_list_txt=$(printf '  • %s\n' "${_restored_list[@]}")
+        local _restore_commit_sha; _restore_commit_sha=$(git rev-parse HEAD 2>/dev/null || echo "")
+        local _btn_r _commit_line_r=""
+        if [ -n "$_restore_commit_sha" ]; then
+          _btn_r='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}],[{"text":"♻️ Lihat Commit Restore","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commit/'"${_restore_commit_sha}"'"},{"text":"🌿 Tree Branch","url":"https://github.com/'"${USER}"'/'"${REPO}"'/tree/'"${DEFAULT_BRANCH}"'"}]]}'
+          _commit_line_r="
+🔖 Commit: <code>${_restore_commit_sha:0:7}</code>"
+        else
+          _btn_r='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📊 Commits","url":"https://github.com/'"${USER}"'/'"${REPO}"'/commits/'"${DEFAULT_BRANCH}"'"}]]}'
+        fi
+        send_telegram_photo "https://w.wallhaven.cc/full/v9/wallhaven-v9jz53.png" "♻️ <b>FILE/FOLDER DI-RESTORE</b>
+━━━━━━━━━━━━━━━━━━━━
+📁 <code>${USER}/${REPO}</code>
+🌿 Branch: <code>${DEFAULT_BRANCH}</code>
+♻️ ${_ok_r} item dikembalikan:
+${_restore_list_txt}${_commit_line_r}
+🕐 ${_ts_r}" "$_btn_r" 2>/dev/null &
+      else
+        echo -e "  ${C_RED}❌ Push gagal.${C_RESET}"
+        echo -e "  ${C_DIM}$(printf '%s' "$_push_out_r" | tail -3)${C_RESET}"
+        log_push_event "$DEFAULT_BRANCH" "FAIL" "$_msg_r" "$_ok_r"
+      fi
+    else
+      echo -e "  ${C_RED}❌ Gagal staging perubahan. Cek error di atas.${C_RESET}"
+    fi
+  fi
 
   prompt_back_or_exit
 }

@@ -1052,6 +1052,16 @@ Welcome to ${config.bot?.name}, Our bot will help you
             return await downloadAndConvert(fallback);
           }
         };
+        const generateWaveform = (length = 64) => {
+          const wave = new Uint8Array(length);
+          let val = 30 + Math.random() * 20;
+          for (let i = 0; i < length; i++) {
+            val += (Math.random() - 0.5) * 25;
+            val = Math.max(3, Math.min(100, val));
+            wave[i] = Math.round(val);
+          }
+          return Buffer.from(wave);
+        };
         const sendVN = async (quotedMsg) => {
           const oggPath = await convertToVN();
           const audioBuffer = fs.readFileSync(oggPath);
@@ -1060,6 +1070,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
             audio: audioBuffer,
             mimetype: "audio/ogg; codecs=opus",
             ptt: true,
+            waveform: generateWaveform(),
           }, { quoted: quotedMsg });
         };
         switch (menuVariant) {

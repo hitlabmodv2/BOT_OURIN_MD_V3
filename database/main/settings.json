@@ -16,7 +16,7 @@
   "onlyGc": false,
   "onlyPc": false,
   "giveaways": {},
-  "botMode": "public",
+  "botMode": "self",
   "audioMenu": true,
   "transactionSessions": {},
   "premiumUsers": [],
@@ -231,6 +231,34 @@
     "6285119446913@s.whatsapp.net": {
       "jid": "6285119446913@s.whatsapp.net",
       "name": "Bogasari"
+    },
+    "628388589625@s.whatsapp.net": {
+      "jid": "628388589625@s.whatsapp.net",
+      "name": "𝙢𝙖𝙪𝙡𝙖𝙣𝙖 𝙣𝙜𝙚𝙣"
+    },
+    "6287785393421@s.whatsapp.net": {
+      "jid": "6287785393421@s.whatsapp.net",
+      "name": "mee"
+    },
+    "6285703470436@s.whatsapp.net": {
+      "jid": "6285703470436@s.whatsapp.net",
+      "name": "Farid"
+    },
+    "6283137961488@s.whatsapp.net": {
+      "jid": "6283137961488@s.whatsapp.net",
+      "name": "miftah"
+    },
+    "6283181081897@s.whatsapp.net": {
+      "jid": "6283181081897@s.whatsapp.net",
+      "name": "Dantz"
+    },
+    "6282136282264@s.whatsapp.net": {
+      "jid": "6282136282264@s.whatsapp.net",
+      "name": "Z-pa"
+    },
+    "6281227315377@s.whatsapp.net": {
+      "jid": "6281227315377@s.whatsapp.net",
+      "name": "Kyou."
     }
   },
   "notiflimit": true,

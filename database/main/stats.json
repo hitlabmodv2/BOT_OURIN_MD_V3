@@ -1,8 +1,8 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2676,
+  "commandsExecuted": 2684,
   "command_totalchat": 3,
-  "command_menu": 284,
+  "command_menu": 288,
   "command_fb": 4,
   "command_brat": 18,
   "command_antidocument": 2,
@@ -28,7 +28,7 @@
   "command_playch": 7,
   "command_cekidch": 6,
   "command_stickerpack": 2,
-  "command_self": 9,
+  "command_self": 10,
   "command_addprefix": 2,
   "command_jam": 1,
   "command_autoreadsw": 2,
@@ -300,7 +300,7 @@
   "command_afk": 2,
   "command_wink": 1,
   "command_attp": 1,
-  "command_totalfitur": 5,
+  "command_totalfitur": 6,
   "command_d": 4,
   "command_sc": 58,
   "command_test": 4,
@@ -417,5 +417,6 @@
   "command_welgod": 9,
   "command_tebakepep": 1,
   "command_susun": 1,
-  "command_tebakjkt48": 1
+  "command_tebakjkt48": 1,
+  "command_mode": 2
 }

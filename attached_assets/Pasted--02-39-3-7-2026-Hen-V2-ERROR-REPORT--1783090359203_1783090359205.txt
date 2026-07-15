@@ -1,0 +1,100 @@
+[02.39, 3/7/2026] Hen V2: ⚠️ ERROR REPORT — 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜
+
+╭─〔 🐛 ᴅᴇᴛᴀɪʟ ᴇʀʀᴏʀ 〕
+│ 📌 ᴄᴏᴍᴍᴀɴᴅ   : .tebakepep
+│ 👤 ᴘᴇɴɢɢᴜɴᴀ  : Aii Gntng😎
+│ 📞 ɴᴜᴍʙᴇʀ    : +6288247569901
+│ 👥 Grup        : VIRTUAL FRIEND'S😉
+│ 🕒 ᴡᴀᴋᴛᴜ     : 02:39:57
+│ 📅 ᴛᴀɴɢɢᴀʟ   : Jumat, 03 Juli 2026
+╰────────────────⬣
+
+╭─〔 💥 ᴘᴇsᴀɴ ᴇʀʀᴏʀ 〕
+│ Cannot read properties of undefined (reading 'key')
+│
+│ at Object.handler (file:///home/container/src/lib/ourin-games.js:412:57)
+    at async messageHandler (file:///home/container/src/handler.js:1740:7)
+    at async Object.onMessage (file:///home/container/index.js:439:9)
+╰────────────────⬣
+
+> Matikan: .errornotif off
+[02.41, 3/7/2026] Hen V2: ⚠️ ERROR REPORT — 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜
+
+╭─〔 🐛 ᴅᴇᴛᴀɪʟ ᴇʀʀᴏʀ 〕
+│ 📌 ᴄᴏᴍᴍᴀɴᴅ   : .tebakepep
+│ 👤 ᴘᴇɴɢɢᴜɴᴀ  : Aii Gntng😎
+│ 📞 ɴᴜᴍʙᴇʀ    : +6288247569901
+│ 👥 Grup        : VIRTUAL FRIEND'S😉
+│ 🕒 ᴡᴀᴋᴛᴜ     : 02:41:32
+│ 📅 ᴛᴀɴɢɢᴀʟ   : Jumat, 03 Juli 2026
+╰────────────────⬣
+
+╭─〔 💥 ᴘᴇsᴀɴ ᴇʀʀᴏʀ 〕
+│ Cannot read properties of undefined (reading 'key')
+│
+│ at Object.handler (file:///home/container/src/lib/ourin-games.js:412:57)
+    at async messageHandler (file:///home/container/src/handler.js:1740:7)
+    at async Object.onMessage (file:///home/container/index.js:439:9)
+╰────────────────⬣
+
+> Matikan: .errornotif off
+[02.43, 3/7/2026] Hen V2: ⚠️ ERROR REPORT — 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜
+
+╭─〔 🐛 ᴅᴇᴛᴀɪʟ ᴇʀʀᴏʀ 〕
+│ 📌 ᴄᴏᴍᴍᴀɴᴅ   : .susun
+│ 👤 ᴘᴇɴɢɢᴜɴᴀ  : Aii Gntng😎
+│ 📞 ɴᴜᴍʙᴇʀ    : +6288247569901
+│ 👥 Grup        : VIRTUAL FRIEND'S😉
+│ 🕒 ᴡᴀᴋᴛᴜ     : 02:43:16
+│ 📅 ᴛᴀɴɢɢᴀʟ   : Jumat, 03 Juli 2026
+╰────────────────⬣
+
+╭─〔 💥 ᴘᴇsᴀɴ ᴇʀʀᴏʀ 〕
+│ Cannot read properties of undefined (reading 'key')
+│
+│ at Object.handler (file:///home/container/src/lib/ourin-games.js:412:57)
+    at async messageHandler (file:///home/container/src/handler.js:1740:7)
+    at async Object.onMessage (file:///home/container/index.js:439:9)
+╰────────────────⬣
+
+> Matikan: .errornotif off
+[09.38, 3/7/2026] Hen V2: ⚠️ ERROR REPORT — 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜
+
+╭─〔 🐛 ᴅᴇᴛᴀɪʟ ᴇʀʀᴏʀ 〕
+│ 📌 ᴄᴏᴍᴍᴀɴᴅ   : .tebakhewan
+│ 👤 ᴘᴇɴɢɢᴜɴᴀ  : ألف
+│ 📞 ɴᴜᴍʙᴇʀ    : +6285954779314
+│ 👥 Grup        : VIRTUAL FRIEND'S😉
+│ 🕒 ᴡᴀᴋᴛᴜ     : 09:38:19
+│ 📅 ᴛᴀɴɢɢᴀʟ   : Jumat, 03 Juli 2026
+╰────────────────⬣
+
+╭─〔 💥 ᴘᴇsᴀɴ ᴇʀʀᴏʀ 〕
+│ Cannot read properties of undefined (reading 'key')
+│
+│ at Object.handler (file:///home/container/src/lib/ourin-games.js:412:57)
+    at async messageHandler (file:///home/container/src/handler.js:1740:7)
+    at async Object.onMessage (file:///home/container/index.js:439:9)
+╰────────────────⬣
+
+> Matikan: .errornotif off
+[11.26, 3/7/2026] Hen V2: ⚠️ ERROR REPORT — 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜
+
+╭─〔 🐛 ᴅᴇᴛᴀɪʟ ᴇʀʀᴏʀ 〕
+│ 📌 ᴄᴏᴍᴍᴀɴᴅ   : .tebakkata
+│ 👤 ᴘᴇɴɢɢᴜɴᴀ  : Aii Gntng😎
+│ 📞 ɴᴜᴍʙᴇʀ    : +6288247569901
+│ 👥 Grup        : VIRTUAL FRIEND'S😉
+│ 🕒 ᴡᴀᴋᴛᴜ     : 11:26:03
+│ 📅 ᴛᴀɴɢɢᴀʟ   : Jumat, 03 Juli 2026
+╰────────────────⬣
+
+╭─〔 💥 ᴘᴇsᴀɴ ᴇʀʀᴏʀ 〕
+│ Cannot read properties of undefined (reading 'key')
+│
+│ at Object.handler (file:///home/container/src/lib/ourin-games.js:412:57)
+    at async messageHandler (file:///home/container/src/handler.js:1740:7)
+    at async Object.onMessage (file:///home/container/index.js:439:9)
+╰────────────────⬣
+
+> Matikan: .errornotif off
