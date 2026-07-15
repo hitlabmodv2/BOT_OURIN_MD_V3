@@ -145,7 +145,22 @@ const connectionState = {
   sock: null,
   reconnectAttempts: 0,
   connectedAt: null,
+  flushAuth: null, // set once startConnection() runs; forces pending session writes to disk
 };
+
+/**
+ * Paksa tulis auth state (creds/keys) yang masih tertunda ke disk.
+ * WAJIB dipanggil sebelum proses exit (SIGINT/SIGTERM), kalau tidak
+ * perubahan sesi 500ms terakhir bisa hilang dan memicu 401 palsu +
+ * penghapusan sesi otomatis di boot berikutnya.
+ */
+function flushAuthState() {
+  try {
+    connectionState.flushAuth?.();
+  } catch (e) {
+    // best-effort, jangan sampai menghalangi proses shutdown
+  }
+}
 
 /**
  * Logger instance dengan level minimal
@@ -243,7 +258,8 @@ async function startConnection(options = {}) {
   // Migrasi otomatis dari multi-file ke single-file (hanya sekali)
   await migrateMultiToSingle(sessionFolder, sessionFile);
 
-  const { state, saveCreds } = await useSingleFileAuthState(sessionFile);
+  const { state, saveCreds, flushSync } = await useSingleFileAuthState(sessionFile);
+  connectionState.flushAuth = flushSync;
 
   const versionCacheFile = path.join(process.cwd(), "storage", "wa-version.json");
 
@@ -1450,4 +1466,5 @@ export {
   isConnected,
   getUptime,
   logout,
+  flushAuthState,
 };

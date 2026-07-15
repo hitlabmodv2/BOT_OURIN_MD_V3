@@ -43,20 +43,42 @@ export async function useSingleFileAuthState(filePath) {
 
   // === Debounced write ===
   let writeTimer = null;
+  let dirty = false;
+
+  function writeNow() {
+    try {
+      const content = JSON.stringify(
+        { creds, keys: keysData },
+        BufferJSON.replacer
+      );
+      fs.writeFileSync(filePath, content, "utf-8");
+      dirty = false;
+    } catch (e) {
+      console.error("[SingleFileAuth] Gagal tulis file:", e.message);
+    }
+  }
 
   function scheduleWrite() {
+    dirty = true;
     if (writeTimer) clearTimeout(writeTimer);
     writeTimer = setTimeout(() => {
-      try {
-        const content = JSON.stringify(
-          { creds, keys: keysData },
-          BufferJSON.replacer
-        );
-        fs.writeFileSync(filePath, content, "utf-8");
-      } catch (e) {
-        console.error("[SingleFileAuth] Gagal tulis file:", e.message);
-      }
+      writeTimer = null;
+      writeNow();
     }, 500);
+  }
+
+  /**
+   * Tulis paksa & langsung (bypass debounce). Wajib dipanggil sebelum
+   * proses exit (SIGINT/SIGTERM/restart) — kalau tidak, perubahan creds/keys
+   * dalam 500ms terakhir akan hilang dan WhatsApp bisa menganggap sesi
+   * tidak valid (401) di boot berikutnya, memicu penghapusan sesi otomatis.
+   */
+  function flushSync() {
+    if (writeTimer) {
+      clearTimeout(writeTimer);
+      writeTimer = null;
+    }
+    if (dirty) writeNow();
   }
 
   return {
@@ -110,6 +132,8 @@ export async function useSingleFileAuthState(filePath) {
     saveCreds: () => {
       scheduleWrite();
     },
+
+    flushSync,
   };
 }
 

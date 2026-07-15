@@ -4,7 +4,7 @@ import fs from "fs";
 if (process.stdout._handle?.setBlocking) process.stdout._handle.setBlocking(true);
 if (process.stderr._handle?.setBlocking) process.stderr._handle.setBlocking(true);
 import config from "./config.js";
-import { startConnection } from "./src/connection.js";
+import { startConnection, flushAuthState } from "./src/connection.js";
 import {
   messageHandler,
   groupHandler,
@@ -354,6 +354,12 @@ function setupAntiCrash() {
     } catch (error) {
       logger.warn("database", `save failed: ${error.message}`);
     }
+    try {
+      flushAuthState();
+      logger.success("whatsapp", "Session state flushed to disk");
+    } catch (error) {
+      logger.warn("whatsapp", `session flush failed: ${error.message}`);
+    }
     logger.info("system", "Engine stopped safely");
     process.exit(0);
   });
@@ -361,6 +367,11 @@ function setupAntiCrash() {
   process.on("SIGTERM", () => {
     console.log("");
     logger.system("system", "Received TERMINATE signal (SIGTERM)");
+    try {
+      flushAuthState();
+    } catch (error) {
+      logger.warn("whatsapp", `session flush failed: ${error.message}`);
+    }
     process.exit(0);
   });
 
