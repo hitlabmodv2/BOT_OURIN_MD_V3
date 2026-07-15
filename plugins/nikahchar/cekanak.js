@@ -5,7 +5,7 @@ import { getChildren } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "cekanak",
   alias: ["detailanak"],
-  category: "game",
+  category: "nikahchar",
   description: "Cek detail salah satu anakmu",
   usage: ".cekanak <id / nama>",
   example: ".cekanak Yuki",

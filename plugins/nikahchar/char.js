@@ -10,7 +10,7 @@ import {
 const pluginConfig = {
   name: "char",
   alias: ["charinfo", "cekchar"],
-  category: "game",
+  category: "nikahchar",
   description: "Cari info karakter anime (untuk sistem nikah karakter)",
   usage: ".char <nama / id>",
   example: ".char Albedo",

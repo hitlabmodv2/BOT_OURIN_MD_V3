@@ -5,7 +5,7 @@ import { getChildren } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "beri",
   alias: ["kasihanak"],
-  category: "game",
+  category: "nikahchar",
   description: "Beri uang ke anak untuk menaikkan kebahagiaan",
   usage: ".beri <id anak> <jumlah>",
   example: ".beri 17841234 5000",

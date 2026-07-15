@@ -3,12 +3,12 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 import { getSpouse } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
-  name: "scndel",
-  alias: ["delcpnama", "hapuscpnama"],
-  category: "game",
-  description: "Hapus nama panggilan pasangan karaktermu",
-  usage: ".scndel",
-  example: ".scndel",
+  name: "namaj",
+  alias: ["namajodoh"],
+  category: "nikahchar",
+  description: "Cek cepat nama jodoh/pasangan karaktermu",
+  usage: ".namaj",
+  example: ".namaj",
   isOwner: false,
   isPremium: false,
   isGroup: false,
@@ -23,14 +23,15 @@ async function handler(m, { sock }) {
   try {
     const user = db.getUser(m.sender);
     const spouse = user ? getSpouse(user) : null;
-    if (!spouse) return m.reply(`❌ Kamu belum punya pasangan karakter.`);
-    if (!spouse.nickname) return m.reply(`❌ Kamu belum set nama panggilan.`);
 
-    spouse.nickname = null;
-    db.save();
+    if (!spouse) {
+      return m.reply(`💔 Kamu belum punya jodoh. Cari dengan \`${m.prefix}char\` lalu \`${m.prefix}lamar\`.`);
+    }
 
-    await m.react("✅");
-    await m.reply(`✅ Nama panggilan pasanganmu dihapus. Kembali ke *${spouse.name}*.`);
+    await m.react("💞");
+    await m.reply(
+      `💞 *ɴᴀᴍᴀ ᴊᴏᴅᴏʜ*\n\n> ${spouse.nickname ? `${spouse.nickname} (${spouse.name})` : spouse.name}`,
+    );
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

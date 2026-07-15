@@ -13,7 +13,7 @@ import {
 const pluginConfig = {
   name: "lamar",
   alias: ["marrychar", "nikahchar"],
-  category: "game",
+  category: "nikahchar",
   description: "Melamar/menikahi karakter anime",
   usage: ".lamar <nama / id>",
   example: ".lamar 116275",

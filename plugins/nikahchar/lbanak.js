@@ -5,7 +5,7 @@ import { getChildren } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "lbanak",
   alias: ["leaderboardanak", "topanak"],
-  category: "game",
+  category: "nikahchar",
   description: "Leaderboard user dengan anak terbanyak",
   usage: ".lbanak",
   example: ".lbanak",

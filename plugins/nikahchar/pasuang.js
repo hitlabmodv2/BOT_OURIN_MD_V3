@@ -5,7 +5,7 @@ import { getSpouse, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "pasuang",
   alias: ["taruhancp"],
-  category: "game",
+  category: "nikahchar",
   description: "Pertaruhkan uang untuk menambah love bersama pasangan karaktermu",
   usage: ".pasuang <jumlah>",
   example: ".pasuang 10000",

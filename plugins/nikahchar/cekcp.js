@@ -5,7 +5,7 @@ import { getSpouse, getChildren, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "cekcp",
   alias: ["cp", "couple", "pas"],
-  category: "game",
+  category: "nikahchar",
   description: "Cek pasangan karakter kamu",
   usage: ".cekcp",
   example: ".cekcp",

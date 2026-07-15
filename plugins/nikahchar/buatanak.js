@@ -5,7 +5,7 @@ import { getSpouse, CHILD_COOLDOWN_MS } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "buatanak",
   alias: ["bikinanak", "punyaanak"],
-  category: "game",
+  category: "nikahchar",
   description: "Coba punya anak dengan pasangan karaktermu",
   usage: ".buatanak <nama anak>",
   example: ".buatanak Kaguya",

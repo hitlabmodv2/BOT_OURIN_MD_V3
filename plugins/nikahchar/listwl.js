@@ -10,7 +10,7 @@ import {
 const pluginConfig = {
   name: "listwl",
   alias: ["wishlist", "wl"],
-  category: "game",
+  category: "nikahchar",
   description: "Kelola wishlist karakter yang mau dilamar nanti",
   usage: ".listwl | .listwl add <id/nama> | .listwl del <id>",
   example: ".listwl add Albedo",

@@ -5,7 +5,7 @@ import { getSpouse, clearSpouse, removeRegistryEntry } from "../../src/lib/ourin
 const pluginConfig = {
   name: "cp_putus",
   alias: ["putuscp", "ceraichar", "divorcechar"],
-  category: "game",
+  category: "nikahchar",
   description: "Putus dari pasangan karakter kamu",
   usage: ".cp_putus",
   example: ".cp_putus",

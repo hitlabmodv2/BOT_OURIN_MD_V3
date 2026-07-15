@@ -4,7 +4,7 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 const pluginConfig = {
   name: "market",
   alias: ["cpmarket", "toko_cp"],
-  category: "game",
+  category: "nikahchar",
   description: "Toko item untuk pasangan/anak karaktermu",
   usage: ".market | .market buy <item> <jumlah>",
   example: ".market buy cokelat 2",

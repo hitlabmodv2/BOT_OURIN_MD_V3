@@ -5,7 +5,7 @@ import { getSpouse, getChildren, getWishlist, getPasMode, MAX_LOVE } from "../..
 const pluginConfig = {
   name: "menikah",
   alias: ["statuscp", "menucp"],
-  category: "game",
+  category: "nikahchar",
   description: "Lihat status & menu lengkap sistem nikah karakter",
   usage: ".menikah",
   example: ".menikah",

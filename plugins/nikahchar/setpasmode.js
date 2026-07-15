@@ -4,7 +4,7 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 const pluginConfig = {
   name: "setpasmode",
   alias: ["pasmode"],
-  category: "game",
+  category: "nikahchar",
   description: "Atur privasi info pasangan karaktermu (public/private)",
   usage: ".setpasmode <public/private>",
   example: ".setpasmode private",

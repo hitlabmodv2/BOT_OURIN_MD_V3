@@ -5,7 +5,7 @@ import { getSpouse } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "pap",
   alias: ["papcp", "fotocp"],
-  category: "game",
+  category: "nikahchar",
   description: "Minta foto pasangan karaktermu",
   usage: ".pap",
   example: ".pap",

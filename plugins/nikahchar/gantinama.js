@@ -4,7 +4,7 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 const pluginConfig = {
   name: "gantinama",
   alias: ["changename", "ganti_nama"],
-  category: "game",
+  category: "nikahchar",
   description: "Ganti nama panggilan kamu sendiri di game",
   usage: ".gantinama <nama baru>",
   example: ".gantinama Kaisar",

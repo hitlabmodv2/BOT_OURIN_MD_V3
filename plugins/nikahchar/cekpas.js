@@ -5,7 +5,7 @@ import { getSpouse, getPasMode } from "../../src/lib/ourin-waifu.js";
 const pluginConfig = {
   name: "cekpas",
   alias: ["cekpasangan"],
-  category: "game",
+  category: "nikahchar",
   description: "Cek pasangan karakter milik orang lain (tag orangnya)",
   usage: ".cekpas @user",
   example: ".cekpas @user",

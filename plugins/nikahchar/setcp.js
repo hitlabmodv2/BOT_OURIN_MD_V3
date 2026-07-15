@@ -12,7 +12,7 @@ import {
 const pluginConfig = {
   name: "setcp",
   alias: ["forcecp"],
-  category: "game",
+  category: "nikahchar",
   description: "[Owner] Paksa set pasangan karakter untuk seorang user",
   usage: ".setcp @user <id/nama karakter>",
   example: ".setcp @user 116275",

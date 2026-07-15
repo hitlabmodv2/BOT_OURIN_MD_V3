@@ -3,12 +3,12 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 import { getSpouse } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
-  name: "setcpnama",
-  alias: ["scn"],
-  category: "game",
-  description: "Set nama panggilan untuk pasangan karaktermu",
-  usage: ".setcpnama <nama>",
-  example: ".setcpnama Sayangku",
+  name: "scndel",
+  alias: ["delcpnama", "hapuscpnama"],
+  category: "nikahchar",
+  description: "Hapus nama panggilan pasangan karaktermu",
+  usage: ".scndel",
+  example: ".scndel",
   isOwner: false,
   isPremium: false,
   isGroup: false,
@@ -20,27 +20,17 @@ const pluginConfig = {
 
 async function handler(m, { sock }) {
   const db = getDatabase();
-
   try {
-    const nickname = (m.args || []).join(" ").trim();
-    if (!nickname) {
-      return m.reply(`👉 \`${m.prefix}setcpnama <nama panggilan>\``);
-    }
-    if (nickname.length > 30) {
-      return m.reply(`❌ Nama panggilan maksimal 30 karakter.`);
-    }
-
     const user = db.getUser(m.sender);
     const spouse = user ? getSpouse(user) : null;
-    if (!spouse) {
-      return m.reply(`❌ Kamu belum punya pasangan karakter.`);
-    }
+    if (!spouse) return m.reply(`❌ Kamu belum punya pasangan karakter.`);
+    if (!spouse.nickname) return m.reply(`❌ Kamu belum set nama panggilan.`);
 
-    spouse.nickname = nickname;
+    spouse.nickname = null;
     db.save();
 
     await m.react("✅");
-    await m.reply(`✅ Pasanganmu sekarang dipanggil *${nickname}* 💕`);
+    await m.reply(`✅ Nama panggilan pasanganmu dihapus. Kembali ke *${spouse.name}*.`);
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

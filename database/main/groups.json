@@ -483,9 +483,38 @@
         "count": 1,
         "lastChat": 1784110619123,
         "name": "cah stecu👎🏻"
+      },
+      "6282329868581@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1784111564264,
+        "name": "૮꒰ 기름 ꒱ა ! 🧁🇰🇷"
       }
     },
     "jid": "120363427374078962@g.us",
+    "name": "Unknown Group",
+    "welcome": false,
+    "leave": false,
+    "goodbye": false,
+    "antilink": false,
+    "antitoxic": false,
+    "mute": false,
+    "warnings": [],
+    "chat": {}
+  },
+  "120363405980349907@g.us": {
+    "chatStats": {
+      "6288991438409@s.whatsapp.net": {
+        "count": 7,
+        "lastChat": 1784111348794,
+        "name": "aikoo"
+      },
+      "628812990988@s.whatsapp.net": {
+        "count": 2,
+        "lastChat": 1784111267661,
+        "name": "arina"
+      }
+    },
+    "jid": "120363405980349907@g.us",
     "name": "Unknown Group",
     "welcome": false,
     "leave": false,
