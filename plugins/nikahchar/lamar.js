@@ -66,9 +66,11 @@ async function handler(m, { sock }) {
 
     if (existingOwner && existingOwner !== m.sender.replace(/@.+/g, "")) {
       const ownerNumber = existingOwner.split("@")[0] || existingOwner;
+      const ownerJid = `${ownerNumber}@s.whatsapp.net`;
       await m.react("💔");
       return m.reply(
-        `💔 Karakter *${c.name}* (ID: ${c.id}) sudah punya pasangan orang lain!\n_Setiap karakter cuma bisa dimiliki oleh 1 orang._\n\n👉 Hubungi pemiliknya: wa.me/${ownerNumber}`,
+        `@${ownerNumber} 👤\n\n💔 Karakter *${c.name}* (ID: ${c.id}) sudah punya pasangan orang lain!\n_Setiap karakter cuma bisa dimiliki oleh 1 orang._\n\n👉 Hubungi pemiliknya: wa.me/${ownerNumber}`,
+        { mentions: [ownerJid] },
       );
     }
 

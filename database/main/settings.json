@@ -16,7 +16,7 @@
   "onlyGc": false,
   "onlyPc": false,
   "giveaways": {},
-  "botMode": "self",
+  "botMode": "public",
   "audioMenu": true,
   "transactionSessions": {},
   "premiumUsers": [],
@@ -319,6 +319,18 @@
     "6283173684845@s.whatsapp.net": {
       "jid": "6283173684845@s.whatsapp.net",
       "name": "Kira Kira~"
+    },
+    "6282144255842@s.whatsapp.net": {
+      "jid": "6282144255842@s.whatsapp.net",
+      "name": "orcaizn (sazzn)"
+    },
+    "6285891690622@s.whatsapp.net": {
+      "jid": "6285891690622@s.whatsapp.net",
+      "name": "ciki miki kimi elen"
+    },
+    "6289675192047@s.whatsapp.net": {
+      "jid": "6289675192047@s.whatsapp.net",
+      "name": "ucokk"
     }
   },
   "notiflimit": true,

@@ -23,6 +23,13 @@ const pluginConfig = {
   isEnabled: true,
 };
 
+function makeBtn(displayText, id) {
+  return {
+    name: "quick_reply",
+    buttonParamsJson: JSON.stringify({ display_text: displayText, id }),
+  };
+}
+
 async function handler(m, { sock }) {
   const query = (m.args || []).join(" ").trim();
 
@@ -47,21 +54,31 @@ async function handler(m, { sock }) {
     let caption = renderCharacterCard(c);
     caption += `\n\n`;
     if (owner) {
-      caption += `💔 Status: *sudah dilamar* oleh orang lain.\n> \`${m.prefix}cekpas\` untuk cek siapa pemiliknya.`;
+      caption += `💔 Status: *sudah dilamar* oleh orang lain.\n> \`${m.prefix}cekpaschar ${c.id}\` untuk cek siapa pemiliknya.`;
     } else {
       caption += `💌 Status: masih *available*!\n> \`${m.prefix}lamar ${c.id}\` untuk melamarnya.`;
     }
+    caption += `\n\n❓ Apakah kamu ingin melamar karakter *${c.name}*?`;
+
+    const buttons = [
+      makeBtn("🤍 Lamar", `${m.prefix}lamar ${c.id}`),
+      makeBtn("💍 Cek Pasangan", `${m.prefix}cekpaschar ${c.id}`),
+    ];
 
     await m.react("✅");
 
     if (c.image) {
       await sock.sendMessage(
         m.chat,
-        { image: { url: c.image }, caption },
+        { image: { url: c.image }, caption, interactiveButtons: buttons },
         { quoted: m },
       );
     } else {
-      await m.reply(caption);
+      await sock.sendMessage(
+        m.chat,
+        { text: caption, interactiveButtons: buttons },
+        { quoted: m },
+      );
     }
   } catch (error) {
     if (error instanceof WaifuServiceError) {

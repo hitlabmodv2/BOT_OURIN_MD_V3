@@ -1,6 +1,14 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, getStatus, tickRelationship, STATUS_MENIKAH, CHILD_COOLDOWN_MS } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, getStatus, tickRelationship, addLove, STATUS_MENIKAH, CHILD_COOLDOWN_MS, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+
+const LOVE_GAIN = 10;
+
+const TEASER_LINES = [
+  "Kamu berdua duduk berdekatan, saling menyandarkan bahu...",
+  "_(๑•́ ₃ •̀๑)_ Dia menggenggam tanganmu erat, malu-malu tersenyum...",
+  "Kalian menghabiskan malam berdua dengan penuh kehangatan...",
+];
 
 const pluginConfig = {
   name: "buatanak",
@@ -72,11 +80,23 @@ async function handler(m, { sock }) {
       bornAt: now,
     };
     user.rpg.children.push(child);
+
+    const loveBefore = spouse.love || 0;
+    addLove(spouse, LOVE_GAIN);
+    const loveAfter = spouse.love;
     db.save();
+
+    await m.react("💞");
+    for (const line of TEASER_LINES) {
+      await m.reply(line);
+      await new Promise((r) => setTimeout(r, 1200));
+    }
 
     await m.react("👶");
     await m.reply(
-      `👶 *sᴇʟᴀᴍᴀᴛ!* Kamu dan *${spouse.nickname || spouse.name}* dikaruniai anak bernama *${childName}*!\n\n` +
+      `👶 Tampaknya *${spouse.nickname || spouse.name}* hamil!\n\n` +
+        `💕 Hubunganmu: ~${loveBefore}~ → *${loveAfter}*/${MAX_LOVE}\n\n` +
+        `👶 *sᴇʟᴀᴍᴀᴛ!* Kamu dan *${spouse.nickname || spouse.name}* dikaruniai anak bernama *${childName}*!\n\n` +
         `• *ID Anak:* ${child.id}\n` +
         `• *Kebahagiaan awal:* ${child.happiness}/100\n\n` +
         `_Selanjutnya:_\n` +
