@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { translate } from "@vitalets/google-translate-api";
 import { getDatabase } from "./ourin-database.js";
 
 const MAL_BASE = "https://myanimelist.net";
@@ -75,6 +76,19 @@ async function searchCharacterIdByName(query) {
   return found;
 }
 
+/** Terjemahkan deskripsi karakter (bahasa Inggris dari MAL) ke Bahasa Indonesia */
+async function translateAboutToIndonesian(text) {
+  if (!text) return text;
+  try {
+    const { text: translated } = await translate(text, { to: "id" });
+    return translated || text;
+  } catch (err) {
+    // Kalau layanan translate gagal (limit/network), jangan bikin seluruh
+    // pencarian karakter ikut gagal — tampilkan teks asli + catatan.
+    return `${text}\n\n_(gagal menerjemahkan otomatis ke Bahasa Indonesia, ini teks aslinya)_`;
+  }
+}
+
 /** Ambil detail lengkap karakter langsung dari halaman /character/<id> di MyAnimeList */
 async function getCharacterDetailById(id) {
   const html = await fetchMalHtml(`/character/${id}`);
@@ -99,6 +113,7 @@ async function getCharacterDetailById(id) {
     guard++;
   }
   about = about.replace(/&quot;/g, '"').replace(/\n{3,}/g, "\n\n").trim();
+  about = await translateAboutToIndonesian(about);
 
   const favMatch = $("body")
     .text()
