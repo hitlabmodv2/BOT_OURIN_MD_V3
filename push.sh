@@ -1883,11 +1883,6 @@ prepare_stage() {
     git rm --cached -q "$f" 2>>"$err_log" || true
   done
 
-  # node_modules: SELALU untrack penuh — tidak pernah di-upload ke GitHub.
-  # User cukup jalankan `npm install` setelah clone.
-  if git ls-files --error-unmatch node_modules/ >/dev/null 2>&1; then
-    git rm -r --cached -q node_modules/ 2>>"$err_log" || true
-  fi
 
   # Untrack semua sisa file session folder lama jika masih ada
   local _hisoka_folder_list
@@ -1941,14 +1936,8 @@ prepare_stage() {
   _new_count=$(git diff --cached --name-only 2>/dev/null | grep -c '^sessions/'; true)
   _PUSH_SESSION_NEW="$_new_count"
 
-  # node_modules TIDAK di-upload — sudah di-exclude penuh via .gitignore.
-  # Pastikan tidak ada sisa tracking dari commit lama.
-  if git ls-files --error-unmatch node_modules/ >/dev/null 2>&1; then
-    git rm -r --cached -q node_modules/ 2>/dev/null || true
-    echo -e "  ${C_YELLOW}📦 node_modules di-untrack dari git (tidak di-upload). Jalankan npm install setelah clone.${C_RESET}"
-  else
-    echo -e "  ${C_DIM}   node_modules: tidak di-upload (excluded via .gitignore) ✓${C_RESET}"
-  fi
+  # node_modules diizinkan masuk staging/push.
+  echo -e "  ${C_GREEN}📦 node_modules diizinkan masuk staging/push.${C_RESET}"
 
   # Kalau ada error non-fatal, tampilkan singkat (tapi jangan stop).
   if [ -s "$err_log" ]; then
