@@ -1203,76 +1203,8 @@ while true; do
   [ "$TOKEN" = "__EXIT__" ] && exit 0
 done
 
-# ── Auto-install node_modules jika belum ada setelah token valid ─────────────
-_auto_nm_needed=0
-if [ ! -d node_modules ] || [ ! -d node_modules/.bin ]; then
-  _auto_nm_needed=1
-else
-  _auto_dep_count=0
-  if [ -f package.json ] && command -v node >/dev/null 2>&1; then
-    _auto_dep_count=$(node -e "
-      try{const p=JSON.parse(require('fs').readFileSync('package.json','utf8'));
-      process.stdout.write(String(Object.keys(p.dependencies||{}).length+Object.keys(p.devDependencies||{}).length));}
-      catch(e){process.stdout.write('0');}
-    " 2>/dev/null)
-  fi
-  _auto_inst_count=$(ls -1 node_modules 2>/dev/null | grep -v '^\.' | wc -l | tr -d ' ')
-  _auto_dep_count="${_auto_dep_count:-0}"
-  _auto_inst_count="${_auto_inst_count:-0}"
-  if [ "$_auto_dep_count" -gt 0 ] 2>/dev/null && [ "$_auto_inst_count" -lt $(( _auto_dep_count / 2 )) ] 2>/dev/null; then
-    _auto_nm_needed=1
-  fi
-fi
-if [ "$_auto_nm_needed" = "1" ]; then
-  clear >/dev/tty 2>/dev/null || true
-  printf "\033[1m╔══════════════════════════════════════════════════╗\033[0m\n"
-  printf "\033[1m║        📦  INSTALL NODE_MODULES — BANG WILY      ║\033[0m\n"
-  printf "\033[1m╚══════════════════════════════════════════════════╝\033[0m\n\n"
-  printf "  \033[33m📦  node_modules belum ada — install otomatis...\033[0m\n\n"
-  # Cek koneksi dulu
-  if ! curl -s --max-time 5 https://registry.npmjs.org/ -o /dev/null 2>/dev/null; then
-    printf "  \033[31m❌  Tidak ada koneksi internet! Jalankan npm install manual.\033[0m\n\n"
-  else
-    printf "  \033[36m▸ Menjalankan npm install — harap tunggu...\033[0m\n\n"
-    _nm_auto_start=$(date '+%s')
-    _nm_auto_log=$(mktemp)
-    npm install >"$_nm_auto_log" 2>&1 &
-    _nm_auto_pid=$!
-    _spin=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
-    _si2=0
-    printf "\n"
-    while kill -0 "$_nm_auto_pid" 2>/dev/null; do
-      _cnt2=0
-      if [ -d node_modules ]; then
-        _t2=$(ls -1d node_modules/*/ 2>/dev/null | wc -l | tr -d ' ')
-        _sd2=$(ls -1d node_modules/@*/ 2>/dev/null | wc -l | tr -d ' ')
-        _sp2=$(ls -1d node_modules/@*/*/ 2>/dev/null | wc -l | tr -d ' ')
-        _cnt2=$(( _t2 - _sd2 + _sp2 ))
-        [ "$_cnt2" -lt 0 ] && _cnt2=0
-      fi
-      _last2=$(ls -t1 node_modules/ 2>/dev/null | grep -v '^\.' | head -1)
-      [ -z "$_last2" ] && _last2="resolving..."
-      _pkg2=$(printf '%.40s' "$_last2")
-      printf "\033[2A\r\033[K  \033[36m%s\033[0m \033[2m%-40s\033[0m  \033[1;33m%s pkg\033[0m\n\033[K\n" \
-        "${_spin[$(( _si2 % 10 ))]}" "$_pkg2" "$_cnt2" >/dev/tty 2>/dev/null
-      _si2=$(( _si2 + 1 ))
-      sleep 0.15
-    done
-    wait "$_nm_auto_pid"
-    _nm_auto_exit=$?
-    _nm_auto_end=$(date '+%s')
-    _nm_auto_dur=$(( _nm_auto_end - _nm_auto_start ))
-    rm -f "$_nm_auto_log" 2>/dev/null
-    printf "\033[2A\r\033[K\n\033[K\n" >/dev/tty 2>/dev/null
-    if [ "$_nm_auto_exit" = "0" ]; then
-      _nm_fc=$(ls -1 node_modules 2>/dev/null | grep -v '^\.' | wc -l | tr -d ' ')
-      printf "  \033[32m✅  npm install selesai! %s packages • %ss\033[0m\n\n" "$_nm_fc" "$_nm_auto_dur"
-    else
-      printf "  \033[31m❌  npm install gagal. Coba manual: npm install\033[0m\n\n"
-    fi
-    sleep 1
-  fi
-fi
+# Instalasi node_modules otomatis dinonaktifkan.
+# Skrip akan lanjut tanpa menginstall dependensi secara otomatis.
 
 # Pilih repo tujuan push dari daftar GitHub (bisa Enter untuk skip)
 REPO="BOT_OURIN_MD_V3"
@@ -2138,241 +2070,21 @@ banner() {
   echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
 }
 
-# ===== Cek koneksi internet (sebelum npm install / download) =====
-_check_internet() {
-  local _hosts=("8.8.8.8" "1.1.1.1" "github.com")
-  for _h in "${_hosts[@]}"; do
-    if ping -c1 -W2 "$_h" >/dev/null 2>&1 || \
-       curl -sf --max-time 3 "https://${_h}" -o /dev/null 2>/dev/null; then
-      return 0
-    fi
-  done
-  return 1
-}
-
-# ===== Install node_modules (dipanggil dari token menu dan main menu) =====
-# Gunakan argumen "--auto" untuk skip konfirmasi (otomatis langsung install).
-action_install_node_modules() {
-  local _auto_mode=0
-  [ "$1" = "--auto" ] && _auto_mode=1
-
+# ===== Status node_modules (fitur install dinonaktifkan) =====
+action_status_node_modules() {
   clear >/dev/tty 2>/dev/null || true
   echo -e "${C_BOLD}╔══════════════════════════════════════════════════╗${C_RESET}"
-  echo -e "${C_BOLD}║        📦  INSTALL NODE_MODULES — BANG WILY      ║${C_RESET}"
+  echo -e "${C_BOLD}║        📦  STATUS NODE_MODULES — BANG WILY      ║${C_RESET}"
   echo -e "${C_BOLD}╚══════════════════════════════════════════════════╝${C_RESET}"
   echo ""
-  # ── Status node_modules sekarang ──────────────────────────────────────
   if [ -d node_modules ] && [ -d node_modules/.bin ]; then
     local _cur_count; _cur_count=$(ls -1 node_modules 2>/dev/null | grep -v '^\.' | wc -l | tr -d ' ')
-    echo -e "  ${C_GREEN}📦  node_modules sudah ada${C_RESET}${C_DIM} — ${_cur_count} packages terinstall${C_RESET}"
-    echo -e "  ${C_DIM}   (akan di-reinstall ulang)${C_RESET}"
+    echo -e "  ${C_GREEN}📦  node_modules tersedia${C_RESET}${C_DIM} — ${_cur_count} packages terinstall${C_RESET}"
   else
-    echo -e "  ${C_YELLOW}📦  node_modules belum ada${C_RESET}${C_DIM} — akan diinstall dari package.json${C_RESET}"
+    echo -e "  ${C_YELLOW}📦  node_modules belum tersedia${C_RESET}${C_DIM} — instalasi otomatis dinonaktifkan${C_RESET}"
   fi
   echo ""
-  # ── Cek koneksi internet dulu ──────────────────────────────────────────
-  printf "  ${C_DIM}Cek koneksi internet...${C_RESET}"
-  if ! _check_internet; then
-    printf "\r${C_RED}  ❌  Tidak ada koneksi internet! npm install membutuhkan koneksi.${C_RESET}\n"
-    echo ""
-    if [ "$_auto_mode" = "1" ]; then
-      echo -e "  ${C_DIM}Auto-install dilewati — tidak ada koneksi.${C_RESET}"
-      sleep 2
-    else
-      printf "  ${C_DIM}Tekan Enter untuk kembali...${C_RESET}"
-      read -r </dev/tty
-    fi
-    return 1
-  fi
-  printf "\r  ${C_GREEN}✅  Koneksi internet OK${C_RESET}              \n"
-  echo ""
-  # ── Konfirmasi sebelum install (skip kalau --auto) ────────────────────
-  if [ "$_auto_mode" = "0" ]; then
-    echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
-    printf "  ${C_GREEN}y${C_RESET} ${C_BOLD}›${C_RESET} Lanjut install      ${C_RED}n${C_RESET} ${C_BOLD}›${C_RESET} Batal\n"
-    echo -e "${C_DIM}  ──────────────────────────────────${C_RESET}"
-    printf "  ${C_BOLD}▸ ${C_RESET}"
-    local _confirm_nm
-    read -r _confirm_nm </dev/tty
-    _confirm_nm=$(printf '%s' "$_confirm_nm" | tr '[:upper:]' '[:lower:]' | tr -d ' \r\n')
-    if [ "$_confirm_nm" != "y" ]; then
-      echo -e "\n  ${C_DIM}Install dibatalkan.${C_RESET}"
-      sleep 1
-      return
-    fi
-  else
-    echo -e "  ${C_DIM}Mode otomatis — langsung install tanpa konfirmasi.${C_RESET}"
-  fi
-  echo ""
-  echo -e "  ${C_DIM}Menjalankan npm install — harap tunggu...${C_RESET}"
-  echo ""
-  # ── Live display: progress bar + nama paket real-time ─────────────────
-  local _nm_start_ts; _nm_start_ts=$(date '+%s')
-  local _nm_tmplog; _nm_tmplog=$(mktemp)
-  # --verbose agar log punya output untuk fallback parsing
-  npm install --verbose >"$_nm_tmplog" 2>&1 &
-  local _npm_bg_pid=$!
-  local _spin_nm=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
-  local _si=0 _bw=22 _p=0
-  printf "\n"
-  while kill -0 "$_npm_bg_pid" 2>/dev/null; do
-    # ── Hitung packages dari disk (folder non-hidden di node_modules) ────
-    local _cnt=0
-    if [ -d node_modules ]; then
-      local _top _scoped_dirs _scoped_pkgs
-      _top=$(ls -1d node_modules/*/ 2>/dev/null | wc -l | tr -d ' ')
-      _scoped_dirs=$(ls -1d node_modules/@*/ 2>/dev/null | wc -l | tr -d ' ')
-      _scoped_pkgs=$(ls -1d node_modules/@*/*/ 2>/dev/null | wc -l | tr -d ' ')
-      # top sudah include @scope-dirs → kurang @scope-dirs + tambah @scope/pkg-dirs
-      _cnt=$(( _top - _scoped_dirs + _scoped_pkgs ))
-      [ "$_cnt" -lt 0 ] && _cnt=0
-    fi
-    # ── Nama paket terbaru: ambil dari ls -t node_modules (real from disk) ─
-    local _cur_pkg=""
-    if [ -d node_modules ]; then
-      local _last; _last=$(ls -t1 node_modules/ 2>/dev/null | grep -v '^\.' | head -1)
-      if [ -n "$_last" ]; then
-        if [ "${_last:0:1}" = "@" ] && [ -d "node_modules/${_last}" ]; then
-          # Paket scoped: ambil sub-folder terbaru di dalamnya
-          local _sub; _sub=$(ls -t1 "node_modules/${_last}/" 2>/dev/null | head -1)
-          [ -n "$_sub" ] && _cur_pkg="${_last}/${_sub}" || _cur_pkg="$_last"
-        else
-          _cur_pkg="$_last"
-        fi
-      fi
-    fi
-    # ── Fallback 1: parse verbose log (npm verb fetch GET) ────────────────
-    if [ -z "$_cur_pkg" ]; then
-      _cur_pkg=$(grep 'npm verb fetch GET' "$_nm_tmplog" 2>/dev/null | tail -1 | \
-        sed 's|.*registry.npmjs.org/||; s|/-/.*||; s|%2F|/|g' | cut -c1-38)
-    fi
-    # ── Fallback 2: parse "added X packages" di akhir ────────────────────
-    if [ -z "$_cur_pkg" ]; then
-      _cur_pkg=$(grep -oE 'added [0-9]+ package' "$_nm_tmplog" 2>/dev/null | tail -1)
-    fi
-    [ -z "$_cur_pkg" ] && _cur_pkg="resolving..."
-    local _pkg_display; _pkg_display=$(printf '%.38s' "$_cur_pkg")
-    # ── Progress bar: naikkan pelan-pelan, sesuaikan dengan jumlah pkg ────
-    local _speed_p=1
-    [ "$_cnt" -gt 50 ]  && _speed_p=2
-    [ "$_cnt" -gt 200 ] && _speed_p=3
-    [ "$_p" -lt 92 ] && _p=$(( _p + _speed_p ))
-    [ "$_p" -gt 92 ] && _p=92
-    local _f=$(( _p * _bw / 100 ))
-    local _bf="" _be="" _j=0
-    while [ $_j -lt $_f ];  do _bf="${_bf}█"; _j=$(( _j+1 )); done
-    while [ $_j -lt $_bw ]; do _be="${_be}░"; _j=$(( _j+1 )); done
-    local _sp="${_spin_nm[$(( _si % 10 ))]}"
-    _si=$(( _si + 1 ))
-    printf "\033[2A\r\033[K  [\033[36m%s\033[0m\033[2m%s\033[0m] \033[1;36m%3d%%\033[0m  \033[2mnpm install\033[0m\n\033[K  \033[36m%s\033[0m \033[2m%-38s\033[0m  \033[1;33m%s pkg\033[0m\n" \
-      "$_bf" "$_be" "$_p" "$_sp" "$_pkg_display" "$_cnt" >/dev/tty 2>/dev/null
-    sleep 0.15
-  done
-  wait "$_npm_bg_pid"
-  local _nm_exit=$?
-  local _nm_log; _nm_log=$(cat "$_nm_tmplog" 2>/dev/null)
-  rm -f "$_nm_tmplog" 2>/dev/null
-  local _bw2=22 _full=""
-  local _j2=0; while [ $_j2 -lt $_bw2 ]; do _full="${_full}█"; _j2=$(( _j2+1 )); done
-  if [ "$_nm_exit" = "0" ]; then
-    printf "\033[2A\r\033[K  [\033[32m%s\033[0m] \033[1;32m100%%\033[0m  \033[32m✅ selesai!\033[0m\n\033[K\n" \
-      "$_full" >/dev/tty 2>/dev/null
-  else
-    local _half="" _j3=0
-    while [ $_j3 -lt $_bw2 ]; do _half="${_half}▒"; _j3=$(( _j3+1 )); done
-    printf "\033[2A\r\033[K  [\033[31m%s\033[0m] \033[1;31m ERR\033[0m  \033[31m❌ gagal\033[0m\n\033[K\n" \
-      "$_half" >/dev/tty 2>/dev/null
-  fi
-  local _nm_end_ts; _nm_end_ts=$(date '+%s')
-  local _nm_duration=$(( _nm_end_ts - _nm_start_ts ))
-  local _nm_ts; _nm_ts=$(TZ=Asia/Jakarta date '+%d %b %Y • %H:%M WIB' 2>/dev/null || date '+%d %b %Y • %H:%M')
-  local _nm_pkg_count="0"
-  local _nm_size="?"
-  if [ -d node_modules ]; then
-    local _tm _sd _sp
-    _tm=$(ls -1d node_modules/*/ 2>/dev/null | wc -l | tr -d ' ')
-    _sd=$(ls -1d node_modules/@*/ 2>/dev/null | wc -l | tr -d ' ')
-    _sp=$(ls -1d node_modules/@*/*/ 2>/dev/null | wc -l | tr -d ' ')
-    _nm_pkg_count=$(( _tm - _sd + _sp ))
-    [ "$_nm_pkg_count" -lt 0 ] && _nm_pkg_count=0
-    _nm_size=$(du -sh node_modules 2>/dev/null | awk '{print $1}' || echo "?")
-  fi
-  # ── Verifikasi: cek semua deps dari package.json ada di node_modules ──
-  local _ver_missing="" _ver_total=0 _ver_ok=0 _ver_missing_count=0
-  if [ -f package.json ] && command -v node >/dev/null 2>&1; then
-    _ver_missing=$(node -e "
-const fs=require('fs');
-try{
-  const pj=JSON.parse(fs.readFileSync('package.json','utf8'));
-  const deps=Object.keys(pj.dependencies||{});
-  const miss=deps.filter(d=>!fs.existsSync('node_modules/'+d));
-  if(miss.length) process.stdout.write(miss.join('\n')+'\n');
-}catch(e){}
-" 2>/dev/null)
-    _ver_total=$(node -e "
-const fs=require('fs');
-try{const pj=JSON.parse(fs.readFileSync('package.json','utf8'));
-console.log(Object.keys(pj.dependencies||{}).length);}catch(e){console.log(0);}
-" 2>/dev/null)
-    [ -n "$_ver_missing" ] && _ver_missing_count=$(echo "$_ver_missing" | grep -c '.'; true)
-    _ver_ok=$(( _ver_total - _ver_missing_count ))
-  fi
-  if [ "$_nm_exit" = "0" ]; then
-    echo ""
-    if [ "$_ver_missing_count" = "0" ]; then
-      echo -e "  ${C_GREEN}✅  node_modules siap digunakan.${C_RESET}"
-      echo -e "  ${C_DIM}   📦 ${_nm_pkg_count} packages  •  ✔ ${_ver_total}/${_ver_total} deps OK  •  ⏱ ${_nm_duration}s  •  💾 ${_nm_size}${C_RESET}"
-    else
-      echo -e "  ${C_YELLOW}⚠️  npm install selesai tapi ada package missing!${C_RESET}"
-      echo -e "  ${C_DIM}   📦 ${_nm_pkg_count} packages  •  ✔ ${_ver_ok}/${_ver_total} deps OK  •  ⏱ ${_nm_duration}s  •  💾 ${_nm_size}${C_RESET}"
-      echo ""
-      echo -e "  ${C_RED}   Package masih missing (${_ver_missing_count}):${C_RESET}"
-      echo "$_ver_missing" | while IFS= read -r _mp; do
-        [ -n "$_mp" ] && echo -e "      ${C_RED}✗ ${_mp}${C_RESET}"
-      done
-      echo ""
-      echo -e "  ${C_DIM}   Coba: npm install <nama-package> atau cek koneksi & install ulang.${C_RESET}"
-    fi
-    local _tg_status; [ "$_ver_missing_count" = "0" ] && _tg_status="✅ Sukses — semua ${_ver_total} deps terpasang" || _tg_status="⚠️ Partial — ${_ver_ok}/${_ver_total} deps OK, ${_ver_missing_count} missing"
-    local _btn_nm_ok='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📦 npm Packages","url":"https://www.npmjs.com/"}],[{"text":"🟢 GitHub Actions","url":"https://github.com/'"${USER}"'/'"${REPO}"'/actions"},{"text":"📜 package.json","url":"https://github.com/'"${USER}"'/'"${REPO}"'/blob/'"${DEFAULT_BRANCH}"'/package.json"}]]}'
-    send_telegram_photo "https://cdn.myanimelist.net/images/anime/1517/100633.jpg" "📦 <b>NODE_MODULES INSTALL SELESAI</b>
-━━━━━━━━━━━━━━━━━━━━
-👤 <code>${USER}</code>
-📁 <code>${USER}/${REPO}</code>
-📦 Total packages : <b>${_nm_pkg_count}</b>
-✔ Deps terpasang  : <b>${_ver_ok}/${_ver_total}</b>
-💾 Ukuran         : <b>${_nm_size}</b>
-⏱ Durasi          : <b>${_nm_duration} detik</b>
-${_tg_status}
-━━━━━━━━━━━━━━━━━━━━
-🕐 ${_nm_ts}" "$_btn_nm_ok" 2>/dev/null &
-  else
-    echo ""
-    echo -e "  ${C_RED}❌  npm install gagal!${C_RESET}"
-    echo "$_nm_log" | tail -10 | while IFS= read -r _line; do
-      [ -n "$_line" ] && echo -e "      ${C_DIM}$_line${C_RESET}"
-    done
-    if [ "$_ver_missing_count" -gt 0 ] 2>/dev/null; then
-      echo ""
-      echo -e "  ${C_RED}   Package missing (${_ver_missing_count}):${C_RESET}"
-      echo "$_ver_missing" | while IFS= read -r _mp; do
-        [ -n "$_mp" ] && echo -e "      ${C_RED}✗ ${_mp}${C_RESET}"
-      done
-    fi
-    local _nm_err_short; _nm_err_short=$(echo "$_nm_log" | tail -3 | tr '\n' ' ' | cut -c1-120)
-    local _btn_nm_fail='{"inline_keyboard":[[{"text":"📁 Buka Repo","url":"https://github.com/'"${USER}"'/'"${REPO}"'"},{"text":"📦 npm Docs","url":"https://docs.npmjs.com/"}],[{"text":"🔍 Troubleshoot","url":"https://docs.npmjs.com/common-errors"},{"text":"📜 package.json","url":"https://github.com/'"${USER}"'/'"${REPO}"'/blob/'"${DEFAULT_BRANCH}"'/package.json"}]]}'
-    send_telegram_photo "https://cdn.myanimelist.net/images/anime/1286/99889.jpg" "📦 <b>NPM INSTALL GAGAL</b>
-━━━━━━━━━━━━━━━━━━━━
-👤 <code>${USER}</code>
-📁 <code>${USER}/${REPO}</code>
-⏱ Durasi    : <b>${_nm_duration} detik</b>
-✘ Missing   : <b>${_ver_missing_count}/${_ver_total} deps</b>
-❌ Status   : <b>Gagal</b>
-━━━━━━━━━━━━━━━━━━━━
-⚠️ <code>${_nm_err_short}</code>
-━━━━━━━━━━━━━━━━━━━━
-🕐 ${_nm_ts}" "$_btn_nm_fail" 2>/dev/null &
-  fi
+  echo -e "  ${C_DIM}Fitur install node_modules otomatis telah dinonaktifkan.${C_RESET}"
   echo ""
   printf "  ${C_DIM}Tekan Enter untuk kembali ke menu...${C_RESET}"
   read -r </dev/tty
@@ -2553,10 +2265,10 @@ show_main_menu() {
   local _nm_label _nm_status_str
   if [ -d node_modules ] && [ -d node_modules/.bin ]; then
     local _nm_c; _nm_c=$(ls -1 node_modules 2>/dev/null | grep -v '^\.' | wc -l | tr -d ' ')
-    _nm_label="Install node_modules"
+    _nm_label="Status node_modules"
     _nm_status_str="${C_GREEN}✓ ${_nm_c} pkg${C_RESET}"
   else
-    _nm_label="Install node_modules"
+    _nm_label="Status node_modules"
     _nm_status_str="${C_RED}⚠ belum ada${C_RESET}"
   fi
   echo -e "  ${C_DIM}⚡ LAINNYA${C_RESET}"
@@ -2595,7 +2307,7 @@ show_main_menu() {
     p|P) action_quick_push ;;
     l|L) action_view_push_log ;;
     c|C) action_cleanup_node_modules ;;
-    n|N) action_install_node_modules ;;
+    n|N) action_status_node_modules ;;
     d|D) action_delete_file_folder ;;
     r|R) action_restore_deleted ;;
     u|U) action_self_update "$_upd_ver" "$_upd_url" ;;

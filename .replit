@@ -27,4 +27,4 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "[ ! -d node_modules ] && npm install; npm start"
+args = "npm start"
