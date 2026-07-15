@@ -48,6 +48,7 @@ const CATEGORY_EMOJIS = {
   tools: "🛠️",
   fun: "🎮",
   game: "🎯",
+  nikahchar: "💍",
   download: "📥",
   downloader: "📥",
   search: "🔍",
@@ -159,6 +160,7 @@ function getSortedCategories(m, botMode) {
     "tools",
     "fun",
     "game",
+    "nikahchar",
     "download",
     "search",
     "sticker",
@@ -335,6 +337,7 @@ Kamu bisa pakai aku buat cari info, ambil data, atau bantu hal-hal sederhana lan
     "tools",
     "fun",
     "game",
+    "nikahchar",
     "download",
     "search",
     "sticker",
@@ -545,7 +548,7 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
     const CATEGORY_GROUPS = [
       { label: "🏠 Umum & Tools",     icon: "DEFAULT", cats: ["main", "utility", "tools", "convert", "user"] },
       { label: "📁 Cek & Status",     icon: "REVIEW",  cats: ["cek"] },
-      { label: "🎮 Game & Fun",       icon: "REVIEW",  cats: ["game", "fun", "random"] },
+      { label: "🎮 Game & Fun",       icon: "REVIEW",  cats: ["game", "fun", "random", "nikahchar"] },
       { label: "⚔️ RPG & Clan",      icon: "REVIEW",  cats: ["rpg", "clan"] },
       { label: "📥 Download & Media", icon: "REVIEW",  cats: ["download", "media", "anime", "asupan"] },
       { label: "🤖 AI",               icon: "REVIEW",  cats: ["ai"] },
@@ -584,7 +587,7 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
     // Emoji per kategori — lengkap sesuai semua folder di /plugins
     const CAT_EMOJI = {
       main: "🏠", utility: "🔧", tools: "🛠️", convert: "🔄", user: "📊",
-      cek: "📁", game: "🎯", fun: "🎮", random: "🎲", rpg: "🗡️", clan: "⚔️",
+      cek: "📁", game: "🎯", fun: "🎮", random: "🎲", rpg: "🗡️", clan: "⚔️", nikahchar: "💍",
       download: "📥", media: "🎬", anime: "🍥", asupan: "🎞️",
       ai: "🤖", search: "🔍", info: "ℹ️", stalker: "🕵️", primbon: "🔮",
       sticker: "🖼️", canvas: "🎨", ephoto: "🖌️", tts: "🗣️",

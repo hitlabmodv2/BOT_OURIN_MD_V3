@@ -28,7 +28,7 @@ const pluginConfig = {
 
 const CATEGORY_EMOJIS = {
   main: "🏠", utility: "🔧", tools: "🛠️", convert: "🔄", user: "📊",
-  cek: "📁", game: "🎯", fun: "🎮", random: "🎲", rpg: "🗡️", clan: "⚔️",
+  cek: "📁", game: "🎯", fun: "🎮", random: "🎲", rpg: "🗡️", clan: "⚔️", nikahchar: "💍",
   download: "📥", media: "🎬", anime: "🍥", asupan: "🎞️",
   ai: "🤖", search: "🔍", info: "ℹ️", stalker: "🕵️", primbon: "🔮",
   sticker: "🖼️", canvas: "🎨", ephoto: "🖌️", tts: "🗣️",
@@ -42,7 +42,7 @@ const CATEGORY_EMOJIS = {
 const CATEGORY_GROUPS = [
   { label: "🏠 Umum & Tools",     cats: ["main", "utility", "tools", "convert", "user"] },
   { label: "📁 Cek & Status",     cats: ["cek"] },
-  { label: "🎮 Game & Fun",       cats: ["game", "fun", "random"] },
+  { label: "🎮 Game & Fun",       cats: ["game", "fun", "random", "nikahchar"] },
   { label: "⚔️ RPG & Clan",      cats: ["rpg", "clan"] },
   { label: "📥 Download & Media", cats: ["download", "media", "anime", "asupan"] },
   { label: "🤖 AI",               cats: ["ai"] },
@@ -198,7 +198,7 @@ async function handler(m, { sock, db }) {
     } catch {}
 
     const excludeCategories = modeExcludeMap[botMode] || modeExcludeMap.md;
-    const categoryOrder = ["owner","main","utility","tools","fun","game","download","search","sticker","media","ai","group","religi","info","cek","economy","user","canvas","random","premium","jpm","pushkontak","panel","ephoto","store"];
+    const categoryOrder = ["owner","main","utility","tools","fun","game","nikahchar","download","search","sticker","media","ai","group","religi","info","cek","economy","user","canvas","random","premium","jpm","pushkontak","panel","ephoto","store"];
     const allCats = [...new Set([...categories, ...Object.keys(casesByCategory)])];
     const sortedCats = allCats.sort((a, b) => {
       const iA = categoryOrder.indexOf(a), iB = categoryOrder.indexOf(b);
