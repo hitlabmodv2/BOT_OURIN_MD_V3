@@ -45,9 +45,6 @@ sessions/**
 .token.secret
 .repo.last
 
-# Live WhatsApp session/auth state — never commit, contains account credentials
-storage/session.json
-
 # node_modules — sekarang diizinkan untuk upload ke GitHub
 # Jangan di-ignore lagi
 !node_modules/
