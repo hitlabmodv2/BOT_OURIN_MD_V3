@@ -1,3 +1,0 @@
-node_modules/**/*.node filter=lfs diff=lfs merge=lfs -text
-node_modules/**/*ffmpeg* filter=lfs diff=lfs merge=lfs -text
-node_modules/**/*.so filter=lfs diff=lfs merge=lfs -text

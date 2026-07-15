@@ -45,15 +45,8 @@ sessions/**
 .token.secret
 .repo.last
 
-# Runtime state & credentials — generated at runtime, must never be committed
-config.json
-storage/session.json
-storage/.auto_action_done
-storage/wa-version.json
-database/*.json
-database/main/*.json
-database/cpanel/*.json
-
-# node_modules — sekarang boleh di-upload ke GitHub jika diperlukan
-# Jika ingin tetap ignore, aktifkan kembali baris berikut:
-# node_modules/
+# node_modules — sekarang diizinkan untuk upload ke GitHub
+# Jangan di-ignore lagi
+!node_modules/
+!node_modules/**
+node_modules
