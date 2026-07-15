@@ -48,4 +48,5 @@ sessions/**
 # node_modules — sekarang boleh di-upload ke GitHub jika diperlukan
 # Jika ingin tetap ignore, aktifkan kembali baris berikut:
 # node_modules/
+# node_modules
 node_modules
