@@ -1,6 +1,13 @@
 import te from "../../src/lib/ourin-error.js";
 import moment from "moment-timezone";
-import { generateIQC } from "iqc-canvas";
+import { createRequire } from "module";
+
+// iqc-canvas ships a broken ESM build (its "import" export condition points to a
+// file containing ESM syntax that Node still treats as CommonJS because the
+// package's own package.json declares "type": "commonjs"). Loading it through
+// Node's CJS `require` algorithm instead sidesteps that mislabeling entirely.
+const require = createRequire(import.meta.url);
+const { generateIQC } = require("iqc-canvas");
 
 const pluginConfig = {
   name: "iqc",

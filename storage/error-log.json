@@ -1,0 +1,26 @@
+[
+  {
+    "time": "2026-07-15T10:52:56.095Z",
+    "source": "console.error",
+    "message": "(node:449) Warning: To load an ES module, set \"type\": \"module\" in the package.json or use the .mjs extension.\n(Use `node --trace-warnings ...` to show where the warning was created)",
+    "stack": "Error: (node:449) Warning: To load an ES module, set \"type\": \"module\" in the package.json or use the .mjs extension. | (Use `node --trace-warnings ...` to show where the warning was created) |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at writeOut (node:internal/process/warning:65:3)"
+  },
+  {
+    "time": "2026-07-15T10:52:56.108Z",
+    "source": "console.error",
+    "message": "\u001b[90mPromise:\u001b[39m {}",
+    "stack": "Error: \u001b[90mPromise:\u001b[39m {} |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at process.<anonymous> (file:///home/runner/workspace/index.js:338:13) |     at process.emit (node:events:524:28)"
+  },
+  {
+    "time": "2026-07-15T10:53:05.636Z",
+    "source": "console.error",
+    "message": "(node:863) Warning: To load an ES module, set \"type\": \"module\" in the package.json or use the .mjs extension.\n(Use `node --trace-warnings ...` to show where the warning was created)",
+    "stack": "Error: (node:863) Warning: To load an ES module, set \"type\": \"module\" in the package.json or use the .mjs extension. | (Use `node --trace-warnings ...` to show where the warning was created) |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at writeOut (node:internal/process/warning:65:3)"
+  },
+  {
+    "time": "2026-07-15T10:53:05.640Z",
+    "source": "console.error",
+    "message": "\u001b[90mPromise:\u001b[39m {}",
+    "stack": "Error: \u001b[90mPromise:\u001b[39m {} |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at process.<anonymous> (file:///home/runner/workspace/index.js:338:13) |     at process.emit (node:events:524:28)"
+  }
+]
