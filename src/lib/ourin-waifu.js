@@ -33,10 +33,70 @@ const RING_TIERS = [
 ];
 
 const HOUSE_TIERS = [
-  { key: "kontrakan", name: "Kontrakan Petak", price: 500000, quality: "Sederhana", listrikPerWeek: 15000 },
-  { key: "rumahsubsidi", name: "Rumah Subsidi", price: 2000000, quality: "Standar", listrikPerWeek: 35000 },
-  { key: "rumahminimalis", name: "Rumah Minimalis", price: 6000000, quality: "Nyaman", listrikPerWeek: 60000 },
-  { key: "villa", name: "Villa Mewah", price: 20000000, quality: "Mewah", listrikPerWeek: 150000 },
+  // ── Murah ──────────────────────────────────────────────────────────
+  {
+    key: "gubuk", name: "Gubuk Bambu", emote: "🛖",
+    price: 50_000, quality: "Kumuh",
+    listrikPerWeek: 3_000, repairPrice: 15_000,
+    desc: "Gubuk kecil dari bambu, angin masuk dari celah dinding.",
+  },
+  {
+    key: "kontrakan", name: "Kontrakan Petak", emote: "🏚️",
+    price: 500_000, quality: "Sederhana",
+    listrikPerWeek: 15_000, repairPrice: 75_000,
+    desc: "Kontrakan petak satu kamar, kondivisi bisa dibilang ala kadarnya.",
+  },
+  {
+    key: "kos", name: "Kos-kosan Eksklusif", emote: "🏘️",
+    price: 1_500_000, quality: "Cukupan",
+    listrikPerWeek: 25_000, repairPrice: 120_000,
+    desc: "Kos dengan kamar mandi dalam, AC, dan wifi.",
+  },
+  // ── Menengah ───────────────────────────────────────────────────────
+  {
+    key: "rumahsubsidi", name: "Rumah Subsidi", emote: "🏠",
+    price: 3_000_000, quality: "Standar",
+    listrikPerWeek: 40_000, repairPrice: 200_000,
+    desc: "Rumah BTN tipe 36, dua kamar tidur, halaman kecil.",
+  },
+  {
+    key: "rumahminimalis", name: "Rumah Minimalis", emote: "🏡",
+    price: 8_000_000, quality: "Nyaman",
+    listrikPerWeek: 70_000, repairPrice: 350_000,
+    desc: "Rumah tipe 45 desain modern minimalis, tiga kamar.",
+  },
+  {
+    key: "townhouse", name: "Town House", emote: "🏘️",
+    price: 20_000_000, quality: "Bagus",
+    listrikPerWeek: 120_000, repairPrice: 600_000,
+    desc: "Town house dua lantai di komplek perumahan elite.",
+  },
+  // ── Mewah ──────────────────────────────────────────────────────────
+  {
+    key: "villa", name: "Villa Mewah", emote: "🏖️",
+    price: 50_000_000, quality: "Mewah",
+    listrikPerWeek: 200_000, repairPrice: 1_000_000,
+    desc: "Villa tepi pantai dengan kolam renang pribadi.",
+  },
+  {
+    key: "apartemen", name: "Apartemen Penthouse", emote: "🏢",
+    price: 120_000_000, quality: "Premium",
+    listrikPerWeek: 400_000, repairPrice: 2_000_000,
+    desc: "Penthouse di lantai paling atas gedung 50 lantai, pemandangan kota.",
+  },
+  // ── Ultra ──────────────────────────────────────────────────────────
+  {
+    key: "mansion", name: "Mansion", emote: "🏛️",
+    price: 350_000_000, quality: "Super Mewah",
+    listrikPerWeek: 1_000_000, repairPrice: 5_000_000,
+    desc: "Mansion 8 kamar, lapangan tenis, garasi 10 mobil, kolam olimpiade.",
+  },
+  {
+    key: "istana", name: "Istana Pribadi", emote: "🏰",
+    price: 1_000_000_000, quality: "Legendary",
+    listrikPerWeek: 3_000_000, repairPrice: 15_000_000,
+    desc: "Istana megah seluas 5 hektar, penjaga 24 jam, helipad.",
+  },
 ];
 
 const LISTRIK_GRACE_MS = 7 * 24 * 60 * 60 * 1000; // 7 hari telat baru kena efek
@@ -48,11 +108,29 @@ function findRingTier(key) {
 }
 
 const HOUSE_ALIASES = {
+  // istana
+  "istana":           "istana",
+  "palace":           "istana",
+  "kerajaan":         "istana",
+  // mansion
+  "mansion":          "mansion",
+  "gedung":           "mansion",
+  "rumahbesar":       "mansion",
+  // apartemen
+  "apartemen":        "apartemen",
+  "apart":            "apartemen",
+  "penthouse":        "apartemen",
+  "apartement":       "apartemen",
   // villa
   "vila":             "villa",
   "vill":             "villa",
   "villamewah":       "villa",
   "mewah":            "villa",
+  // townhouse
+  "townhouse":        "townhouse",
+  "town":             "townhouse",
+  "ruko":             "townhouse",
+  "rumahbagus":       "townhouse",
   // rumahminimalis
   "minimalis":        "rumahminimalis",
   "rumahmini":        "rumahminimalis",
@@ -61,11 +139,21 @@ const HOUSE_ALIASES = {
   "subsidi":          "rumahsubsidi",
   "rumahsubs":        "rumahsubsidi",
   "subs":             "rumahsubsidi",
+  "btn":              "rumahsubsidi",
+  // kos
+  "kos":              "kos",
+  "kosan":            "kos",
+  "koseksklusif":     "kos",
   // kontrakan
-  "kos":              "kontrakan",
   "kontrак":          "kontrakan",
   "kontrak":          "kontrakan",
   "petak":            "kontrakan",
+  "kontrakan":        "kontrakan",
+  // gubuk
+  "gubuk":            "gubuk",
+  "bambu":            "gubuk",
+  "bedeng":           "gubuk",
+  "gubukbambu":       "gubuk",
 };
 
 function findHouseTier(key) {

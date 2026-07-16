@@ -27,19 +27,63 @@ async function handler(m, { sock }) {
     const current = getHouse(user);
 
     if (args[0]?.toLowerCase() !== "beli") {
-      let txt = `🏠 *ʀᴜᴍᴀʜ*\n\n`;
+      const fmt = (n) => `Rp ${n.toLocaleString("id-ID")}`;
+
+      let txt = `╭┈┈⬡「 🏠 *ʀᴜᴍᴀʜ* 」\n┃\n`;
+
       if (current) {
         const tier = findHouseTier(current.key);
-        txt += `Rumah kamu sekarang: *${tier?.name || current.key}* (${tier?.quality || "-"})\n`;
-        txt += `⚡ Tagihan listrik: *Rp ${(tier?.listrikPerWeek || 0).toLocaleString("id-ID")}/minggu*\n\n`;
+        const lastPaid = current.lastPaidAt ? Math.floor((Date.now() - current.lastPaidAt) / 86400000) : 0;
+        const matiLampu = lastPaid > 7;
+        txt += `┃ ${tier?.emote || "🏠"} Rumah kamu: *${tier?.name || current.key}*\n`;
+        txt += `┃ ✨ Kualitas : *${tier?.quality || "-"}*\n`;
+        txt += `┃ ⚡ Listrik  : *${fmt(tier?.listrikPerWeek || 0)}/minggu*\n`;
+        txt += `┃ 🔧 Perbaikan: *${fmt(tier?.repairPrice || 0)}* (jika mati lampu)\n`;
+        txt += `┃ 📅 Terakhir bayar: *${lastPaid} hari lalu*\n`;
+        txt += `┃ 💡 Status  : ${matiLampu ? "🔴 *MATI LAMPU!* Segera bayar!" : "🟢 Listrik nyala"}\n`;
+        txt += `┃\n`;
       } else {
-        txt += `Kamu belum punya rumah. Rumah wajib dimiliki sebelum bisa \`${m.prefix}nikahcp\`.\n\n`;
+        txt += `┃ ⚠️ Kamu belum punya rumah.\n`;
+        txt += `┃ Rumah wajib dimiliki sebelum \`${m.prefix}nikahcp\`.\n`;
+        txt += `┃\n`;
       }
-      txt += `*Daftar rumah:*\n`;
-      for (const h of HOUSE_TIERS) {
-        txt += `• \`${h.key}\` — ${h.name}\n  💰 Rp ${h.price.toLocaleString("id-ID")} | ✨ ${h.quality} | ⚡ Rp ${h.listrikPerWeek.toLocaleString("id-ID")}/minggu\n`;
+
+      txt += `╰┈┈⬡\n\n`;
+
+      // Kategori
+      const groups = [
+        { label: "🟢 MURAH",       keys: ["gubuk","kontrakan","kos"] },
+        { label: "🟡 MENENGAH",    keys: ["rumahsubsidi","rumahminimalis","townhouse"] },
+        { label: "🔴 MEWAH",       keys: ["villa","apartemen"] },
+        { label: "💜 ULTRA MEWAH", keys: ["mansion","istana"] },
+      ];
+
+      txt += `📋 *Daftar Rumah:*\n`;
+      txt += `${"─".repeat(30)}\n`;
+
+      for (const grp of groups) {
+        txt += `\n${grp.label}\n`;
+        for (const key of grp.keys) {
+          const h = HOUSE_TIERS.find(t => t.key === key);
+          if (!h) continue;
+          const owned = current?.key === h.key ? " ✅" : "";
+          txt += `┃ ${h.emote} *${h.name}*${owned}\n`;
+          txt += `┃   📝 ${h.desc}\n`;
+          txt += `┃   💰 Beli    : *${fmt(h.price)}*\n`;
+          txt += `┃   ⚡ Listrik : *${fmt(h.listrikPerWeek)}/minggu*\n`;
+          txt += `┃   🔧 Perbaiki: *${fmt(h.repairPrice)}* (jika mati lampu)\n`;
+          txt += `┃   🔑 Key     : \`${m.prefix}rumah beli ${h.key}\`\n`;
+        }
       }
-      txt += `\nBeli: \`${m.prefix}rumah beli <tier>\`\n> _Jangan lupa bayar listrik pakai \`${m.prefix}bayarlistrik\`, kalau nunggak lama-lama rumah "mati lampu"._`;
+
+      txt += `\n${"─".repeat(30)}\n`;
+      txt += `💡 *Info:*\n`;
+      txt += `▸ Beli/upgrade: \`${m.prefix}rumah beli <key>\`\n`;
+      txt += `▸ Bayar listrik: \`${m.prefix}bayarlistrik\`\n`;
+      txt += `▸ Kalau listrik nunggak >7 hari → mati lampu\n`;
+      txt += `▸ Untuk nyalakan lagi → \`${m.prefix}bayarlistrik\` (kena biaya perbaikan)\n`;
+      txt += `> _Semua tier bisa di-upgrade kapanpun, harga dibayar penuh._`;
+
       return m.reply(txt);
     }
 
@@ -53,8 +97,18 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Kamu sudah punya rumah *${tier.name}* ini.`);
     }
 
+    const fmt = (n) => `Rp ${n.toLocaleString("id-ID")}`;
+
     if ((user.uang || 0) < tier.price) {
-      return m.reply(`❌ Harga *${tier.name}* itu *Rp ${tier.price.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
+      const kurang = tier.price - (user.uang || 0);
+      return m.reply(
+        `❌ *Uang Kurang!*\n\n` +
+        `${tier.emote || "🏠"} *${tier.name}*\n` +
+        `💰 Harga    : *${fmt(tier.price)}*\n` +
+        `💵 Uang kamu: *${fmt(user.uang || 0)}*\n` +
+        `📉 Kurang   : *${fmt(kurang)}*\n\n` +
+        `> Jual item dulu pakai \`.sellall\` atau \`.sell <item> all\`!`
+      );
     }
 
     user.uang -= tier.price;
@@ -63,15 +117,19 @@ async function handler(m, { sock }) {
 
     await m.react("🏠");
     await m.reply(
-      `🏠 *SELAMAT PUNYA RUMAH BARU!*\n\n` +
-        `Tipe: *${tier.name}* (${tier.quality})\n` +
-        `💸 Harga beli: *-Rp ${tier.price.toLocaleString("id-ID")}*\n` +
-        `💰 Sisa uang: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n\n` +
-        `⚡ *Tagihan Listrik Otomatis*\n` +
-        `▸ Sebesar *Rp ${tier.listrikPerWeek.toLocaleString("id-ID")}* akan dipotong otomatis tiap *7 hari*\n` +
-        `▸ Pastikan saldo cukup, atau listrik akan diputus!\n` +
-        `▸ Bisa bayar manual kapanpun via \`${m.prefix}bayarlistrik\`\n\n` +
-        `> _Sekarang salah satu syarat \`${m.prefix}nikahcp\` udah terpenuhi._ ✨`,
+      `${tier.emote || "🏠"} *SELAMAT PUNYA RUMAH BARU!*\n\n` +
+      `╭┈┈⬡「 🏠 *ᴅᴇᴛᴀɪʟ ʀᴜᴍᴀʜ* 」\n` +
+      `┃ Tipe     : *${tier.name}*\n` +
+      `┃ Kualitas : *${tier.quality}*\n` +
+      `┃ 📝 ${tier.desc}\n` +
+      `╰┈┈⬡\n\n` +
+      `💸 Harga beli : *-${fmt(tier.price)}*\n` +
+      `💰 Sisa uang  : *${fmt(user.uang || 0)}*\n\n` +
+      `⚡ *Info Listrik:*\n` +
+      `▸ Tagihan   : *${fmt(tier.listrikPerWeek)}/minggu*\n` +
+      `▸ Perbaikan : *${fmt(tier.repairPrice)}* (jika mati lampu >7 hari)\n` +
+      `▸ Bayar manual: \`${m.prefix}bayarlistrik\`\n\n` +
+      `> ✨ Syarat \`${m.prefix}nikahcp\` sudah terpenuhi!`
     );
   } catch (error) {
     await m.react("☢");

@@ -151,25 +151,52 @@ const ITEMS = {
   ring: { emote: "💍", name: "Cincin" },
 };
 
+function makeBar(current, max, len = 10) {
+  const ratio  = Math.min(Math.max(current / max, 0), 1);
+  const filled = Math.round(ratio * len);
+  return "█".repeat(filled) + "░".repeat(len - filled);
+}
+
 async function handler(m, { sock }) {
   const db = getDatabase();
   const user = db.getUser(m.sender);
   if (!user.inventory) user.inventory = {};
+  if (!user.rpg)       user.rpg = {};
 
-  let invText = `🎒 *Isi Tas Kamu Nih Kak!* ✨\n\n`;
+  // ── Ambil data sesuai field asli di database ──────────────────────
+  const hp        = user.rpg.health    ?? 100;
+  const maxHp     = user.rpg.maxHealth ?? 100;
+  const stamina   = user.rpg.stamina   ?? 100;
+  const maxSt     = user.rpg.maxStamina ?? 100;
+  const uang      = user.uang  ?? 0;
+  const exp       = user.exp   ?? 0;
+  const level     = user.level ?? 1;
+  const energi    = user.energi ?? 0;
 
-  const hp   = user.rpg?.health || 100;
-  const uang = user.uang || 0;
-  const exp  = user.exp  || 0;
+  const hpBar  = makeBar(hp, maxHp);
+  const stBar  = makeBar(stamina, maxSt);
 
-  invText += `❤️ HP: *${hp}/100*\n`;
-  invText += `   └ ${hp < 40 ? "⚠️ HP kamu kritis! Cepat ketik *.use potion* buat pulihkan HP." : hp < 70 ? "💊 HP mulai berkurang, pertimbangkan pakai potion." : "✅ HP kamu masih aman, lanjut berpetualang!"}\n`;
+  const hpStatus  = hp  < 40 ? "⚠️ Kritis! pakai *.use potion*"
+                  : hp  < 70 ? "💊 Mulai berkurang, pertimbangkan potion"
+                  : "✅ Aman";
+  const stStatus  = stamina < 30 ? "⚠️ Habis! ketik *.stamina isi* atau *.heal*"
+                  : stamina < 60 ? "💨 Agak lelah, istirahat dulu"
+                  : "✅ Segar";
 
-  invText += `💰 Uang: *Rp ${uang.toLocaleString("id-ID")}*\n`;
-  invText += `   └ ${uang === 0 ? "🪙 Belum ada uang! Jual item dengan *.sell <item> <jml>* atau *.sellall*." : uang < 5000 ? "💸 Uang masih sedikit, jual item buruan/tambang biar nambah." : "💵 Lumayan nih! Bisa belanja di *.shop* atau ditabung."}\n`;
-
-  invText += `📈 EXP: *${exp.toLocaleString("id-ID")}*\n`;
-  invText += `   └ Nambah EXP dengan *.berburu*, *.mining*, *.fishing*, atau *.woodcut*.\n\n`;
+  let invText = `╭┈┈⬡「 🎒 *INVENTORY* 」\n`;
+  invText += `┃\n`;
+  invText += `┃ 🏅 Level  : *${level}*\n`;
+  invText += `┃ 📈 EXP    : *${exp.toLocaleString("id-ID")}*\n`;
+  invText += `┃ 💰 Uang   : *Rp ${uang.toLocaleString("id-ID")}*\n`;
+  invText += `┃\n`;
+  invText += `┃ ❤️ HP      : *${hp}/${maxHp}*\n`;
+  invText += `┃   [${hpBar}] ${hpStatus}\n`;
+  invText += `┃\n`;
+  invText += `┃ ⚡ Stamina : *${stamina}/${maxSt}*\n`;
+  invText += `┃   [${stBar}] ${stStatus}\n`;
+  invText += `┃\n`;
+  invText += `┃ 🔋 Energi  : *${energi === -1 ? "∞ (Unlimited)" : energi}*\n`;
+  invText += `╰┈┈⬡\n\n`;
 
   let hasItem = false;
   const categories = {

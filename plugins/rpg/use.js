@@ -34,11 +34,11 @@ async function handler(m, { sock }) {
 
   user.inventory = user.inventory || {};
   user.rpg = user.rpg || {};
-  user.rpg.health = user.rpg.health || 100;
-  user.rpg.maxHealth = user.rpg.maxHealth || 100;
-  user.rpg.mana = user.rpg.mana || 100;
-  user.rpg.maxMana = user.rpg.maxMana || 100;
-  user.rpg.stamina = user.rpg.stamina || 100;
+  user.rpg.health     = user.rpg.health     ?? 100;  // ?? bukan || — supaya nilai 0 tidak direset ke 100
+  user.rpg.maxHealth  = user.rpg.maxHealth  || 100;  // max boleh || karena max tidak pernah 0
+  user.rpg.mana       = user.rpg.mana       ?? 100;
+  user.rpg.maxMana    = user.rpg.maxMana    || 100;
+  user.rpg.stamina    = user.rpg.stamina    ?? 100;  // BUG FIX: `0 || 100` → 100 (salah), `0 ?? 100` → 0 (benar)
   user.rpg.maxStamina = user.rpg.maxStamina || 100;
 
   const count = user.inventory[itemKey] || 0;

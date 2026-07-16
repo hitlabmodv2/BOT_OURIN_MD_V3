@@ -44,12 +44,40 @@ const ITEMS = {
   diamond: { price: 5000, type: "sellable", name: "💠 Berlian" },
   emerald: { price: 10000, type: "sellable", name: "💚 Emerald" },
 
-  trash: { price: 10, type: "sellable", name: "🗑️ Sampah" },
-  fish: { price: 100, type: "sellable", name: "🐟 Ikan" },
-  prawn: { price: 200, type: "sellable", name: "🦐 Udang" },
-  octopus: { price: 500, type: "sellable", name: "🐙 Gurita" },
-  shark: { price: 2000, type: "sellable", name: "🦈 Hiu" },
-  whale: { price: 10000, type: "sellable", name: "🐳 Paus" },
+  // ── Hasil Mancing ─────────────────────────────────
+  // ⬜ Common
+  trash:       { price: 10,      type: "sellable", name: "🗑️ Sampah ⬜ Common"            },
+  lele:        { price: 85,      type: "sellable", name: "🐟 Ikan Lele ⬜ Common"          },
+  nila:        { price: 95,      type: "sellable", name: "🐟 Ikan Nila ⬜ Common"          },
+  fish:        { price: 100,     type: "sellable", name: "🐟 Ikan Biasa ⬜ Common"         },
+  mujair:      { price: 115,     type: "sellable", name: "🐟 Ikan Mujair ⬜ Common"        },
+  // 🟩 Uncommon
+  prawn:       { price: 200,     type: "sellable", name: "🦐 Udang 🟩 Uncommon"           },
+  bawal:       { price: 350,     type: "sellable", name: "🐠 Ikan Bawal 🟩 Uncommon"      },
+  ikanmas:     { price: 450,     type: "sellable", name: "🏅 Ikan Mas 🟩 Uncommon"        },
+  octopus:     { price: 500,     type: "sellable", name: "🐙 Gurita 🟩 Uncommon"          },
+  cumi:        { price: 550,     type: "sellable", name: "🦑 Cumi-cumi 🟩 Uncommon"       },
+  kepiting:    { price: 600,     type: "sellable", name: "🦀 Kepiting 🟩 Uncommon"        },
+  // 🟦 Rare
+  kakap:       { price: 1000,    type: "sellable", name: "🐟 Ikan Kakap 🟦 Rare"          },
+  gabus:       { price: 1500,    type: "sellable", name: "🐠 Ikan Gabus 🟦 Rare"          },
+  kerapu:      { price: 1800,    type: "sellable", name: "🐡 Ikan Kerapu 🟦 Rare"         },
+  shark:       { price: 2000,    type: "sellable", name: "🦈 Hiu 🟦 Rare"                 },
+  // 🟣 Epic
+  lobster:     { price: 3500,    type: "sellable", name: "🦞 Lobster 🟣 Epic"             },
+  tuna:        { price: 5000,    type: "sellable", name: "🐟 Ikan Tuna 🟣 Epic"           },
+  marlin:      { price: 8000,    type: "sellable", name: "🐡 Ikan Marlin 🟣 Epic"         },
+  napoleon:    { price: 9000,    type: "sellable", name: "🐠 Ikan Napoleon 🟣 Epic"       },
+  whale:       { price: 10000,   type: "sellable", name: "🐳 Paus 🟣 Epic"                },
+  // 🟡 Legendary
+  arwana:      { price: 20000,   type: "sellable", name: "🐠 Ikan Arwana 🟡 Legendary"   },
+  cumiraksasa: { price: 35000,   type: "sellable", name: "🦑 Cumi Raksasa 🟡 Legendary"  },
+  tunasirip:   { price: 55000,   type: "sellable", name: "🐟 Tuna Sirip Biru 🟡 Legendary"},
+  penyu:       { price: 75000,   type: "sellable", name: "🐢 Penyu Langka 🟡 Legendary"  },
+  // 💜 Mythic
+  kraken:      { price: 500000,  type: "sellable", name: "🦑 Kraken 💜 Mythic"            },
+  duyung:      { price: 1000000, type: "sellable", name: "🧜 Duyung Emas 💜 Mythic"       },
+  nagalaut:    { price: 3000000, type: "sellable", name: "🐉 Naga Laut 💜 Mythic"         },
   
   leather: { price: 50, type: "sellable", name: "👞 Kulit" },
   mysterybox: { price: 1500, type: "sellable", name: "📦 Mystery Box" },
@@ -63,7 +91,10 @@ const ITEMS = {
 
   // ── Hasil Buruan (harga berdasarkan kelangkaan) ──
   // ⬜ Common
+  tupai:        { price: 3500,     type: "sellable", name: "🐿️ Tupai ⬜ Common"           },
   kelinci:      { price: 4000,     type: "sellable", name: "🐰 Kelinci ⬜ Common"         },
+  kadal:        { price: 3800,     type: "sellable", name: "🦎 Kadal ⬜ Common"           },
+  bebekhutan:   { price: 4500,     type: "sellable", name: "🦆 Bebek Hutan ⬜ Common"     },
   ayamhutan:    { price: 5000,     type: "sellable", name: "🐓 Ayam Hutan ⬜ Common"      },
   terwelu:      { price: 6500,     type: "sellable", name: "🐇 Terwelu ⬜ Common"         },
   // 🟩 Uncommon
@@ -71,32 +102,49 @@ const ITEMS = {
   kalkun:       { price: 13500,    type: "sellable", name: "🦃 Kalkun 🟩 Uncommon"       },
   monyet:       { price: 15000,    type: "sellable", name: "🐒 Monyet 🟩 Uncommon"       },
   rusa:         { price: 17500,    type: "sellable", name: "🦌 Rusa 🟩 Uncommon"         },
+  bangau:       { price: 18500,    type: "sellable", name: "🦩 Bangau 🟩 Uncommon"       },
   merak:        { price: 20000,    type: "sellable", name: "🦚 Merak 🟩 Uncommon"        },
+  kurakura:     { price: 22000,    type: "sellable", name: "🐢 Kura-kura 🟩 Uncommon"    },
+  berangberang: { price: 24000,    type: "sellable", name: "🦦 Berang-berang 🟩 Uncommon"},
   // 🟦 Rare
   babihutan:    { price: 25000,    type: "sellable", name: "🐗 Babi Hutan 🟦 Rare"       },
   musang:       { price: 32000,    type: "sellable", name: "🦡 Musang 🟦 Rare"           },
+  anjinglaut:   { price: 36000,    type: "sellable", name: "🦭 Anjing Laut 🟦 Rare"      },
   kakatua:      { price: 38000,    type: "sellable", name: "🦜 Kakatua 🟦 Rare"          },
+  kanguru:      { price: 41000,    type: "sellable", name: "🦘 Kanguru 🟦 Rare"          },
   rubah:        { price: 42000,    type: "sellable", name: "🦊 Rubah 🟦 Rare"            },
   ularpiton:    { price: 45000,    type: "sellable", name: "🐍 Ular Piton 🟦 Rare"       },
+  kalajengking: { price: 47000,    type: "sellable", name: "🦂 Kalajengking 🟦 Rare"     },
   serigala:     { price: 48000,    type: "sellable", name: "🐺 Serigala 🟦 Rare"         },
+  gorila:       { price: 52000,    type: "sellable", name: "🦍 Gorila 🟦 Rare"           },
   // 🟣 Epic
   elang:        { price: 65000,    type: "sellable", name: "🦅 Elang 🟣 Epic"            },
   buaya:        { price: 85000,    type: "sellable", name: "🐊 Buaya 🟣 Epic"            },
+  kudaliar:     { price: 88000,    type: "sellable", name: "🐎 Kuda Liar 🟣 Epic"        },
   banteng:      { price: 95000,    type: "sellable", name: "🦬 Banteng 🟣 Epic"          },
+  lutungemas:   { price: 105000,   type: "sellable", name: "🦧 Lutung Emas 🟣 Epic"      },
   beruang:      { price: 110000,   type: "sellable", name: "🐻 Beruang 🟣 Epic"          },
+  rajawali:     { price: 118000,   type: "sellable", name: "🦅 Rajawali 🟣 Epic"         },
   macantutul:   { price: 120000,   type: "sellable", name: "🐆 Macan Tutul 🟣 Epic"      },
+  beruangkutub: { price: 128000,   type: "sellable", name: "🐻 Beruang Kutub 🟣 Epic"    },
   jerapah:      { price: 130000,   type: "sellable", name: "🦒 Jerapah 🟣 Epic"          },
   // 🟡 Legendary
   harimau:      { price: 175000,   type: "sellable", name: "🐯 Harimau 🟡 Legendary"     },
+  serigalabiru: { price: 200000,   type: "sellable", name: "🐺 Serigala Biru 🟡 Legendary"},
   badak:        { price: 250000,   type: "sellable", name: "🦏 Badak 🟡 Legendary"       },
+  nagaangin:    { price: 280000,   type: "sellable", name: "💨 Naga Angin 🟡 Legendary"  },
   singa:        { price: 350000,   type: "sellable", name: "🦁 Singa 🟡 Legendary"       },
   gajah:        { price: 425000,   type: "sellable", name: "🐘 Gajah 🟡 Legendary"       },
+  singaputih:   { price: 480000,   type: "sellable", name: "🦁 Singa Putih 🟡 Legendary" },
   harimauputih: { price: 550000,   type: "sellable", name: "🐅 Harimau Putih 🟡 Legendary"},
   // 💜 Mythic
   mammoth:      { price: 1000000,  type: "sellable", name: "🦣 Mammoth 💜 Mythic"        },
   nagahutan:    { price: 1500000,  type: "sellable", name: "🐉 Naga Hutan 💜 Mythic"     },
+  nagaes:       { price: 2000000,  type: "sellable", name: "🧊 Naga Es 💜 Mythic"        },
   kudaperi:     { price: 2500000,  type: "sellable", name: "🦄 Kuda Peri 💜 Mythic"      },
+  garuda:       { price: 4000000,  type: "sellable", name: "🦅 Garuda Sakti 💜 Mythic"   },
   fenix:        { price: 5000000,  type: "sellable", name: "🔥 Fenix 💜 Mythic"          },
+  ruhhutan:     { price: 8000000,  type: "sellable", name: "🌟 Ruh Hutan 💜 Mythic"      },
   nagapetir:    { price: 10000000, type: "sellable", name: "⚡ Naga Petir 💜 Mythic"      },
 
   // Key lama (kompatibilitas inventory lama)

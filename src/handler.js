@@ -1514,7 +1514,17 @@ async function messageHandler(msg, sock, options = {}) {
           allowed: [...baseAllowed, "pushkontak"],
           name: "Push Kontak",
         },
-        store: { allowed: [...baseAllowed, "store"], name: "Store" },
+        // Store mode = MD + fitur store, semua command MD tetap bisa dipakai
+        store: {
+          allowed: null,
+          excluded: ["pushkontak", "panel", "otp"],
+          name: "Store",
+        },
+        autoorder: {
+          allowed: null,
+          excluded: ["pushkontak", "panel", "otp"],
+          name: "Store (Autoorder)",
+        },
         otp: { allowed: [...baseAllowed, "otp"], name: "OTP" },
       };
 
@@ -1535,6 +1545,22 @@ async function messageHandler(msg, sock, options = {}) {
         store: "store",
         otp: "otp",
         jpm: "md",
+        // kategori RPG & turunan — tersedia di md dan store
+        rpg: "md",
+        adventure: "md",
+        animeconvert: "md",
+        asupandownload: "md",
+        canvasephoto: "md",
+        cekfun: "md",
+        aiclan: "md",
+        nikahchar: "md",
+        primbon: "md",
+        random: "md",
+        stalker: "md",
+        tts: "md",
+        user: "md",
+        vps: "md",
+        islamic: "md",
       };
 
       const currentConfig = modeConfig[botMode] || modeConfig.md;
