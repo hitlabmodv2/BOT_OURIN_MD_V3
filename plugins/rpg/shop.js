@@ -74,6 +74,71 @@ const ITEMS = {
   bulu_rubah: { price: 3000, type: "sellable", name: "🦊 Rubah (bulu)" },
   cakar_beruang: { price: 10000, type: "sellable", name: "🐻 Beruang (cakar)" },
   taring_singa: { price: 25000, type: "sellable", name: "🦁 Singa (taring)" },
+
+  // Hasil .woodcut yang sebelumnya belum terdaftar di sini
+  wood: { price: 50, type: "sellable", name: "🪵 Kayu" },
+  stick: { price: 20, type: "sellable", name: "🥢 Ranting" },
+  rubber: { price: 300, type: "sellable", name: "⚫ Karet" },
+
+  // Hasil .berladang yang sebelumnya belum terdaftar di sini
+  padi: { price: 100, type: "sellable", name: "🌾 Padi" },
+  jagung: { price: 150, type: "sellable", name: "🌽 Jagung" },
+  tomat: { price: 200, type: "sellable", name: "🍅 Tomat" },
+  wortel: { price: 250, type: "sellable", name: "🥕 Wortel" },
+  melon: { price: 1000, type: "sellable", name: "🍈 Melon" },
+
+  // Hasil .expedition / .lottery / .boss / .treasure yang sebelumnya
+  // belum terdaftar di sini -- supaya bisa dijual & muncul di .inv
+  mushroom: { price: 150, type: "sellable", name: "🍄 Jamur" },
+  gem: { price: 800, type: "sellable", name: "💎 Gem" },
+  lava: { price: 500, type: "sellable", name: "🌋 Lava" },
+  pearl: { price: 1200, type: "sellable", name: "🦪 Mutiara" },
+  seagem: { price: 2000, type: "sellable", name: "🔷 Sea Gem" },
+  ancientcoin: { price: 3000, type: "sellable", name: "🪙 Uang Kuno" },
+  relic: { price: 6000, type: "sellable", name: "🏺 Relik" },
+  dragonscale: { price: 5000, type: "sellable", name: "🐲 Sisik Naga" },
+  dragonbone: { price: 4000, type: "sellable", name: "🦴 Tulang Naga" },
+  demonsoul: { price: 6000, type: "sellable", name: "👹 Jiwa Iblis" },
+  cursedgem: { price: 5500, type: "sellable", name: "🔮 Gem Terkutuk" },
+  soulstone: { price: 5000, type: "sellable", name: "💀 Batu Jiwa" },
+  ancientbone: { price: 3500, type: "sellable", name: "🦴 Tulang Purba" },
+  krakententacle: { price: 4500, type: "sellable", name: "🐙 Tentakel Kraken" },
+  titancore: { price: 8000, type: "sellable", name: "⚙️ Titan Core" },
+  lavagem: { price: 4200, type: "sellable", name: "🔥 Gem Lava" },
+  frostheart: { price: 4800, type: "sellable", name: "❄️ Hati Beku" },
+  icecrown: { price: 5200, type: "sellable", name: "👑 Mahkota Es" },
+  thunderstone: { price: 6500, type: "sellable", name: "⚡ Batu Petir" },
+  divinecore: { price: 50000, type: "sellable", name: "⚡ Inti Dewa" },
+  goldchest: { price: 15000, type: "sellable", name: "🎁 Peti Emas" },
+  diamondchest: { price: 30000, type: "sellable", name: "💎 Peti Berlian" },
+
+  // Potion hasil .alchemy -- sebelumnya nggak kedaftar di manapun
+  healthpotion: { price: 250, type: "usable", name: "❤️ Health Potion" },
+  manapotion: { price: 200, type: "usable", name: "💙 Mana Potion" },
+  staminapotion: { price: 150, type: "usable", name: "⚡ Stamina Potion" },
+  strengthpotion: { price: 400, type: "usable", name: "💪 Strength Potion" },
+  defensepotion: { price: 400, type: "usable", name: "🛡️ Defense Potion" },
+  luckpotion: { price: 600, type: "usable", name: "🍀 Luck Potion" },
+  exppotion: { price: 500, type: "usable", name: "✨ EXP Potion" },
+  antidote: { price: 150, type: "usable", name: "💊 Antidote" },
+  elixir: { price: 1500, type: "usable", name: "🧉 Elixir" },
+
+  // Equipment hasil .craft / .blacksmith -- sebelumnya nggak kedaftar
+  sword: { price: 300, type: "sellable", name: "⚔️ Pedang Besi" },
+  shield: { price: 350, type: "sellable", name: "🛡️ Perisai Besi" },
+  helmet: { price: 250, type: "sellable", name: "⛑️ Helm Besi" },
+  armor: { price: 450, type: "sellable", name: "🦺 Armor Besi" },
+  axe: { price: 280, type: "sellable", name: "🪓 Kapak Besi" },
+  pickaxe: { price: 280, type: "sellable", name: "⛏️ Beliung" },
+  bow: { price: 320, type: "sellable", name: "🏹 Busur" },
+  arrow: { price: 40, type: "sellable", name: "🏹 Anak Panah" },
+  rod: { price: 320, type: "sellable", name: "🎣 Joran" },
+  goldsword: { price: 20000, type: "sellable", name: "🗡️ Pedang Emas" },
+  diamondarmor: { price: 40000, type: "sellable", name: "💎 Armor Berlian" },
+
+  // Hasil bonus jarahan .steal
+  key: { price: 700, type: "sellable", name: "🔑 Kunci" },
+  ring: { price: 3000, type: "sellable", name: "💍 Cincin" },
 };
 
 async function handler(m, { sock }) {
@@ -124,11 +189,11 @@ async function handler(m, { sock }) {
     }
 
     const totalCost = item.price * amount;
-    if ((user.koin || 0) < totalCost) {
-      return m.reply(`Yahh, koin kamu kurang nih kak buat beli *${amount}x ${item.name}*! 😭😭\nKoin kamu: *Rp ${(user.koin || 0).toLocaleString("id-ID")}*\nKurang *Rp ${(totalCost - (user.koin || 0)).toLocaleString("id-ID")}* lagi. Nyari duit dulu gih! 💸🏃💨`);
+    if ((user.uang || 0) < totalCost) {
+      return m.reply(`Yahh, uang kamu kurang nih kak buat beli *${amount}x ${item.name}*! 😭😭\nKoin kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\nKurang *Rp ${(totalCost - (user.uang || 0)).toLocaleString("id-ID")}* lagi. Nyari duit dulu gih! 💸🏃💨`);
     }
 
-    user.koin = (user.koin || 0) - totalCost;
+    user.uang = (user.uang || 0) - totalCost;
     user.inventory = user.inventory || {};
     user.inventory[itemKey] = (user.inventory[itemKey] || 0) + amount;
 
@@ -152,7 +217,7 @@ async function handler(m, { sock }) {
 
     user.inventory = user.inventory || {};
     user.inventory[itemKey] = userStock - amount;
-    user.koin = (user.koin || 0) + totalProfit;
+    user.uang = (user.uang || 0) + totalProfit;
 
     db.save();
     return m.reply(`CINGG! UANG MASUK! 💰✨\n\nKamu berhasil ngejual:\n📦 Item: *${amount}x ${item.name}*\n🤑 Total Dapat: *Rp ${totalProfit.toLocaleString("id-ID")}*\n\nMakasih ya udah cuci gudang di sini! 🎉💖`);

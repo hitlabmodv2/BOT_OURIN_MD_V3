@@ -54,17 +54,17 @@ async function handler(m, { sock, skipDeduct }) {
   const pulls = Math.min(10, Math.max(1, parseInt(args[0]) || 1));
   const totalCost = GACHA_COST * pulls;
 
-  if ((user.koin || 0) < totalCost) {
+  if ((user.uang || 0) < totalCost) {
     skipDeduct?.()
     return m.reply(
       `💸 *UANG LU KURANG BUAT GACHA!* 💸\n\n` +
         `Harga Gacha: *Rp ${GACHA_COST.toLocaleString()}/Tarikan*\n` +
         `Total Kebutuhan: *Rp ${totalCost.toLocaleString()} (${pulls}x)*\n\n` +
-        `Sisa Duit Lu Cuma: *Rp ${(user.koin || 0).toLocaleString()}*. Kerja dulu mendingan!`
+        `Sisa Duit Lu Cuma: *Rp ${(user.uang || 0).toLocaleString()}*. Kerja dulu mendingan!`
     );
   }
 
-  user.koin -= totalCost;
+  user.uang -= totalCost;
 
   await m.react("🎰");
   await m.reply(`✨ Lampu Disko menyala... Tabung Gacha berputar hebat... Menarik *${pulls}x* hadiah! 🎁✨`);

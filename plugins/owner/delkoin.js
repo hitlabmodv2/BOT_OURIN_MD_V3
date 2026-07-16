@@ -3,7 +3,7 @@ const pluginConfig = {
     name: 'delkoin',
     alias: ['kurangkoin', 'removekoin', 'delcoin', 'delmoney'],
     category: 'owner',
-    description: 'Kurangi koin user',
+    description: 'Kurangi uang user',
     usage: '.delkoin <jumlah> @user',
     example: '.delkoin 50000 @user',
     isOwner: true,
@@ -15,7 +15,7 @@ const pluginConfig = {
     isEnabled: true
 }
 
-function formatKoin(num) {
+function formatUang(num) {
     if (num >= 1000000000000) return (num / 1000000000000).toFixed(2) + 'T'
     if (num >= 1000000000) return (num / 1000000000).toFixed(2) + 'B'
     if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M'
@@ -44,7 +44,7 @@ async function handler(m, { sock }) {
     
     if (!targetJid || amount <= 0) {
         return m.reply(
-            `💰 *ᴅᴇʟ ᴋᴏɪɴ*\n\n` +
+            `💰 *ᴅᴇʟ ᴜᴀɴɢ*\n\n` +
             `> \`.delkoin <jumlah>\` - dari diri sendiri\n` +
             `> \`.delkoin <jumlah> @user\` - dari user\n\n` +
             `\`Contoh: ${m.prefix}delkoin 50000\``
@@ -61,16 +61,16 @@ async function handler(m, { sock }) {
         return m.reply(`❌ *ɢᴀɢᴀʟ*\n\n> User tidak ditemukan di database`)
     }
     
-    const newKoin = db.updateKoin(targetJid, -amount)
+    const newUang = db.updateUang(targetJid, -amount)
     
     await m.react('✅')
     
     await m.reply(
-        `✅ *ᴋᴏɪɴ ᴅɪᴋᴜʀᴀɴɢɪ*\n\n` +
+        `✅ *ᴜᴀɴɢ ᴅɪᴋᴜʀᴀɴɢɪ*\n\n` +
         `╭┈┈⬡「 📋 *ᴅᴇᴛᴀɪʟ* 」\n` +
         `┃ 👤 ᴜsᴇʀ: @${targetJid.split('@')[0]}\n` +
-        `┃ ➖ ᴋᴜʀᴀɴɢ: *-${formatKoin(amount)}*\n` +
-        `┃ 💰 sɪsᴀ: *${formatKoin(newKoin)}*\n` +
+        `┃ ➖ ᴋᴜʀᴀɴɢ: *-${formatUang(amount)}*\n` +
+        `┃ 💰 sɪsᴀ: *${formatUang(newUang)}*\n` +
         `╰┈┈⬡`,
         { mentions: [targetJid] }
     )

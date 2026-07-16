@@ -48,22 +48,24 @@ async function handler(m, { sock }) {
       return m.reply(`💰 *ᴋᴀsɪʜ ᴍᴀᴋᴀɴ*\n\nHunger pasangan sekarang: *${hungerNow}/${HUNGER_MAX}*\nRp ${COST_PER_HUNGER.toLocaleString("id-ID")} = +1 hunger.\n\nContoh: \`${m.prefix}kasihmakan 10000\` (+20 hunger)`);
     }
 
-    if (amount > (user.koin || 0)) {
-      return m.reply(`❌ Duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if (amount > (user.uang || 0)) {
+      return m.reply(`❌ Duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= amount;
+    user.uang -= amount;
     const hungerGain = Math.floor(amount / COST_PER_HUNGER);
     feedSpouseDirectly(spouse, hungerGain);
     addLove(spouse, Math.floor(hungerGain / 10));
     db.save();
 
+    const sisaKoin = user.uang || 0;
     await m.react("🍚");
     await m.reply(
       `🍚 *KASIH MAKAN*\n\n` +
         `Kamu suapin *${spouse.nickname || spouse.name}*. 🥰\n\n` +
         `💸 Biaya: *-Rp ${amount.toLocaleString("id-ID")}*\n` +
-        `🍗 Hunger: *${getHunger(spouse)}/${HUNGER_MAX}*`,
+        `🍗 Hunger: *${getHunger(spouse)}/${HUNGER_MAX}*\n` +
+        `💰 Sisa uang kamu: *Rp ${sisaKoin.toLocaleString("id-ID")}*`,
     );
   } catch (error) {
     await m.react("☢");

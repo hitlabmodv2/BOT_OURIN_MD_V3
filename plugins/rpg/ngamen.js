@@ -5,7 +5,7 @@ const pluginConfig = {
   name: "ngamen",
   alias: ["nyanyi", "konser"],
   category: "rpg",
-  description: "Ngamen di jalanan untuk mencari koin",
+  description: "Ngamen di jalanan untuk mencari uang",
   usage: ".ngamen",
   example: ".ngamen",
   isOwner: false,
@@ -48,7 +48,7 @@ async function handler(m, { sock }) {
   await m.reply(`Mulai jreng-jreng gitar di *${loc.name}*... 🎶\nSemoga hari ini banyak yang ngasih receh! 💸`);
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
 
   const expGain = Math.floor(earning / 20);
   await addExpWithLevelCheck(sock, m, db, user, expGain);

@@ -82,7 +82,7 @@ const ROLES = {
   },
 };
 
-const WIN_REWARD = { koin: 5000, exp: 1000 };
+const WIN_REWARD = { uang: 5000, exp: 1000 };
 const MIN_PLAYERS = 4;
 const MAX_PLAYERS = 15;
 const PHASE_DURATION = {
@@ -1008,7 +1008,7 @@ async function endGame(chatId, sock, db, winner) {
   // Give rewards to winners
   for (const player of winningPlayers) {
     try {
-      db.updateKoin(player.id, WIN_REWARD.koin);
+      db.updateUang(player.id, WIN_REWARD.uang);
       const user = db.getUser(player.id);
       if (user) {
         user.exp = (user.exp || 0) + WIN_REWARD.exp;
@@ -1037,7 +1037,7 @@ async function endGame(chatId, sock, db, winner) {
       .join("\n")}\n` +
     `╰┈┈┈┈┈┈┈┈⬡\n\n` +
     `╭┈┈⬡「 🎁 *HADIAH* 」\n` +
-    `┃ 💰 +${WIN_REWARD.koin.toLocaleString()} Koin\n` +
+    `┃ 💰 +${WIN_REWARD.uang.toLocaleString()} Uang\n` +
     `┃ ⭐ +${WIN_REWARD.exp.toLocaleString()} EXP\n` +
     `╰┈┈┈┈┈┈┈┈⬡\n\n` +
     `> GG WP! Main lagi? \`${config.command?.prefix || "."}ww create\``;

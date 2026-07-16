@@ -36,7 +36,7 @@ async function handler(m, { sock, skipDeduct }) {
   }
 
   if (/^all$/i.test(bet)) {
-    bet = user.koin || 0;
+    bet = user.uang || 0;
   } else {
     bet = parseInt(bet);
   }
@@ -46,9 +46,9 @@ async function handler(m, { sock, skipDeduct }) {
     return m.reply(`Hadeh... mau judi kok modal receh? 💸\nMinimal taruhan di sini *Rp 1.000* bro!`);
   }
 
-  if (bet > (user.koin || 0)) {
+  if (bet > (user.uang || 0)) {
     skipDeduct?.()
-    return m.reply(`Jangan ngutang bos! 😂\nUang lu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}* tapi sok-sokan taruhan *Rp ${bet.toLocaleString("id-ID")}*.\nSana kerja dulu!`);
+    return m.reply(`Jangan ngutang bos! 😂\nUang lu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}* tapi sok-sokan taruhan *Rp ${bet.toLocaleString("id-ID")}*.\nSana kerja dulu!`);
   }
 
   await m.react("🎰");
@@ -64,13 +64,13 @@ async function handler(m, { sock, skipDeduct }) {
     result = "MENANG!";
     emoji = "🎉";
     moneyChange = bet;
-    user.koin = (user.koin || 0) + bet;
+    user.uang = (user.uang || 0) + bet;
     bandarTaunt = `"Cih! Kebetulan doang lu hoki kali ini." - *Bandar* 😒`;
   } else if (playerScore < botScore) {
     result = "KALAH TELAK!";
     emoji = "💸";
     moneyChange = -bet;
-    user.koin = (user.koin || 0) - bet;
+    user.uang = (user.uang || 0) - bet;
     bandarTaunt = `"AHAHA! Udah miskin makin miskin lu! Pulang sana!" - *Bandar* 😈`;
   } else {
     result = "SERI!";
@@ -94,7 +94,7 @@ async function handler(m, { sock, skipDeduct }) {
     txt += `Uang Kembali (Balik Modal)\n\n`;
   }
   txt += `${bandarTaunt}\n\n`;
-  txt += `*Sisa Saldo Lu:* Rp ${(user.koin || 0).toLocaleString("id-ID")}`;
+  txt += `*Sisa Saldo Lu:* Rp ${(user.uang || 0).toLocaleString("id-ID")}`;
 
   m.reply(txt);
 }

@@ -29,12 +29,12 @@ async function handler(m, { sock, skipDeduct }) {
     return m.reply(`Taruhan minimal buat narik tuas slot ini *Rp 1.000* bro! 🎰\nContoh: \`.slot 5000\``);
   }
 
-  if ((user.koin || 0) < bet) {
+  if ((user.uang || 0) < bet) {
     skipDeduct?.()
-    return m.reply(`Koin lu kering kerontang! 💸\nUang lu: *Rp ${(user.koin || 0).toLocaleString("id-ID")}*\nButuh: *Rp ${bet.toLocaleString("id-ID")}*`);
+    return m.reply(`Uang lu kering kerontang! 💸\nUang lu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\nButuh: *Rp ${bet.toLocaleString("id-ID")}*`);
   }
 
-  user.koin -= bet;
+  user.uang -= bet;
 
   const symbols = ["🍒", "🍋", "🍊", "🍇", "💎", "7️⃣"];
   const weights = [30, 25, 20, 15, 7, 3];
@@ -76,7 +76,7 @@ async function handler(m, { sock, skipDeduct }) {
   }
 
   const winnings = Math.floor(bet * multiplier);
-  user.koin = (user.koin || 0) + winnings;
+  user.uang = (user.uang || 0) + winnings;
 
   let txt = `🎰 *HASIL MESIN SLOT* 🎰\n\n`;
   txt += `[ ${result[0]} | ${result[1]} | ${result[2]} ]\n\n`;

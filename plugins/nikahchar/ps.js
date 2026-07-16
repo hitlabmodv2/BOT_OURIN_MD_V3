@@ -78,6 +78,7 @@ async function handler(m, { sock }) {
     txt += `💍 Status: *${isMenikah ? "Menikah" : "Pacaran"}*\n`;
     if (isMenikah) txt += `👶 Anak: *${children.length}*\n`;
     txt += `🏠 Rumah: *${houseTier ? houseTier.name : "Belum punya"}*\n`;
+    txt += `💰 Uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n`;
     txt += `💰 Uang jajan pasangan: *Rp ${wallet.toLocaleString("id-ID")}*\n`;
     txt += `🍗 Hunger: *${hunger}/${HUNGER_MAX}*${hunger <= 20 ? " ⚠️ _hampir lapar, buruan kasih makan!_" : ""}\n`;
     txt += `💕 Tingkat hubungan (love): *${love}/${MAX_LOVE}*${love <= 0 ? " ⚠️ _kritis, bisa ditinggalkan!_" : ""}\n`;

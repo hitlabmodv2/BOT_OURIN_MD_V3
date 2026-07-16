@@ -54,7 +54,7 @@ async function handler(m, { sock }) {
             
             db.setUser(jid, user)
             db.updateExp(jid, 200000)
-            db.updateKoin(jid, 20000)
+            db.updateUang(jid, 20000)
             addedCount++
         }
         

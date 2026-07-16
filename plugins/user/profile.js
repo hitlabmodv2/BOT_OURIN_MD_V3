@@ -107,7 +107,7 @@ async function handler(m, { sock }) {
   caption += `- *Progress Ke Level ${user.rpg.level + 1}:*\n  ${getLevelBar(expInLevel, expNeeded)}\n  _${formatNumber(expInLevel)} / ${formatNumber(expNeeded)} XP_\n`;
 
   caption += `\n*〔 💰 ASET & KEUANGAN 〕*\n`;
-  caption += `- *Koin Tunai:* 🪙 Rp ${user.koin?.toLocaleString("id-ID") || 0} _(Digunakan untuk fitur RPG)_\n`;
+  caption += `- *Uang Tunai:* 🪙 Rp ${user.uang?.toLocaleString("id-ID") || 0} _(Digunakan untuk fitur RPG)_\n`;
   caption += `- *Uang di Bank:* 🏦 Rp ${user.rpg?.bank?.toLocaleString("id-ID") || 0} _(Aman dari resiko perampokan)_\n`;
   caption += `- *Sisa Energi:* ⚡ ${isOwnerUser || isPremiumUser ? "∞ Tak Terbatas" : user.energi} _(Dibutuhkan setiap kali memakai command)_\n`;
 

@@ -48,7 +48,7 @@ async function handler(m, { sock }) {
   await m.reply(`Otw berangkat kerja jadi *${job.name.substring(3)}* dulu kak! 🏃💼💨`);
   await new Promise((r) => setTimeout(r, 3000));
 
-  user.koin = (user.koin || 0) + salary;
+  user.uang = (user.uang || 0) + salary;
   const levelResult = await addExpWithLevelCheck(sock, m, db, user, expGain);
 
   db.save();

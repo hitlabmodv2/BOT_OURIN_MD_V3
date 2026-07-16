@@ -1,7 +1,7 @@
 import { getDatabase } from "../../src/lib/ourin-database.js";
 const pluginConfig = {
   name: "merchant",
-  alias: ["npc", "toko", "tokoku"],
+  alias: ["npc", "tokoku"],
   category: "rpg",
   description: "Jual beli item ke NPC merchant",
   usage: ".merchant <buy/sell> <item> <qty>",
@@ -52,7 +52,7 @@ function handler(m) {
     txt += `> ${m.prefix}merchant buy <item> <qty>\n`;
     txt += `> ${m.prefix}merchant sell <item> <qty>\n`;
     txt += `\n\n`;
-    txt += `💰 *Balance:* ${(user.koin || 0).toLocaleString()}`;
+    txt += `💰 *Balance:* ${(user.uang || 0).toLocaleString()}`;
     return m.reply(txt);
   }
 
@@ -85,11 +85,11 @@ function handler(m) {
     }
 
     const totalCost = item.buyPrice * qty;
-    if ((user.koin || 0) < totalCost) {
-      return m.reply(`❌ *ʙᴀʟᴀɴᴄᴇ ᴋᴜʀᴀɴɢ*\n\n` + `> Harga: ${totalCost.toLocaleString()}\n` + `> Balance: ${(user.koin || 0).toLocaleString()}`);
+    if ((user.uang || 0) < totalCost) {
+      return m.reply(`❌ *ʙᴀʟᴀɴᴄᴇ ᴋᴜʀᴀɴɢ*\n\n` + `> Harga: ${totalCost.toLocaleString()}\n` + `> Balance: ${(user.uang || 0).toLocaleString()}`);
     }
 
-    user.koin -= totalCost;
+    user.uang -= totalCost;
     user.inventory[itemKey] = (user.inventory[itemKey] || 0) + qty;
     db.save();
 
@@ -100,7 +100,7 @@ function handler(m) {
         `> 📦 Item: *${item.name}*\n` +
         `> 📊 Qty: *${qty}*\n` +
         `> 💵 Total: *-${totalCost.toLocaleString()}*\n` +
-        `> 💰 Sisa: *${user.koin.toLocaleString()}*\n` +
+        `> 💰 Sisa: *${user.uang.toLocaleString()}*\n` +
         ``,
     );
   }
@@ -121,7 +121,7 @@ function handler(m) {
     }
 
     const totalEarn = item.sellPrice * qty;
-    user.koin = (user.koin || 0) + totalEarn;
+    user.uang = (user.uang || 0) + totalEarn;
     user.inventory[itemKey] -= qty;
     if (user.inventory[itemKey] <= 0) delete user.inventory[itemKey];
     db.save();
@@ -133,7 +133,7 @@ function handler(m) {
         `> 📦 Item: *${item.name}*\n` +
         `> 📊 Qty: *${qty}*\n` +
         `> 💵 Total: *+${totalEarn.toLocaleString()}*\n` +
-        `> 💰 Balance: *${user.koin.toLocaleString()}*\n` +
+        `> 💰 Balance: *${user.uang.toLocaleString()}*\n` +
         ``,
     );
   }

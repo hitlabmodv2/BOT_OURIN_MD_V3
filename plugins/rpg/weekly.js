@@ -39,7 +39,7 @@ async function handler(m, { sock }) {
 
   if (!user.rpg) user.rpg = {};
   db.updateExp(m.sender, expReward);
-  user.koin = (user.koin || 0) + moneyReward;
+  user.uang = (user.uang || 0) + moneyReward;
 
   if (!user.inventory) user.inventory = {};
   user.inventory.uncommon = (user.inventory.uncommon || 0) + crateReward;
@@ -50,7 +50,7 @@ async function handler(m, { sock }) {
   let txt = `DORRR! GAJIAN MINGGUAN CAIRRR! 🎉🎊🤑\n\n`;
   txt += `Gila, jatah kamu minggu ini gede banget:\n`;
   txt += `📈 EXP: *+${expReward.toLocaleString("id-ID")}*\n`;
-  txt += `💰 Koin: *+Rp ${moneyReward.toLocaleString("id-ID")}*\n`;
+  txt += `💰 Uang: *+Rp ${moneyReward.toLocaleString("id-ID")}*\n`;
   txt += `🛍️ Uncommon Crate: *+${crateReward}x*\n\n`;
   txt += `Duitnya jangan lupa ditabung ya kak di bank (\`.bank\`)! 🏦💖`;
 

@@ -102,7 +102,7 @@ async function handler(m, { sock }) {
   text += `Total Jawaban: *${total}* 📝\n`;
   for (let i = 0; i < total; i++) { text += `${i + 1}. ❓ ???\n`; }
   text += `\nWaktu kamu cuman *120 detik* aja ya! ⏱️\n`;
-  text += `Hadiahnya? Random *EXP* & *Koin* buat setiap jawaban bener! 🎁💸\n\n`;
+  text += `Hadiahnya? Random *EXP* & *Uang* buat setiap jawaban bener! 🎁💸\n\n`;
   text += `Cara main: langsung *reply pesan ini* dengan jawabanmu`;
 
   let sentMsg;
@@ -223,7 +223,7 @@ async function family100AnswerHandler(m, sock) {
       const answerReward = getRandomReward();
       if (!user.rpg) user.rpg = {};
       await addExpWithLevelCheck(sock, m, db, user, answerReward.exp);
-      db.updateKoin(m.sender, answerReward.koin);
+      db.updateUang(m.sender, answerReward.uang);
       db.save();
 
       if (session.answered.length === correctAnswers.length) {
@@ -245,7 +245,7 @@ async function family100AnswerHandler(m, sock) {
       }
 
       const total = session.question.jawaban.length;
-      let text = `Benerrr banget! ✅🎉\n@${m.sender.split("@")[0]} dapet *+${answerReward.exp} EXP* & *+${answerReward.koin} Koin* nih! 💸✨\n\n`;
+      let text = `Benerrr banget! ✅🎉\n@${m.sender.split("@")[0]} dapet *+${answerReward.exp} EXP* & *+${answerReward.uang} Uang* nih! 💸✨\n\n`;
       text += `*Pertanyaan:* ${session.question.soal}\n\n`;
       session.question.jawaban.forEach((ans, i) => {
         const isAnswered = session.answered.includes(ans.toLowerCase());

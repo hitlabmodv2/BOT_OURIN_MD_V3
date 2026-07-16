@@ -113,7 +113,7 @@ async function handler(m, { sock, skipDeduct }) {
   const goldReward = Math.floor(Math.random() * (chest.maxGold - chest.minGold)) + chest.minGold;
   const expReward = Math.floor(Math.random() * (chest.expRange[1] - chest.expRange[0])) + chest.expRange[0];
 
-  user.koin = (user.koin || 0) + goldReward;
+  user.uang = (user.uang || 0) + goldReward;
 
   const droppedItems = [];
   const lootPool = LOOT_TABLE[chest.rarity] || LOOT_TABLE.common;

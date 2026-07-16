@@ -83,7 +83,7 @@ async function handler(m, { sock }) {
       return m.reply(`Hadiah misi ini udah kamu ambil kak! 😒`);
     }
 
-    user.koin = (user.koin || 0) + quest.reward.money;
+    user.uang = (user.uang || 0) + quest.reward.money;
     db.updateExp(m.sender, quest.reward.exp);
     user.quest[questId].claimed = true;
 

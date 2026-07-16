@@ -23,7 +23,7 @@ async function handler(m, { sock }) {
   try {
     const amount = parseInt(m.args?.[0]);
     if (!amount || amount <= 0) {
-      return m.reply(`👉 \`${m.prefix}pasuang <jumlah>\`\n\n_Cara main:_\n1. Pertaruhkan sejumlah koin\n2. 50% kesempatan menang 1.8x + Love pasangan +20\n3. Kalau kalah, koin hilang & Love -5`);
+      return m.reply(`👉 \`${m.prefix}pasuang <jumlah>\`\n\n_Cara main:_\n1. Pertaruhkan sejumlah uang\n2. 50% kesempatan menang 1.8x + Love pasangan +20\n3. Kalau kalah, uang hilang & Love -5`);
     }
 
     const user = db.getUser(m.sender) || db.setUser(m.sender);
@@ -32,23 +32,23 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Kamu belum punya pasangan karakter.\n> _Fitur ini butuh pasangan, lamar dulu dengan \`${m.prefix}lamar <id>\`._`);
     }
 
-    const balance = user.koin || 0;
+    const balance = user.uang || 0;
     if (balance < amount) {
-      return m.reply(`❌ Koin tidak cukup. Saldo: Rp ${balance.toLocaleString("id-ID")}`);
+      return m.reply(`❌ Uang tidak cukup. Saldo: Rp ${balance.toLocaleString("id-ID")}`);
     }
 
     const win = Math.random() < 0.5;
-    user.koin -= amount;
+    user.uang -= amount;
 
     if (win) {
       const winnings = Math.floor(amount * 1.8);
       const loveBefore = spouse.love || 0;
-      user.koin += winnings;
+      user.uang += winnings;
       spouse.love = Math.min(MAX_LOVE, loveBefore + 20);
       db.save();
       await m.react("🎉");
       return m.reply(
-        `🎉 *ᴍᴇɴᴀɴɢ!* Kamu dan *${spouse.nickname || spouse.name}* dapat Rp ${winnings.toLocaleString("id-ID")}!\n> 💕 Love: ~${loveBefore}~ → *${spouse.love}*`,
+        `🎉 *ᴍᴇɴᴀɴɢ!* Kamu dan *${spouse.nickname || spouse.name}* dapat Rp ${winnings.toLocaleString("id-ID")}!\n> 💕 Love: ~${loveBefore}~ → *${spouse.love}*\n💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
       );
     }
 
@@ -57,7 +57,7 @@ async function handler(m, { sock }) {
     db.save();
     await m.react("😢");
     return m.reply(
-      `😢 *ᴋᴀʟᴀʜ...* Kamu kehilangan Rp ${amount.toLocaleString("id-ID")}.\n> 💔 Love: ~${loveBefore}~ → *${spouse.love}*`,
+      `😢 *ᴋᴀʟᴀʜ...* Kamu kehilangan Rp ${amount.toLocaleString("id-ID")}.\n> 💔 Love: ~${loveBefore}~ → *${spouse.love}*\n💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );
   } catch (error) {
     await m.react("☢");

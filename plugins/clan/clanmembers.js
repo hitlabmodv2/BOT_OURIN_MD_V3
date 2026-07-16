@@ -32,11 +32,11 @@ async function handler(m) {
         const memberUser = db.getUser(jid)
         const isLeader = jid === clan.leader
         const level = memberUser?.rpg?.level || memberUser?.level || 1
-        const koin = (memberUser?.koin || 0).toLocaleString('id-ID')
+        const uang = (memberUser?.uang || 0).toLocaleString('id-ID')
         mentions.push(jid)
 
         const role = isLeader ? '👑' : '•'
-        return `${role} @${jid.split('@')[0]}  Lv.${level} · Rp ${koin}`
+        return `${role} @${jid.split('@')[0]}  Lv.${level} · Rp ${uang}`
     })
 
     await m.reply(

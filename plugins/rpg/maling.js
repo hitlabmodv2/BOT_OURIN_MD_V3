@@ -4,7 +4,7 @@ import { sendRpgPreview } from "../../src/lib/ourin-context.js";
 
 const pluginConfig = {
   name: "maling",
-  alias: ["copet", "pickpocket"],
+  alias: ["copet"],
   category: "rpg",
   description: "Mencopet orang di pasar (lebih berisiko dari crime)",
   usage: ".maling",
@@ -58,16 +58,16 @@ async function handler(m, { sock, skipDeduct }) {
   let txt = "";
 
   if (outcome.success) {
-    user.koin = (user.koin || 0) + outcome.money;
+    user.uang = (user.uang || 0) + outcome.money;
     await addExpWithLevelCheck(sock, m, db, user, outcome.exp);
 
     txt = `OPERASI BERSIH! 🦹‍♂️✨\n\n`;
     txt += `${outcome.msg}\n\n`;
-    txt += `💰 Koin Haram: *+Rp ${outcome.money.toLocaleString("id-ID")}*\n`;
+    txt += `💰 Uang Haram: *+Rp ${outcome.money.toLocaleString("id-ID")}*\n`;
     txt += `📈 EXP Copet: *+${outcome.exp}*`;
   } else {
-    const actualFine = Math.min(outcome.fine, user.koin || 0);
-    user.koin = Math.max(0, (user.koin || 0) - actualFine);
+    const actualFine = Math.min(outcome.fine, user.uang || 0);
+    user.uang = Math.max(0, (user.uang || 0) - actualFine);
     user.rpg.health = Math.max(0, user.rpg.health - outcome.health);
 
     txt = `KACAU BALAU!! 🚨🤬\n\n`;

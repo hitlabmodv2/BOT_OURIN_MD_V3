@@ -39,13 +39,13 @@ async function handler(m, { sock }) {
 
   if (gacha < 0.1) {
     const goldFound = Math.floor(Math.random() * 50000) + 15000;
-    user.koin = (user.koin || 0) + goldFound;
+    user.uang = (user.uang || 0) + goldFound;
     await m.react("💍");
     return m.reply(`HOKI PARAH! NEMU CINCIN EMAS JATUH! 💍✨\n\nPas lagi nyapu pinggir trotoar, kamu nemu cincin emas dan langsung dijual!\n💵 Pendapatan Kaget: *+Rp ${goldFound.toLocaleString("id-ID")}*\n⚡ Stamina: -${staminaCost}\n\nRejeki nomplok emang nggak kemana! 🥳`);
   }
 
   const earning = Math.floor(Math.random() * 8000) + 3000;
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
   const expGain = Math.floor(earning / 20);
   await addExpWithLevelCheck(sock, m, db, user, expGain);
 

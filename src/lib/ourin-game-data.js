@@ -291,7 +291,7 @@ function randBetween(min, max) {
 function getRandomReward() {
     return {
         limit: randBetween(3, 8),
-        koin: randBetween(500, 2000),
+        uang: randBetween(500, 2000),
         exp: randBetween(1000, 3000)
     };
 }

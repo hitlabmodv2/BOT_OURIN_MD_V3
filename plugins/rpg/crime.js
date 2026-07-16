@@ -3,7 +3,7 @@ import { addExpWithLevelCheck } from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "crime",
-  alias: ["curi", "jahat"],
+  alias: ["jahat"],
   category: "rpg",
   description: "Melakukan kejahatan membobol ATM (risiko tinggi)",
   usage: ".crime",
@@ -34,7 +34,7 @@ async function handler(m, { sock }) {
     const stolen = Math.floor(Math.random() * 15000) + 5000;
     const expGain = Math.floor(stolen / 20);
 
-    user.koin = (user.koin || 0) + stolen;
+    user.uang = (user.uang || 0) + stolen;
     await addExpWithLevelCheck(sock, m, db, user, expGain);
 
     db.save();
@@ -47,9 +47,9 @@ async function handler(m, { sock }) {
     await m.reply(txt);
   } else {
     const fine = Math.floor(Math.random() * 10000) + 5000;
-    const actualFine = Math.min(fine, user.koin || 0);
+    const actualFine = Math.min(fine, user.uang || 0);
 
-    user.koin = Math.max(0, (user.koin || 0) - actualFine);
+    user.uang = Math.max(0, (user.uang || 0) - actualFine);
     user.rpg.health = Math.max(0, (user.rpg.health || 100) - 15);
 
     db.save();

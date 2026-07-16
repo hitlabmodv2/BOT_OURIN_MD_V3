@@ -12,6 +12,22 @@ import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
 import { setPpCache, getPpCache } from "../../src/lib/ourin-pp-cache.js";
 import { recordJoin, getHistory, buildHistoryBlock } from "../../src/lib/ourin-member-history.js";
 import { Button } from "../../src/lib/ourin-builder.js";
+/**
+ * Kirim pesan ke grup dengan 1x retry kalau WA balas "not-acceptable" (406).
+ * Root cause: saat participant di-add/remove, WA session belum settle →
+ * assertSessions gagal. Retry setelah 2s biasanya cukup.
+ */
+async function sendSafe(sock, jid, payload) {
+  try {
+    return await sock.sendMessage(jid, payload);
+  } catch (err) {
+    const is406 = err.data === 406 || err.message === "not-acceptable";
+    if (!is406) throw err;
+    await new Promise(r => setTimeout(r, 2000));
+    return await sock.sendMessage(jid, payload);
+  }
+}
+
 function resolvePlaceholders(
   template,
   username,
@@ -250,7 +266,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
           config.command?.prefix || ".",
         )
         : `Selamat datang di grup *${groupName}* 🎉\nMember ke-${memberCount}`;
-      await sock.sendMessage(groupJid, {
+      await sendSafe(sock, groupJid, {
         interactiveMessage: {
           body: {
             text: `👋 Welcome *@${userName}*`,
@@ -301,7 +317,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
           config.command?.prefix || ".",
         )
         : `*Halo* @${userName} 👋\nSelamat datang di grup *${groupName}* 🌸`;
-      await sock.sendMessage(groupJid, {
+      await sendSafe(sock, groupJid, {
         text: textOnly,
         contextInfo: {
           ...saluranCtx(),
@@ -313,7 +329,8 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         },
       });
     } else if (welcomeType === 4) {
-      await sock.sendText(groupJid, text, null, {
+      await sendSafe(sock, groupJid, {
+        text,
         mentions: [realParticipant],
         contextInfo: {
           ...saluranCtx(),
@@ -340,7 +357,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         .setContextInfo({ mentionedJid: [realParticipant, ...(author ? [author] : [])] })
         .send(groupJid);
     } else if (welcomeType === 6) {
-      await sock.sendMessage(groupJid, {
+      await sendSafe(sock, groupJid, {
         video: getAssetBuffer("ourin-mp4") || { url: "https://files.catbox.moe/k28dhp.mp4" },
         gifPlayback: true,
         caption: text,
@@ -362,7 +379,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         console.error("Welcome Canvas Error:", e.message);
       }
       if (canvasBuffer) {
-        await sock.sendMessage(groupJid, {
+        await sendSafe(sock, groupJid, {
           image: canvasBuffer,
           caption: text,
           mentions: [realParticipant, ...(author ? [author] : [])],
@@ -378,7 +395,7 @@ async function sendWelcomeMessage(sock, groupJid, participant, groupMeta, force 
         });
       } else {
         // Fallback teks biasa kalau canvas gagal
-        await sock.sendMessage(groupJid, {
+        await sendSafe(sock, groupJid, {
           text: text,
           mentions: [realParticipant, ...(author ? [author] : [])],
           contextInfo: {

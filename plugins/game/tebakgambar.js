@@ -197,7 +197,7 @@ async function sendGameMessage(sock, chatId, question, m) {
         `┃ \`${pola}\`\n` +
         `┗ _${wordInfo}_\n\n` +
         `⏱️  Waktu    : *${TIMEOUT_MS / 1000} detik*\n` +
-        `🎁  Hadiah   : *Limit · Koin · EXP*\n` +
+        `🎁  Hadiah   : *Limit · Uang · EXP*\n` +
         `💡  Bantuan  : max *${MAX_HINTS}×* per orang\n\n` +
         `_↩ Reply pesan ini untuk menjawab!_`
 
@@ -486,7 +486,7 @@ async function answerHandler(m, sock) {
         const reward = getRandomReward()
 
         db.updateEnergi(m.sender, reward.limit)
-        db.updateKoin(m.sender, reward.koin)
+        db.updateUang(m.sender, reward.uang)
 
         const user = db.getUser(m.sender)
         if (reward.exp > 0) {
@@ -499,7 +499,7 @@ async function answerHandler(m, sock) {
         await sendGameOver(sock, chatId,
             `🎉 *${tag} BENAR!*\n\n` +
             `Jawaban: *${ans}*\n` +
-            `🎁 Reward: +${reward.limit} Limit, +${reward.koin} Koin, +${reward.exp} EXP\n\n` +
+            `🎁 Reward: +${reward.limit} Limit, +${reward.uang} Uang, +${reward.exp} EXP\n\n` +
             `_GG WP! Otak lu encer!_ 🧠`,
             m, [m.sender]
         )

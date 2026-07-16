@@ -354,7 +354,7 @@ class OurinGames {
           caption += `┃ \`${pola}\`\n`;
           caption += `┗ _${wordInfo}_\n\n`;
           caption += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
-          caption += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+          caption += `🎁 Hadiah: *Limit, Uang, EXP (random)*\n`;
           caption += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
           caption += `_↩ Reply pesan ini untuk menjawab!_`;
 
@@ -372,7 +372,7 @@ class OurinGames {
           text += `┃ \`${pola}\`\n`;
           text += `┗ _${wordInfo}_\n\n`;
           text += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
-          text += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+          text += `🎁 Hadiah: *Limit, Uang, EXP (random)*\n`;
           text += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
           text += `_↩ Reply pesan ini untuk menjawab!_`;
 
@@ -403,7 +403,7 @@ class OurinGames {
         text += `┃ \`${pola}\`\n`;
         text += `┗ _${wordInfo}_\n\n`;
         text += `⏱️ Waktu: *${cfg.timeout / 1000} detik*\n`;
-        text += `🎁 Hadiah: *Limit, Koin, EXP (random)*\n`;
+        text += `🎁 Hadiah: *Limit, Uang, EXP (random)*\n`;
         text += `💡 Bantuan: max *${MAX_HINTS}×* per orang\n\n`;
         text += `_↩ Reply pesan ini untuk menjawab!_`;
 
@@ -646,12 +646,12 @@ class OurinGames {
           // no rewards
         } else if (cfg.rewards) {
           totalLimit   = cfg.rewards.limit   || cfg.rewards.energi  || 0;
-          totalBalance = cfg.rewards.koin    || cfg.rewards.balance || 0;
+          totalBalance = cfg.rewards.uang    || cfg.rewards.balance || 0;
           totalExp     = cfg.rewards.exp     || 0;
         } else {
           const reward = getRandomReward();
           totalLimit   = reward.limit;
-          totalBalance = reward.koin;
+          totalBalance = reward.uang;
           totalExp     = reward.exp;
         }
 
@@ -659,13 +659,13 @@ class OurinGames {
         const fastResult = checkFastAnswer(session);
         if (fastResult.isFast && cfg.rewards !== false && cfg.rewards !== null) {
           totalLimit   += fastResult.bonus.limit;
-          totalBalance += fastResult.bonus.koin;
+          totalBalance += fastResult.bonus.uang;
           totalExp     += fastResult.bonus.exp;
-          bonusText = `\n\n${fastResult.praise}\n⚡ *BONUS KILAT:* +${fastResult.bonus.limit} Limit, +${fastResult.bonus.koin} Koin\n⏱️ Waktu: *${(fastResult.elapsed / 1000).toFixed(1)}s*`;
+          bonusText = `\n\n${fastResult.praise}\n⚡ *BONUS KILAT:* +${fastResult.bonus.limit} Limit, +${fastResult.bonus.uang} Uang\n⏱️ Waktu: *${(fastResult.elapsed / 1000).toFixed(1)}s*`;
         }
 
         if (totalLimit   > 0) db.updateEnergi(senderId, totalLimit);
-        if (totalBalance > 0) db.updateKoin(senderId, totalBalance);
+        if (totalBalance > 0) db.updateUang(senderId, totalBalance);
         if (totalExp     > 0) {
           if (!user.rpg) user.rpg = {};
           await addExpWithLevelCheck(sock, m, db, user, totalExp);
@@ -680,7 +680,7 @@ class OurinGames {
         if (totalLimit > 0 || totalBalance > 0 || totalExp > 0) {
           const parts = [];
           if (totalLimit   > 0) parts.push(`+${totalLimit} Limit`);
-          if (totalBalance > 0) parts.push(`+${totalBalance} Koin`);
+          if (totalBalance > 0) parts.push(`+${totalBalance} Uang`);
           if (totalExp     > 0) parts.push(`+${totalExp} EXP`);
           text += `🎁 ${parts.join(", ")}`;
         }

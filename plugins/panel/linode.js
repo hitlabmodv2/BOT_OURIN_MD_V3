@@ -291,7 +291,7 @@ async function handler(m, { sock, command, args }) {
             
             if (!res.ok) throw new Error('Gagal mendapatkan saldo')
             
-            const balance = (data.koin || 0) / 100
+            const balance = (data.uang || 0) / 100
             const credit = (data.credit_remaining || 0) / 100
             
             const msg = `💰 *sᴀʟᴅᴏ ᴀᴋᴜɴ ʟɪɴᴏᴅᴇ*\n\n` +

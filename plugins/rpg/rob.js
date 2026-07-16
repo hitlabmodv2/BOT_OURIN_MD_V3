@@ -41,7 +41,7 @@ async function handler(m, { sock, skipDeduct }) {
     return m.reply(`Target buronanmu nggak ketemu di database! Kayaknya dia udah kabur duluan. 🏃💨`);
   }
 
-  if ((victim.koin || 0) < 1000) {
+  if ((victim.uang || 0) < 1000) {
     skipDeduct?.()
     return m.reply(`Yaelah, target lu miskin parah! Duitnya di bawah Rp 1.000, masa tega dirampok? Cari mangsa yang tajir dong! 😤`);
   }
@@ -61,11 +61,11 @@ async function handler(m, { sock, skipDeduct }) {
   const isSuccess = Math.random() < successRate;
 
   if (isSuccess) {
-    const maxSteal = Math.floor((victim.koin || 0) * 0.3);
+    const maxSteal = Math.floor((victim.uang || 0) * 0.3);
     const stolen = Math.floor(Math.random() * maxSteal) + 1000;
 
-    victim.koin = (victim.koin || 0) - stolen;
-    robber.koin = (robber.koin || 0) + stolen;
+    victim.uang = (victim.uang || 0) - stolen;
+    robber.uang = (robber.uang || 0) + stolen;
 
     const expGain = 300;
     await addExpWithLevelCheck(sock, m, db, robber, expGain);
@@ -81,10 +81,10 @@ async function handler(m, { sock, skipDeduct }) {
     await m.reply(txt, { mentions: [target] });
   } else {
     const fine = Math.floor(Math.random() * 10000) + 5000;
-    const actualFine = Math.min(fine, robber.koin || 0);
+    const actualFine = Math.min(fine, robber.uang || 0);
     const healthLoss = 25;
 
-    robber.koin = Math.max(0, (robber.koin || 0) - actualFine);
+    robber.uang = Math.max(0, (robber.uang || 0) - actualFine);
     robber.rpg.health = Math.max(0, robber.rpg.health - healthLoss);
 
     db.save();

@@ -76,12 +76,12 @@ async function handler(m, { sock, skipDeduct }) {
   }
 
   const cost = item.cost * (currentLevel + 1);
-  if ((user.koin || 0) < cost) {
+  if ((user.uang || 0) < cost) {
     skipDeduct?.()
-    return m.reply(`❌ *ʙᴀʟᴀɴᴄᴇ ᴋᴜʀᴀɴɢ*\n\n` + `> Butuh: ${cost.toLocaleString()}\n` + `> Balance: ${(user.koin || 0).toLocaleString()}`);
+    return m.reply(`❌ *ʙᴀʟᴀɴᴄᴇ ᴋᴜʀᴀɴɢ*\n\n` + `> Butuh: ${cost.toLocaleString()}\n` + `> Balance: ${(user.uang || 0).toLocaleString()}`);
   }
 
-  user.koin -= cost;
+  user.uang -= cost;
 
   await m.react("✨");
   await m.reply(`✨ *ᴍᴇɴɢ-ᴇɴᴄʜᴀɴᴛ ${item.name.toUpperCase()}...*\n\n> Level ${currentLevel} → ${currentLevel + 1}`);

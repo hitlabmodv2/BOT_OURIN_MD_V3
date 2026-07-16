@@ -3,7 +3,7 @@ const pluginConfig = {
     name: 'buyenergi',
     alias: ['belienergi', 'purchaseenergi', 'buyenergy'],
     category: 'user',
-    description: 'Beli energi dengan koin (1 energi = 100 koin)',
+    description: 'Beli energi dengan uang (1 energi = 100 uang)',
     usage: '.buyenergi <jumlah>',
     example: '.buyenergi 10',
     isOwner: false,
@@ -31,8 +31,8 @@ async function handler(m, { sock }) {
         return m.reply(
             `🛒 *ʙᴜʏ ᴇɴᴇʀɢɪ*\n\n` +
             `╭┈┈⬡「 💰 *ɪɴꜰᴏ* 」\n` +
-            `┃ 💵 ʜᴀʀɢᴀ: *${PRICE_PER_ENERGI}* koin/energi\n` +
-            `┃ 💰 ᴋᴏɪɴ ᴋᴀᴍᴜ: *${formatNumber(user.koin || 0)}*\n` +
+            `┃ 💵 ʜᴀʀɢᴀ: *${PRICE_PER_ENERGI}* uang/energi\n` +
+            `┃ 💰 ᴜᴀɴɢ ᴋᴀᴍᴜ: *${formatNumber(user.uang || 0)}*\n` +
             `╰┈┈⬡\n\n` +
             `> Gunakan: \`.buyenergi <jumlah>\`\n\n` +
             `\`Contoh: ${m.prefix}buyenergi 10\``
@@ -42,28 +42,28 @@ async function handler(m, { sock }) {
     const totalPrice = amount * PRICE_PER_ENERGI
     const user = db.getUser(m.sender) || db.setUser(m.sender)
     
-    if ((user.koin || 0) < totalPrice) {
+    if ((user.uang || 0) < totalPrice) {
         return m.reply(
             `❌ *ɢᴀɢᴀʟ*\n\n` +
-            `> Koin tidak cukup!\n` +
+            `> Uang tidak cukup!\n` +
             `> Butuh: *${formatNumber(totalPrice)}*\n` +
-            `> Kamu punya: *${formatNumber(user.koin || 0)}*`
+            `> Kamu punya: *${formatNumber(user.uang || 0)}*`
         )
     }
     
-    db.updateKoin(m.sender, -totalPrice)
+    db.updateUang(m.sender, -totalPrice)
     
     if (user.energi === -1) {
         m.react('✅')
         return m.reply(
             `✅ *ᴘᴇᴍʙᴇʟɪᴀɴ ʙᴇʀʜᴀsɪʟ*\n\n` +
             `> Tapi kamu sudah punya unlimited energi!\n` +
-            `> Koin dikembalikan.`
+            `> Uang dikembalikan.`
         )
     }
     
     const newEnergi = db.updateEnergi(m.sender, amount)
-    const newKoin = db.getUser(m.sender).koin
+    const newUang = db.getUser(m.sender).uang
     
     m.react('✅')
     
@@ -71,11 +71,11 @@ async function handler(m, { sock }) {
         `✅ *ᴘᴇᴍʙᴇʟɪᴀɴ ʙᴇʀʜᴀsɪʟ*\n\n` +
         `╭┈┈⬡「 📋 *ᴅᴇᴛᴀɪʟ* 」\n` +
         `┃ ⚡ ᴇɴᴇʀɢɪ: *+${formatNumber(amount)}*\n` +
-        `┃ 💵 ʜᴀʀɢᴀ: *-${formatNumber(totalPrice)}* koin\n` +
+        `┃ 💵 ʜᴀʀɢᴀ: *-${formatNumber(totalPrice)}* uang\n` +
         `╰┈┈⬡\n\n` +
         `╭┈┈⬡「 💰 *sᴀʟᴅᴏ* 」\n` +
         `┃ ⚡ ᴇɴᴇʀɢɪ: *${formatNumber(newEnergi)}*\n` +
-        `┃ 💰 ᴋᴏɪɴ: *${formatNumber(newKoin)}*\n` +
+        `┃ 💰 ᴜᴀɴɢ: *${formatNumber(newUang)}*\n` +
         `╰┈┈⬡`
     )
 }

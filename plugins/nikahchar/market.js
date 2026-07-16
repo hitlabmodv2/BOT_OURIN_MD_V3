@@ -52,20 +52,21 @@ async function handler(m, { sock }) {
 
     const totalCost = item.price * amount;
     let user = db.getUser(m.sender) || db.setUser(m.sender);
-    const balance = user.koin || 0;
+    const balance = user.uang || 0;
 
     if (balance < totalCost) {
       return m.reply(`❌ Saldo tidak cukup.\n> Butuh *Rp ${totalCost.toLocaleString("id-ID")}*, kamu punya *Rp ${balance.toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= totalCost;
+    user.uang -= totalCost;
     user.inventory = user.inventory || {};
     user.inventory[itemKey] = (user.inventory[itemKey] || 0) + amount;
     db.save();
 
     await m.react("✅");
     await m.reply(
-      `✅ Berhasil beli ${amount}x ${item.emoji} *${itemKey}* seharga Rp ${totalCost.toLocaleString("id-ID")}!`,
+      `✅ Berhasil beli ${amount}x ${item.emoji} *${itemKey}* seharga Rp ${totalCost.toLocaleString("id-ID")}!\n` +
+      `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );
   } catch (error) {
     await m.react("☢");

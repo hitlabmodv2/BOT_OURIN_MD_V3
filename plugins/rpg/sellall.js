@@ -53,6 +53,50 @@ const SELL_PRICES = {
   bulu_rubah: 3000,
   cakar_beruang: 10000,
   taring_singa: 25000,
+
+  padi: 100,
+  jagung: 150,
+  tomat: 200,
+  wortel: 250,
+  melon: 1000,
+
+  mushroom: 150,
+  gem: 800,
+  lava: 500,
+  pearl: 1200,
+  seagem: 2000,
+  ancientcoin: 3000,
+  relic: 6000,
+  dragonscale: 5000,
+  dragonbone: 4000,
+  demonsoul: 6000,
+  cursedgem: 5500,
+  soulstone: 5000,
+  ancientbone: 3500,
+  krakententacle: 4500,
+  titancore: 8000,
+  lavagem: 4200,
+  frostheart: 4800,
+  icecrown: 5200,
+  thunderstone: 6500,
+  divinecore: 50000,
+  goldchest: 15000,
+  diamondchest: 30000,
+
+  sword: 300,
+  shield: 350,
+  helmet: 250,
+  armor: 450,
+  axe: 280,
+  pickaxe: 280,
+  bow: 320,
+  arrow: 40,
+  rod: 320,
+  goldsword: 20000,
+  diamondarmor: 40000,
+
+  key: 700,
+  ring: 3000,
 };
 
 async function handler(m, { sock }) {
@@ -78,7 +122,7 @@ async function handler(m, { sock }) {
     return m.reply(`❌ *ᴛɪᴅᴀᴋ ᴀᴅᴀ ɪᴛᴇᴍ*\n\n> Tidak ada item yang bisa dijual!`);
   }
 
-  user.koin = (user.koin || 0) + totalEarned;
+  user.uang = (user.uang || 0) + totalEarned;
 
   db.save();
 

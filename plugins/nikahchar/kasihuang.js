@@ -41,11 +41,11 @@ async function handler(m, { sock }) {
       return m.reply(`💵 *ᴋᴀsɪʜ ᴜᴀɴɢ ᴊᴀᴊᴀɴ*\n\nSaldo uang jajan pasangan sekarang: *Rp ${getWallet(spouse).toLocaleString("id-ID")}*\n\n_Duit ini otomatis dipakai buat beli makan sendiri kalau kamu lupa kasih makan, jadi hunger gak gampang drop._\n\nContoh: \`${m.prefix}kasihuang 20000\``);
     }
 
-    if (amount > (user.koin || 0)) {
-      return m.reply(`❌ Duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if (amount > (user.uang || 0)) {
+      return m.reply(`❌ Duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= amount;
+    user.uang -= amount;
     addWallet(spouse, amount);
     addLove(spouse, Math.floor(amount / 5000));
     db.save();
@@ -55,6 +55,7 @@ async function handler(m, { sock }) {
       `💵 *UANG JAJAN DIKASIH*\n\n` +
         `Kamu transfer *Rp ${amount.toLocaleString("id-ID")}* ke *${spouse.nickname || spouse.name}*.\n\n` +
         `💰 Saldo pasangan sekarang: *Rp ${getWallet(spouse).toLocaleString("id-ID")}*\n` +
+        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n` +
         `> _Dia bisa beli makan sendiri pakai saldo ini kalau lapar._`,
     );
   } catch (error) {

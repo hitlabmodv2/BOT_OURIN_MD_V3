@@ -11,7 +11,7 @@ const pluginConfig = {
         'topenergi', 'topenergy'
     ],
     category: 'main',
-    description: 'Lihat leaderboard global (koin, exp, energi)',
+    description: 'Lihat leaderboard global (uang, exp, energi)',
     usage: '.leaderboard',
     example: '.topkoin',
     isOwner: false,
@@ -40,15 +40,15 @@ async function handler(m, { sock }) {
     
     let type = 'overview'
     
-    if (cmd.includes('koin') || cmd.includes('coin') || cmd.includes('bal') || cmd.includes('money')) {
-        type = 'koin'
+    if (cmd.includes('uang') || cmd.includes('coin') || cmd.includes('bal') || cmd.includes('money')) {
+        type = 'uang'
     } else if (cmd.includes('exp') || cmd.includes('xp') || cmd.includes('level')) {
         type = 'exp'
     } else if (cmd.includes('energi') || cmd.includes('energy')) {
         type = 'energi'
     } else if (args[0]) {
         const argType = args[0].toLowerCase()
-        if (['koin', 'coin', 'bal', 'balance', 'money'].includes(argType)) type = 'koin'
+        if (['uang', 'coin', 'bal', 'balance', 'money'].includes(argType)) type = 'uang'
         else if (['exp', 'xp', 'level'].includes(argType)) type = 'exp'
         else if (['energi', 'energy'].includes(argType)) type = 'energi'
     }
@@ -62,7 +62,7 @@ async function handler(m, { sock }) {
         
         users.push({
             jid,
-            koin: userData.koin || 0,
+            uang: userData.uang || 0,
             exp: userData.rpg?.exp || userData.exp || 0,
             energi: userData.energi || 0,
             level: userData.rpg?.level || userData.level || 1,
@@ -78,7 +78,7 @@ async function handler(m, { sock }) {
     
     if (type === 'overview') {
         const totalUsers = users.length
-        const maxBalUser = users.reduce((a, b) => a.koin > b.koin ? a : b, users[0])
+        const maxBalUser = users.reduce((a, b) => a.uang > b.uang ? a : b, users[0])
         const maxExpUser = users.reduce((a, b) => a.exp > b.exp ? a : b, users[0])
         const maxEnergiUser = users.reduce((a, b) => a.energi > b.energi ? a : b, users[0])
         
@@ -96,7 +96,7 @@ async function handler(m, { sock }) {
                     {
                         name: 'quick_reply',
                         buttonParamsJson: JSON.stringify({
-                            display_text: '💰 Top Koin',
+                            display_text: '💰 Top Uang',
                             id: `${m.prefix}topkoin`
                         })
                     },
@@ -124,11 +124,11 @@ async function handler(m, { sock }) {
     
     let title, emoji, field, formatValue
     
-    if (type === 'koin') {
-        title = 'TOP GLOBAL KOIN'
+    if (type === 'uang') {
+        title = 'TOP GLOBAL UANG'
         emoji = '💰'
-        field = 'koin'
-        formatValue = (u) => `Rp ${formatNumber(u.koin)}`
+        field = 'uang'
+        formatValue = (u) => `Rp ${formatNumber(u.uang)}`
     } else if (type === 'exp') {
         title = 'TOP GLOBAL LEVEL'
         emoji = '✨'

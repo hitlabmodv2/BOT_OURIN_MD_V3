@@ -61,7 +61,7 @@ async function handler(m, { sock, skipDeduct }) {
     }
   }
 
-  user.koin = (user.koin || 0) + moneyEarned;
+  user.uang = (user.uang || 0) + moneyEarned;
 
   const expGain = Math.floor(Math.random() * 200) + 50;
   const levelResult = await addExpWithLevelCheck(sock, m, db, user, expGain);

@@ -41,7 +41,7 @@ async function handler(m, { sock }) {
 
   if (!user.rpg) user.rpg = {};
   db.updateExp(m.sender, expReward);
-  user.koin = (user.koin || 0) + moneyReward;
+  user.uang = (user.uang || 0) + moneyReward;
 
   if (!user.inventory) user.inventory = {};
   user.inventory.potion = (user.inventory.potion || 0) + potionReward;
@@ -55,7 +55,7 @@ async function handler(m, { sock }) {
   txt += `> ${greeting}, @${m.sender.split("@")[0]}\n\n`;
   txt += `╭┈┈⬡「 🎁 *ʀᴇᴡᴀʀᴅs* 」\n`;
   txt += `┃ 🚄 Exp: *+${expReward}*\n`;
-  txt += `┃ 💰 Koin: *+${moneyReward.toLocaleString("id-ID")}*\n`;
+  txt += `┃ 💰 Uang: *+${moneyReward.toLocaleString("id-ID")}*\n`;
   txt += `┃ 🥤 Potion: *+${potionReward}*\n`;
   txt += `╰┈┈┈┈┈┈┈┈⬡\n\n`;
   txt += `> Jangan lupa claim lagi besok!`;

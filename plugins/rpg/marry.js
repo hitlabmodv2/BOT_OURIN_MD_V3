@@ -51,11 +51,11 @@ async function handler(m, { sock }) {
   }
 
   const marriageCost = 50000;
-  if ((user.koin || 0) < marriageCost) {
-    return m.reply(`Astaga... miskin kok nekat mau nikah? 🤦‍♂️\nBiaya KUA dan katering *Rp 50.000*, tapi duit lu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.\nKerja keras dulu bang!`);
+  if ((user.uang || 0) < marriageCost) {
+    return m.reply(`Astaga... miskin kok nekat mau nikah? 🤦‍♂️\nBiaya KUA dan katering *Rp 50.000*, tapi duit lu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.\nKerja keras dulu bang!`);
   }
 
-  user.koin -= marriageCost;
+  user.uang -= marriageCost;
   user.rpg.spouse = target;
   user.rpg.marriedAt = Date.now();
   partner.rpg.spouse = m.sender;

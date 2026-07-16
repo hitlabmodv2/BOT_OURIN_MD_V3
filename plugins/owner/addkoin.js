@@ -3,7 +3,7 @@ const pluginConfig = {
     name: 'addkoin',
     alias: ['tambahkoin', 'givekoin', 'addcoin', 'adddcoin'],
     category: 'owner',
-    description: 'Tambah koin user (max 9 Triliun)',
+    description: 'Tambah uang user (max 9 Triliun)',
     usage: '.addkoin <jumlah> @user',
     example: '.addkoin 100000 @user',
     isOwner: true,
@@ -15,8 +15,8 @@ const pluginConfig = {
     isEnabled: true
 }
 
-const MAX_KOIN = 9000000000000
-function formatKoin(num) {
+const MAX_UANG = 9000000000000
+function formatUang(num) {
     if (num === -1) return '∞ Unlimited'
     if (num >= 1000000000000) return (num / 1000000000000).toFixed(2) + 'T'
     if (num >= 1000000000) return (num / 1000000000).toFixed(2) + 'B'
@@ -45,7 +45,7 @@ async function handler(m, { sock }) {
 
     if (!targetJid || amount <= 0) {
         return m.reply(
-            `💰 *ᴀᴅᴅ ᴋᴏɪɴ*\n\n` +
+            `💰 *ᴀᴅᴅ ᴜᴀɴɢ*\n\n` +
             `> \`.addkoin <jumlah>\` - ke diri sendiri\n` +
             `> \`.addkoin <jumlah> @user\` - ke orang lain\n` +
             `> Max: 9.000.000.000.000 (9T)\n\n` +
@@ -53,24 +53,24 @@ async function handler(m, { sock }) {
         )
     }
 
-    if (amount > MAX_KOIN) amount = MAX_KOIN
+    if (amount > MAX_UANG) amount = MAX_UANG
 
     const user = db.getUser(targetJid) || db.setUser(targetJid)
 
-    if (user.koin === -1) {
+    if (user.uang === -1) {
         return m.reply(
             `💰 *INFORMATION*\n` +
-            `@${targetJid.split('@')[0]} sudah memiliki koin *∞ Unlimited*\n` +
-            `Tidak perlu menambahkan koin lagi`,
+            `@${targetJid.split('@')[0]} sudah memiliki uang *∞ Unlimited*\n` +
+            `Tidak perlu menambahkan uang lagi`,
             { mentions: [targetJid] }
         )
     }
 
-    const newKoin = db.updateKoin(targetJid, amount)
+    const newUang = db.updateUang(targetJid, amount)
 
     await m.react('✅')
     await m.reply(
-        `✅ Berhasil menambahkan koin *@${targetJid.split('@')[0]}* sebanyak *${formatKoin(amount)}*`,
+        `✅ Berhasil menambahkan uang *@${targetJid.split('@')[0]}* sebanyak *${formatUang(amount)}*`,
         { mentions: [targetJid] }
     )
 }

@@ -1,12 +1,12 @@
 import config from '../../config.js'
 import { getDatabase } from '../../src/lib/ourin-database.js'
 const pluginConfig = {
-    name: 'koin',
+    name: 'uang',
     alias: ['saldo', 'money', 'cash', 'coin', 'coins'],
     category: 'user',
-    description: 'Cek koin user',
-    usage: '.koin [@user]',
-    example: '.koin',
+    description: 'Cek uang user',
+    usage: '.uang [@user]',
+    example: '.uang',
     isOwner: false,
     isPremium: false,
     isGroup: false,
@@ -16,7 +16,7 @@ const pluginConfig = {
     isEnabled: true
 }
 
-function formatKoin(num) {
+function formatUang(num) {
     if (num >= 1000000000000) return (num / 1000000000000).toFixed(2) + 'T'
     if (num >= 1000000000) return (num / 1000000000).toFixed(2) + 'B'
     if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M'
@@ -39,14 +39,14 @@ async function handler(m, { sock }) {
     }
     
     const user = db.getUser(targetJid) || db.setUser(targetJid)
-    const koinDisplay = formatKoin(user.koin || 0)
+    const uangDisplay = formatUang(user.uang || 0)
     
     const isSelf = targetJid === m.sender
     
-    let text = `*〔 💰 KOIN INFO 〕*\n\n`
+    let text = `*〔 💰 UANG INFO 〕*\n\n`
 
 text += `*〔 👤 User 〕* ${targetName}\n`
-text += `*〔 💰 Koin 〕* ${koinDisplay}\n`
+text += `*〔 💰 Uang 〕* ${uangDisplay}\n`
 const isOwner = config.isOwner(targetJid) ? 'Owner' : ''
 const isPremium = user.isPremium ? 'Premium' : 'Free'
 
@@ -54,9 +54,9 @@ text += `*〔 💎 Status 〕* ${isOwner || isPremium}\n`
 
 if (isSelf) {
   text += `\n*〔 🛒 SHOP 〕*\n`
-  text += `• \`.buyenergi <jml>\` (1 = 100 koin)\n`
-  text += `• \`.buyfitur\` (1 = 3000 koin)\n`
-  text += `\n_🎮 Main game untuk dapat koin!_`
+  text += `• \`.buyenergi <jml>\` (1 = 100 uang)\n`
+  text += `• \`.buyfitur\` (1 = 3000 uang)\n`
+  text += `\n_🎮 Main game untuk dapat uang!_`
 }
     
     await m.reply(text)

@@ -3,7 +3,7 @@ import { addExpWithLevelCheck } from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "arena",
-  alias: ["pvp", "battle", "fight"],
+  alias: ["battle"],
   category: "rpg",
   description: "Bertarung di arena PvP",
   usage: ".arena <@user>",
@@ -31,7 +31,7 @@ async function handler(m, { sock, skipDeduct }) {
     txt += `*Cara Menantang:*\n`;
     txt += `🗡️ \`${m.prefix}arena @user\`\n`;
     txt += `🗡️ Atau reply pesan dia dengan \`${m.prefix}arena\`\n\n`;
-    txt += `> _⚠️ Hati-hati kak, kalau kalah koin kamu bakal berkurang 20%!_`;
+    txt += `> _⚠️ Hati-hati kak, kalau kalah uang kamu bakal berkurang 20%!_`;
     skipDeduct?.()
     return m.reply(txt);
   }
@@ -97,26 +97,26 @@ async function handler(m, { sock, skipDeduct }) {
 
   if (isWin) {
     const expReward = 300 + (opponent.level || 1) * 50;
-    const goldReward = Math.floor((opponent.koin || 0) * 0.1);
+    const goldReward = Math.floor((opponent.uang || 0) * 0.1);
 
-    user.koin = (user.koin || 0) + goldReward;
-    opponent.koin = Math.max(0, (opponent.koin || 0) - goldReward);
+    user.uang = (user.uang || 0) + goldReward;
+    opponent.uang = Math.max(0, (opponent.uang || 0) - goldReward);
 
     await addExpWithLevelCheck(sock, m, db, user, expReward);
 
     txt += `🏆 *KEMENANGAN TELAH DIRAIH!* 🎉\n`;
     txt += `Wah hebat banget kak! Ini hadiah dari arena:\n`;
     txt += `✨ EXP: *+${expReward}*\n`;
-    txt += `💰 Koin Jarahan: *+Rp ${goldReward.toLocaleString()}*`;
+    txt += `💰 Uang Jarahan: *+Rp ${goldReward.toLocaleString()}*`;
 
     await m.react("🏆");
   } else {
-    const goldLoss = Math.floor((user.koin || 0) * 0.2);
-    user.koin = Math.max(0, (user.koin || 0) - goldLoss);
+    const goldLoss = Math.floor((user.uang || 0) * 0.2);
+    user.uang = Math.max(0, (user.uang || 0) - goldLoss);
 
     txt += `💀 *SAYANG SEKALI, KAMU KALAH...* 💔\n`;
     txt += `Jangan sedih kak, nanti coba lagi ya!\n`;
-    txt += `💸 Koin Terjatuh: *-Rp ${goldLoss.toLocaleString()}*`;
+    txt += `💸 Uang Terjatuh: *-Rp ${goldLoss.toLocaleString()}*`;
 
     await m.react("💀");
   }

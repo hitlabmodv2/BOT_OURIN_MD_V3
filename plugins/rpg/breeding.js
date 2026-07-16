@@ -94,12 +94,12 @@ async function handler(m, { sock, skipDeduct }) {
   }
 
   const breedingCost = 3000;
-  if ((user.koin || 0) < breedingCost) {
+  if ((user.uang || 0) < breedingCost) {
     skipDeduct?.()
     return m.reply(`Uang kamu nggak cukup buat bayar dokter hewan kak! Butuh Rp ${breedingCost.toLocaleString()}. 😭`);
   }
 
-  user.koin -= breedingCost;
+  user.uang -= breedingCost;
 
   await m.react("💕");
   await m.reply(`Cieee, ${PET_NAMES[myPet.type]} kamu sama ${PET_NAMES[partnerPet.type]} temenmu lagi berduaan nih... 💕✨\nTunggu bentar ya, dokternya lagi meriksa persalinan!`);

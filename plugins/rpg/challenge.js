@@ -3,7 +3,7 @@ import { addExpWithLevelCheck } from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "challenge",
-  alias: ["daily", "dailychallenge", "tantangan"],
+  alias: ["dailychallenge", "tantangan"],
   category: "rpg",
   description: "Daily challenge untuk hadiah spesial",
   usage: ".challenge",
@@ -23,7 +23,7 @@ const CHALLENGES = [
   { name: "⛏️ Tambang 10 Ore", type: "mine", target: 10, reward: { gold: 400, exp: 180 } },
   { name: "🌱 Panen 5 Hasil Kebun", type: "harvest", target: 5, reward: { gold: 350, exp: 160 } },
   { name: "🧪 Racik 3 Potion", type: "craft", target: 3, reward: { gold: 450, exp: 190 } },
-  { name: "💰 Kumpulkan 1000 Koin", type: "earn", target: 1000, reward: { gold: 500, exp: 250 } },
+  { name: "💰 Kumpulkan 1000 Uang", type: "earn", target: 1000, reward: { gold: 500, exp: 250 } },
   { name: "🗺️ Selesaikan 2 Ekspedisi", type: "expedition", target: 2, reward: { gold: 600, exp: 300 } },
 ];
 
@@ -64,7 +64,7 @@ async function handler(m, { sock }) {
       return m.reply(`Wah kak, hadiah untuk hari ini udah diambil! Tunggu tantangan baru besok ya! 😉`);
     }
 
-    user.koin = (user.koin || 0) + challenge.reward.gold;
+    user.uang = (user.uang || 0) + challenge.reward.gold;
     await addExpWithLevelCheck(sock, m, db, user, challenge.reward.exp);
 
     challenge.claimed = true;
@@ -74,7 +74,7 @@ async function handler(m, { sock }) {
     return m.reply(
       `🎉 *TANTANGAN HARIAN SELESAI!!* 🎉\n\n` +
         `Kerja bagus kak! Ini hadiah dari Guild buat kamu:\n` +
-        `💰 Koin: *+Rp ${challenge.reward.gold.toLocaleString()}*\n` +
+        `💰 Uang: *+Rp ${challenge.reward.gold.toLocaleString()}*\n` +
         `✨ EXP: *+${challenge.reward.exp}*\n` +
         `\n\n` +
         `> _Tantangan baru akan diberikan besok pagi!_`
@@ -90,7 +90,7 @@ async function handler(m, { sock }) {
   txt += `Status: ${isComplete ? "✅ *BISA DICLAIM!*" : "⏳ _Sedang dikerjakan..._"}\n\n`;
 
   txt += `*🎁 Hadiah Tambahan:*\n`;
-  txt += `💰 Koin: *Rp ${challenge.reward.gold.toLocaleString()}*\n`;
+  txt += `💰 Uang: *Rp ${challenge.reward.gold.toLocaleString()}*\n`;
   txt += `✨ EXP: *${challenge.reward.exp}*\n\n`;
 
   if (isComplete && !challenge.claimed) {

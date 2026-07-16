@@ -51,7 +51,7 @@ async function handler(m, { sock, skipDeduct }) {
   await m.reply(`Nyalain motor, tarik gas! Mencari penumpang... 🏍️💨\nAda orderan *${order.type}* sejauh *${order.distance}* nih, Gasss! 🗺️`);
   await new Promise((r) => setTimeout(r, 3000));
 
-  user.koin = (user.koin || 0) + totalEarning;
+  user.uang = (user.uang || 0) + totalEarning;
 
   const expGain = Math.floor(totalEarning / 20);
   const levelResult = await addExpWithLevelCheck(sock, m, db, user, expGain);

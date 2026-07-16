@@ -71,11 +71,11 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Belum bisa lamar nikah.\n> _${check.reason}_`);
     }
 
-    if ((user.koin || 0) < ring.price) {
-      return m.reply(`❌ Harga *${ring.name}* itu *Rp ${ring.price.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if ((user.uang || 0) < ring.price) {
+      return m.reply(`❌ Harga *${ring.name}* itu *Rp ${ring.price.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= ring.price;
+    user.uang -= ring.price;
     spouse.ring = ring.key;
     addLove(spouse, ring.loveBonus);
     setStatus(spouse, STATUS_MENIKAH);
@@ -87,7 +87,8 @@ async function handler(m, { sock }) {
       `💒 *RESMI MENIKAH!* 💒\n\n` +
         `Kamu melamar *${spouse.nickname || spouse.name}* pakai *${ring.name}* dan dia bilang YA! 🥹\n\n` +
         `💸 Biaya cincin: *-Rp ${ring.price.toLocaleString("id-ID")}*\n` +
-        `💕 Love sekarang: *${spouse.love}*\n\n` +
+        `💕 Love sekarang: *${spouse.love}*\n` +
+        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n\n` +
         `_Sekarang kalian bisa \`${m.prefix}buatanak\` dan jalan-jalan sekeluarga lewat \`${m.prefix}jalanln\`._`,
     );
   } catch (error) {

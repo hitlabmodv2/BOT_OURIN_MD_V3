@@ -261,7 +261,7 @@ async function answerHandler(m, sock) {
     const loser  = m.sender;
 
     const winnerData = db.getUser(winner) || {};
-    winnerData.koin = (winnerData.koin || 0) + 500;
+    winnerData.uang = (winnerData.uang || 0) + 500;
     db.setUser(winner, winnerData);
 
     await safeReact(m, "🏳️");
@@ -297,7 +297,7 @@ async function answerHandler(m, sock) {
   if (winner) {
     const loser = winner === room.game.playerX ? room.game.playerO : room.game.playerX;
     const winnerData = db.getUser(winner) || {};
-    winnerData.koin = (winnerData.koin || 0) + 1000;
+    winnerData.uang = (winnerData.uang || 0) + 1000;
     db.setUser(winner, winnerData);
 
     await safeReact(m, "🎉");

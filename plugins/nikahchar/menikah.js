@@ -77,7 +77,7 @@ async function handler(m, { sock }) {
     txt += `• \`${m.prefix}pasuang <jumlah>\` — gambling bareng pasangan\n\n`;
     txt += `_⑦ Lainnya_\n`;
     txt += `• \`${m.prefix}gantinama <nama>\` — ganti nama panggilanmu sendiri di game\n\n`;
-    txt += `> _Ketik command tanpa argumen untuk lihat contoh pemakaiannya. Semua biaya (jalan, rumah, cincin, dll) dibayar pakai koin dari game RPG — kerja dulu lewat \`${m.prefix}ngojek\`, \`${m.prefix}freelance\`, dungeon, atau invest._`;
+    txt += `> _Ketik command tanpa argumen untuk lihat contoh pemakaiannya. Semua biaya (jalan, rumah, cincin, dll) dibayar pakai uang dari game RPG — kerja dulu lewat \`${m.prefix}ngojek\`, \`${m.prefix}freelance\`, dungeon, atau invest._`;
 
     await m.react("💒");
     await m.reply(txt);

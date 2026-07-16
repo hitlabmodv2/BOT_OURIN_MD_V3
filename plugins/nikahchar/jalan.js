@@ -39,11 +39,11 @@ async function handler(m, { sock }) {
       return m.reply(`💔 *${left.name}* udah minggat karena kelamaan ditelantarkan (hunger habis).`);
     }
 
-    if ((user.koin || 0) < JALAN_COST) {
-      return m.reply(`❌ Jalan-jalan butuh modal *Rp ${JALAN_COST.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if ((user.uang || 0) < JALAN_COST) {
+      return m.reply(`❌ Jalan-jalan butuh modal *Rp ${JALAN_COST.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= JALAN_COST;
+    user.uang -= JALAN_COST;
     addLove(spouse, LOVE_GAIN);
     feedSpouseDirectly(spouse, 5); // jajan pas jalan-jalan
 
@@ -53,7 +53,8 @@ async function handler(m, { sock }) {
       `🚶‍♂️🚶‍♀️ *JALAN-JALAN BARENG*\n\n` +
         `Kamu ngajak *${spouse.nickname || spouse.name}* jalan-jalan keliling kota, ngobrol santai sambil jajan pinggir jalan.\n\n` +
         `💸 Biaya: *-Rp ${JALAN_COST.toLocaleString("id-ID")}*\n` +
-        `💕 Love: *+${LOVE_GAIN}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})`,
+        `💕 Love: *+${LOVE_GAIN}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})\n` +
+        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );
   } catch (error) {
     await m.react("☢");

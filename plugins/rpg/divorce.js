@@ -30,11 +30,11 @@ async function handler(m, { sock }) {
   const partner = db.getUser(spouseJid);
 
   const divorceCost = 25000;
-  if ((user.koin || 0) < divorceCost) {
-    return m.reply(`Aduh, biaya pengacara buat cerai mahal bos! 😭\nButuh *Rp 25.000* buat tanda tangan surat cerai, duit lu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.\nTahan dulu aja berantemnya!`);
+  if ((user.uang || 0) < divorceCost) {
+    return m.reply(`Aduh, biaya pengacara buat cerai mahal bos! 😭\nButuh *Rp 25.000* buat tanda tangan surat cerai, duit lu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.\nTahan dulu aja berantemnya!`);
   }
 
-  user.koin -= divorceCost;
+  user.uang -= divorceCost;
   user.rpg.spouse = null;
   user.rpg.marriedAt = null;
 

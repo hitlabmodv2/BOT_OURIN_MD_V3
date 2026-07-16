@@ -4,7 +4,7 @@ const pluginConfig = {
     name: 'buyfitur',
     alias: ['belifitur', 'purchasefeature', 'buyfeature'],
     category: 'user',
-    description: 'Beli fitur premium (1 fitur = 3000 koin)',
+    description: 'Beli fitur premium (1 fitur = 3000 uang)',
     usage: '.buyfitur [nama_fitur]',
     example: '.buyfitur',
     isOwner: false,
@@ -51,7 +51,7 @@ async function handler(m, { sock }) {
         text += `╰━━━━━━━━━━━━━━━━━╯\n\n`
         
         text += `> Harga: *${formatNumber(PRICE_PER_FEATURE)}* bal/fitur\n`
-        text += `> Koin: *${formatNumber(user.koin || 0)}*\n\n`
+        text += `> Koin: *${formatNumber(user.uang || 0)}*\n\n`
         
         text += `╭┈┈⬡「 📋 *ꜰɪᴛᴜʀ* 」\n`
         
@@ -88,20 +88,20 @@ async function handler(m, { sock }) {
         return m.reply(`❌ *ɢᴀɢᴀʟ*\n\n> Fitur \`${feature.name}\` sudah ter-unlock!`)
     }
     
-    if ((user.koin || 0) < PRICE_PER_FEATURE) {
+    if ((user.uang || 0) < PRICE_PER_FEATURE) {
         return m.reply(
             `❌ *ɢᴀɢᴀʟ*\n\n` +
-            `> Koin tidak cukup!\n` +
+            `> Uang tidak cukup!\n` +
             `> Butuh: *${formatNumber(PRICE_PER_FEATURE)}*\n` +
-            `> Kamu punya: *${formatNumber(user.koin || 0)}*`
+            `> Kamu punya: *${formatNumber(user.uang || 0)}*`
         )
     }
     
-    db.updateKoin(m.sender, -PRICE_PER_FEATURE)
+    db.updateUang(m.sender, -PRICE_PER_FEATURE)
     unlockedFeatures.push(feature.id)
     db.setUser(m.sender, { unlockedFeatures })
     
-    const newKoin = db.getUser(m.sender).koin
+    const newUang = db.getUser(m.sender).uang
     
     m.react('✅')
     
@@ -110,7 +110,7 @@ async function handler(m, { sock }) {
         `╭┈┈⬡「 📋 *ᴅᴇᴛᴀɪʟ* 」\n` +
         `┃ 🎁 ꜰɪᴛᴜʀ: *${feature.name}*\n` +
         `┃ 💵 ʜᴀʀɢᴀ: *-${formatNumber(PRICE_PER_FEATURE)}* bal\n` +
-        `┃ 💰 sɪsᴀ: *${formatNumber(newKoin)}*\n` +
+        `┃ 💰 sɪsᴀ: *${formatNumber(newUang)}*\n` +
         `╰┈┈⬡\n\n` +
         `> _${feature.desc}_\n\n` +
         `> 💡 Tip: Jadi *Premium* untuk unlock SEMUA!`

@@ -50,7 +50,7 @@ async function handler(m, { sock }) {
   }
 
   const earning = Math.floor(Math.random() * 3000) + 500;
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
   const expGain = Math.floor(earning / 10);
   await addExpWithLevelCheck(sock, m, db, user, expGain);
 

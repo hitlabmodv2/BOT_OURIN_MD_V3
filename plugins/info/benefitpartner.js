@@ -24,7 +24,7 @@ async function handler(m) {
 
     txt += `🔓 *Akses Fitur*\n`
     txt += `├ Semua fitur premium terbuka\n`
-    txt += `├ Energi & koin unlimited\n`
+    txt += `├ Energi & uang unlimited\n`
     txt += `├ Akses command owner tertentu\n`
     txt += `└ Prioritas support\n\n`
 
@@ -35,7 +35,7 @@ async function handler(m) {
 
     txt += `💎 *Bonus*\n`
     txt += `├ +200.000 EXP saat aktivasi\n`
-    txt += `├ +20.000 Koin saat aktivasi\n`
+    txt += `├ +20.000 Uang saat aktivasi\n`
     txt += `├ Badge partner di profil\n`
     txt += `└ Akses early feature\n\n`
 

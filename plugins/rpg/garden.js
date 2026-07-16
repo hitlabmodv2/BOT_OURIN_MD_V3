@@ -102,11 +102,11 @@ async function handler(m, { sock }) {
     const qty = Math.max(1, parseInt(args[2]) || 1);
     const totalCost = crop.seedPrice * qty;
 
-    if ((user.koin || 0) < totalCost) {
-      return m.reply(`Eits, uang kamu kurang kak! 😭\nTotal belanjanya Rp ${totalCost.toLocaleString()}, tapi koin kamu sisa Rp ${(user.koin || 0).toLocaleString()}.`);
+    if ((user.uang || 0) < totalCost) {
+      return m.reply(`Eits, uang kamu kurang kak! 😭\nTotal belanjanya Rp ${totalCost.toLocaleString()}, tapi uang kamu sisa Rp ${(user.uang || 0).toLocaleString()}.`);
     }
 
-    user.koin -= totalCost;
+    user.uang -= totalCost;
     const seedKey = `${cropName}seed`;
     user.inventory[seedKey] = (user.inventory[seedKey] || 0) + qty;
     db.save();

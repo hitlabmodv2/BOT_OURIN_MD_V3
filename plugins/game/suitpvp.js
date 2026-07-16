@@ -185,7 +185,7 @@ async function answerHandler(m, sock) {
                     } else if (!room.pilih || !room.pilih2) {
                         const afk    = !room.pilih ? room.p  : room.p2
                         const winner = !room.pilih ? room.p2 : room.p
-                        db.updateKoin(winner, WIN_REWARD)
+                        db.updateUang(winner, WIN_REWARD)
                         await sock.sendMessage(room.chat, {
                             text: `⏱️ *TIMEOUT!*\n\n@${afk.split('@')[0]} tidak memilih!\n@${winner.split('@')[0]} menang! +Rp ${WIN_REWARD.toLocaleString()}`,
                             mentions: [afk, winner]
@@ -271,7 +271,7 @@ async function answerHandler(m, sock) {
             if (tie) {
                 resultTxt += `🤝 *SERI!*\n> Tidak ada pemenang, coba lagi!`
             } else {
-                db.updateKoin(winner, WIN_REWARD)
+                db.updateUang(winner, WIN_REWARD)
                 resultTxt += `🏆 @${winner.split('@')[0]} menang!\n> +Rp ${WIN_REWARD.toLocaleString()}`
             }
 

@@ -84,11 +84,11 @@ function handler(m, { sock }) {
     }
 
     const createCost = 10000;
-    if ((user.koin || 0) < createCost) {
+    if ((user.uang || 0) < createCost) {
       return m.reply(`Miskin amat mau jadi ketua? Butuh *Rp 10.000* buat biaya administrasi pendaftaran Guild!`);
     }
 
-    user.koin -= createCost;
+    user.uang -= createCost;
 
     const guildId = `guild_${Date.now()}`;
     if (!db.db.data.guilds) db.db.data.guilds = {};
@@ -226,11 +226,11 @@ function handler(m, { sock }) {
       return m.reply(`Pelit amat! Minimal donasi kas *Rp 100* lah!`);
     }
 
-    if ((user.koin || 0) < amount) {
+    if ((user.uang || 0) < amount) {
       return m.reply(`Duit lu kurang bro buat donasi segitu!`);
     }
 
-    user.koin -= amount;
+    user.uang -= amount;
     myGuild.treasury = (myGuild.treasury || 0) + amount;
     db.save();
 

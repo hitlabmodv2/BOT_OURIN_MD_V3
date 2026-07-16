@@ -48,12 +48,12 @@ async function handler(m, { sock, skipDeduct }) {
   const player1 = db.getUser(m.sender);
   const player2 = db.getUser(target) || db.setUser(target);
 
-  if ((player1.koin || 0) < bet) {
+  if ((player1.uang || 0) < bet) {
     skipDeduct?.()
-    return m.reply(`Aduh kak, saldo kamu nggak cukup buat pasang taruhan segitu!\nKoin kamu sekarang: *Rp ${(player1.koin || 0).toLocaleString("id-ID")}*`);
+    return m.reply(`Aduh kak, saldo kamu nggak cukup buat pasang taruhan segitu!\nKoin kamu sekarang: *Rp ${(player1.uang || 0).toLocaleString("id-ID")}*`);
   }
 
-  if ((player2.koin || 0) < bet) {
+  if ((player2.uang || 0) < bet) {
     skipDeduct?.()
     return m.reply(`Yah kak, sepertinya saldo lawan kamu nggak cukup buat meladeni taruhan ini. Cari lawan lain atau turunin taruhannya ya!`);
   }
@@ -81,8 +81,8 @@ async function handler(m, { sock, skipDeduct }) {
   const winnerData = winner === m.sender ? player1 : player2;
   const loserData = winner === m.sender ? player2 : player1;
 
-  winnerData.koin = (winnerData.koin || 0) + bet;
-  loserData.koin = (loserData.koin || 0) - bet;
+  winnerData.uang = (winnerData.uang || 0) + bet;
+  loserData.uang = (loserData.uang || 0) - bet;
   loserData.rpg.health = Math.max(0, (loserData.rpg.health || 100) - 20);
 
   const expGain = 500;

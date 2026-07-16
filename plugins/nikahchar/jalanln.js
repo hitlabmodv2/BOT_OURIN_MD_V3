@@ -43,11 +43,11 @@ async function handler(m, { sock }) {
     const bringKids = getStatus(spouse) === STATUS_MENIKAH && children.length > 0;
     const totalCost = TRIP_COST + (bringKids ? children.length * 150000 : 0);
 
-    if ((user.koin || 0) < totalCost) {
-      return m.reply(`❌ Liburan ke luar negeri${bringKids ? " sekeluarga" : ""} butuh *Rp ${totalCost.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if ((user.uang || 0) < totalCost) {
+      return m.reply(`❌ Liburan ke luar negeri${bringKids ? " sekeluarga" : ""} butuh *Rp ${totalCost.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= totalCost;
+    user.uang -= totalCost;
     addLove(spouse, LOVE_GAIN);
     feedSpouseDirectly(spouse, 15);
     if (bringKids) {
@@ -61,6 +61,7 @@ async function handler(m, { sock }) {
     txt += `💸 Total biaya: *-Rp ${totalCost.toLocaleString("id-ID")}*\n`;
     txt += `💕 Love: *+${LOVE_GAIN}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})\n`;
     if (bringKids) txt += `😄 Kebahagiaan semua anak: *+20*\n`;
+    txt += `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`;
     await m.reply(txt);
   } catch (error) {
     await m.react("☢");

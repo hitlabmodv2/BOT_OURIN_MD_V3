@@ -39,12 +39,12 @@ async function handler(m, { sock }) {
 
   if (gacha < 0.2) {
     const rugi = Math.floor(Math.random() * 10000) + 5000;
-    user.koin = Math.max(0, (user.koin || 0) - rugi);
+    user.uang = Math.max(0, (user.uang || 0) - rugi);
     await m.react("🌧️");
     return m.reply(`HUJAN DERAS! DAGANGAN SEPI! 🌧️🥶\n\nNggak ada yang beli dan dagangan kerupukmu melempem semua.\nKerugian Modal: *Rp ${rugi.toLocaleString("id-ID")}*\n⚡ Stamina: -${staminaCost}\n\nBesok harus liat prakiraan cuaca nih! ☂️`);
   } else if (gacha > 0.85) {
     const lakuKeras = Math.floor(Math.random() * 80000) + 40000;
-    user.koin = (user.koin || 0) + lakuKeras;
+    user.uang = (user.uang || 0) + lakuKeras;
     const expGain = Math.floor(lakuKeras / 20);
     await addExpWithLevelCheck(sock, m, db, user, expGain);
     await m.react("🤑");
@@ -52,7 +52,7 @@ async function handler(m, { sock }) {
   }
 
   const earning = Math.floor(Math.random() * 25000) + 10000;
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
   const expGain = Math.floor(earning / 20);
   await addExpWithLevelCheck(sock, m, db, user, expGain);
 

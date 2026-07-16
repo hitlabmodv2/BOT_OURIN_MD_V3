@@ -45,7 +45,7 @@ async function handler(m, { sock }) {
     const payment = Math.floor(Math.random() * 10) + 5;
     const totalRupiah = payment * dollarRate;
     
-    user.koin = (user.koin || 0) + totalRupiah;
+    user.uang = (user.uang || 0) + totalRupiah;
     const expGain = Math.floor(totalRupiah / 30);
     await addExpWithLevelCheck(sock, m, db, user, expGain);
     
@@ -54,7 +54,7 @@ async function handler(m, { sock }) {
   }
 
   const earning = Math.floor(Math.random() * 40000) + 15000;
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
   const expGain = Math.floor(earning / 20);
   await addExpWithLevelCheck(sock, m, db, user, expGain);
 

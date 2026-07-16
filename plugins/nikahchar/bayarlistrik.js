@@ -32,12 +32,12 @@ async function handler(m, { sock }) {
     const tier = findHouseTier(house.key);
     const bill = tier?.listrikPerWeek || 15000;
 
-    if ((user.koin || 0) < bill) {
-      return m.reply(`❌ Tagihan listrik *Rp ${bill.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.\n> _Kalau nunggak lebih dari 7 hari, rumah bisa mati lampu._`);
+    if ((user.uang || 0) < bill) {
+      return m.reply(`❌ Tagihan listrik *Rp ${bill.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.\n> _Kalau nunggak lebih dari 7 hari, rumah bisa mati lampu._`);
     }
 
     const overdueDays = Math.floor((Date.now() - house.lastPaidAt) / 86400000);
-    user.koin -= bill;
+    user.uang -= bill;
     house.lastPaidAt = Date.now();
     db.save();
 
@@ -46,6 +46,7 @@ async function handler(m, { sock }) {
       `⚡ *TAGIHAN LUNAS!*\n\n` +
         `Rumah: *${tier?.name || house.key}*\n` +
         `💸 Dibayar: *-Rp ${bill.toLocaleString("id-ID")}*\n` +
+        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n` +
         (overdueDays > 7 ? `> _Untung buru-buru dibayar, sempat nunggak ${overdueDays} hari._` : `> _Lampu tetap nyala terang._`),
     );
   } catch (error) {

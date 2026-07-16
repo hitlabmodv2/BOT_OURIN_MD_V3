@@ -4,7 +4,7 @@ import te from "../../src/lib/ourin-error.js";
 
 const pluginConfig = {
     name: "dungeon",
-    alias: ["dg", "explore", "labirin"],
+    alias: ["dg", "labirin"],
     category: "game",
     description: "Jelajahi dungeon dan lawan monster secara interaktif",
     usage: ".dungeon",
@@ -329,14 +329,14 @@ async function dungeonAnswerHandler(m, sock) {
                     }
                 }
 
-                user.koin = (user.koin || 0) + goldReward;
+                user.uang = (user.uang || 0) + goldReward;
                 await addExpWithLevelCheck(sock, m, db, user, expReward);
 
                 reportText += `🎉 *KEMENANGAN GEMILANG!*\n\n`;
                 reportText += `Dengan serangan mematikan, kamu berhasil menebas *${session.monster}*!\n\n`;
                 reportText += `*🎁 HADIAH YANG DIDAPAT:*\n`;
                 reportText += `> ✨ EXP: *+${Math.floor(expReward)}*\n`;
-                reportText += `> 💰 Koin: *+${goldReward.toLocaleString()}*\n`;
+                reportText += `> 💰 Uang: *+${goldReward.toLocaleString()}*\n`;
 
                 if (droppedItems.length > 0) {
                     reportText += `\n*📦 BARANG JARAHAN (LOOT):*\n`;
@@ -345,15 +345,15 @@ async function dungeonAnswerHandler(m, sock) {
 
                 await m.react("🏆");
             } else {
-                const goldLoss = Math.floor((user.koin || 0) * 0.15);
-                user.koin = Math.max(0, (user.koin || 0) - goldLoss);
+                const goldLoss = Math.floor((user.uang || 0) * 0.15);
+                user.uang = Math.max(0, (user.uang || 0) - goldLoss);
                 user.rpg.health = Math.max(1, (user.rpg.health || 100) - 40);
 
                 reportText += `💀 *KEKALAHAN TRAGIS!*\n\n`;
                 reportText += `Kekuatanmu belum sebanding! *${session.monster}* memukul mundur dirimu dengan telak.\n`;
                 reportText += `Kamu berhasil merangkak keluar dengan tubuh penuh luka.\n\n`;
                 reportText += `*💔 KERUGIAN:*\n`;
-                reportText += `> 💸 Uang jatuh: *-${goldLoss.toLocaleString()} Koin*\n`;
+                reportText += `> 💸 Uang jatuh: *-${goldLoss.toLocaleString()} Uang*\n`;
                 reportText += `> ❤️ Darah berkurang: *-40 HP*\n\n`;
                 reportText += `> 💡 *Tips:* Naikan levelmu, makan potion, atau perkuat senjata!`;
 

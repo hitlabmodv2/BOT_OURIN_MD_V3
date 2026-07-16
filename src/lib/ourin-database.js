@@ -361,7 +361,7 @@ class Database {
       isBanned: data.isBanned ?? existing.isBanned ?? false,
       exp: data.exp ?? existing.exp ?? 0,
       level: data.level ?? existing.level ?? 1,
-      koin: data.koin ?? existing.koin ?? existingBalance,
+      uang: data.uang ?? existing.uang ?? existingBalance,
       saldo: data.saldo ?? existing.saldo ?? 0,
       unlockedFeatures:
         data.unlockedFeatures ?? existing.unlockedFeatures ?? [],
@@ -429,14 +429,14 @@ class Database {
     return user.energi;
   }
 
-  updateKoin(jid, amount) {
+  updateUang(jid, amount) {
     const user = this.getUser(jid) || this.setUser(jid);
     if (!user) return 0;
-    if (user.koin === -1) return -1;
-    const MAX_KOIN = 9000000000000;
-    user.koin = Math.max(0, Math.min(MAX_KOIN, (user.koin ?? 0) + amount));
+    if (user.uang === -1) return -1;
+    const MAX_UANG = 9000000000000;
+    user.uang = Math.max(0, Math.min(MAX_UANG, (user.uang ?? 0) + amount));
     this.setUser(jid, user);
-    return user.koin;
+    return user.uang;
   }
 
   updateSaldo(jid, amount) {

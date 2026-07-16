@@ -1,3 +1,4 @@
 - [Wikipedia image URL strategy](wikipedia-image-urls.md) — direct non-thumb URLs work in production; 429 only during bulk testing
 - [Debounced auth writes need flush-on-exit](debounced-write-flush-on-exit.md) — WA session/QR loop bug traced to this pattern
 - [Waifu character search source](waifu-search-source.md) — switched from Jikan API to scraping myanimelist.net directly
+- [RPG item-catalog sync](rpg-item-catalog-sync.md) — recurring "ghost item" bug: item-granting plugins must be added to shop.js/inventory.js/sellall.js/use.js separately, no shared registry; also alias collision pattern (last-loaded-wins)

@@ -66,11 +66,11 @@ async function handler(m) {
         return m.reply(`❌ Nama *${clanName}* sudah dipakai`)
     }
 
-    if ((user.koin || 0) < CLAN_CREATE_COST) {
+    if ((user.uang || 0) < CLAN_CREATE_COST) {
         return m.reply(
-            `❌ Koin tidak cukup\n\n` +
+            `❌ Uang tidak cukup\n\n` +
             `Butuh: *Rp ${CLAN_CREATE_COST.toLocaleString('id-ID')}*\n` +
-            `Punya: *Rp ${(user.koin || 0).toLocaleString('id-ID')}*`
+            `Punya: *Rp ${(user.uang || 0).toLocaleString('id-ID')}*`
         )
     }
 
@@ -92,7 +92,7 @@ async function handler(m) {
     }
 
     db.db.data.clans[clanId] = clan
-    db.updateKoin(m.sender, -CLAN_CREATE_COST)
+    db.updateUang(m.sender, -CLAN_CREATE_COST)
     db.setUser(m.sender, { clanId })
     await db.save()
 

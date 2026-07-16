@@ -277,7 +277,7 @@ Kamu bisa pakai aku buat cari info, ambil data, atau bantu hal-hal sederhana lan
     `🎟 ᴇɴᴇʀɢɪ   : ${m.isOwner || m.isPremium ? "∞ Unlimited" : (user?.energi ?? 25)}`,
     `⚡ ʟᴇᴠᴇʟ    : ${Math.floor((user?.exp || 0) / 20000) + 1}`,
     `✨ ᴇxᴘ       : ${(user?.exp ?? 0).toLocaleString()}`,
-    `💰 ᴋᴏɪɴ      : ${(user?.koin ?? 0).toLocaleString()}`,
+    `💰 ᴜᴀɴɢ      : ${(user?.uang ?? 0).toLocaleString()}`,
   ];
   const rpg = user?.rpg || {};
   if (rpg.health !== undefined) {
@@ -319,7 +319,7 @@ Kamu bisa pakai aku buat cari info, ambil data, atau bantu hal-hal sederhana lan
     txt += `*│* 🎟 ᴇɴᴇʀɢɪ   : *${m.isOwner || m.isPremium ? "∞ Unlimited" : (user?.energi ?? 25)}*\n`;
     txt += `*│* ⚡ ʟᴇᴠᴇʟ    : *${Math.floor((user?.exp || 0) / 20000) + 1}*\n`;
     txt += `*│* ✨ ᴇxᴘ       : *${(user?.exp ?? 0).toLocaleString()}*\n`;
-    txt += `*│* 💰 ᴋᴏɪɴ      : *${(user?.koin ?? 0).toLocaleString()}*\n`;
+    txt += `*│* 💰 ᴜᴀɴɢ      : *${(user?.uang ?? 0).toLocaleString()}*\n`;
     if (rpg.health !== undefined) {
       txt += `*│* ❤️ ʜᴘ        : *${rpg.health}/${rpg.maxHealth || rpg.health}*\n`;
       txt += `*│* 🔮 ᴍᴀɴᴀ      : *${rpg.mana}/${rpg.maxMana || rpg.mana}*\n`;
@@ -750,7 +750,7 @@ async function handler(m, { sock, config: botConfig, db, uptime }) {
 *│* ⚡ ʟᴇᴠᴇʟ      : *${Math.floor((user?.exp || 0) / 20000) + 1}*
 *│* ✨ ᴇxᴘ         : *${(user?.exp ?? 0).toLocaleString()}*
 *│* 🎟️ ᴇɴᴇʀɢɪ     : *${m.isOwner || m.isPremium ? "∞ Unlimited" : (user?.energi ?? 25)}*
-*│* 💰 ᴋᴏɪɴ        : *${(user?.koin ?? 0).toLocaleString()}*
+*│* 💰 ᴜᴀɴɢ        : *${(user?.uang ?? 0).toLocaleString()}*
 *│* 📋 ʀᴇɢɪsᴛᴇʀ   : *${user?.isRegistered ? "✅ Sudah" : "❌ Belum"}*
 ╰────────────────⬣
 
@@ -779,7 +779,7 @@ _Tekan tombol di bawah untuk memilih kategori_ 👇`,
                       rows: [
                         { title: "📋 Semua Menu", description: `${totalCmds} perintah`, id: `${m.prefix}allmenu` },
                         { title: "👤 Profil Saya", description: "Cek info akun kamu", id: `${m.prefix}profil` },
-                        { title: "💰 Saldo Koin", description: "Cek koin yang kamu punya", id: `${m.prefix}saldo` },
+                        { title: "💰 Saldo Uang", description: "Cek uang yang kamu punya", id: `${m.prefix}saldo` },
                         { title: "🏓 Ping Bot", description: "Cek kecepatan respon bot", id: `${m.prefix}ping` },
                       ]
                     },
@@ -832,7 +832,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
 > 🧀 *Level*: ${user.level || 0}
 > 🍗 *Exp*: ${user.exp || 0}
 > 🥩 *Energi*: ${user.energi || 0}
-> 🎏 *Koin*: ${user.koin || 0}
+> 🎏 *Uang*: ${user.uang || 0}
 > 🍬 *Register*: ${user.isRegistered ? "Sudah" : "Belum"}
 
 ${readmore}${s}`,
@@ -911,7 +911,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
 > 🧀 *Level*: ${user.level || 0}
 > 🍗 *Exp*: ${user.exp || 0}
 > 🥩 *Energi*: ${user.energi || 0}
-> 🎏 *Koin*: ${user.koin || 0}
+> 🎏 *Uang*: ${user.uang || 0}
 > 🍬 *Register*: ${user.isRegistered ? "Sudah" : "Belum"}`,
             footerText: '🍔 Silahkan pilih dari salah satu tombol di bawah',
             headerType: 6,
@@ -950,7 +950,7 @@ Welcome to ${config.bot?.name}, Our bot will help you
 *│* ⚡ ʟᴇᴠᴇʟ      : *${Math.floor((user?.exp || 0) / 20000) + 1}*
 *│* ✨ ᴇxᴘ         : *${(user?.exp ?? 0).toLocaleString()}*
 *│* 🎟️ ᴇɴᴇʀɢɪ     : *${m.isOwner || m.isPremium ? "∞ Unlimited" : (user?.energi ?? 25)}*
-*│* 💰 ᴋᴏɪɴ        : *${(user?.koin ?? 0).toLocaleString()}*
+*│* 💰 ᴜᴀɴɢ        : *${(user?.uang ?? 0).toLocaleString()}*
 *│* 📋 ʀᴇɢɪsᴛᴇʀ   : *${user?.isRegistered ? "✅ Sudah" : "❌ Belum"}*
 ╰────────────────⬣
 

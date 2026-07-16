@@ -63,10 +63,10 @@ async function handler(m, { sock, skipDeduct }) {
   const isCaught = Math.random() * 100 < adjustedCatchChance;
 
   if (isCaught) {
-    const goldLoss = Math.floor((user.koin || 0) * 0.1);
+    const goldLoss = Math.floor((user.uang || 0) * 0.1);
     const healthLoss = 10 + target.difficulty * 5;
 
-    user.koin = Math.max(0, (user.koin || 0) - goldLoss);
+    user.uang = Math.max(0, (user.uang || 0) - goldLoss);
     user.rpg.health = Math.max(1, (user.rpg.health || 100) - healthLoss);
 
     db.save();
@@ -86,7 +86,7 @@ async function handler(m, { sock, skipDeduct }) {
   const goldStolen = Math.floor(Math.random() * (target.maxGold - target.minGold)) + target.minGold;
   const expReward = 50 + target.difficulty * 30;
 
-  user.koin = (user.koin || 0) + goldStolen;
+  user.uang = (user.uang || 0) + goldStolen;
   await addExpWithLevelCheck(sock, m, db, user, expReward);
 
   const bonusItem = Math.random() > 0.7;

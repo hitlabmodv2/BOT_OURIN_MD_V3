@@ -23,9 +23,9 @@ function handler(m, { sock }) {
   const args = m.args || [];
   if (args.length < 3) {
     let txt = `🏦 *BANK SENTRAL RPG* 🏦\n\n`;
-    txt += `Layanan pengiriman Koin & Barang Antar-Player!\n\n`;
+    txt += `Layanan pengiriman Uang & Barang Antar-Player!\n\n`;
     txt += `*Format Pengiriman:*\n`;
-    txt += `👉 \`.transfer money 10000 @user\` (Untuk Koin)\n`;
+    txt += `👉 \`.transfer money 10000 @user\` (Untuk Uang)\n`;
     txt += `👉 \`.transfer potion 5 @user\` (Untuk Item)\n`;
     return m.reply(txt);
   }
@@ -48,13 +48,13 @@ function handler(m, { sock }) {
 
   const recipient = db.getUser(target) || db.setUser(target);
 
-  if (type === "money" || type === "balance" || type === "koin") {
-    if ((sender.koin || 0) < amount) {
-      return m.reply(`Transaksi DITOLAK! ❌\nSaldo ATM lu nggak cukup. Saldo: *Rp ${(sender.koin || 0).toLocaleString("id-ID")}* | Mau TF: *Rp ${amount.toLocaleString("id-ID")}* 💸`);
+  if (type === "money" || type === "balance" || type === "uang") {
+    if ((sender.uang || 0) < amount) {
+      return m.reply(`Transaksi DITOLAK! ❌\nSaldo ATM lu nggak cukup. Saldo: *Rp ${(sender.uang || 0).toLocaleString("id-ID")}* | Mau TF: *Rp ${amount.toLocaleString("id-ID")}* 💸`);
     }
 
-    sender.koin -= amount;
-    recipient.koin = (recipient.koin || 0) + amount;
+    sender.uang -= amount;
+    recipient.uang = (recipient.uang || 0) + amount;
 
     db.setUser(m.sender, sender);
     db.setUser(target, recipient);

@@ -42,7 +42,7 @@ async function handler(m, { sock }) {
     return m.reply(`NASKAH DITOLAK PENERBIT! 🚮🥺\n\nAlasannya: "Ceritanya terlalu klise dan pasaran."\n💵 Royalti: 0\n⚡ Stamina: -${staminaCost}\n\nJangan menyerah, besok nulis lagi! 💪`);
   } else if (gacha > 0.9) {
     const viralRoyalti = Math.floor(Math.random() * 60000) + 30000;
-    user.koin = (user.koin || 0) + viralRoyalti;
+    user.uang = (user.uang || 0) + viralRoyalti;
     const expGain = Math.floor(viralRoyalti / 20);
     await addExpWithLevelCheck(sock, m, db, user, expGain);
     
@@ -51,7 +51,7 @@ async function handler(m, { sock }) {
   }
 
   const earning = Math.floor(Math.random() * 15000) + 5000;
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
   const expGain = Math.floor(earning / 20);
   await addExpWithLevelCheck(sock, m, db, user, expGain);
 

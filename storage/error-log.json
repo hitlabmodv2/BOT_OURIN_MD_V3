@@ -22,5 +22,11 @@
     "source": "console.error",
     "message": "\u001b[90mPromise:\u001b[39m {}",
     "stack": "Error: \u001b[90mPromise:\u001b[39m {} |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at process.<anonymous> (file:///home/runner/workspace/index.js:338:13) |     at process.emit (node:events:524:28)"
+  },
+  {
+    "time": "2026-07-16T09:14:19.085Z",
+    "source": "console.error",
+    "message": "Goodbye Error: not-acceptable",
+    "stack": "Error: Goodbye Error: not-acceptable |     at console.error (file:///home/runner/workspace/index.js:188:57) |     at sendGoodbyeMessage (file:///home/runner/workspace/plugins/group/goodbye.js:430:13) |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
   }
 ]

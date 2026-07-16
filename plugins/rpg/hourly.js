@@ -44,7 +44,7 @@ async function handler(m, { sock }) {
   const moneyReward = isPremium ? 5000 : 1000;
 
   user.rpg.lastHourly = now;
-  user.koin = (user.koin || 0) + moneyReward;
+  user.uang = (user.uang || 0) + moneyReward;
 
   const levelResult = await addExpWithLevelCheck(sock, m, db, user, expReward);
   db.save();

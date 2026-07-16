@@ -74,8 +74,8 @@ function saveCCStats(db, senderId, delta) {
         user.ccStats.benar     += (delta.benar     || 0)
         user.ccStats.salah     += (delta.salah     || 0)
         user.ccStats.totalGame += (delta.totalGame || 0)
-        // updateKoin(+0) = no-op tapi mark users dirty agar db.save() flush data user
-        db.updateKoin(senderId, 0)
+        // updateUang(+0) = no-op tapi mark users dirty agar db.save() flush data user
+        db.updateUang(senderId, 0)
     } catch (e) {
         console.error('[cerdasCermat] saveCCStats error:', e?.message)
     }
@@ -592,7 +592,7 @@ async function answerHandler(m, sock) {
                     const db   = getDatabase()
                     const user = db.getUser(senderId) || {}
                     db.updateEnergi(senderId, 3)
-                    db.updateKoin(senderId, 50)
+                    db.updateUang(senderId, 50)
                     if (!user.rpg) user.rpg = {}
                     await addExpWithLevelCheck(sock, m, db, user, 100)
                     db.save()
@@ -603,7 +603,7 @@ async function answerHandler(m, sock) {
                 responseText =
                     `✅ *BENAR! ${tag}* 🎉\n\n` +
                     `🗝️ Jawaban: *${benar.toUpperCase()}. ${txtBenar}*\n` +
-                    `🎁 Reward: *+3 Limit • +50 Koin • +100 EXP*\n\n` +
+                    `🎁 Reward: *+3 Limit • +50 Uang • +100 EXP*\n\n` +
                     `_Skor: ${session.score}/${session.questions.length}_`
 
             } else {

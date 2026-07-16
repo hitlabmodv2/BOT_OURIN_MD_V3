@@ -32,7 +32,7 @@ async function handler(m, { sock }) {
     db.db.data.users[cleanJid].rpg.bank = 0;
   }
 
-  const currentBalance = db.db.data.users[cleanJid].koin || 0;
+  const currentBalance = db.db.data.users[cleanJid].uang || 0;
   const currentBank = db.db.data.users[cleanJid].rpg.bank || 0;
 
   const args = m.args || [];
@@ -47,10 +47,10 @@ async function handler(m, { sock }) {
       amount = parseInt(amountStr);
     }
 
-    if (!amount || amount <= 0) return m.reply(`Hayo kak, masukin jumlah koin yang bener dong! Masa nabung angka gaib 😂💸`);
+    if (!amount || amount <= 0) return m.reply(`Hayo kak, masukin jumlah uang yang bener dong! Masa nabung angka gaib 😂💸`);
     if (currentBalance < amount) return m.reply(`Eits, uang *cash* kamu nggak cukup kak! 😭\nDi dompet cuma ada *Rp ${currentBalance.toLocaleString("id-ID")}* nih. Nyari duit dulu gih! 🏃💨`);
 
-    db.db.data.users[cleanJid].koin = currentBalance - amount;
+    db.db.data.users[cleanJid].uang = currentBalance - amount;
     db.db.data.users[cleanJid].rpg.bank = currentBank + amount;
 
     await db.save();
@@ -67,15 +67,15 @@ async function handler(m, { sock }) {
       amount = parseInt(amountStr);
     }
 
-    if (!amount || amount <= 0) return m.reply(`Hayo kak, masukin jumlah koin yang bener dong! Mau narik angin? 😂💸`);
+    if (!amount || amount <= 0) return m.reply(`Hayo kak, masukin jumlah uang yang bener dong! Mau narik angin? 😂💸`);
     if (currentBank < amount) return m.reply(`Yahh kak, saldo tabungan kamu nggak cukup! 😭\nDi rekening cuma ada *Rp ${currentBank.toLocaleString("id-ID")}* nih. Jangan ngadi-ngadi deh! 🫣`);
 
     db.db.data.users[cleanJid].rpg.bank = currentBank - amount;
-    db.db.data.users[cleanJid].koin = currentBalance + amount;
+    db.db.data.users[cleanJid].uang = currentBalance + amount;
 
     await db.save();
 
-    const newBalance = db.db.data.users[cleanJid].koin;
+    const newBalance = db.db.data.users[cleanJid].uang;
     return m.reply(`Uangnya berhasil ditarik ya kak! 🏧💸\n\n✅ Penarikan: *Rp ${amount.toLocaleString("id-ID")}*\n💰 Uang Cash: *Rp ${newBalance.toLocaleString("id-ID")}*\n\nJangan boros-boros pakainya ya! 🛍️✨`);
   }
 

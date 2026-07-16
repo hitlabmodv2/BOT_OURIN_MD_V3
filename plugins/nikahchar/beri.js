@@ -37,19 +37,21 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Anak dengan id *${childId}* tidak ditemukan.\n> _Cek ID yang benar lewat \`${m.prefix}anak\`._`);
     }
 
-    const balance = user.koin || 0;
+    const balance = user.uang || 0;
     if (balance < amount) {
-      return m.reply(`❌ Koin kamu tidak cukup. Saldo: Rp ${balance.toLocaleString("id-ID")}`);
+      return m.reply(`❌ Uang kamu tidak cukup. Saldo: Rp ${balance.toLocaleString("id-ID")}`);
     }
 
     const before = child.happiness ?? 50;
-    user.koin -= amount;
+    user.uang -= amount;
     child.happiness = Math.min(100, before + Math.floor(amount / 1000));
     db.save();
 
     await m.react("🎁");
     await m.reply(
-      `🎁 Kamu memberi Rp ${amount.toLocaleString("id-ID")} ke *${child.name}*!\n> Kebahagiaan: ~${before}~ → *${child.happiness}*/100`,
+      `🎁 Kamu memberi Rp ${amount.toLocaleString("id-ID")} ke *${child.name}*!\n` +
+      `> Kebahagiaan: ~${before}~ → *${child.happiness}*/100\n` +
+      `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );
   } catch (error) {
     await m.react("☢");

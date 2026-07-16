@@ -58,7 +58,7 @@ async function handler(m) {
     txt += `📊 Sisa: *${remaining > 0 ? remaining + ' hari' : '⚠️ Expired'}*\n`
     if (user) {
         txt += `⚡ Energi: *${user.energi === -1 ? '∞' : (user.energi ?? 0)}*\n`
-        txt += `💰 Koin: *${user.koin === -1 ? '∞' : (user.koin ?? 0).toLocaleString('id-ID')}*\n`
+        txt += `💰 Uang: *${user.uang === -1 ? '∞' : (user.uang ?? 0).toLocaleString('id-ID')}*\n`
     }
 
     await m.reply(txt, { mentions: [jid] })

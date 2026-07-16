@@ -40,11 +40,11 @@ async function handler(m, { sock }) {
       return m.reply(`⚡ *sᴛᴀᴍɪɴᴀ ᴘᴇɴᴜʜ*\n\n> Stamina kamu sudah penuh!`);
     }
 
-    if ((user.koin || 0) < potionCost) {
-      return m.reply(`❌ *sᴀʟᴅᴏ ᴛɪᴅᴀᴋ ᴄᴜᴋᴜᴘ*\n\n` + `> Biaya: Rp ${potionCost.toLocaleString("id-ID")}\n` + `> Saldo: Rp ${(user.koin || 0).toLocaleString("id-ID")}`);
+    if ((user.uang || 0) < potionCost) {
+      return m.reply(`❌ *sᴀʟᴅᴏ ᴛɪᴅᴀᴋ ᴄᴜᴋᴜᴘ*\n\n` + `> Biaya: Rp ${potionCost.toLocaleString("id-ID")}\n` + `> Saldo: Rp ${(user.uang || 0).toLocaleString("id-ID")}`);
     }
 
-    user.koin -= potionCost;
+    user.uang -= potionCost;
     const restored = user.rpg.maxStamina - user.rpg.stamina;
     user.rpg.stamina = user.rpg.maxStamina;
 

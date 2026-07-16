@@ -18,6 +18,22 @@ import { getAssetBuffer } from "../../src/lib/ourin-asset-manager.js";
 import { setPpCache, getPpCache } from "../../src/lib/ourin-pp-cache.js";
 import { recordLeave, getHistory, buildHistoryBlock } from "../../src/lib/ourin-member-history.js";
 import { Button } from "../../src/lib/ourin-builder.js";
+/**
+ * Kirim pesan ke grup dengan 1x retry kalau WA balas "not-acceptable" (406).
+ * Root cause: saat participant di-remove, WA server belum settle session keys
+ * untuk group encryption → assertSessions gagal. Retry setelah 2s biasanya cukup.
+ */
+async function sendSafe(sock, jid, payload) {
+  try {
+    return await sock.sendMessage(jid, payload);
+  } catch (err) {
+    const is406 = err.data === 406 || err.message === "not-acceptable";
+    if (!is406) throw err;
+    await new Promise(r => setTimeout(r, 2000));
+    return await sock.sendMessage(jid, payload);
+  }
+}
+
 function resolvePlaceholders(
   template,
   username,
@@ -272,6 +288,9 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
       config.command?.prefix || ".",
       author,
     );
+    // Delay awal: beri WA server waktu settle session keys setelah participant remove
+    await new Promise(r => setTimeout(r, 2000));
+
     const saluranId = config.saluran?.id || "120363400911374213@newsletter";
     const saluranName = config.saluran?.name || config.bot?.name || "Ourin-AI";
     if (goodbyeType === 2) {
@@ -286,7 +305,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
           config.command?.prefix || ".",
         )
         : `Terima kasih sudah bergabung di *${groupName}*\nSisa ${memberCount} member`;
-      await sock.sendMessage(groupJid, {
+      await sendSafe(sock, groupJid, {
         interactiveMessage: {
           body: {
             text: `👋 *Sayonara* *@${userName}*`,
@@ -337,7 +356,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
           config.command?.prefix || ".",
         )
         : `*Sayonara* @${userName} 👋`;
-      await sock.sendMessage(groupJid, {
+      await sendSafe(sock, groupJid, {
         text: textOnly,
         contextInfo: {
           ...saluranCtx(),
@@ -349,7 +368,8 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         },
       });
     } else if (goodbyeType === 4) {
-      await sock.sendText(groupJid, text, null, {
+      await sendSafe(sock, groupJid, {
+        text,
         mentions: [realParticipant],
         contextInfo: {
           ...saluranCtx(),
@@ -377,7 +397,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         .send(groupJid);
     } else if (goodbyeType === 6) {
       // Sama dengan welcome type 6 (GIF)
-      await sock.sendMessage(groupJid, {
+      await sendSafe(sock, groupJid, {
         video: getAssetBuffer("ourin-mp4") || { url: "https://files.catbox.moe/k28dhp.mp4" },
         gifPlayback: true,
         caption: text,
@@ -399,7 +419,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         console.error("Goodbye Canvas Error:", e.message);
       }
       if (canvasBuffer) {
-        await sock.sendMessage(groupJid, {
+        await sendSafe(sock, groupJid, {
           image: canvasBuffer,
           caption: text,
           mentions: [realParticipant, ...(author ? [author] : [])],
@@ -415,7 +435,7 @@ async function sendGoodbyeMessage(sock, groupJid, participant, groupMeta, force 
         });
       } else {
         // Fallback teks biasa kalau canvas gagal
-        await sock.sendMessage(groupJid, {
+        await sendSafe(sock, groupJid, {
           text: text,
           mentions: [realParticipant, ...(author ? [author] : [])],
           contextInfo: {

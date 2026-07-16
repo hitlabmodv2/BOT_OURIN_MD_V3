@@ -47,7 +47,7 @@ function handler(m) {
       txt += `👉 Adopsi: \`.petshop buy ${key}\`\n`;
     }
     
-    txt += `\n\n💰 *Uang Kamu:* Rp ${(user.koin || 0).toLocaleString()}`;
+    txt += `\n\n💰 *Uang Kamu:* Rp ${(user.uang || 0).toLocaleString()}`;
     return m.reply(txt);
   }
 
@@ -65,11 +65,11 @@ function handler(m) {
       return m.reply(`Maaf kak, hewan jenis itu lagi kosong atau emang nggak dijual di sini! ❌\nCek daftarnya lagi pake \`${m.prefix}petshop\``);
     }
 
-    if ((user.koin || 0) < petToBuy.price) {
-      return m.reply(`Aduh uangnya kurang nih buat biaya adopsi kak! 😭\nTotal biayanya Rp ${petToBuy.price.toLocaleString()} tapi uang kakak cuma Rp ${(user.koin || 0).toLocaleString()}`);
+    if ((user.uang || 0) < petToBuy.price) {
+      return m.reply(`Aduh uangnya kurang nih buat biaya adopsi kak! 😭\nTotal biayanya Rp ${petToBuy.price.toLocaleString()} tapi uang kakak cuma Rp ${(user.uang || 0).toLocaleString()}`);
     }
 
-    user.koin -= petToBuy.price;
+    user.uang -= petToBuy.price;
 
     user.rpg.pet = {
       type: petKey,

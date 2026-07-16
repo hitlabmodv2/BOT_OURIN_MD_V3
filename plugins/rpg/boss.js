@@ -171,7 +171,7 @@ async function handler(m, { sock, skipDeduct }) {
     const expReward = boss.exp + Math.floor(Math.random() * 500);
     const goldReward = boss.gold + Math.floor(Math.random() * 2000);
 
-    user.koin = (user.koin || 0) + goldReward;
+    user.uang = (user.uang || 0) + goldReward;
     await addExpWithLevelCheck(sock, m, db, user, expReward);
 
     const droppedItems = [];
@@ -187,7 +187,7 @@ async function handler(m, { sock, skipDeduct }) {
     txt += `Wahh gila, kamu berhasil numbangin monster raksasa *${boss.name}* kak!\n\n`;
     txt += `*🎁 Harta Karun Boss:*\n`;
     txt += `✨ EXP: *+${expReward.toLocaleString()}*\n`;
-    txt += `💰 Koin Emas: *+Rp ${goldReward.toLocaleString()}*\n`;
+    txt += `💰 Uang Emas: *+Rp ${goldReward.toLocaleString()}*\n`;
     if (droppedItems.length > 0) {
       txt += `📦 Item Loot: *${droppedItems.join(", ")}*\n`;
     }
@@ -195,14 +195,14 @@ async function handler(m, { sock, skipDeduct }) {
 
     await m.react("🏆");
   } else {
-    const goldLoss = Math.floor((user.koin || 0) * 0.15);
-    user.koin = Math.max(0, (user.koin || 0) - goldLoss);
+    const goldLoss = Math.floor((user.uang || 0) * 0.15);
+    user.uang = Math.max(0, (user.uang || 0) - goldLoss);
     user.rpg.health = Math.max(1, (user.rpg.health || 100) - 50);
 
     txt = `💀 *YAH... KAMU TERPURUK...* 💔\n\n`;
     txt += `Tenaga *${boss.name}* ternyata masih terlalu besar buat kamu kak!\n\n`;
     txt += `*Penalti Kekalahan:*\n`;
-    txt += `💸 Koin Terjatuh: *-Rp ${goldLoss.toLocaleString()}*\n`;
+    txt += `💸 Uang Terjatuh: *-Rp ${goldLoss.toLocaleString()}*\n`;
     txt += `❤️ HP Berkurang: *-50 HP*\n\n`;
     txt += `> 💡 _Tips: Coba tingkatkan level dan perbaiki senjatamu sebelum nantangin dia lagi ya kak!_`;
 

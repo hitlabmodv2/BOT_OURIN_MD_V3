@@ -39,12 +39,12 @@ async function handler(m, { sock }) {
 
   if (gacha < 0.1) {
     const denda = Math.floor(Math.random() * 5000) + 1000;
-    user.koin = Math.max(0, (user.koin || 0) - denda);
+    user.uang = Math.max(0, (user.uang || 0) - denda);
     await m.react("🚨");
     return m.reply(`WADUH ADA RAZIA SATPOL PP! 🚓💨\n\nKamu lari terbirit-birit dan duit recehanmu jatuh senilai *Rp ${denda.toLocaleString("id-ID")}*!\n⚡ Stamina: -${staminaCost}\n\nApes banget hari ini! 😭`);
   } else if (gacha > 0.9) {
     const jackpot = Math.floor(Math.random() * 50000) + 20000;
-    user.koin = (user.koin || 0) + jackpot;
+    user.uang = (user.uang || 0) + jackpot;
     const expGain = Math.floor(jackpot / 20);
     await addExpWithLevelCheck(sock, m, db, user, expGain);
     await m.react("🤑");
@@ -52,7 +52,7 @@ async function handler(m, { sock }) {
   }
 
   const earning = Math.floor(Math.random() * 8000) + 2000;
-  user.koin = (user.koin || 0) + earning;
+  user.uang = (user.uang || 0) + earning;
   const expGain = Math.floor(earning / 20);
   await addExpWithLevelCheck(sock, m, db, user, expGain);
 

@@ -42,12 +42,12 @@ async function handler(m, { sock, skipDeduct }) {
     return m.reply(`Mana ada bandar nerima taruhan segitu! Minimal bawa *Rp 1.000* sini! 🎲`);
   }
 
-  if ((user.koin || 0) < bet) {
+  if ((user.uang || 0) < bet) {
     skipDeduct?.()
-    return m.reply(`Duit lu kurang bos! Di saku cuma ada *Rp ${(user.koin || 0).toLocaleString("id-ID")}*. Jangan ngutang di mari! 😤`);
+    return m.reply(`Duit lu kurang bos! Di saku cuma ada *Rp ${(user.uang || 0).toLocaleString("id-ID")}*. Jangan ngutang di mari! 😤`);
   }
 
-  user.koin -= bet;
+  user.uang -= bet;
 
   await sendRpgPreview(sock, m.chat, `🎲 Bandar mengocok dadu di dalam mangkok kayu... *krok krok krok*...`, "🎲 DADU JALANAN", "Rolling!", { quoted: m });
   await new Promise((r) => setTimeout(r, 2500));
@@ -63,7 +63,7 @@ async function handler(m, { sock, skipDeduct }) {
 
   if (isWin) {
     const winnings = bet * 5;
-    user.koin = (user.koin || 0) + winnings;
+    user.uang = (user.uang || 0) + winnings;
     txt += `🎉 *GILA LU HOKI BANGET!*\n`;
     txt += `💰 Uang Berlipat 5x: *+Rp ${winnings.toLocaleString("id-ID")}*`;
   } else {

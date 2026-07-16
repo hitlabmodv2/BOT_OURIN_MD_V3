@@ -53,11 +53,11 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Kamu sudah punya rumah *${tier.name}* ini.`);
     }
 
-    if ((user.koin || 0) < tier.price) {
-      return m.reply(`❌ Harga *${tier.name}* itu *Rp ${tier.price.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if ((user.uang || 0) < tier.price) {
+      return m.reply(`❌ Harga *${tier.name}* itu *Rp ${tier.price.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= tier.price;
+    user.uang -= tier.price;
     setHouse(user, { key: tier.key, buyAt: Date.now(), lastPaidAt: Date.now() });
     db.save();
 
@@ -66,7 +66,8 @@ async function handler(m, { sock }) {
       `🏠 *SELAMAT PUNYA RUMAH BARU!*\n\n` +
         `Tipe: *${tier.name}* (${tier.quality})\n` +
         `💸 Harga: *-Rp ${tier.price.toLocaleString("id-ID")}*\n` +
-        `⚡ Tagihan listrik: *Rp ${tier.listrikPerWeek.toLocaleString("id-ID")}/minggu* — jangan lupa \`${m.prefix}bayarlistrik\`\n\n` +
+        `⚡ Tagihan listrik: *Rp ${tier.listrikPerWeek.toLocaleString("id-ID")}/minggu* — jangan lupa \`${m.prefix}bayarlistrik\`\n` +
+        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n\n` +
         `> _Sekarang salah satu syarat \`${m.prefix}nikahcp\` udah terpenuhi._`,
     );
   } catch (error) {

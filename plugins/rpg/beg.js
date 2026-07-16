@@ -2,7 +2,7 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 import { addExpWithLevelCheck } from "../../src/lib/ourin-level.js";
 const pluginConfig = {
   name: "beg",
-  alias: ["ngemis", "minta"],
+  alias: [],
   category: "rpg",
   description: "Mengemis untuk mendapatkan uang receh",
   usage: ".beg",
@@ -38,12 +38,12 @@ async function handler(m, { sock }) {
   const result = responses[Math.floor(Math.random() * responses.length)];
 
   if (result.money > 0) {
-    user.koin = (user.koin || 0) + result.money;
+    user.uang = (user.uang || 0) + result.money;
     if (result.exp > 0) {
       await addExpWithLevelCheck(sock, m, db, user, result.exp);
     }
   } else if (result.money < 0) {
-    user.koin = Math.max(0, (user.koin || 0) + result.money);
+    user.uang = Math.max(0, (user.uang || 0) + result.money);
   }
 
   db.save();

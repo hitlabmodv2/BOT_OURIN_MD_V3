@@ -30,7 +30,7 @@ const pluginConfig = {
 if (!global.registrationSessions) global.registrationSessions = {};
 
 const SESSION_TIMEOUT = 300000;
-const DEFAULT_REWARDS = { koin: 30000, energi: 300, exp: 300000 };
+const DEFAULT_REWARDS = { uang: 30000, energi: 300, exp: 300000 };
 const REGISTRATION_IMAGE_CANDIDATES = [
   "ourin-daftar",
   "ourin",
@@ -182,7 +182,7 @@ function buildRewardPreview(user) {
     return `🎁 *Status Bonus*\n> Bonus daftar pertama sudah pernah kamu klaim\n> Daftar ulang tidak mendapat reward lagi`;
   }
 
-  return `🎁 *Bonus Daftar Pertama*\n> 💰 +${rewards.koin.toLocaleString("id-ID")} Koin\n> ⚡ +${rewards.energi} Energi\n> ⭐ +${rewards.exp.toLocaleString("id-ID")} EXP`;
+  return `🎁 *Bonus Daftar Pertama*\n> 💰 +${rewards.uang.toLocaleString("id-ID")} Uang\n> ⚡ +${rewards.energi} Energi\n> ⭐ +${rewards.exp.toLocaleString("id-ID")} EXP`;
 }
 
 function buildConfirmationRewardBlock(user) {
@@ -192,7 +192,7 @@ function buildConfirmationRewardBlock(user) {
     return `╭┈┈⬡「 🎁 *ʙᴏɴᴜs* 」\n┃ Bonus daftar pertama sudah pernah diambil\n┃ Daftar ulang tidak mendapat reward lagi\n╰┈┈┈┈┈┈┈┈⬡`;
   }
 
-  return `╭┈┈⬡「 🎁 *ʀᴇᴡᴀʀᴅs* 」\n┃ 💰 +${rewards.koin.toLocaleString("id-ID")} Koin\n┃ ⚡ +${rewards.energi} Energi\n┃ ⭐ +${rewards.exp.toLocaleString("id-ID")} EXP\n╰┈┈┈┈┈┈┈┈⬡`;
+  return `╭┈┈⬡「 🎁 *ʀᴇᴡᴀʀᴅs* 」\n┃ 💰 +${rewards.uang.toLocaleString("id-ID")} Uang\n┃ ⚡ +${rewards.energi} Energi\n┃ ⭐ +${rewards.exp.toLocaleString("id-ID")} EXP\n╰┈┈┈┈┈┈┈┈⬡`;
 }
 
 function buildSuccessRewardBlock(alreadyClaimedReward) {
@@ -202,7 +202,7 @@ function buildSuccessRewardBlock(alreadyClaimedReward) {
     return `╭┈┈⬡「 🎁 *ʙᴏɴᴜs* 」\n┃ Bonus daftar sudah pernah diklaim\n┃ Tidak ada reward tambahan kali ini\n╰┈┈┈┈┈┈┈┈⬡`;
   }
 
-  return `╭┈┈⬡「 🎁 *ʀᴇᴡᴀʀᴅs* 」\n┃ 💰 +${rewards.koin.toLocaleString("id-ID")} Koin\n┃ ⚡ +${rewards.energi} Energi\n┃ ⭐ +${rewards.exp.toLocaleString("id-ID")} EXP\n╰┈┈┈┈┈┈┈┈⬡`;
+  return `╭┈┈⬡「 🎁 *ʀᴇᴡᴀʀᴅs* 」\n┃ 💰 +${rewards.uang.toLocaleString("id-ID")} Uang\n┃ ⚡ +${rewards.energi} Energi\n┃ ⭐ +${rewards.exp.toLocaleString("id-ID")} EXP\n╰┈┈┈┈┈┈┈┈⬡`;
 }
 
 function buildUserDataBlock(name, age, gender) {
@@ -567,7 +567,7 @@ async function registrationAnswerHandler(m, sock) {
     });
 
     if (!alreadyClaimedReward) {
-      db.updateKoin(m.sender, rewards.koin);
+      db.updateUang(m.sender, rewards.uang);
       db.updateEnergi(m.sender, rewards.energi);
       db.updateExp(m.sender, rewards.exp);
     }

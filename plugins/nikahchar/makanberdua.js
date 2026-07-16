@@ -54,11 +54,11 @@ async function handler(m, { sock }) {
       return m.reply(txt);
     }
 
-    if ((user.koin || 0) < tier.cost) {
-      return m.reply(`❌ Makan di *${tier.name}* butuh *Rp ${tier.cost.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.koin || 0).toLocaleString("id-ID")}*.`);
+    if ((user.uang || 0) < tier.cost) {
+      return m.reply(`❌ Makan di *${tier.name}* butuh *Rp ${tier.cost.toLocaleString("id-ID")}*, duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.`);
     }
 
-    user.koin -= tier.cost;
+    user.uang -= tier.cost;
     addLove(spouse, tier.love);
     feedSpouseDirectly(spouse, tier.hunger);
 
@@ -69,7 +69,8 @@ async function handler(m, { sock }) {
         `Kamu dan *${spouse.nickname || spouse.name}* makan malam romantis. 🕯️\n\n` +
         `💸 Biaya: *-Rp ${tier.cost.toLocaleString("id-ID")}*\n` +
         `💕 Love: *+${tier.love}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})\n` +
-        `🍗 Hunger: sekarang kenyang!`,
+        `🍗 Hunger: sekarang kenyang!\n` +
+        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );
   } catch (error) {
     await m.react("☢");
