@@ -1,4 +1,5 @@
 import { getDatabase } from "../../src/lib/ourin-database.js";
+import { getRole, calculateLevel, totalExpForLevel, expToNextLevel, MAX_LEVEL, getWealthTier, fmtUangBesar } from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "inventory",
@@ -51,6 +52,7 @@ const ITEMS = {
   bowlramen: { emote: "🍜", name: "Ramen" },
 
   // ── Hasil Buruan ──
+  ayam:         { emote: "🐔", name: "Ayam Biasa ⬜"       },
   kelinci:      { emote: "🐰", name: "Kelinci ⬜"          },
   ayamhutan:    { emote: "🐓", name: "Ayam Hutan ⬜"       },
   terwelu:      { emote: "🐇", name: "Terwelu ⬜"          },
@@ -170,8 +172,31 @@ async function handler(m, { sock }) {
   const maxSt     = user.rpg.maxStamina ?? 100;
   const uang      = user.uang  ?? 0;
   const exp       = user.exp   ?? 0;
-  const level     = user.level ?? 1;
   const energi    = user.energi ?? 0;
+
+  // Level dihitung dari EXP (akurat, bukan dari field yg bisa out-of-sync)
+  // Sekalian self-heal jika user.level belum di-set
+  const level = calculateLevel(exp);
+  if (user.level !== level) {
+    user.level     = level;
+    user.rpg.level = level;
+    db.save();
+  }
+
+  // Upgrade tier untuk ditampilkan di .inv
+  const hpTier    = user.rpg.hpUpgrade      || 0;
+  const stTier    = user.rpg.staminaUpgrade || 0;
+  const hpBonus   = hpTier * 10;
+  const stBonus   = stTier * 10;
+
+  // ── EXP progress dalam level sekarang ────────────────────────────
+  const role          = getRole(level);
+  const expBase       = totalExpForLevel(level);          // EXP di awal level ini
+  const expNeededLvl  = expToNextLevel(level);            // EXP yg dibutuhkan level ini
+  const expInLvl      = exp - expBase;                    // EXP sudah terkumpul di level ini
+  const expToNext     = expNeededLvl - expInLvl;          // EXP sisa ke level berikutnya
+  const expBar        = makeBar(expInLvl, expNeededLvl);
+  const isMaxLevel    = level >= MAX_LEVEL;
 
   const hpBar  = makeBar(hp, maxHp);
   const stBar  = makeBar(stamina, maxSt);
@@ -185,14 +210,22 @@ async function handler(m, { sock }) {
 
   let invText = `╭┈┈⬡「 🎒 *INVENTORY* 」\n`;
   invText += `┃\n`;
-  invText += `┃ 🏅 Level  : *${level}*\n`;
-  invText += `┃ 📈 EXP    : *${exp.toLocaleString("id-ID")}*\n`;
-  invText += `┃ 💰 Uang   : *Rp ${uang.toLocaleString("id-ID")}*\n`;
+  invText += `┃ 🏅 Level  : *${level}*  ${role}\n`;
+  if (isMaxLevel) {
+    invText += `┃ 📈 EXP    : *MAX LEVEL* 🏆\n`;
+    invText += `┃   [██████████] ✅ Puncak tertinggi!\n`;
+  } else {
+    invText += `┃ 📈 EXP    : *${expInLvl.toLocaleString("id-ID")} / ${expNeededLvl.toLocaleString("id-ID")}*\n`;
+    invText += `┃   [${expBar}] kurang *${expToNext.toLocaleString("id-ID")} EXP* → Lv ${level + 1}\n`;
+  }
+  const wealthTier = getWealthTier(uang);
+  invText += `┃ 💰 Uang   : *${fmtUangBesar(uang)}*\n`;
+  invText += `┃   ${wealthTier}\n`;
   invText += `┃\n`;
-  invText += `┃ ❤️ HP      : *${hp}/${maxHp}*\n`;
+  invText += `┃ ❤️ HP      : *${hp}/${maxHp}*${hpBonus > 0 ? `  🔺+${hpBonus} (Tier ${hpTier})` : ""}\n`;
   invText += `┃   [${hpBar}] ${hpStatus}\n`;
   invText += `┃\n`;
-  invText += `┃ ⚡ Stamina : *${stamina}/${maxSt}*\n`;
+  invText += `┃ ⚡ Stamina : *${stamina}/${maxSt}*${stBonus > 0 ? `  🔺+${stBonus} (Tier ${stTier})` : ""}\n`;
   invText += `┃   [${stBar}] ${stStatus}\n`;
   invText += `┃\n`;
   invText += `┃ 🔋 Energi  : *${energi === -1 ? "∞ (Unlimited)" : energi}*\n`;
@@ -222,7 +255,7 @@ async function handler(m, { sock }) {
     "⛩️ *Perlengkapan Shinobi*": ["kunai", "shuriken", "chakra", "scroll", "bowlramen"],
     "🏹 *Hasil Buruan*": [
       // ⬜ Common
-      "kelinci", "ayamhutan", "terwelu",
+      "ayam", "kelinci", "ayamhutan", "terwelu",
       // 🟩 Uncommon
       "landak", "kalkun", "monyet", "rusa", "merak",
       // 🟦 Rare

@@ -91,6 +91,7 @@ const ITEMS = {
 
   // ── Hasil Buruan (harga berdasarkan kelangkaan) ──
   // ⬜ Common
+  ayam:         { price: 2000,     type: "sellable", name: "🐔 Ayam Biasa ⬜ Common"      },
   tupai:        { price: 3500,     type: "sellable", name: "🐿️ Tupai ⬜ Common"           },
   kelinci:      { price: 4000,     type: "sellable", name: "🐰 Kelinci ⬜ Common"         },
   kadal:        { price: 3800,     type: "sellable", name: "🦎 Kadal ⬜ Common"           },

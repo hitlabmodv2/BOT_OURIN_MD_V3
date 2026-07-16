@@ -49,6 +49,12 @@ const KEY_ALIASES = {
   boar:      ["babihutan", "daging_babi"],
   bear:      ["beruang", "cakar_beruang"],
   lion:      ["singa", "taring_singa"],
+  // Alias nama pendek hewan compound
+  ayam:            ["ayam"],        // ayam biasa (bukan ayam hutan)
+  bebek:           ["bebekhutan"],
+  ular:            ["ularpiton"],
+  anjing:          ["anjinglaut"],
+  kuda:            ["kudaperi"],
   // Alias hewan baru
   nagah:           ["nagahutan"],
   naga:            ["nagahutan"],
@@ -167,11 +173,12 @@ const SELL_PRICES = {
 
   // ── Hasil Buruan ──────────────────────────────────
   // ⬜ Common
+  ayam:         2000,     // ⬜ Common (ayam biasa, lebih murah dari ayam hutan)
   tupai:        3500,     // ⬜ Common
   kelinci:      4000,     // ⬜ Common
   kadal:        3800,     // ⬜ Common
   bebekhutan:   4500,     // ⬜ Common
-  ayamhutan:    5000,     // ⬜ Common
+  ayamhutan:    5000,     // ⬜ Common (ayam liar dari hutan, lebih mahal)
   terwelu:      6500,     // ⬜ Common
   // 🟩 Uncommon
   landak:       10000,    // 🟩 Uncommon
@@ -450,9 +457,27 @@ async function handler(m, { sock }) {
     return m.reply(txt);
   }
 
-  const inputKey  = args[0].toLowerCase();
-  const amountArg = (args[1] || "").toLowerCase();
-  const sellAll   = amountArg === "all" || amountArg === "semua";
+  // Parsing fleksibel: support nama hewan 2 kata, misal "ayam hutan all" atau "babi hutan 5"
+  const lastArg = (args[args.length - 1] || "").toLowerCase();
+  const sellAll = lastArg === "all" || lastArg === "semua";
+
+  let inputKey, amountArg;
+  if (args.length === 1) {
+    // .jual rusa
+    inputKey  = args[0].toLowerCase();
+    amountArg = "";
+  } else if (sellAll || !isNaN(parseInt(lastArg))) {
+    // .jual ayam hutan all  → inputKey="ayamhutan", sellAll=true
+    // .jual ayam hutan 3    → inputKey="ayamhutan", amount=3
+    // .jual rusa all        → inputKey="rusa"
+    // .jual rusa 5          → inputKey="rusa", amount=5
+    inputKey  = args.slice(0, -1).join("").toLowerCase();
+    amountArg = lastArg;
+  } else {
+    // fallback: kata pertama = item, kata kedua = jumlah
+    inputKey  = args[0].toLowerCase();
+    amountArg = lastArg;
+  }
 
   const userInventory = user.inventory || {};
 

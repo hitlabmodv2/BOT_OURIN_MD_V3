@@ -72,11 +72,12 @@ const SELL_PRICES = {
 
   // ── Hasil Buruan ──────────────────────────────────
   // ⬜ Common
+  ayam:         2000,     // ⬜ Common (ayam biasa)
   tupai:        3500,     // ⬜ Common
   kadal:        3800,     // ⬜ Common
   kelinci:      4000,     // ⬜ Common
   bebekhutan:   4500,     // ⬜ Common
-  ayamhutan:    5000,     // ⬜ Common
+  ayamhutan:    5000,     // ⬜ Common (ayam liar dari hutan)
   terwelu:      6500,     // ⬜ Common
   // 🟩 Uncommon
   landak:       10000,    // 🟩 Uncommon

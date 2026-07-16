@@ -1,23 +1,211 @@
 import config from "../../config.js";
 
-const EXP_PER_LEVEL = 10000;
-
-function calculateLevel(exp) {
-  return Math.floor(exp / EXP_PER_LEVEL) + 1;
+// ── Tier Kekayaan Uang (0 s/d 1e308) ──────────────────────────────
+export function getWealthTier(uang) {
+  if (!uang || uang <= 0)         return "💀 Miskin Total";
+  if (uang < 1_000)               return "🪨 Kere Banget";
+  if (uang < 10_000)              return "🏚️ Pas-pasan";
+  if (uang < 100_000)             return "🛒 Lumayan";
+  if (uang < 1_000_000)           return "💵 Cukupan";
+  if (uang < 10_000_000)          return "💰 Jutawan";
+  if (uang < 100_000_000)         return "💎 Hartawan";
+  if (uang < 1_000_000_000)       return "🤑 Miliarder";
+  if (uang < 10_000_000_000)      return "🏦 Konglomerat";
+  if (uang < 100_000_000_000)     return "💹 Tycoon";
+  if (uang < 1e12)                return "🏰 Oligarki";
+  if (uang < 1e13)                return "👑 Sultan";
+  if (uang < 1e15)                return "⚡ Super Sultan";
+  if (uang < 1e18)                return "🌟 Kuadriliuner";
+  if (uang < 1e21)                return "🔥 Mega Kekayaan";
+  if (uang < 1e31)                return "💫 Centillionaire";
+  if (uang < 1e51)                return "🌌 Ultra Rich";
+  if (uang < 1e76)                return "🐉 Dragon Fortune";
+  if (uang < 1e101)               return "⭐ Galactic Banker";
+  if (uang < 1e151)               return "🌠 Universe Rich";
+  if (uang < 1e201)               return "🔮 Cosmic Fortune";
+  if (uang < 1e251)               return "👾 Dimensional Rich";
+  if (uang < 1e286)               return "⚫ Void Banker";
+  if (uang < 1e308)               return "🌀 GOD OF WEALTH";
+  return "♾️ INFINITY OVERLORD";
 }
 
-function expForLevel(level) {
-  return (level - 1) * EXP_PER_LEVEL;
+// Format uang besar secara ringkas & terbaca
+export function fmtUangBesar(n) {
+  if (!isFinite(n) || n === Infinity) return "∞";
+  if (n <= 0) return "Rp 0";
+  // 1e15 ke atas → scientific notation
+  if (n >= 1e15) {
+    const exp  = Math.floor(Math.log10(n));
+    const base = n / Math.pow(10, exp);
+    return `Rp ${base.toFixed(2)}e+${exp}`;
+  }
+  if (n >= 1e12) return `Rp ${(n / 1e12).toLocaleString("id-ID", { maximumFractionDigits: 2 })} T`;
+  if (n >= 1e9)  return `Rp ${(n / 1e9 ).toLocaleString("id-ID", { maximumFractionDigits: 2 })} M`;
+  if (n >= 1e6)  return `Rp ${(n / 1e6 ).toLocaleString("id-ID", { maximumFractionDigits: 2 })} Jt`;
+  return `Rp ${Math.floor(n).toLocaleString("id-ID")}`;
 }
 
-function getRole(level) {
-  if (level >= 100) return "🐉 Mythic";
-  if (level >= 80) return "⚔️ Legend";
-  if (level >= 60) return "💜 Epic";
-  if (level >= 40) return "💪 Grandmaster";
-  if (level >= 20) return "🎖️ Master";
-  if (level >= 10) return "⭐ Elite";
-  return "🛡️ Warrior";
+// ── Sistem Level Baru — Kuadratik, Max Level 1000 ──────────────────
+// EXP ke level berikutnya makin besar seiring naik level
+// Formula: expToNextLevel(L) = 50 * L * (L + 1)
+//   Level  1→2  :        100 EXP
+//   Level  5→6  :      1.500 EXP
+//   Level 10→11 :      5.500 EXP
+//   Level 50→51 :    127.500 EXP
+//   Level 100→  :    505.000 EXP
+//   Level 500→  : 12.525.000 EXP
+//   Level 999→  : ~49.975.000 EXP
+// Total EXP ke level 1000 ≈ 16,7 Miliar EXP
+export const MAX_LEVEL = 1000;
+
+// EXP yang dibutuhkan untuk naik dari level L ke L+1
+export function expToNextLevel(level) {
+  if (level >= MAX_LEVEL) return Infinity;
+  return 50 * level * (level + 1);
+}
+
+// Total EXP kumulatif yang dibutuhkan untuk MENCAPAI level ini
+// Formula tertutup: 100/6 * (n)(n+1)(n+2), di mana n = level - 1
+export function totalExpForLevel(level) {
+  if (level <= 1) return 0;
+  const n = level - 1;
+  return Math.round((100 / 6) * n * (n + 1) * (n + 2));
+}
+
+// Hitung level dari total EXP (akurat, pakai approx + adjust)
+export function calculateLevel(exp) {
+  if (exp <= 0) return 1;
+  // Approx dengan akar kubik dari formula tertutup
+  let level = Math.max(1, Math.floor(Math.cbrt(exp * 6 / 100)));
+  // Adjust naik
+  while (level < MAX_LEVEL && totalExpForLevel(level + 1) <= exp) level++;
+  // Adjust turun (safety)
+  while (level > 1 && totalExpForLevel(level) > exp) level--;
+  return level;
+}
+
+// Alias backward-compat (dipakai di beberapa tempat lama)
+export function expForLevel(level) {
+  return totalExpForLevel(level);
+}
+
+// 100 nama rank unik — setiap 10 level 1 nama baru, total level 1–1000
+// Index 0 = Lv 1-10, Index 1 = Lv 11-20, ... Index 99 = Lv 991-1000
+const RANKS = [
+  /* 00 Lv   1– 10 */ "🌱 Pemula",
+  /* 01 Lv  11– 20 */ "🛡️ Prajurit",
+  /* 02 Lv  21– 30 */ "⚔️ Pejuang",
+  /* 03 Lv  31– 40 */ "🗡️ Gladiator",
+  /* 04 Lv  41– 50 */ "🏹 Pemanah",
+  /* 05 Lv  51– 60 */ "🦾 Ksatria",
+  /* 06 Lv  61– 70 */ "🌟 Pahlawan",
+  /* 07 Lv  71– 80 */ "💥 Jagoan",
+  /* 08 Lv  81– 90 */ "🔱 Elite",
+  /* 09 Lv  91–100 */ "🎖️ Veteran",
+
+  /* 10 Lv 101–110 */ "🔥 Pemberani",
+  /* 11 Lv 111–120 */ "⚡ Pendekar",
+  /* 12 Lv 121–130 */ "🌊 Samurai",
+  /* 13 Lv 131–140 */ "🌪️ Ronin",
+  /* 14 Lv 141–150 */ "💎 Master",
+  /* 15 Lv 151–160 */ "🌸 Sensei",
+  /* 16 Lv 161–170 */ "🏯 Shogun",
+  /* 17 Lv 171–180 */ "🐉 Ninja",
+  /* 18 Lv 181–190 */ "⛩️ Shinobi",
+  /* 19 Lv 191–200 */ "🌙 Kunoichi",
+
+  /* 20 Lv 201–210 */ "🔮 Penyihir",
+  /* 21 Lv 211–220 */ "✨ Arcanist",
+  /* 22 Lv 221–230 */ "🌠 Wizard",
+  /* 23 Lv 231–240 */ "🔯 Sorcerer",
+  /* 24 Lv 241–250 */ "💫 Enchanter",
+  /* 25 Lv 251–260 */ "🌌 Warlock",
+  /* 26 Lv 261–270 */ "🌀 Spellblade",
+  /* 27 Lv 271–280 */ "🧿 Archmagus",
+  /* 28 Lv 281–290 */ "🪄 Grand Mage",
+  /* 29 Lv 291–300 */ "📖 Sage",
+
+  /* 30 Lv 301–310 */ "🦁 Berserker",
+  /* 31 Lv 311–320 */ "🐯 Warlord",
+  /* 32 Lv 321–330 */ "🦅 Overlord",
+  /* 33 Lv 331–340 */ "🐺 Dark Knight",
+  /* 34 Lv 341–350 */ "🔱 Shadow Lord",
+  /* 35 Lv 351–360 */ "💜 Demon Slayer",
+  /* 36 Lv 361–370 */ "🩸 Blood Hunter",
+  /* 37 Lv 371–380 */ "🌑 Death Knight",
+  /* 38 Lv 381–390 */ "👁️ Void Walker",
+  /* 39 Lv 391–400 */ "⚫ Abyss Lord",
+
+  /* 40 Lv 401–410 */ "🌊 Ocean King",
+  /* 41 Lv 411–420 */ "🏔️ Mountain God",
+  /* 42 Lv 421–430 */ "⚡ Storm Lord",
+  /* 43 Lv 431–440 */ "🔥 Flame Emperor",
+  /* 44 Lv 441–450 */ "❄️ Frost King",
+  /* 45 Lv 451–460 */ "🌪️ Wind Master",
+  /* 46 Lv 461–470 */ "⛰️ Earth Shaker",
+  /* 47 Lv 471–480 */ "☀️ Sun God",
+  /* 48 Lv 481–490 */ "🌕 Moon God",
+  /* 49 Lv 491–500 */ "⭐ Star Lord",
+
+  /* 50 Lv 501–510 */ "🐉 Dragon Rider",
+  /* 51 Lv 511–520 */ "🦄 Unicorn Knight",
+  /* 52 Lv 521–530 */ "🦅 Phoenix Lord",
+  /* 53 Lv 531–540 */ "🦁 Celestial Beast",
+  /* 54 Lv 541–550 */ "🌟 Celestial Knight",
+  /* 55 Lv 551–560 */ "💫 Celestial Mage",
+  /* 56 Lv 561–570 */ "✨ Celestial Sage",
+  /* 57 Lv 571–580 */ "🌌 Celestial Emperor",
+  /* 58 Lv 581–590 */ "👑 Celestial King",
+  /* 59 Lv 591–600 */ "🌠 Celestial God",
+
+  /* 60 Lv 601–610 */ "🔱 Demi-God",
+  /* 61 Lv 611–620 */ "⚡ Thunder God",
+  /* 62 Lv 621–630 */ "🌊 Sea God",
+  /* 63 Lv 631–640 */ "🔥 Fire God",
+  /* 64 Lv 641–650 */ "❄️ Ice God",
+  /* 65 Lv 651–660 */ "🌪️ Wind God",
+  /* 66 Lv 661–670 */ "⛰️ Earth God",
+  /* 67 Lv 671–680 */ "🌸 Nature God",
+  /* 68 Lv 681–690 */ "🌙 Shadow God",
+  /* 69 Lv 691–700 */ "☀️ Light God",
+
+  /* 70 Lv 701–710 */ "💎 Immortal Soul",
+  /* 71 Lv 711–720 */ "🌀 Void God",
+  /* 72 Lv 721–730 */ "🌌 Galaxy Lord",
+  /* 73 Lv 731–740 */ "🪐 Cosmic Lord",
+  /* 74 Lv 741–750 */ "✨ Star God",
+  /* 75 Lv 751–760 */ "💫 Nebula God",
+  /* 76 Lv 761–770 */ "🌟 Supernova",
+  /* 77 Lv 771–780 */ "⭐ Eternal God",
+  /* 78 Lv 781–790 */ "🔮 Ancient God",
+  /* 79 Lv 791–800 */ "🧿 Primal God",
+
+  /* 80 Lv 801–810 */ "👁️ All-Seeing",
+  /* 81 Lv 811–820 */ "🌑 Dark God",
+  /* 82 Lv 821–830 */ "☀️ Radiant God",
+  /* 83 Lv 831–840 */ "⚫ Abyss God",
+  /* 84 Lv 841–850 */ "💎 Crystal God",
+  /* 85 Lv 851–860 */ "🔱 Trident God",
+  /* 86 Lv 861–870 */ "⚡ Lightning God",
+  /* 87 Lv 871–880 */ "🌊 Tsunami God",
+  /* 88 Lv 881–890 */ "🔥 Inferno God",
+  /* 89 Lv 891–900 */ "🌪️ Tempest God",
+
+  /* 90 Lv 901–910 */ "👑 Supreme Deity",
+  /* 91 Lv 911–920 */ "🌌 Cosmic Deity",
+  /* 92 Lv 921–930 */ "💫 Eternal Deity",
+  /* 93 Lv 931–940 */ "✨ Divine Deity",
+  /* 94 Lv 941–950 */ "🔮 Mystic Deity",
+  /* 95 Lv 951–960 */ "🌟 Ascended Deity",
+  /* 96 Lv 961–970 */ "💎 Sacred Deity",
+  /* 97 Lv 971–980 */ "⭐ Celestial Deity",
+  /* 98 Lv 981–990 */ "🌠 Omnipotent",
+  /* 99 Lv 991–1000*/ "🌌 GOD",
+];
+
+export function getRole(level) {
+  const idx = Math.min(Math.floor((Math.max(level, 1) - 1) / 10), 99);
+  return RANKS[idx];
 }
 
 async function checkAndNotifyLevelUp(sock, m, db, user, oldExp, newExp) {
@@ -133,13 +321,71 @@ async function checkAndNotifyLevelUp(sock, m, db, user, oldExp, newExp) {
   const newLevel = calculateLevel(newExp);
 
   if (newLevel > oldLevel) {
+    // ── Sync level di dua tempat agar tidak pernah out-of-sync ────
+    user.level     = newLevel;
     user.rpg.level = newLevel;
-    user.rpg.maxHealth = 100 + (newLevel - 1) * 10;
-    user.rpg.maxMana = 100 + (newLevel - 1) * 5;
-    user.rpg.maxStamina = 100 + (newLevel - 1) * 5;
-    user.rpg.health = user.rpg.maxHealth;
-    user.rpg.mana = user.rpg.maxMana;
-    user.rpg.stamina = user.rpg.maxStamina;
+
+    // ── Semua reward naik level berbeda-beda sesuai level ─────────
+
+    // 💰 Bonus Uang
+    const levelUpUang =
+      newLevel >= 1000 ? 100_000_000 :
+      newLevel >=  900 ?  25_000_000 :
+      newLevel >=  700 ?  10_000_000 :
+      newLevel >=  500 ?   5_000_000 :
+      newLevel >=  400 ?   2_000_000 :
+      newLevel >=  300 ?   1_000_000 :
+      newLevel >=  200 ?     500_000 :
+      newLevel >=  150 ?     300_000 :
+      newLevel >=  100 ?     150_000 :
+      newLevel >=   50 ?      75_000 :
+      newLevel >=   25 ?      30_000 :
+      newLevel >=   10 ?      15_000 :
+                               5_000;
+
+    // 📈 Bonus EXP (langsung ditambah ke exp, tanpa trigger level-up lagi)
+    const levelUpExp =
+      newLevel >= 1000 ? 500_000_000 :
+      newLevel >=  900 ? 100_000_000 :
+      newLevel >=  700 ?  40_000_000 :
+      newLevel >=  500 ?  15_000_000 :
+      newLevel >=  400 ?   5_000_000 :
+      newLevel >=  300 ?   2_000_000 :
+      newLevel >=  200 ?     750_000 :
+      newLevel >=  150 ?     250_000 :
+      newLevel >=  100 ?     100_000 :
+      newLevel >=   50 ?      25_000 :
+      newLevel >=   25 ?       8_000 :
+      newLevel >=   10 ?       2_000 :
+                                 500;
+
+    // ❤️ HP naik per level (makin tinggi level makin besar gain)
+    const hpGainPerLevel =
+      newLevel >= 500 ? 25 :
+      newLevel >= 200 ? 20 :
+      newLevel >= 100 ? 15 :
+                        10;
+
+    // ⚡ Stamina naik per level (makin tinggi level makin besar gain)
+    const stGainPerLevel =
+      newLevel >= 500 ? 15 :
+      newLevel >= 200 ? 12 :
+      newLevel >= 100 ?  8 :
+                         5;
+
+    // Terapkan semua reward
+    user.uang      = (user.uang || 0) + levelUpUang;
+    user.exp       = (user.exp  || 0) + levelUpExp;   // bonus EXP langsung
+
+    // Recalculate maxHealth & maxStamina dengan gain yang sudah disesuaikan
+    const hpUpgBonus2 = (user.rpg.hpUpgrade      || 0) * 10;
+    const stUpgBonus2 = (user.rpg.staminaUpgrade || 0) * 10;
+    user.rpg.maxHealth  = 100 + (newLevel - 1) * hpGainPerLevel + hpUpgBonus2;
+    user.rpg.maxMana    = 100 + (newLevel - 1) * 5;
+    user.rpg.maxStamina = 100 + (newLevel - 1) * stGainPerLevel + stUpgBonus2;
+    user.rpg.health     = user.rpg.maxHealth;
+    user.rpg.mana       = user.rpg.maxMana;
+    user.rpg.stamina    = user.rpg.maxStamina;
 
     db.save();
 
@@ -157,16 +403,20 @@ async function checkAndNotifyLevelUp(sock, m, db, user, oldExp, newExp) {
       ppBuffer = await sock.profilePictureUrl(m.sender, "image");
     } catch {}
 
+    const levelsGained = newLevel - oldLevel;
     const txt = `🎊 *SELAMAT @${m.sender.split("@")[0]}!*
 
-Level kamu bertambah ${newLevel - oldLevel}
-🥗 Level kamu sekarang *${newLevel}*
+✨ Level naik${levelsGained > 1 ? ` *${levelsGained}x sekaligus*` : ""} → *Level ${newLevel}*
+🏅 Rank : *${role}*
 
-Sekarang kamu berada di rank *${role}*
+🎁 *Hadiah Naik Level ${newLevel}:*
+💰 Uang   : *+Rp ${levelUpUang.toLocaleString("id-ID")}*
+📈 EXP    : *+${levelUpExp.toLocaleString("id-ID")} EXP*
+❤️ HP Maks : *${user.rpg.maxHealth}*  (+${hpGainPerLevel}/lv, restore ✅)
+⚡ St Maks : *${user.rpg.maxStamina}*  (+${stGainPerLevel}/lv, restore ✅)
 
-Mau cek detail level? ketik _${m.prefix}level_
-
-Sering seringlah berinteraksi dengan bot agar level kamu bertambah!`;
+📌 Ketik _${m.prefix}inv_ buat lihat status!
+🔥 Terus aktif biar makin cepat naik level!`;
 
     const contextInfo = {
       mentionedJid: [m.sender],
@@ -192,8 +442,9 @@ Sering seringlah berinteraksi dengan bot agar level kamu bertambah!`;
       await generateLevelUpCard({
         name: m.pushName || "User",
         level: newLevel,
-        currentXp: newExp,
-        requiredXp: expForLevel(newLevel),
+        // EXP dalam level ini (bukan total)
+        currentXp: newExp - totalExpForLevel(newLevel),
+        requiredXp: expToNextLevel(newLevel),
         avatarUrl:
           ppBuffer ||
           "https://ui-avatars.com/api/?name=K&background=00f2ff&color=fff&size=256",
@@ -230,10 +481,9 @@ async function addExpWithLevelCheck(sock, m, db, user, expAmount) {
   return result;
 }
 
+// calculateLevel, expForLevel, expToNextLevel, totalExpForLevel,
+// getRole, MAX_LEVEL → sudah di-export inline dengan keyword export
 export {
-  calculateLevel,
-  expForLevel,
-  getRole,
   checkAndNotifyLevelUp,
   addExpWithLevelCheck,
 };
