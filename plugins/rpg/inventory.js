@@ -50,20 +50,45 @@ const ITEMS = {
   scroll: { emote: "📜", name: "Scroll Ninja" },
   bowlramen: { emote: "🍜", name: "Ramen" },
 
-  kelinci: { emote: "🐰", name: "Kelinci" },
-  rusa: { emote: "🦌", name: "Rusa" },
-  babihutan: { emote: "🐗", name: "Babi Hutan" },
-  rubah: { emote: "🦊", name: "Rubah" },
-  beruang: { emote: "🐻", name: "Beruang" },
-  singa: { emote: "🦁", name: "Singa" },
+  // ── Hasil Buruan ──
+  kelinci:      { emote: "🐰", name: "Kelinci ⬜"          },
+  ayamhutan:    { emote: "🐓", name: "Ayam Hutan ⬜"       },
+  terwelu:      { emote: "🐇", name: "Terwelu ⬜"          },
+  landak:       { emote: "🦔", name: "Landak 🟩"           },
+  kalkun:       { emote: "🦃", name: "Kalkun 🟩"           },
+  monyet:       { emote: "🐒", name: "Monyet 🟩"           },
+  rusa:         { emote: "🦌", name: "Rusa 🟩"             },
+  merak:        { emote: "🦚", name: "Merak 🟩"            },
+  babihutan:    { emote: "🐗", name: "Babi Hutan 🟦"       },
+  musang:       { emote: "🦡", name: "Musang 🟦"           },
+  kakatua:      { emote: "🦜", name: "Kakatua 🟦"          },
+  rubah:        { emote: "🦊", name: "Rubah 🟦"            },
+  ularpiton:    { emote: "🐍", name: "Ular Piton 🟦"       },
+  serigala:     { emote: "🐺", name: "Serigala 🟦"         },
+  elang:        { emote: "🦅", name: "Elang 🟣"            },
+  buaya:        { emote: "🐊", name: "Buaya 🟣"            },
+  banteng:      { emote: "🦬", name: "Banteng 🟣"          },
+  beruang:      { emote: "🐻", name: "Beruang 🟣"          },
+  macantutul:   { emote: "🐆", name: "Macan Tutul 🟣"      },
+  jerapah:      { emote: "🦒", name: "Jerapah 🟣"          },
+  harimau:      { emote: "🐯", name: "Harimau 🟡"          },
+  badak:        { emote: "🦏", name: "Badak 🟡"            },
+  singa:        { emote: "🦁", name: "Singa 🟡"            },
+  gajah:        { emote: "🐘", name: "Gajah 🟡"            },
+  harimauputih: { emote: "🐅", name: "Harimau Putih 🟡"    },
+  mammoth:      { emote: "🦣", name: "Mammoth 💜"          },
+  nagahutan:    { emote: "🐉", name: "Naga Hutan 💜"       },
+  kudaperi:     { emote: "🦄", name: "Kuda Peri 💜"        },
+  fenix:        { emote: "🔥", name: "Fenix 💜"            },
+  nagapetir:    { emote: "⚡",  name: "Naga Petir 💜"       },
 
-  // Key lama, disisakan supaya stok user lama tetap kelihatan di .inv
-  daging_kelinci: { emote: "🐰", name: "Kelinci (daging)" },
-  daging_rusa: { emote: "🦌", name: "Rusa (daging)" },
-  daging_babi: { emote: "🐗", name: "Babi Hutan (daging)" },
-  bulu_rubah: { emote: "🦊", name: "Rubah (bulu)" },
-  cakar_beruang: { emote: "🐻", name: "Beruang (cakar)" },
-  taring_singa: { emote: "🦁", name: "Singa (taring)" },
+  // Key lama (backward compat)
+  daging_kelinci: { emote: "🐰", name: "Kelinci (lama)" },
+  daging_rusa:    { emote: "🦌", name: "Rusa (lama)"    },
+  daging_babi:    { emote: "🐗", name: "Babi Hutan (lama)" },
+  bulu_rubah:     { emote: "🦊", name: "Rubah (lama)"   },
+  cakar_beruang:  { emote: "🐻", name: "Beruang (lama)" },
+  taring_singa:   { emote: "🦁", name: "Singa (lama)"   },
 
   wood: { emote: "🪵", name: "Kayu" },
   stick: { emote: "🥢", name: "Ranting" },
@@ -73,7 +98,9 @@ const ITEMS = {
   jagung: { emote: "🌽", name: "Jagung" },
   tomat: { emote: "🍅", name: "Tomat" },
   wortel: { emote: "🥕", name: "Wortel" },
+  strawberry: { emote: "🍓", name: "Strawberry" },
   melon: { emote: "🍈", name: "Melon" },
+  apple: { emote: "🍎", name: "Apel" },
 
   mushroom: { emote: "🍄", name: "Jamur" },
   gem: { emote: "💎", name: "Gem" },
@@ -131,9 +158,18 @@ async function handler(m, { sock }) {
 
   let invText = `🎒 *Isi Tas Kamu Nih Kak!* ✨\n\n`;
 
-  invText += `❤️ HP: *${user.rpg?.health || 100}*\n`;
-  invText += `💸 Koin: *${(user.uang || 0).toLocaleString("id-ID")}*\n`;
-  invText += `📈 EXP: *${(user.exp || 0).toLocaleString("id-ID")}*\n\n`;
+  const hp   = user.rpg?.health || 100;
+  const uang = user.uang || 0;
+  const exp  = user.exp  || 0;
+
+  invText += `❤️ HP: *${hp}/100*\n`;
+  invText += `   └ ${hp < 40 ? "⚠️ HP kamu kritis! Cepat ketik *.use potion* buat pulihkan HP." : hp < 70 ? "💊 HP mulai berkurang, pertimbangkan pakai potion." : "✅ HP kamu masih aman, lanjut berpetualang!"}\n`;
+
+  invText += `💰 Uang: *Rp ${uang.toLocaleString("id-ID")}*\n`;
+  invText += `   └ ${uang === 0 ? "🪙 Belum ada uang! Jual item dengan *.sell <item> <jml>* atau *.sellall*." : uang < 5000 ? "💸 Uang masih sedikit, jual item buruan/tambang biar nambah." : "💵 Lumayan nih! Bisa belanja di *.shop* atau ditabung."}\n`;
+
+  invText += `📈 EXP: *${exp.toLocaleString("id-ID")}*\n`;
+  invText += `   └ Nambah EXP dengan *.berburu*, *.mining*, *.fishing*, atau *.woodcut*.\n\n`;
 
   let hasItem = false;
   const categories = {
@@ -158,21 +194,24 @@ async function handler(m, { sock }) {
     "🧪 *Potions & Buffs*": ["potion", "mpotion", "stamina"],
     "⛩️ *Perlengkapan Shinobi*": ["kunai", "shuriken", "chakra", "scroll", "bowlramen"],
     "🏹 *Hasil Buruan*": [
-      "kelinci",
-      "rusa",
-      "babihutan",
-      "rubah",
-      "beruang",
-      "singa",
-      "daging_kelinci",
-      "daging_rusa",
-      "daging_babi",
-      "bulu_rubah",
-      "cakar_beruang",
-      "taring_singa",
+      // ⬜ Common
+      "kelinci", "ayamhutan", "terwelu",
+      // 🟩 Uncommon
+      "landak", "kalkun", "monyet", "rusa", "merak",
+      // 🟦 Rare
+      "babihutan", "musang", "kakatua", "rubah", "ularpiton", "serigala",
+      // 🟣 Epic
+      "elang", "buaya", "banteng", "beruang", "macantutul", "jerapah",
+      // 🟡 Legendary
+      "harimau", "badak", "singa", "gajah", "harimauputih",
+      // 💜 Mythic
+      "mammoth", "nagahutan", "kudaperi", "fenix", "nagapetir",
+      // key lama
+      "daging_kelinci", "daging_rusa", "daging_babi",
+      "bulu_rubah", "cakar_beruang", "taring_singa",
     ],
     "🪓 *Hasil Tebang*": ["wood", "stick", "rubber"],
-    "🌾 *Hasil Panen*": ["padi", "jagung", "tomat", "wortel", "melon"],
+    "🌾 *Hasil Panen*": ["padi", "jagung", "tomat", "wortel", "strawberry", "melon", "apple"],
     "🗺️ *Harta Ekspedisi/Boss/Peti*": [
       "mushroom",
       "gem",

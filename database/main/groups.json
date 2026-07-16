@@ -22,24 +22,29 @@
   "120363192554714254@g.us": {
     "chatStats": {
       "6289681008411@s.whatsapp.net": {
-        "count": 124,
-        "lastChat": 1784197345739,
+        "count": 127,
+        "lastChat": 1784199865483,
         "name": "Hen V1"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 776,
-        "lastChat": 1784197353106,
+        "count": 786,
+        "lastChat": 1784203611946,
         "name": "Wily"
       },
       "6289667923162@s.whatsapp.net": {
-        "count": 170,
-        "lastChat": 1784131967102,
+        "count": 208,
+        "lastChat": 1784208675540,
         "name": "Hen V2"
       },
       "120363192554714254@g.us": {
         "count": 1,
         "lastChat": 1782199267661,
         "name": "Unknown"
+      },
+      "6283134844523@s.whatsapp.net": {
+        "count": 56,
+        "lastChat": 1784202862839,
+        "name": "Anda Siapa?"
       }
     },
     "jid": "120363192554714254@g.us",
@@ -52,7 +57,11 @@
     "mute": false,
     "warnings": [],
     "chat": {},
-    "welcomeType": 5
+    "welcomeType": 5,
+    "botMode": "store",
+    "storeConfig": {
+      "products": []
+    }
   },
   "120363151527417055@g.us": {
     "welcome": true,
@@ -87,13 +96,13 @@
   "120363383540766761@g.us": {
     "chatStats": {
       "6289667923162@s.whatsapp.net": {
-        "count": 78,
-        "lastChat": 1784196207585,
+        "count": 88,
+        "lastChat": 1784201225385,
         "name": "Hen V2"
       },
       "6289688206739@s.whatsapp.net": {
-        "count": 106,
-        "lastChat": 1784132795974,
+        "count": 107,
+        "lastChat": 1784201144916,
         "name": "Wily"
       },
       "6282139672290@s.whatsapp.net": {
@@ -102,8 +111,8 @@
         "name": "Nixel"
       },
       "6282388417118@s.whatsapp.net": {
-        "count": 8,
-        "lastChat": 1784109663770,
+        "count": 9,
+        "lastChat": 1784201182401,
         "name": "Kaguya"
       },
       "6281368074650@s.whatsapp.net": {
@@ -117,8 +126,8 @@
         "name": "γυς ρου"
       },
       "6283134844523@s.whatsapp.net": {
-        "count": 320,
-        "lastChat": 1784131439000,
+        "count": 352,
+        "lastChat": 1784201232233,
         "name": "Anda Siapa?"
       },
       "6288226654518@s.whatsapp.net": {
@@ -132,8 +141,8 @@
         "name": "rih"
       },
       "6289681008411@s.whatsapp.net": {
-        "count": 9,
-        "lastChat": 1784100219851,
+        "count": 10,
+        "lastChat": 1784201392046,
         "name": "Hen V1"
       },
       "6285700996045@s.whatsapp.net": {
@@ -259,8 +268,8 @@
   "120363363036005418@g.us": {
     "chatStats": {
       "6281353726941@s.whatsapp.net": {
-        "count": 3,
-        "lastChat": 1784115198828,
+        "count": 4,
+        "lastChat": 1784202724663,
         "name": "Ikell ♪"
       },
       "6285771701759@s.whatsapp.net": {
@@ -563,6 +572,11 @@
         "count": 19,
         "lastChat": 1784127642729,
         "name": "ok"
+      },
+      "6287859778149@s.whatsapp.net": {
+        "count": 1,
+        "lastChat": 1784199429080,
+        "name": "sa"
       }
     },
     "jid": "120363427374078962@g.us",
@@ -579,8 +593,8 @@
   "120363405980349907@g.us": {
     "chatStats": {
       "6288991438409@s.whatsapp.net": {
-        "count": 7,
-        "lastChat": 1784111348794,
+        "count": 20,
+        "lastChat": 1784200837562,
         "name": "aikoo"
       },
       "628812990988@s.whatsapp.net": {
@@ -609,9 +623,14 @@
         "name": "Poxociy."
       },
       "6288274249775@s.whatsapp.net": {
-        "count": 2,
-        "lastChat": 1784132114111,
+        "count": 4,
+        "lastChat": 1784200832923,
         "name": "azkaaa lop erine"
+      },
+      "6289506542159@s.whatsapp.net": {
+        "count": 7,
+        "lastChat": 1784200817594,
+        "name": "Faizz"
       }
     },
     "jid": "120363405980349907@g.us",

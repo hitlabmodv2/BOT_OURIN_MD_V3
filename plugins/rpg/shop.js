@@ -2,11 +2,11 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 
 const pluginConfig = {
   name: "shop",
-  alias: ["beli", "jual", "toko", "store", "buy", "sell"],
+  alias: ["toko", "store"],
   category: "rpg",
-  description: "Beli dan jual item RPG",
-  usage: ".shop <buy/sell> <item> <jumlah>",
-  example: ".shop buy potion 1",
+  description: "Lihat toko & beli item RPG",
+  usage: ".shop buy <item> <jumlah>  ATAU  .beli <item> <jumlah>",
+  example: ".beli potion 2",
   isOwner: false,
   isPremium: false,
   isGroup: false,
@@ -59,21 +59,53 @@ const ITEMS = {
   scroll: { price: 2000, type: "sellable", name: "📜 Scroll Ninja" },
   bowlramen: { price: 800, type: "sellable", name: "🍜 Ramen" },
 
-  kelinci: { price: 500, type: "sellable", name: "🐰 Kelinci" },
-  rusa: { price: 1500, type: "sellable", name: "🦌 Rusa" },
-  babihutan: { price: 2000, type: "sellable", name: "🐗 Babi Hutan" },
-  rubah: { price: 3000, type: "sellable", name: "🦊 Rubah" },
-  beruang: { price: 10000, type: "sellable", name: "🐻 Beruang" },
-  singa: { price: 25000, type: "sellable", name: "🦁 Singa" },
+  strawberry: { price: 500, type: "sellable", name: "🍓 Strawberry" },
 
-  // Key lama (sebelum item hasil buru dirapikan) -- disisakan supaya
-  // stok yang sudah nyangkut di inventory user lama tetap bisa dijual.
-  daging_kelinci: { price: 500, type: "sellable", name: "🐰 Kelinci (daging)" },
-  daging_rusa: { price: 1500, type: "sellable", name: "🦌 Rusa (daging)" },
-  daging_babi: { price: 2000, type: "sellable", name: "🐗 Babi Hutan (daging)" },
-  bulu_rubah: { price: 3000, type: "sellable", name: "🦊 Rubah (bulu)" },
-  cakar_beruang: { price: 10000, type: "sellable", name: "🐻 Beruang (cakar)" },
-  taring_singa: { price: 25000, type: "sellable", name: "🦁 Singa (taring)" },
+  // ── Hasil Buruan (harga berdasarkan kelangkaan) ──
+  // ⬜ Common
+  kelinci:      { price: 4000,     type: "sellable", name: "🐰 Kelinci ⬜ Common"         },
+  ayamhutan:    { price: 5000,     type: "sellable", name: "🐓 Ayam Hutan ⬜ Common"      },
+  terwelu:      { price: 6500,     type: "sellable", name: "🐇 Terwelu ⬜ Common"         },
+  // 🟩 Uncommon
+  landak:       { price: 10000,    type: "sellable", name: "🦔 Landak 🟩 Uncommon"       },
+  kalkun:       { price: 13500,    type: "sellable", name: "🦃 Kalkun 🟩 Uncommon"       },
+  monyet:       { price: 15000,    type: "sellable", name: "🐒 Monyet 🟩 Uncommon"       },
+  rusa:         { price: 17500,    type: "sellable", name: "🦌 Rusa 🟩 Uncommon"         },
+  merak:        { price: 20000,    type: "sellable", name: "🦚 Merak 🟩 Uncommon"        },
+  // 🟦 Rare
+  babihutan:    { price: 25000,    type: "sellable", name: "🐗 Babi Hutan 🟦 Rare"       },
+  musang:       { price: 32000,    type: "sellable", name: "🦡 Musang 🟦 Rare"           },
+  kakatua:      { price: 38000,    type: "sellable", name: "🦜 Kakatua 🟦 Rare"          },
+  rubah:        { price: 42000,    type: "sellable", name: "🦊 Rubah 🟦 Rare"            },
+  ularpiton:    { price: 45000,    type: "sellable", name: "🐍 Ular Piton 🟦 Rare"       },
+  serigala:     { price: 48000,    type: "sellable", name: "🐺 Serigala 🟦 Rare"         },
+  // 🟣 Epic
+  elang:        { price: 65000,    type: "sellable", name: "🦅 Elang 🟣 Epic"            },
+  buaya:        { price: 85000,    type: "sellable", name: "🐊 Buaya 🟣 Epic"            },
+  banteng:      { price: 95000,    type: "sellable", name: "🦬 Banteng 🟣 Epic"          },
+  beruang:      { price: 110000,   type: "sellable", name: "🐻 Beruang 🟣 Epic"          },
+  macantutul:   { price: 120000,   type: "sellable", name: "🐆 Macan Tutul 🟣 Epic"      },
+  jerapah:      { price: 130000,   type: "sellable", name: "🦒 Jerapah 🟣 Epic"          },
+  // 🟡 Legendary
+  harimau:      { price: 175000,   type: "sellable", name: "🐯 Harimau 🟡 Legendary"     },
+  badak:        { price: 250000,   type: "sellable", name: "🦏 Badak 🟡 Legendary"       },
+  singa:        { price: 350000,   type: "sellable", name: "🦁 Singa 🟡 Legendary"       },
+  gajah:        { price: 425000,   type: "sellable", name: "🐘 Gajah 🟡 Legendary"       },
+  harimauputih: { price: 550000,   type: "sellable", name: "🐅 Harimau Putih 🟡 Legendary"},
+  // 💜 Mythic
+  mammoth:      { price: 1000000,  type: "sellable", name: "🦣 Mammoth 💜 Mythic"        },
+  nagahutan:    { price: 1500000,  type: "sellable", name: "🐉 Naga Hutan 💜 Mythic"     },
+  kudaperi:     { price: 2500000,  type: "sellable", name: "🦄 Kuda Peri 💜 Mythic"      },
+  fenix:        { price: 5000000,  type: "sellable", name: "🔥 Fenix 💜 Mythic"          },
+  nagapetir:    { price: 10000000, type: "sellable", name: "⚡ Naga Petir 💜 Mythic"      },
+
+  // Key lama (kompatibilitas inventory lama)
+  daging_kelinci: { price: 4000,   type: "sellable", name: "🐰 Kelinci (daging)"    },
+  daging_rusa:    { price: 17500,  type: "sellable", name: "🦌 Rusa (daging)"       },
+  daging_babi:    { price: 25000,  type: "sellable", name: "🐗 Babi Hutan (daging)" },
+  bulu_rubah:     { price: 42000,  type: "sellable", name: "🦊 Rubah (bulu)"        },
+  cakar_beruang:  { price: 110000, type: "sellable", name: "🐻 Beruang (cakar)"     },
+  taring_singa:   { price: 350000, type: "sellable", name: "🦁 Singa (taring)"      },
 
   // Hasil .woodcut yang sebelumnya belum terdaftar di sini
   wood: { price: 50, type: "sellable", name: "🪵 Kayu" },
@@ -146,82 +178,60 @@ async function handler(m, { sock }) {
   const user = db.getUser(m.sender);
   const args = m.args || [];
 
-  const action = args[0]?.toLowerCase();
+  // Support dua format:
+  //   .shop buy <item> <qty>   → args[0]="buy", args[1]=item, args[2]=qty
+  //   .beli <item> <qty>       → args[0]=item, args[1]=qty  (karena alias "beli")
+  let itemKey, amount;
+  if (args[0]?.toLowerCase() === "buy") {
+    itemKey = args[1]?.toLowerCase();
+    amount  = parseInt(args[2]) || 1;
+  } else if (args[0] && args[0].toLowerCase() !== "buy") {
+    // Dipanggil via alias (.beli / .toko tanpa "buy"), args[0] langsung item
+    itemKey = args[0]?.toLowerCase();
+    amount  = parseInt(args[1]) || 1;
+  }
 
-  if (!action || (action !== "buy" && action !== "sell")) {
+  // Tampilkan katalog toko jika tidak ada item
+  if (!itemKey) {
     let txt = `🏪 *Toko Kelontong RPG* ✨\n\n`;
-    txt += `Halo kak! Selamat datang di toko kelontong.\nMau beli potion atau jual barang rongsokan nih? 😂\n\n`;
-    
-    txt += `*Cara Transaksi:* 💸\n`;
-    txt += `Ketik \`.shop buy <nama> <jumlah>\` buat beli.\n`;
-    txt += `Ketik \`.shop sell <nama> <jumlah>\` buat jual.\n\n`;
+    txt += `Halo kak! Selamat datang di toko.\n\n`;
+    txt += `*Cara Beli:* 💸\n`;
+    txt += `▸ \`.shop buy <item> <jumlah>\`\n`;
+    txt += `▸ \`.beli <item> <jumlah>\`\n\n`;
+    txt += `*Cara Jual:* 💰\n`;
+    txt += `▸ \`.sell <item> <jumlah>\`  ← jual satuan\n`;
+    txt += `▸ \`.sellall\`  ← jual semua sekaligus\n\n`;
 
-    txt += `*🛍️ Barang yang Dijual (BUY):*\n`;
+    txt += `*🛍️ Barang yang Bisa Dibeli:*\n`;
     for (const [key, item] of Object.entries(ITEMS)) {
       if (item.type === "buyable") {
-        txt += `${item.name}: *Rp ${item.price.toLocaleString("id-ID")}*\n`;
+        txt += `▸ \`${key}\` ${item.name}: *Rp ${item.price.toLocaleString("id-ID")}*\n`;
       }
     }
-    txt += `\n`;
-
-    txt += `*💰 Barang yang Diterima (SELL):*\n`;
-    for (const [key, item] of Object.entries(ITEMS)) {
-      if (item.type === "sellable") {
-        txt += `${item.name}: *Rp ${item.price.toLocaleString("id-ID")}*\n`;
-      }
-    }
-
     return m.reply(txt);
   }
 
-  const itemKey = args[1]?.toLowerCase();
-  const amount = parseInt(args[2]) || 1;
-
-  if (!itemKey || !ITEMS[itemKey]) {
-    return m.reply(`Aduh kak, barang *${args[1] || "itu"}* nggak ada di daftar! 😭❌\nCoba cek lagi list barangnya ketik \`.shop\` ya.`);
+  if (!ITEMS[itemKey]) {
+    return m.reply(`Aduh kak, barang *${itemKey}* nggak ada di toko! 😭❌\nKetik \`.shop\` buat lihat daftar barang ya.`);
   }
 
   const item = ITEMS[itemKey];
 
-  if (action === "buy") {
-    if (item.type !== "buyable") {
-      return m.reply(`Hayo lho kak, barang *${item.name}* ini khusus buat dijual, nggak bisa dibeli! 🫣❌`);
-    }
-
-    const totalCost = item.price * amount;
-    if ((user.uang || 0) < totalCost) {
-      return m.reply(`Yahh, uang kamu kurang nih kak buat beli *${amount}x ${item.name}*! 😭😭\nKoin kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\nKurang *Rp ${(totalCost - (user.uang || 0)).toLocaleString("id-ID")}* lagi. Nyari duit dulu gih! 💸🏃💨`);
-    }
-
-    user.uang = (user.uang || 0) - totalCost;
-    user.inventory = user.inventory || {};
-    user.inventory[itemKey] = (user.inventory[itemKey] || 0) + amount;
-
-    db.save();
-    return m.reply(`MAKASIH BANYAK KAK! 🎉✨\n\nKamu berhasil borong:\n🛒 Item: *${amount}x ${item.name}*\n💸 Total Bayar: *Rp ${totalCost.toLocaleString("id-ID")}*\n\nDitunggu kedatangannya lagi ya! 💖🛍️`);
+  if (item.type !== "buyable") {
+    return m.reply(`Hayo kak, *${item.name}* ini nggak dijual di toko!\nKalau mau jual barang itu, ketik \`.sell ${itemKey} <jumlah>\` ya. 😄`);
   }
 
-  if (action === "sell") {
-    if (item.type !== "sellable") {
-      return m.reply(`Maaf kak, toko kita nggak nerima barang *${item.name}* ini! Nggak laku dijual lagi soalnya 😂❌`);
-    }
-
-    const userInventory = user.inventory || {};
-    const userStock = userInventory[itemKey] || 0;
-
-    if (userStock < amount) {
-      return m.reply(`Loh kak, barangnya kurang nih! 🫣\nKamu cuma punya *${userStock}x ${item.name}*, masa mau jual *${amount}*? Jangan ngibul dong! 😂❌`);
-    }
-
-    const totalProfit = item.price * amount;
-
-    user.inventory = user.inventory || {};
-    user.inventory[itemKey] = userStock - amount;
-    user.uang = (user.uang || 0) + totalProfit;
-
-    db.save();
-    return m.reply(`CINGG! UANG MASUK! 💰✨\n\nKamu berhasil ngejual:\n📦 Item: *${amount}x ${item.name}*\n🤑 Total Dapat: *Rp ${totalProfit.toLocaleString("id-ID")}*\n\nMakasih ya udah cuci gudang di sini! 🎉💖`);
+  const totalCost = item.price * amount;
+  if ((user.uang || 0) < totalCost) {
+    return m.reply(`Yahh, uang kamu kurang nih kak buat beli *${amount}x ${item.name}*! 😭\nKoin kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\nKurang *Rp ${(totalCost - (user.uang || 0)).toLocaleString("id-ID")}* lagi. Nyari duit dulu gih! 💸🏃💨`);
   }
+
+  user.uang = (user.uang || 0) - totalCost;
+  user.inventory = user.inventory || {};
+  user.inventory[itemKey] = (user.inventory[itemKey] || 0) + amount;
+
+  db.save();
+  return m.reply(`MAKASIH BANYAK KAK! 🎉✨\n\nKamu berhasil beli:\n🛒 Item: *${amount}x ${item.name}*\n💸 Total Bayar: *Rp ${totalCost.toLocaleString("id-ID")}*\n\nDitunggu lagi ya! 💖🛍️`);
 }
 
-export { pluginConfig as config, handler };
+export { pluginConfig as config, handler, ITEMS };

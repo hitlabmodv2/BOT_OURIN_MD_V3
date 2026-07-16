@@ -65,10 +65,13 @@ async function handler(m, { sock }) {
     await m.reply(
       `🏠 *SELAMAT PUNYA RUMAH BARU!*\n\n` +
         `Tipe: *${tier.name}* (${tier.quality})\n` +
-        `💸 Harga: *-Rp ${tier.price.toLocaleString("id-ID")}*\n` +
-        `⚡ Tagihan listrik: *Rp ${tier.listrikPerWeek.toLocaleString("id-ID")}/minggu* — jangan lupa \`${m.prefix}bayarlistrik\`\n` +
-        `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n\n` +
-        `> _Sekarang salah satu syarat \`${m.prefix}nikahcp\` udah terpenuhi._`,
+        `💸 Harga beli: *-Rp ${tier.price.toLocaleString("id-ID")}*\n` +
+        `💰 Sisa uang: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n\n` +
+        `⚡ *Tagihan Listrik Otomatis*\n` +
+        `▸ Sebesar *Rp ${tier.listrikPerWeek.toLocaleString("id-ID")}* akan dipotong otomatis tiap *7 hari*\n` +
+        `▸ Pastikan saldo cukup, atau listrik akan diputus!\n` +
+        `▸ Bisa bayar manual kapanpun via \`${m.prefix}bayarlistrik\`\n\n` +
+        `> _Sekarang salah satu syarat \`${m.prefix}nikahcp\` udah terpenuhi._ ✨`,
     );
   } catch (error) {
     await m.react("☢");

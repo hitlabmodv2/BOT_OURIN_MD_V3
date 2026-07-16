@@ -28,31 +28,59 @@ const SELL_PRICES = {
   octopus: 500,
   shark: 2000,
   whale: 10000,
-  wood: 30,
-  stick: 15,
+  wood: 50,
+  stick: 20,
   apple: 50,
-  rubber: 100,
-  rabbit: 150,
-  deer: 300,
-  boar: 500,
-  bear: 1000,
-  lion: 2000,
+  rubber: 300,
+  strawberry: 500,
+
+  // Key lama English (backward compat user jadul)
+  rabbit: 500,
+  deer: 1500,
+  boar: 2000,
+  bear: 10000,
+  lion: 25000,
   dragon: 10000,
 
-  kelinci: 500,
-  rusa: 1500,
-  babihutan: 2000,
-  rubah: 3000,
-  beruang: 10000,
-  singa: 25000,
+  // ── Hasil Buruan ──────────────────────────────────
+  kelinci:      4000,     // ⬜ Common
+  ayamhutan:    5000,     // ⬜ Common
+  terwelu:      6500,     // ⬜ Common
+  landak:       10000,    // 🟩 Uncommon
+  kalkun:       13500,    // 🟩 Uncommon
+  monyet:       15000,    // 🟩 Uncommon
+  rusa:         17500,    // 🟩 Uncommon
+  merak:        20000,    // 🟩 Uncommon
+  babihutan:    25000,    // 🟦 Rare
+  musang:       32000,    // 🟦 Rare
+  kakatua:      38000,    // 🟦 Rare
+  rubah:        42000,    // 🟦 Rare
+  ularpiton:    45000,    // 🟦 Rare
+  serigala:     48000,    // 🟦 Rare
+  elang:        65000,    // 🟣 Epic
+  buaya:        85000,    // 🟣 Epic
+  banteng:      95000,    // 🟣 Epic
+  beruang:      110000,   // 🟣 Epic
+  macantutul:   120000,   // 🟣 Epic
+  jerapah:      130000,   // 🟣 Epic
+  harimau:      175000,   // 🟡 Legendary
+  badak:        250000,   // 🟡 Legendary
+  singa:        350000,   // 🟡 Legendary
+  gajah:        425000,   // 🟡 Legendary
+  harimauputih: 550000,   // 🟡 Legendary
+  mammoth:      1000000,  // 💜 Mythic
+  nagahutan:    1500000,  // 💜 Mythic
+  kudaperi:     2500000,  // 💜 Mythic
+  fenix:        5000000,  // 💜 Mythic
+  nagapetir:    10000000, // 💜 Mythic
 
-  // Key lama, disisakan supaya stok user lama tetap bisa dijual via .sellall
-  daging_kelinci: 500,
-  daging_rusa: 1500,
-  daging_babi: 2000,
-  bulu_rubah: 3000,
-  cakar_beruang: 10000,
-  taring_singa: 25000,
+  // Key lama (kompatibilitas inventory lama)
+  daging_kelinci: 4000,
+  daging_rusa:    17500,
+  daging_babi:    25000,
+  bulu_rubah:     42000,
+  cakar_beruang:  110000,
+  taring_singa:   350000,
 
   padi: 100,
   jagung: 150,

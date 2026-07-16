@@ -1,5 +1,6 @@
 import { getDatabase } from "../../src/lib/ourin-database.js";
 import config from "../../config.js";
+import { ITEMS as RPG_ITEMS } from "../rpg/shop.js";
 
 const pluginConfig = {
   name: "beli",
@@ -23,16 +24,70 @@ function formatPrice(n) {
 
 async function handler(m, { sock }) {
   const db = getDatabase();
+  const user = db.getUser(m.sender);
+  const args = m.args || [];
+  const firstArg = (args[0] || "").toLowerCase();
+
+  // ── RPG ITEM PURCHASE ──────────────────────────────────────────
+  // Kalau args[0] bukan angka → diarahkan ke RPG shop
+  if (firstArg && isNaN(firstArg)) {
+    const itemKey = firstArg;
+    const amount  = Math.max(1, parseInt(args[1]) || 1);
+    const item    = RPG_ITEMS[itemKey];
+
+    if (!item) {
+      return m.reply(
+        `Aduh kak, barang *${itemKey}* nggak ada di toko RPG maupun produk owner! 😭❌\n\n` +
+        `💡 Cara beli item RPG: \`.beli <item> <jumlah>\`\n` +
+        `💡 Ketik \`.toko\` buat lihat semua item RPG yang tersedia.`
+      );
+    }
+
+    if (item.type !== "buyable") {
+      return m.reply(
+        `Hayo kak, *${item.name}* ini nggak dijual! 😄\n` +
+        `Kalau mau jual barang itu, ketik \`.sell ${itemKey} <jumlah>\` ya.`
+      );
+    }
+
+    const totalCost = item.price * amount;
+    if ((user.uang || 0) < totalCost) {
+      return m.reply(
+        `Yahh, uang kamu kurang nih kak buat beli *${amount}x ${item.name}*! 😭\n` +
+        `💰 Uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n` +
+        `💸 Total: *Rp ${totalCost.toLocaleString("id-ID")}*\n` +
+        `Kurang *Rp ${(totalCost - (user.uang || 0)).toLocaleString("id-ID")}* lagi. Nyari duit dulu gih! 🏃💨`
+      );
+    }
+
+    user.uang = (user.uang || 0) - totalCost;
+    user.inventory = user.inventory || {};
+    user.inventory[itemKey] = (user.inventory[itemKey] || 0) + amount;
+    db.save();
+
+    return m.reply(
+      `MAKASIH BANYAK KAK! 🎉✨\n\n` +
+      `Kamu berhasil beli:\n` +
+      `🛒 Item: *${amount}x ${item.name}*\n` +
+      `💸 Total Bayar: *Rp ${totalCost.toLocaleString("id-ID")}*\n` +
+      `💰 Sisa uang: *Rp ${(user.uang).toLocaleString("id-ID")}*\n\n` +
+      `Ditunggu lagi ya! 💖🛍️`
+    );
+  }
+
+  // ── STORE PRODUK (owner-defined) ───────────────────────────────
   const products = db.setting("storeProducts") || [];
 
   if (products.length === 0) {
     return m.reply(
-      `📭 *Belum ada produk tersedia.*\n\nKetik \`${m.prefix}listproduk\` untuk melihat daftar produk 🛍️`,
+      `📭 *Belum ada produk owner tersedia.*\n\n` +
+      `💡 Untuk beli item RPG: \`.beli <item> <jumlah>\`\n` +
+      `Contoh: \`.beli stamina 5\`, \`.beli potion 10\`\n\n` +
+      `Ketik \`.toko\` untuk lihat semua item RPG 🛍️`
     );
   }
 
-  const args = m.text?.trim().split(/\s+/) || [];
-  const idx = parseInt(args[0]) - 1;
+  const idx = parseInt(firstArg) - 1;
 
   if (isNaN(idx) || idx < 0 || idx >= products.length) {
     let txt = `🛒 *Pilih Produk*\n\nKetik \`${m.prefix}beli <nomor>\` untuk memesan.\n\n`;

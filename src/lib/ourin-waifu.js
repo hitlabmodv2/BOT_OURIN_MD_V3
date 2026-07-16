@@ -47,10 +47,33 @@ function findRingTier(key) {
   return RING_TIERS.find((r) => r.key === k || r.name.toLowerCase() === k) || null;
 }
 
+const HOUSE_ALIASES = {
+  // villa
+  "vila":             "villa",
+  "vill":             "villa",
+  "villamewah":       "villa",
+  "mewah":            "villa",
+  // rumahminimalis
+  "minimalis":        "rumahminimalis",
+  "rumahmini":        "rumahminimalis",
+  "mini":             "rumahminimalis",
+  // rumahsubsidi
+  "subsidi":          "rumahsubsidi",
+  "rumahsubs":        "rumahsubsidi",
+  "subs":             "rumahsubsidi",
+  // kontrakan
+  "kos":              "kontrakan",
+  "kontrак":          "kontrakan",
+  "kontrak":          "kontrakan",
+  "petak":            "kontrakan",
+};
+
 function findHouseTier(key) {
   if (!key) return null;
   const k = String(key).toLowerCase().trim();
-  return HOUSE_TIERS.find((h) => h.key === k || h.name.toLowerCase() === k) || null;
+  // cek alias dulu
+  const resolved = HOUSE_ALIASES[k] ?? k;
+  return HOUSE_TIERS.find((h) => h.key === resolved || h.name.toLowerCase() === resolved) || null;
 }
 
 /** Pastikan objek spouse punya semua field relationship (backward-compat utk data lama) */

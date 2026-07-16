@@ -1,0 +1,105 @@
+[18.17, 16/7/2026] Hen V2: .shop
+[18.17, 16/7/2026] Hen V2: 𝗢𝗨𝗥𝗜𝗡 𝗔𝗜
+🏪 Toko Kelontong RPG ✨
+
+Halo kak! Selamat datang di toko kelontong.
+Mau beli potion atau jual barang rongsokan nih? 😂
+
+Cara Transaksi: 💸
+Ketik .shop buy <nama> <jumlah> buat beli.
+Ketik .shop sell <nama> <jumlah> buat jual.
+
+🛍️ Barang yang Dijual (BUY):
+🥤 Health Potion: Rp 500
+🧪 Mana Potion: Rp 500
+⚡ Stamina Potion: Rp 1.000
+📦 Common Crate: Rp 2.000
+🛍️ Uncommon Crate: Rp 10.000
+🎁 Mythic Crate: Rp 50.000
+💎 Legendary Crate: Rp 200.000
+🌾 Gandum: Rp 50
+🍚 Beras: Rp 50
+🥚 Telur: Rp 100
+🥩 Daging: Rp 300
+🌿 Herba: Rp 150
+🥕 Wortel: Rp 50
+🥔 Kentang: Rp 50
+🍓 Stroberi: Rp 80
+🍉 Semangka: Rp 100
+🍎 Apel: Rp 50
+
+💰 Barang yang Diterima (SELL):
+🪨 Batu: Rp 20
+⚫ Batubara: Rp 50
+⛓️ Besi: Rp 200
+🥇 Emas: Rp 1.000
+💠 Berlian: Rp 5.000
+💚 Emerald: Rp 10.000
+🗑️ Sampah: Rp 10
+🐟 Ikan: Rp 100
+🦐 Udang: Rp 200
+🐙 Gurita: Rp 500
+🦈 Hiu: Rp 2.000
+🐳 Paus: Rp 10.000
+👞 Kulit: Rp 50
+📦 Mystery Box: Rp 1.500
+🗡️ Kunai: Rp 100
+⚔️ Shuriken: Rp 150
+🌀 Chakra: Rp 500
+📜 Scroll Ninja: Rp 2.000
+🍜 Ramen: Rp 800
+🐰 Kelinci: Rp 500
+🦌 Rusa: Rp 1.500
+🐗 Babi Hutan: Rp 2.000
+🦊 Rubah: Rp 3.000
+🐻 Beruang: Rp 10.000
+🦁 Singa: Rp 25.000
+🐰 Kelinci (daging): Rp 500
+🦌 Rusa (daging): Rp 1.500
+🐗 Babi Hutan (daging): Rp 2.000
+🦊 Rubah (bulu): Rp 3.000
+🐻 Beruang (cakar): Rp 10.000
+🦁 Singa (taring): Rp 25.000
+🪵 Kayu: Rp 50
+🥢 Ranting: Rp 20
+⚫ Karet: Rp 300
+🌾 Padi: Rp 100
+🌽 Jagung: Rp 150
+🍅 Tomat: Rp 200
+🥕 Wortel: Rp 250
+🍈 Melon: Rp 1.000
+🍄 Jamur: Rp 150
+💎 Gem: Rp 800
+🌋 Lava: Rp 500
+🦪 Mutiara: Rp 1.200
+🔷 Sea Gem: Rp 2.000
+🪙 Uang Kuno: Rp 3.000
+🏺 Relik: Rp 6.000
+🐲 Sisik Naga: Rp 5.000
+🦴 Tulang Naga: Rp 4.000
+👹 Jiwa Iblis: Rp 6.000
+🔮 Gem Terkutuk: Rp 5.500
+💀 Batu Jiwa: Rp 5.000
+🦴 Tulang Purba: Rp 3.500
+🐙 Tentakel Kraken: Rp 4.500
+⚙️ Titan Core: Rp 8.000
+🔥 Gem Lava: Rp 4.200
+❄️ Hati Beku: Rp 4.800
+👑 Mahkota Es: Rp 5.200
+⚡ Batu Petir: Rp 6.500
+⚡ Inti Dewa: Rp 50.000
+🎁 Peti Emas: Rp 15.000
+💎 Peti Berlian: Rp 30.000
+⚔️ Pedang Besi: Rp 300
+🛡️ Perisai Besi: Rp 350
+⛑️ Helm Besi: Rp 250
+🦺 Armor Besi: Rp 450
+🪓 Kapak Besi: Rp 280
+⛏️ Beliung: Rp 280
+🏹 Busur: Rp 320
+🏹 Anak Panah: Rp 40
+🎣 Joran: Rp 320
+🗡️ Pedang Emas: Rp 20.000
+💎 Armor Berlian: Rp 40.000
+🔑 Kunci: Rp 700
+💍 Cincin: Rp 3.000

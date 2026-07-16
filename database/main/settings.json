@@ -16,7 +16,7 @@
   "onlyGc": false,
   "onlyPc": false,
   "giveaways": {},
-  "botMode": "self",
+  "botMode": "public",
   "audioMenu": true,
   "transactionSessions": {},
   "premiumUsers": [],
@@ -351,11 +351,22 @@
     "6285721829883@s.whatsapp.net": {
       "jid": "6285721829883@s.whatsapp.net",
       "name": "andrryoo1905"
+    },
+    "6287859778149@s.whatsapp.net": {
+      "jid": "6287859778149@s.whatsapp.net",
+      "name": "sa"
+    },
+    "6289506542159@s.whatsapp.net": {
+      "jid": "6289506542159@s.whatsapp.net",
+      "name": "Faizz"
     }
   },
   "notiflimit": true,
   "pgTopups": {},
   "pgPayments": {},
   "storeAutoProducts": [],
-  "allmenuAudioStyle": 3
+  "allmenuAudioStyle": 3,
+  "charRegistry": {
+    "35551": "6283134844523"
+  }
 }

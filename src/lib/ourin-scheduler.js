@@ -4,6 +4,7 @@ import { CronJob } from "cron";
 import moment from "moment-timezone";
 import { saluranCtx } from "./ourin-context.js";
 import config from "../../config.js";
+import { getHouse, findHouseTier } from "./ourin-waifu.js";
 
 const scheduledTasks = new Map();
 const activeCronJobs = new Map();
@@ -413,6 +414,7 @@ function initScheduler(config, sock = null) {
     });
   }
   if (sock) loadScheduledMessages(sock);
+  if (sock) startListrikScheduler(sock);
 
   new CronJob(
     "*/5 * * * *",
@@ -550,6 +552,100 @@ async function startGroupScheduleChecker(sock) {
   );
 }
 
+let listrikSock = null;
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+async function startListrikScheduler(sock) {
+  listrikSock = sock;
+
+  if (activeCronJobs.has("listrikScheduler")) {
+    activeCronJobs.get("listrikScheduler").stop();
+    activeCronJobs.delete("listrikScheduler");
+  }
+
+  const doListrikCheck = async () => {
+    if (!listrikSock) return;
+    try {
+      const db = getDatabase();
+      const allUsers = db.getAllUsers();
+      const now = Date.now();
+      let deducted = 0;
+      let overdue = 0;
+
+      for (const [jid, user] of Object.entries(allUsers)) {
+        const house = getHouse(user);
+        if (!house) continue;
+
+        const tier = findHouseTier(house.key);
+        if (!tier) continue;
+
+        const dueAt = (house.lastPaidAt || 0) + WEEK_MS;
+        if (now < dueAt) continue; // belum jatuh tempo
+
+        const bill = tier.listrikPerWeek;
+        const saldo = user.uang || 0;
+
+        if (saldo >= bill) {
+          // — BAYAR OTOMATIS —
+          user.uang = saldo - bill;
+          house.lastPaidAt = now;
+          house.overdueWeeks = 0;
+          db.markDirty?.("users");
+
+          try {
+            await listrikSock.sendMessage(jid, {
+              text:
+                `⚡ *TAGIHAN LISTRIK OTOMATIS*\n\n` +
+                `Halo! Tagihan listrik rumah *${tier.name}* kamu sudah jatuh tempo.\n\n` +
+                `💸 Dipotong: *-Rp ${bill.toLocaleString("id-ID")}*\n` +
+                `💰 Sisa uang: *Rp ${(user.uang).toLocaleString("id-ID")}*\n\n` +
+                `> _Tagihan berikutnya 7 hari lagi. Jaga saldo ya!_ ✨`,
+            });
+          } catch {}
+          deducted++;
+        } else {
+          // — NUNGGAK —
+          house.overdueWeeks = (house.overdueWeeks || 0) + 1;
+          db.markDirty?.("users");
+
+          const warningMsg =
+            house.overdueWeeks >= 3
+              ? `⚠️ Nunggak *${house.overdueWeeks} minggu* — rumah kamu hampir *mati lampu total*! Segera isi saldo!`
+              : house.overdueWeeks === 2
+              ? `⚠️ Nunggak *2 minggu* — listrik hampir diputus!`
+              : `⚠️ Nunggak *1 minggu* — segera bayar sebelum listrik diputus!`;
+
+          try {
+            await listrikSock.sendMessage(jid, {
+              text:
+                `🔴 *TAGIHAN LISTRIK GAGAL DIPOTONG*\n\n` +
+                `Saldo kamu tidak cukup untuk membayar tagihan!\n\n` +
+                `🏠 Rumah: *${tier.name}*\n` +
+                `💡 Tagihan: *Rp ${bill.toLocaleString("id-ID")}*\n` +
+                `💰 Saldo kamu: *Rp ${saldo.toLocaleString("id-ID")}*\n\n` +
+                `${warningMsg}\n\n` +
+                `> Ketik \`.bayarlistrik\` setelah isi saldo.`,
+            });
+          } catch {}
+          overdue++;
+        }
+      }
+
+      if (deducted + overdue > 0) {
+        db.save();
+        logger.success("Scheduler", `Listrik auto: ${deducted} bayar, ${overdue} nunggak`);
+      }
+    } catch (err) {
+      logger.error("Scheduler", `Listrik scheduler error: ${err.message}`);
+    }
+  };
+
+  // Cek setiap hari jam 09:00 WIB
+  const job = new CronJob("0 9 * * *", doListrikCheck, null, true, TZ);
+  activeCronJobs.set("listrikScheduler", job);
+  logger.info("Scheduler", "Listrik auto-scheduler enabled (daily 09:00 WIB)");
+}
+
 let sewaSock = null;
 
 async function startSewaChecker(sock) {
@@ -673,6 +769,7 @@ export {
   startDailyLimitReset,
   startGroupScheduleChecker,
   startSewaChecker,
+  startListrikScheduler,
   scheduleMessage,
   cancelScheduledMessage,
   getScheduledMessages,

@@ -34,7 +34,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 32927,
+    "exp": 33047,
     "level": 1,
     "koin": 13753,
     "saldo": 0,
@@ -44,7 +44,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-16T10:22:33.107Z",
+    "lastSeen": "2026-07-16T12:06:51.951Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -77,7 +77,8 @@
       "kelinci": 0,
       "rusa": 1
     },
-    "access": []
+    "access": [],
+    "uang": 0
   },
   "6289667923162": {
     "jid": "6289667923162",
@@ -86,7 +87,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 7410,
+    "exp": 8810,
     "level": 1,
     "koin": 1000,
     "saldo": 0,
@@ -96,7 +97,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-16T10:03:27.585Z",
+    "lastSeen": "2026-07-16T13:31:15.541Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -119,15 +120,17 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 25
+      "stamina": 0
     },
     "inventory": {
-      "kelinci": 6,
-      "rusa": 3,
+      "kelinci": 7,
+      "rusa": 4,
       "babihutan": 1,
-      "rubah": 1
+      "rubah": 1,
+      "beruang": 1
     },
-    "access": []
+    "access": [],
+    "uang": 0
   },
   "6282139672290": {
     "jid": "6282139672290",
@@ -247,10 +250,10 @@
     "jid": "6283134844523",
     "name": "Anda Siapa?",
     "number": "6283134844523",
-    "energi": 97,
+    "energi": 96,
     "isPremium": false,
     "isBanned": false,
-    "exp": 5315,
+    "exp": 6855,
     "level": 1,
     "koin": 14500,
     "saldo": 0,
@@ -260,15 +263,22 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-15T16:03:59.001Z",
+    "lastSeen": "2026-07-16T11:54:22.840Z",
     "cooldowns": {
-      "ps": 1784127528788,
-      "char": 1784128779209,
-      "lamar": 1784128789002,
-      "m": 1784127636123,
-      "berburu": 1784131525701,
-      "shop": 1784131423230,
-      "sell": 1784131430821
+      "ps": 1784202431090,
+      "char": 1784202293651,
+      "lamar": 1784202302299,
+      "m": 1784202455423,
+      "berburu": 1784202856571,
+      "shop": 1784202780826,
+      "sell": 1784201097935,
+      "jual": 1784202279344,
+      "inv": 1784201013432,
+      "rumah": 1784202702708,
+      "money": 1784202683506,
+      "limit": 1784202730076,
+      "beli": 1784202855913,
+      "listproduk": 1784202862890
     },
     "clanId": null,
     "isRegistered": false,
@@ -276,14 +286,32 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 25
+      "stamina": 0,
+      "charSpouse": {
+        "id": 35551,
+        "name": "Ada Wong",
+        "image": "https://cdn.myanimelist.net/images/characters/15/222641.jpg",
+        "url": "https://myanimelist.net/character/35551",
+        "nickname": null,
+        "love": 0,
+        "status": "pacaran",
+        "hunger": 100,
+        "hungerAt": 1784202292278,
+        "wallet": 0,
+        "ring": null,
+        "jadianAt": 1784202292278,
+        "marriedAt": null
+      }
     },
     "inventory": {
-      "daging_kelinci": 5,
-      "daging_rusa": 2,
-      "daging_babi": 2
+      "daging_kelinci": 0,
+      "daging_rusa": 0,
+      "daging_babi": 1,
+      "kelinci": 0,
+      "rubah": 0
     },
-    "access": []
+    "access": [],
+    "uang": 56500
   },
   "6281319859673": {
     "jid": "6281319859673",
@@ -1193,7 +1221,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 30,
+    "exp": 45,
     "level": 1,
     "koin": 0,
     "saldo": 0,
@@ -1203,7 +1231,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-15T16:15:14.112Z",
+    "lastSeen": "2026-07-16T11:20:31.089Z",
     "cooldowns": {},
     "clanId": null,
     "isRegistered": false,
@@ -1212,7 +1240,8 @@
     "regGender": null,
     "rpg": {},
     "inventory": {},
-    "access": []
+    "access": [],
+    "uang": 0
   },
   "status": {
     "jid": "status",
@@ -1351,6 +1380,34 @@
       "menucat": 1784196091643,
       "asahotak": 1784196184886
     },
+    "clanId": null,
+    "isRegistered": false,
+    "regName": null,
+    "regAge": null,
+    "regGender": null,
+    "rpg": {},
+    "inventory": {},
+    "access": []
+  },
+  "6288991438409": {
+    "jid": "6288991438409",
+    "name": "Unknown",
+    "number": "6288991438409",
+    "energi": 100,
+    "isPremium": false,
+    "isBanned": false,
+    "exp": 15,
+    "level": 1,
+    "uang": 0,
+    "saldo": 0,
+    "unlockedFeatures": [],
+    "registeredAt": null,
+    "lastRegisteredAt": null,
+    "registrationCount": 0,
+    "hasClaimedRegisterReward": false,
+    "unregisteredAt": null,
+    "lastSeen": "2026-07-16T11:20:36.110Z",
+    "cooldowns": {},
     "clanId": null,
     "isRegistered": false,
     "regName": null,
