@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 33122,
+    "exp": 33137,
     "level": 1,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-16T14:59:29.969Z",
+    "lastSeen": "2026-07-18T03:07:27.227Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -860,7 +860,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 45,
+    "exp": 60,
     "level": 1,
     "koin": 0,
     "saldo": 0,
@@ -870,7 +870,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-16T09:15:09.481Z",
+    "lastSeen": "2026-07-16T15:45:26.223Z",
     "cooldowns": {
       "menu": 1784193288374,
       "menucat": 1784193312481
@@ -882,7 +882,8 @@
     "regGender": null,
     "rpg": {},
     "inventory": {},
-    "access": []
+    "access": [],
+    "uang": 0
   },
   "6289505370237": {
     "jid": "6289505370237",
@@ -1770,13 +1771,13 @@
   },
   "6281272756969": {
     "name": "ᥒᥴᥡও",
-    "lastSeen": "2026-07-16T15:44:52.534Z",
+    "lastSeen": "2026-07-16T15:46:04.310Z",
     "jid": "6281272756969",
     "number": "6281272756969",
     "energi": 99,
     "isPremium": false,
     "isBanned": false,
-    "exp": 120,
+    "exp": 135,
     "level": 1,
     "uang": 0,
     "saldo": 0,
@@ -1792,7 +1793,7 @@
       "menu": 1784215882139,
       "allmenu": 1784216371606,
       "brat": 1784216639881,
-      "brathd": 1784216702534
+      "brathd": 1784216774310
     },
     "clanId": null,
     "isRegistered": false,

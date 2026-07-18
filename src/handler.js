@@ -1928,11 +1928,15 @@ async function groupHandler(update, sock) {
 
       participant = participantJid;
 
-      if (action === "add" && sendWelcomeMessage) {
+      // ── Mode self = bot hanya untuk owner, skip welcome/goodbye ──
+      const botMode = db.setting("botMode") || config.mode || "public";
+      const isSelfMode = botMode === "self";
+
+      if (!isSelfMode && action === "add" && sendWelcomeMessage) {
         await sendWelcomeMessage(sock, groupJid, participant, groupMeta, false, update.author || null);
       }
 
-      if (action === "remove" && sendGoodbyeMessage) {
+      if (!isSelfMode && action === "remove" && sendGoodbyeMessage) {
         await sendGoodbyeMessage(sock, groupJid, participant, groupMeta, false, update.author || null);
       }
 
