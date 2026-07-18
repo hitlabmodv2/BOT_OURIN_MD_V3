@@ -16,8 +16,13 @@ const config = {
   },
 
   owner: {
-    name: "W I L Y", // Nama owner
-    number: ["6289688206739"], // Format: 628xxx (tanpa + atau 0)
+    name: "W I L Y", // Nama default (fallback kalau nomor tidak ada di names)
+    number: ["6289688206739"], // Format: 628xxx (tanpa + atau 0) — bisa lebih dari 1
+    names: {
+      // Nama per nomor — sesuaikan dengan nomor di atas
+      "6289688206739": "W I L Y",
+      // "628xxxxxxxxxx": "Nama Owner 2",
+    },
   },
 
   session: {
@@ -564,20 +569,29 @@ function isSelf(number) {
 function getOwnerName(number) {
   if (!number) return config.owner?.name || "Owner";
   const cleanNumber = String(number).replace(/[^0-9]/g, "");
+
+  // 1. Cek database ownerNames (bisa diset via command runtime)
   try {
     const db = getDatabase();
     const nameMap = db.setting("ownerNames") || {};
     if (nameMap[cleanNumber]) return nameMap[cleanNumber];
   } catch { }
+
+  // 2. Cek config.owner.names (per-nomor di config.js)
+  if (config.owner?.names) {
+    const configNames = config.owner.names;
+    const found = Object.keys(configNames).find((own) => {
+      const c = own.replace(/[^0-9]/g, "");
+      return c && (cleanNumber === c || cleanNumber.endsWith(c) || c.endsWith(cleanNumber));
+    });
+    if (found && configNames[found]) return configNames[found];
+  }
+
+  // 3. Fallback: nama default semua owner
   if (config.owner?.number) {
     const isMainOwner = config.owner.number.some((own) => {
       const c = own.replace(/[^0-9]/g, "");
-      return (
-        c &&
-        (cleanNumber === c ||
-          cleanNumber.endsWith(c) ||
-          c.endsWith(cleanNumber))
-      );
+      return c && (cleanNumber === c || cleanNumber.endsWith(c) || c.endsWith(cleanNumber));
     });
     if (isMainOwner) return config.owner?.name || "Owner";
   }
