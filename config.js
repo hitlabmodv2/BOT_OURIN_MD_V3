@@ -20,7 +20,7 @@ const config = {
     number: ["6289688206739"], // Format: 628xxx (tanpa + atau 0) — bisa lebih dari 1
     names: {
       // Nama per nomor — sesuaikan dengan nomor di atas
-      "6289688206739": "W I L Y",
+      "6283134844523": "Hamdan",
       // "628xxxxxxxxxx": "Nama Owner 2",
     },
   },

@@ -35,8 +35,8 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 33137,
-    "level": 1,
+    "exp": 33832,
+    "level": 12,
     "koin": 13753,
     "saldo": 0,
     "unlockedFeatures": [],
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-18T03:07:27.227Z",
+    "lastSeen": "2026-07-18T03:13:10.331Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -66,17 +66,20 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "level": 4,
+      "level": 12,
       "maxHealth": 130,
       "maxMana": 115,
       "maxStamina": 115,
       "health": 130,
       "mana": 115,
-      "stamina": 65
+      "stamina": 40
     },
     "inventory": {
       "kelinci": 0,
-      "rusa": 1
+      "rusa": 1,
+      "tupai": 1,
+      "landak": 1,
+      "bebekhutan": 2
     },
     "access": [],
     "uang": 0

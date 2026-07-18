@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 2881,
+  "commandsExecuted": 2885,
   "command_totalchat": 3,
   "command_menu": 309,
   "command_fb": 4,
@@ -28,7 +28,7 @@
   "command_playch": 7,
   "command_cekidch": 6,
   "command_stickerpack": 2,
-  "command_self": 12,
+  "command_self": 13,
   "command_addprefix": 2,
   "command_jam": 1,
   "command_autoreadsw": 2,
@@ -429,10 +429,10 @@
   "command_char": 12,
   "command_ps": 3,
   "command_m": 2,
-  "command_berburu": 18,
+  "command_berburu": 19,
   "command_sell": 9,
   "command_jual": 27,
-  "command_inv": 19,
+  "command_inv": 20,
   "command_online": 1,
   "command_cekpaschar": 1,
   "command_asahotak": 2,
@@ -445,5 +445,5 @@
   "command_mancing": 3,
   "command_tarik": 1,
   "command_withdraw": 1,
-  "command_trade": 1
+  "command_trade": 2
 }
