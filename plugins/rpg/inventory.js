@@ -30,12 +30,34 @@ const ITEMS = {
   diamond: { emote: "💠", name: "Berlian" },
   emerald: { emote: "💚", name: "Emerald" },
 
-  trash: { emote: "🗑️", name: "Sampah" },
-  fish: { emote: "🐟", name: "Ikan" },
-  prawn: { emote: "🦐", name: "Udang" },
-  octopus: { emote: "🐙", name: "Gurita" },
-  shark: { emote: "🦈", name: "Hiu" },
-  whale: { emote: "🐳", name: "Paus" },
+  // ── Hasil Mancing ──
+  trash:       { emote: "🗑️", name: "Sampah ⬜"          },
+  lele:        { emote: "🐟", name: "Ikan Lele ⬜"        },
+  nila:        { emote: "🐟", name: "Ikan Nila ⬜"        },
+  fish:        { emote: "🐟", name: "Ikan Biasa ⬜"       },
+  mujair:      { emote: "🐟", name: "Ikan Mujair ⬜"      },
+  prawn:       { emote: "🦐", name: "Udang 🟩"            },
+  bawal:       { emote: "🐠", name: "Ikan Bawal 🟩"       },
+  ikanmas:     { emote: "🏅", name: "Ikan Mas 🟩"         },
+  octopus:     { emote: "🐙", name: "Gurita 🟩"           },
+  cumi:        { emote: "🦑", name: "Cumi-cumi 🟩"        },
+  kepiting:    { emote: "🦀", name: "Kepiting 🟩"         },
+  kakap:       { emote: "🐟", name: "Kakap Merah 🟦"      },
+  gabus:       { emote: "🐠", name: "Ikan Gabus 🟦"       },
+  kerapu:      { emote: "🐡", name: "Ikan Kerapu 🟦"      },
+  shark:       { emote: "🦈", name: "Hiu 🟦"              },
+  lobster:     { emote: "🦞", name: "Lobster 🟣"          },
+  tuna:        { emote: "🐟", name: "Ikan Tuna 🟣"        },
+  marlin:      { emote: "🐡", name: "Ikan Marlin 🟣"      },
+  napoleon:    { emote: "🐠", name: "Ikan Napoleon 🟣"    },
+  whale:       { emote: "🐳", name: "Paus 🟣"             },
+  arwana:      { emote: "🐠", name: "Ikan Arwana 🟡"      },
+  cumiraksasa: { emote: "🦑", name: "Cumi Raksasa 🟡"     },
+  tunasirip:   { emote: "🐟", name: "Tuna Sirip Biru 🟡"  },
+  penyu:       { emote: "🐢", name: "Penyu Langka 🟡"     },
+  kraken:      { emote: "🦑", name: "Kraken 💜"           },
+  duyung:      { emote: "🧜", name: "Duyung Emas 💜"      },
+  nagalaut:    { emote: "🐉", name: "Naga Laut 💜"        },
 
   potion: { emote: "🥤", name: "Health Potion" },
   mpotion: { emote: "🧪", name: "Mana Potion" },
@@ -104,7 +126,14 @@ const ITEMS = {
   nagapetir:    { emote: "⚡",  name: "Naga Petir 💜"       },
   ruhhutan:     { emote: "🌟", name: "Ruh Hutan 💜"        },
 
-  // Key lama (backward compat)
+  // Key lama hunt.js (backward compat)
+  rabbit:         { emote: "🐰", name: "Kelinci Hutan (lama)" },
+  deer:           { emote: "🦌", name: "Rusa Jantan (lama)"   },
+  boar:           { emote: "🐗", name: "Babi Hutan Liar (lama)" },
+  bear:           { emote: "🐻", name: "Beruang Madu (lama)"  },
+  lion:           { emote: "🦁", name: "Singa Padang (lama)"  },
+  dragon:         { emote: "🐉", name: "Anak Naga Kuno (lama)" },
+  // Key lama berburu.js (backward compat)
   daging_kelinci: { emote: "🐰", name: "Kelinci (lama)" },
   daging_rusa:    { emote: "🦌", name: "Rusa (lama)"    },
   daging_babi:    { emote: "🐗", name: "Babi Hutan (lama)" },
@@ -123,6 +152,24 @@ const ITEMS = {
   strawberry: { emote: "🍓", name: "Strawberry" },
   melon: { emote: "🍈", name: "Melon" },
   apple: { emote: "🍎", name: "Apel" },
+
+  // ── Hasil Kebun/Garden (key English dari garden.js) ──
+  carrot:      { emote: "🥕", name: "Wortel (Kebun)" },
+  tomato:      { emote: "🍅", name: "Tomat (Kebun)"  },
+  corn:        { emote: "🌽", name: "Jagung (Kebun)"  },
+  potato:      { emote: "🥔", name: "Kentang"         },
+  watermelon:  { emote: "🍉", name: "Semangka"        },
+  pumpkin:     { emote: "🎃", name: "Labu"            },
+  herb:        { emote: "🌿", name: "Herba"           },
+  // Bibit kebun
+  carrotseed:     { emote: "🌱", name: "Bibit Wortel"     },
+  tomatoseed:     { emote: "🌱", name: "Bibit Tomat"      },
+  cornseed:       { emote: "🌱", name: "Bibit Jagung"     },
+  potatoseed:     { emote: "🌱", name: "Bibit Kentang"    },
+  strawberryseed: { emote: "🌱", name: "Bibit Strawberry" },
+  watermelonseed: { emote: "🌱", name: "Bibit Semangka"   },
+  pumpkinseed:    { emote: "🌱", name: "Bibit Labu"       },
+  herbseed:       { emote: "🌱", name: "Bibit Herba"      },
 
   mushroom: { emote: "🍄", name: "Jamur" },
   gem: { emote: "💎", name: "Gem" },
@@ -263,12 +310,18 @@ async function handler(m, { sock }) {
       "emerald",
     ],
     "🎣 *Hasil Mancing*": [
-      "trash",
-      "fish",
-      "prawn",
-      "octopus",
-      "shark",
-      "whale",
+      // ⬜ Common
+      "trash", "lele", "nila", "fish", "mujair",
+      // 🟩 Uncommon
+      "prawn", "bawal", "ikanmas", "octopus", "cumi", "kepiting",
+      // 🟦 Rare
+      "kakap", "gabus", "kerapu", "shark",
+      // 🟣 Epic
+      "lobster", "tuna", "marlin", "napoleon", "whale",
+      // 🟡 Legendary
+      "arwana", "cumiraksasa", "tunasirip", "penyu",
+      // 💜 Mythic
+      "kraken", "duyung", "nagalaut",
     ],
     "🌿 *Hasil Dungeon*": ["herb", "leather", "mysterybox"],
     "🧪 *Potions & Buffs*": ["potion", "mpotion", "stamina"],
@@ -286,12 +339,23 @@ async function handler(m, { sock }) {
       "harimau", "serigalabiru", "badak", "nagaangin", "singa", "gajah", "harimauputih", "singaputih",
       // 💜 Mythic
       "mammoth", "nagahutan", "nagaes", "kudaperi", "garuda", "fenix", "nagapetir", "ruhhutan",
-      // key lama
+      // key lama berburu
       "daging_kelinci", "daging_rusa", "daging_babi",
       "bulu_rubah", "cakar_beruang", "taring_singa",
+      // key lama hunt.js
+      "rabbit", "deer", "boar", "bear", "lion", "dragon",
     ],
     "🪓 *Hasil Tebang*": ["wood", "stick", "rubber"],
-    "🌾 *Hasil Panen*": ["padi", "jagung", "tomat", "wortel", "strawberry", "melon", "apple"],
+    "🌾 *Hasil Panen*": [
+      // berladang.js (key Indonesia)
+      "padi", "jagung", "tomat", "wortel", "strawberry", "melon", "apple",
+      // garden.js (key Inggris)
+      "carrot", "tomato", "corn", "potato", "watermelon", "pumpkin", "herb",
+    ],
+    "🌱 *Bibit Kebun*": [
+      "carrotseed", "tomatoseed", "cornseed", "potatoseed",
+      "strawberryseed", "watermelonseed", "pumpkinseed", "herbseed",
+    ],
     "🗺️ *Harta Ekspedisi/Boss/Peti*": [
       "mushroom",
       "gem",

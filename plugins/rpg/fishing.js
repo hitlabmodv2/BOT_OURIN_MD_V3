@@ -136,6 +136,8 @@ async function handler(m, { sock, skipDeduct }) {
     txt += `⚡ Stamina: *-${staminaCost}* (sisa ${user.rpg.stamina}/${user.rpg.maxStamina})\n\n`;
     txt += `Masuk tas otomatis! Jual: \`${m.prefix}sell ${caught.item}\` atau \`${m.prefix}sellall\` 🎒`;
   }
+
+  await m.reply(txt);
 }
 
 export { pluginConfig as config, handler };

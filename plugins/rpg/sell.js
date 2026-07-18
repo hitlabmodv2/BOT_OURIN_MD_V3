@@ -248,6 +248,16 @@ const SELL_PRICES = {
   wortel: 250,
   strawberry: 500,
   melon: 1000,
+  apple: 50,
+
+  // Garden.js (key Inggris)
+  carrot:     250,
+  tomato:     200,
+  corn:       150,
+  potato:     100,
+  watermelon: 1000,
+  pumpkin:    500,
+  herb:       120,
 
   mushroom: 150,
   gem: 800,
