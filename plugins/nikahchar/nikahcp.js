@@ -14,7 +14,7 @@ import {
 
 const pluginConfig = {
   name: "nikahcp",
-  alias: ["lamarnikah", "propose"],
+  alias: ["nikah", "lamarnikah", "propose"],
   category: "nikahchar",
   description: "Naik status dari pacaran ke menikah (butuh love cukup, rumah, & cincin)",
   usage: ".nikahcp <kuningan/perak/emas/berlian>",

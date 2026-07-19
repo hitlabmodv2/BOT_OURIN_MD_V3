@@ -108,8 +108,17 @@ async function handler(m) {
   txt += `┃   \`.tsell 1 all\`  → jual semua naga\n`;
   txt += `┃   \`.tsell 1 3\`    → jual 3 naga\n`;
   txt += `┃\n`;
-  txt += `┃ 💡 *Strategi:*\n`;
-  txt += `┃   Beli saat 💰 *DASAR*, jual saat 🏆 *PUNCAK*!\n`;
+  // ── Sinyal beli/jual per aset berdasarkan fase siklus saat ini ──────────────
+  // peak = harga tertinggi → jual (📈) | fall = harga turun → beli (📉)
+  const sinyalLine = sortedKeys.map((key, i) => {
+    const state = getTradeState(key, 0);
+    const emoji = state.phase === "peak" ? "📈" : "📉";
+    return `${NUM_EMOJI[i]}${emoji}`;
+  }).join("  ");
+
+  txt += `┃ 💡 *Strategi sekarang:*\n`;
+  txt += `┃   ${sinyalLine}\n`;
+  txt += `┃   📉 turun → beli  ·  📈 naik → jual\n`;
   txt += `╰┈┈⬡`;
 
   return m.reply(txt);

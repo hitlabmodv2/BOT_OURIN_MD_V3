@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 56471,
+    "exp": 56501,
     "level": 15,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T13:48:16.319Z",
+    "lastSeen": "2026-07-19T14:48:28.559Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -106,7 +106,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 27229,
+    "exp": 27919,
     "level": 10,
     "koin": 1000,
     "saldo": 0,
@@ -116,7 +116,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T14:39:01.644Z",
+    "lastSeen": "2026-07-19T15:42:05.569Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -287,7 +287,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 23010,
+    "exp": 24645,
     "level": 11,
     "koin": 14500,
     "saldo": 0,
@@ -297,7 +297,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T14:38:53.694Z",
+    "lastSeen": "2026-07-19T15:43:32.384Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -333,14 +333,14 @@
         "image": "https://cdn.myanimelist.net/images/characters/15/222641.jpg",
         "url": "https://myanimelist.net/character/35551",
         "nickname": null,
-        "love": 0,
-        "status": "pacaran",
-        "hunger": 85,
-        "hungerAt": 1784470042177,
-        "wallet": 0,
-        "ring": null,
+        "love": 1300,
+        "status": "menikah",
+        "hunger": 82,
+        "hungerAt": 1784473642177,
+        "wallet": 1005000000,
+        "ring": "berlian",
         "jadianAt": 1784452042177,
-        "marriedAt": null
+        "marriedAt": 1784475464539
       },
       "level": 11,
       "health": 200,
@@ -349,7 +349,12 @@
       "maxMana": 150,
       "maxStamina": 150,
       "bank": 0,
-      "children": []
+      "children": [],
+      "house": {
+        "key": "istana",
+        "buyAt": 1784475812385,
+        "lastPaidAt": 1784475812385
+      }
     },
     "inventory": {
       "daging_kelinci": 0,
@@ -373,7 +378,7 @@
       "nagahutan": 0
     },
     "access": [],
-    "uang": 720143957,
+    "uang": 52161061957,
     "tradeData": {
       "rubah": {
         "qty": 0,

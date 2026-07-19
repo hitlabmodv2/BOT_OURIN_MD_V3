@@ -2,7 +2,7 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 
 const pluginConfig = {
   name: "marry",
-  alias: ["nikah", "wedding", "propose"],
+  alias: ["wedding"],
   category: "rpg",
   description: "Menikahi player lain",
   usage: ".marry @user",

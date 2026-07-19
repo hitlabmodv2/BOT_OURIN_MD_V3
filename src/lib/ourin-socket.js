@@ -190,8 +190,59 @@ async function simpleImageToWebp(buffer) {
   });
 }
 
+// ── Anti-overlimit: global send queue ──────────────────────────────────────
+// Semua pesan keluar diproses lewat antrian ini, maks 1 pesan per 350ms.
+// Kalau kena rate-overlimit (429), tunggu 5 detik lalu coba ulang 1x.
+const _sendQueue = [];
+let _sendQueueRunning = false;
+
+async function _flushSendQueue() {
+  if (_sendQueueRunning) return;
+  _sendQueueRunning = true;
+  while (_sendQueue.length > 0) {
+    const { fn, resolve, reject } = _sendQueue.shift();
+    try {
+      const result = await fn();
+      resolve(result);
+    } catch (err) {
+      const isOverlimit =
+        err?.message?.includes("rate-overlimit") ||
+        err?.output?.statusCode === 429;
+      if (isOverlimit) {
+        // Tunggu 5 detik lalu coba sekali lagi
+        await new Promise((r) => setTimeout(r, 5000));
+        try {
+          resolve(await fn());
+        } catch (retryErr) {
+          reject(retryErr);
+        }
+      } else {
+        reject(err);
+      }
+    }
+    // Jeda antar pesan — mencegah flood ke server WA
+    if (_sendQueue.length > 0) {
+      await new Promise((r) => setTimeout(r, 350));
+    }
+  }
+  _sendQueueRunning = false;
+}
+
+function _queueSend(fn) {
+  return new Promise((resolve, reject) => {
+    _sendQueue.push({ fn, resolve, reject });
+    _flushSendQueue();
+  });
+}
+// ───────────────────────────────────────────────────────────────────────────
+
 async function extendSocket(sock) {
   const _origSendMessage = sock.sendMessage.bind(sock);
+
+  // Bungkus sendMessage asli dengan antrian anti-overlimit
+  const _throttledSend = (jid, content, options) =>
+    _queueSend(() => _origSendMessage(jid, content, options));
+
   sock.sendMessage = async function (jid, content, options = {}) {
     if (content && content.interactiveButtons && Array.isArray(content.interactiveButtons)) {
       const buttons = content.interactiveButtons;
@@ -258,10 +309,10 @@ async function extendSocket(sock) {
       } catch (err) {
         console.error("[interactiveButtons] Gagal relay, fallback ke text:", err.message);
         const fallbackText = content.caption || content.text || "";
-        return _origSendMessage(jid, { text: fallbackText, ...(content.contextInfo ? { contextInfo: content.contextInfo } : {}) }, options);
+        return _throttledSend(jid, { text: fallbackText, ...(content.contextInfo ? { contextInfo: content.contextInfo } : {}) }, options);
       }
     }
-    return _origSendMessage(jid, content, options);
+    return _throttledSend(jid, content, options);
   };
 
   sock.sendImageAsSticker = async (jid, input, m, options = {}) => {

@@ -31,7 +31,7 @@ async function handler(m, { sock }) {
       const status = getStatus(spouse);
       txt += `💑 *Pasangan:* ${spouse.nickname || spouse.name}\n`;
       txt += `• 💍 *Status:* ${status === STATUS_MENIKAH ? "Menikah" : "Pacaran"}\n`;
-      txt += `• 💕 *Love:* ${spouse.love || 0}/${MAX_LOVE}\n`;
+      txt += `• 💕 *Love:* ${(spouse.love || 0).toLocaleString("id-ID")} _(tak terbatas)_\n`;
       txt += `• 👶 *Anak:* ${getChildren(user).length}\n`;
       txt += `• 📋 *Wishlist:* ${getWishlist(user).length}\n`;
       txt += `• 🔐 *Mode privasi:* ${getPasMode(user)}\n`;
@@ -46,8 +46,9 @@ async function handler(m, { sock }) {
     txt += `2. \`${m.prefix}lamar <id>\` — ajak pacaran karakter\n`;
     txt += `3. \`${m.prefix}listwl\` — simpan karakter idaman ke wishlist dulu\n\n`;
     txt += `_② Naikkan love (waktu masih pacaran ataupun sudah menikah)_\n`;
-    txt += `• \`${m.prefix}jalan\` — ajak jalan-jalan\n`;
-    txt += `• \`${m.prefix}makanberdua <murah/sedang/mahal>\` — makan malam berdua\n`;
+    txt += `• \`${m.prefix}act [murah/sedang/mahal]\` — 🌙 *malam romantis lengkap* (jalan+makan+cium+ewe kalau nikah)\n`;
+    txt += `• \`${m.prefix}jalan\` — ajak jalan-jalan saja\n`;
+    txt += `• \`${m.prefix}makanberdua <murah/sedang/mahal>\` — makan malam berdua saja\n`;
     txt += `• \`${m.prefix}cium\` — cium/peluk (gratis)\n`;
     txt += `• \`${m.prefix}jalanln\` — liburan luar negeri (bawa anak kalau udah nikah)\n\n`;
     txt += `_③ Urus rumah tangga_\n`;
@@ -55,6 +56,7 @@ async function handler(m, { sock }) {
     txt += `• \`${m.prefix}bayarlistrik\` — bayar tagihan listrik rumah\n`;
     txt += `• \`${m.prefix}kasihmakan <uang>\` — kasih makan langsung\n`;
     txt += `• \`${m.prefix}kasihuang <uang>\` — kasih uang jajan (auto beli makan sendiri)\n`;
+    txt += `• \`${m.prefix}berips <jumlah>\` — beri uang ke pasangan + nambah love otomatis 💕\n`;
     txt += `> ⚠️ _Kalau pasangan kelaparan kelamaan, love bisa minus dan dia bisa minggat!_\n\n`;
     txt += `_④ Naik status ke menikah_\n`;
     txt += `• \`${m.prefix}nikahcp <cincin>\` — lamar nikah (butuh love 500+ & rumah)\n\n`;

@@ -36,6 +36,20 @@ const pluginConfig = {
   isEnabled: true,
 };
 
+// Format uang — angka ≥ 1e15 pakai notasi ilmiah agar tidak jadi rentetan panjang
+function fmtUang(n) {
+  n = Math.round(n || 0);
+  if (n >= 1e15) return `Rp ${n.toExponential().replace("e+", "e")}`;
+  return `Rp ${n.toLocaleString("id-ID")}`;
+}
+
+// Format love — angka besar langsung, tanpa denominator (unlimited)
+function fmtLove(n) {
+  n = Math.round(n || 0);
+  if (n >= 1e15) return n.toExponential().replace("e+", "e");
+  return n.toLocaleString("id-ID");
+}
+
 function formatDuration(ms) {
   const days = Math.floor(ms / 86400000);
   const years = Math.floor(days / 365);
@@ -110,13 +124,20 @@ async function handler(m, { sock }) {
     txt += `💍 Status: *${isMenikah ? "Menikah" : "Pacaran"}*\n`;
     if (isMenikah) txt += `👶 Anak: *${children.length}*\n`;
     txt += `🏠 Rumah: *${houseTier ? houseTier.name : "Belum punya"}*\n`;
-    txt += `💰 Uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*\n`;
-    txt += `💰 Uang jajan pasangan: *Rp ${wallet.toLocaleString("id-ID")}*\n`;
+    txt += `💰 Uang kamu: *${fmtUang(user.uang || 0)}*\n`;
+    txt += `💰 Uang jajan pasangan: *${fmtUang(wallet)}*\n`;
     txt += `🍗 Hunger: *${hunger}/${HUNGER_MAX}*${hunger <= 20 ? " ⚠️ _hampir lapar, buruan kasih makan!_" : ""}\n`;
-    txt += `💕 Tingkat hubungan (love): *${love}/${MAX_LOVE}*${love <= 0 ? " ⚠️ _kritis, bisa ditinggalkan!_" : ""}\n`;
+    txt += `💕 Tingkat hubungan (love): *${fmtLove(love)}* _(tak terbatas)_${love <= 0 ? " ⚠️ _kritis, bisa ditinggalkan!_" : ""}\n`;
 
     if (!isMenikah) {
-      txt += `\n> _Love minimal 500 + punya rumah buat bisa \`${m.prefix}nikahcp\`._`;
+      const loveOk  = love >= 500;
+      const rumahOk = !!house;
+      txt += `\n> 💍 *Syarat nikah:*\n`;
+      txt += `> ${loveOk  ? "✅" : "❌"} Love minimal 500 — sekarang *${fmtLove(love)}*\n`;
+      txt += `> ${rumahOk ? "✅" : "❌"} Punya rumah — sekarang *${houseTier ? houseTier.name : "belum punya"}*\n`;
+      if (loveOk && rumahOk) {
+        txt += `> 🎉 Syarat terpenuhi! Ketik \`${m.prefix}nikahcp\` buat lamar!\n`;
+      }
     }
 
     await m.react("💑");

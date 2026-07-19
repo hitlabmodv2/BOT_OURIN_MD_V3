@@ -12,7 +12,7 @@ const MAL_HEADERS = {
 };
 const REGISTRY_KEY = "charRegistry";
 const CHILD_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6 jam
-const MAX_LOVE = 1000;
+const MAX_LOVE = Infinity; // love tidak ada batas atas — makin banyak kasih uang makin banyak love
 
 // ===== Sistem pacaran -> nikah, rumah, & uang jajan pasangan =====
 const STATUS_PACARAN = "pacaran";
@@ -535,4 +535,5 @@ export {
   setHouse,
   isElectricityOverdue,
   canPropose,
+  WALLET_FOOD_COST_PER_HOUR,
 };
