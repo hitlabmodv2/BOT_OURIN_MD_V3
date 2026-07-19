@@ -35,8 +35,8 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 50499,
-    "level": 14,
+    "exp": 56034,
+    "level": 15,
     "koin": 13753,
     "saldo": 0,
     "unlockedFeatures": [],
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T08:41:13.635Z",
+    "lastSeen": "2026-07-19T10:03:04.965Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -66,13 +66,13 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "level": 14,
+      "level": 15,
       "maxHealth": 230,
       "maxMana": 165,
       "maxStamina": 165,
       "health": 230,
       "mana": 165,
-      "stamina": 165
+      "stamina": 130
     },
     "inventory": {
       "kelinci": 4,
@@ -87,7 +87,11 @@
       "kudaliar": 1,
       "kadal": 1,
       "musang": 1,
-      "kalkun": 2
+      "kalkun": 2,
+      "kanguru": 1,
+      "monyet": 2,
+      "serigala": 1,
+      "nila": 1
     },
     "access": [],
     "uang": 36190
@@ -99,7 +103,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 22949,
+    "exp": 23054,
     "level": 10,
     "koin": 1000,
     "saldo": 0,
@@ -109,7 +113,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T08:37:06.292Z",
+    "lastSeen": "2026-07-19T09:51:26.618Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -278,7 +282,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 19725,
+    "exp": 20535,
     "level": 1,
     "koin": 14500,
     "saldo": 0,
@@ -288,7 +292,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T07:20:53.398Z",
+    "lastSeen": "2026-07-19T09:47:26.613Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -327,10 +331,10 @@
         "love": 0,
         "status": "pacaran",
         "hunger": 100,
-        "hungerAt": 1784202292278,
+        "hungerAt": 1784452042177,
         "wallet": 0,
         "ring": null,
-        "jadianAt": 1784202292278,
+        "jadianAt": 1784452042177,
         "marriedAt": null
       },
       "level": 2,
@@ -339,7 +343,8 @@
       "mana": 105,
       "maxMana": 105,
       "maxStamina": 105,
-      "bank": 0
+      "bank": 0,
+      "children": []
     },
     "inventory": {
       "daging_kelinci": 0,
@@ -358,10 +363,21 @@
       "ayamhutan": 0,
       "cumi": 1,
       "banteng": 0,
-      "singa": 0
+      "singa": 0,
+      "beruang": 0
     },
     "access": [],
-    "uang": 369953
+    "uang": 547957,
+    "tradeData": {
+      "rubah": {
+        "qty": 0,
+        "avgPrice": 0
+      },
+      "beruang": {
+        "qty": 0,
+        "avgPrice": 0
+      }
+    }
   },
   "6281319859673": {
     "jid": "6281319859673",

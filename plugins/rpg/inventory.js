@@ -220,6 +220,43 @@ const ITEMS = {
   ring: { emote: "💍", name: "Cincin" },
 };
 
+// ── Harga jual ikan (Rp per ekor, sinkron dengan fishing.js) ─────────
+const FISH_PRICES = {
+  // ⬜ Common
+  trash:       10,
+  lele:        85,
+  nila:        95,
+  fish:        100,
+  mujair:      115,
+  // 🟩 Uncommon
+  prawn:       200,
+  bawal:       350,
+  ikanmas:     450,
+  octopus:     500,
+  cumi:        550,
+  kepiting:    600,
+  // 🟦 Rare
+  kakap:       1000,
+  gabus:       1500,
+  kerapu:      1800,
+  shark:       2000,
+  // 🟣 Epic
+  lobster:     3500,
+  tuna:        5000,
+  marlin:      8000,
+  napoleon:    9000,
+  whale:       10000,
+  // 🟡 Legendary
+  arwana:      20000,
+  cumiraksasa: 35000,
+  tunasirip:   55000,
+  penyu:       75000,
+  // 💜 Mythic
+  kraken:      500000,
+  duyung:      1000000,
+  nagalaut:    3000000,
+};
+
 // ── Harga jual buruan (Rp per ekor, sinkron dengan sell.js) ──────────
 const HUNT_PRICES = {
   // ⬜ Common
@@ -483,9 +520,12 @@ async function handler(m, { sock }) {
   };
 
   const HUNT_CAT = "🏹 *Hasil Buruan*";
+  const FISH_CAT = "🎣 *Hasil Mancing*";
 
   for (const [catName, items] of Object.entries(categories)) {
-    const isHunt = catName === HUNT_CAT;
+    const isHunt  = catName === HUNT_CAT;
+    const isFish  = catName === FISH_CAT;
+    const priceMap = isHunt ? HUNT_PRICES : isFish ? FISH_PRICES : null;
 
     // Kumpulkan item yang qty > 0
     let rows = [];
@@ -498,23 +538,21 @@ async function handler(m, { sock }) {
     }
     if (rows.length === 0) continue;
 
-    // ── Khusus Hasil Buruan: sort terbanyak di atas ──
-    if (isHunt) {
-      rows.sort((a, b) => b.count - a.count);
+    // ── Buruan & Mancing: sort harga jual tertinggi di atas ──
+    if (priceMap) {
+      rows.sort((a, b) => (priceMap[b.itemKey] || 0) - (priceMap[a.itemKey] || 0));
     }
 
-    let catText = "";
-    let huntTotal = 0;
+    let catText  = "";
+    let catTotal = 0;
 
     for (const { itemKey, count } of rows) {
       const item = ITEMS[itemKey];
-      if (isHunt) {
-        const price    = HUNT_PRICES[itemKey] || 0;
+      if (priceMap) {
+        const price    = priceMap[itemKey] || 0;
         const subtotal = price * count;
-        huntTotal += subtotal;
-        // Baris 1: nama + jumlah
+        catTotal += subtotal;
         catText += `${item.emote} ${item.name}: *${count}x*\n`;
-        // Baris 2: pakai > (WA blockquote) — tampil sebagai garis hijau di mobile
         if (price > 0) {
           catText += `> 💵 Rp ${price.toLocaleString("id-ID")}/ekor  ·  💰 *Rp ${subtotal.toLocaleString("id-ID")}*\n`;
         }
@@ -525,8 +563,9 @@ async function handler(m, { sock }) {
 
     invText += `${catName}\n`;
     invText += catText;
-    if (isHunt && huntTotal > 0) {
-      invText += `💰 *Total nilai buruan: Rp ${huntTotal.toLocaleString("id-ID")}*\n`;
+    if (priceMap && catTotal > 0) {
+      const label = isHunt ? "buruan" : "ikan";
+      invText += `💰 *Total nilai ${label}: Rp ${catTotal.toLocaleString("id-ID")}*\n`;
     }
     invText += `\n`;
   }

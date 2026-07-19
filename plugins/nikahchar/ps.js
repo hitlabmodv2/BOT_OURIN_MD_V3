@@ -13,6 +13,12 @@ import {
   HUNGER_MAX,
   MAX_LOVE,
 } from "../../src/lib/ourin-waifu.js";
+import {
+  addRiwayat,
+  kataUntukAlasan,
+  formatWaktuSekarang,
+  formatDurasiHubungan,
+} from "../../src/lib/ourin-riwayat.js";
 
 const pluginConfig = {
   name: "ps",
@@ -52,11 +58,37 @@ async function handler(m, { sock }) {
       );
     }
 
+    // Capture data pasangan SEBELUM tickRelationship (ia akan clearSpouse di dalam)
+    const spouseBefore = getSpouse(user);
+    const spouseNamaBefore  = spouseBefore?.nickname || spouseBefore?.name || '?';
+    const spouseMulaiAt     = spouseBefore?.jadianAt  || spouseBefore?.marriedAt || null;
+
     const left = tickRelationship(user);
     if (left.leftYou) {
+      const kata    = kataUntukAlasan('ditinggalkan');
+      const waktu   = formatWaktuSekarang();
+      const durasi  = formatDurasiHubungan(spouseMulaiAt);
+
+      // Simpan ke riwayat hubungan user
+      addRiwayat(user, {
+        tipe        : 'karakter',
+        pasanganNama: spouseNamaBefore,
+        mulaiAt     : spouseMulaiAt,
+        alasan      : 'ditinggalkan',
+        kataMoment  : kata,
+      });
+
       db.save();
       await m.react("💔");
-      return m.reply(`💔 *${left.name}* udah minggat karena ditelantarkan terlalu lama. Hubungan otomatis berakhir.`);
+      return m.reply(
+        `💔 *${left.name} UDAH MINGGAT!*\n\n` +
+        `Karena terlalu lama ditelantarkan, *${left.name}* akhirnya pergi.\n` +
+        `Hubungan otomatis berakhir.\n\n` +
+        `📅 *${waktu}*\n` +
+        (durasi ? `⏳ Bersama selama: *${durasi}*\n` : '') +
+        `\n_"${kata}"_\n\n` +
+        `> Ketik \`${m.prefix}riwayat\` untuk melihat riwayat hubunganmu.`
+      );
     }
     db.save();
 

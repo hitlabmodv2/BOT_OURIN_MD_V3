@@ -23,7 +23,7 @@ const pluginConfig = {
   isEnabled:   true,
 };
 
-// Nomor emoji 1️⃣–5️⃣ sesuai urutan TRADE_INDEX
+// Nomor emoji 1️⃣–5️⃣ — index tetap sesuai TRADE_INDEX (untuk .tbuy/.tsell)
 const NUM_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
 async function handler(m) {
@@ -44,26 +44,31 @@ async function handler(m) {
   txt += `┃ 📊 *Harga Sekarang vs Menit Lalu:*\n`;
   txt += `┃${"─".repeat(32)}\n`;
 
-  // ── Daftar harga pasar ─────────────────────────────────────────────
-  for (let i = 0; i < TRADE_INDEX.length; i++) {
-    const key   = TRADE_INDEX[i];
-    const asset = TRADE_ASSETS[key];
-    const now   = getTradePrice(key, 0);
-    const prev  = getTradePrice(key, -1);
-    const diff  = now - prev;
-    const pct   = ((diff / prev) * 100).toFixed(1);
+  // ── Daftar harga pasar — diurutkan dari harga termurah ke termahal ──
+  const sorted = TRADE_INDEX
+    .map((key, i) => ({
+      key,
+      asset    : TRADE_ASSETS[key],
+      origIdx  : i,                        // nomor asli (untuk .tbuy/.tsell)
+      now      : getTradePrice(key, 0),
+      prev     : getTradePrice(key, -1),
+    }))
+    .sort((a, b) => a.now - b.now)         // murah → mahal
 
+  for (const { key, asset, origIdx, now, prev } of sorted) {
+    const diff  = now - prev
+    const pct   = prev > 0 ? ((diff / prev) * 100).toFixed(1) : '0.0'
     const trend =
       diff > 0 ? `📈 +${pct}%` :
-      diff < 0 ? `📉 ${pct}%`  : `➡️  0%`;
+      diff < 0 ? `📉 ${pct}%`  : `➡️  0%`
 
-    const stok = user.inventory[asset.inventoryKey] || 0;
+    const stok = user.inventory[asset.inventoryKey] ?? 0
 
-    txt += `┃ ${NUM_EMOJI[i]} ${asset.label}\n`;
-    txt += `┃   💵 Harga : *${fmtRp(now)}*  ${trend}\n`;
-    txt += `┃   📦 Stok  : *${stok}x*\n`;
-    txt += `┃   🔺 Maks  : ${fmtRp(asset.max)} | 🔻 Min: ${fmtRp(asset.min)}\n`;
-    txt += `┃\n`;
+    txt += `┃ ${NUM_EMOJI[origIdx]} ${asset.label}\n`
+    txt += `┃   💵 Harga : *${fmtRp(now)}*  ${trend}\n`
+    txt += `┃   📦 Stok  : *${stok}x*\n`
+    txt += `┃   🔺 Maks  : ${fmtRp(asset.max)} | 🔻 Min: ${fmtRp(asset.min)}\n`
+    txt += `┃\n`
   }
 
   // ── Portofolio user ────────────────────────────────────────────────
