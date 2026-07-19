@@ -55,12 +55,10 @@ async function handler(m, { sock }) {
       sock,
       m.chat,
       `⚡ *sᴛᴀᴍɪɴᴀ ᴅɪɪsɪ*\n\n` +
-        `*💊 *ʀᴇsᴛᴏʀᴇ:*
-\n` +
+        `💊 *ʀᴇsᴛᴏʀᴇ:*\n\n` +
         `> ⚡ Stamina: *+${restored}*\n` +
         `> 💵 Biaya: *-Rp ${potionCost.toLocaleString("id-ID")}*\n` +
-        `> 📊 Sekarang: *${user.rpg.stamina}/${user.rpg.maxStamina}*\n` +
-        ``,
+        `> 📊 Sekarang: *${user.rpg.stamina}/${user.rpg.maxStamina}*`,
       "⚡ STAMINA",
       "Restore",
       { quoted: m },

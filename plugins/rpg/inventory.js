@@ -220,6 +220,80 @@ const ITEMS = {
   ring: { emote: "💍", name: "Cincin" },
 };
 
+// ── Harga jual buruan (Rp per ekor, sinkron dengan sell.js) ──────────
+const HUNT_PRICES = {
+  // ⬜ Common
+  ayam:         2000,
+  tupai:        3500,
+  kelinci:      4000,
+  kadal:        3800,
+  bebekhutan:   4500,
+  ayamhutan:    5000,
+  terwelu:      6500,
+  // 🟩 Uncommon
+  landak:       10000,
+  kalkun:       13500,
+  monyet:       15000,
+  rusa:         17500,
+  bangau:       18500,
+  merak:        20000,
+  kurakura:     22000,
+  berangberang: 24000,
+  // 🟦 Rare
+  babihutan:    25000,
+  musang:       32000,
+  anjinglaut:   36000,
+  kakatua:      38000,
+  kanguru:      41000,
+  rubah:        42000,
+  ularpiton:    45000,
+  kalajengking: 47000,
+  serigala:     48000,
+  gorila:       52000,
+  // 🟣 Epic
+  elang:        65000,
+  buaya:        85000,
+  kudaliar:     88000,
+  banteng:      95000,
+  lutungemas:   105000,
+  beruang:      110000,
+  rajawali:     118000,
+  macantutul:   120000,
+  beruangkutub: 128000,
+  jerapah:      130000,
+  // 🟡 Legendary
+  harimau:      175000,
+  serigalabiru: 200000,
+  badak:        250000,
+  nagaangin:    280000,
+  singa:        350000,
+  gajah:        425000,
+  singaputih:   480000,
+  harimauputih: 550000,
+  // 💜 Mythic
+  mammoth:      1000000,
+  nagahutan:    1500000,
+  nagaes:       2000000,
+  kudaperi:     2500000,
+  garuda:       4000000,
+  fenix:        5000000,
+  ruhhutan:     8000000,
+  nagapetir:    10000000,
+  // key lama
+  rabbit:         4000,
+  deer:           17500,
+  boar:           25000,
+  bear:           110000,
+  lion:           350000,
+  dragon:         3000000,
+  daging_kelinci: 4000,
+  daging_rusa:    17500,
+  daging_babi:    25000,
+  bulu_rubah:     42000,
+  cakar_beruang:  110000,
+  taring_singa:   350000,
+};
+
 function makeBar(current, max, len = 10) {
   const ratio  = Math.min(Math.max(current / max, 0), 1);
   const filled = Math.round(ratio * len);
@@ -408,21 +482,53 @@ async function handler(m, { sock }) {
     ],
   };
 
+  const HUNT_CAT = "🏹 *Hasil Buruan*";
+
   for (const [catName, items] of Object.entries(categories)) {
-    let catText = "";
+    const isHunt = catName === HUNT_CAT;
+
+    // Kumpulkan item yang qty > 0
+    let rows = [];
     for (const itemKey of items) {
       const count = user.inventory[itemKey] || 0;
       if (count > 0) {
-        const item = ITEMS[itemKey];
-        catText += `${item.emote} ${item.name}: *${count}x*\n`;
+        rows.push({ itemKey, count });
         hasItem = true;
       }
     }
-    if (catText) {
-      invText += `${catName}\n`;
-      invText += catText;
-      invText += `\n`;
+    if (rows.length === 0) continue;
+
+    // ── Khusus Hasil Buruan: sort terbanyak di atas ──
+    if (isHunt) {
+      rows.sort((a, b) => b.count - a.count);
     }
+
+    let catText = "";
+    let huntTotal = 0;
+
+    for (const { itemKey, count } of rows) {
+      const item = ITEMS[itemKey];
+      if (isHunt) {
+        const price    = HUNT_PRICES[itemKey] || 0;
+        const subtotal = price * count;
+        huntTotal += subtotal;
+        // Baris 1: nama + jumlah
+        catText += `${item.emote} ${item.name}: *${count}x*\n`;
+        // Baris 2: pakai > (WA blockquote) — tampil sebagai garis hijau di mobile
+        if (price > 0) {
+          catText += `> 💵 Rp ${price.toLocaleString("id-ID")}/ekor  ·  💰 *Rp ${subtotal.toLocaleString("id-ID")}*\n`;
+        }
+      } else {
+        catText += `${item.emote} ${item.name}: *${count}x*\n`;
+      }
+    }
+
+    invText += `${catName}\n`;
+    invText += catText;
+    if (isHunt && huntTotal > 0) {
+      invText += `💰 *Total nilai buruan: Rp ${huntTotal.toLocaleString("id-ID")}*\n`;
+    }
+    invText += `\n`;
   }
 
   if (!hasItem) {

@@ -35,8 +35,8 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 33907,
-    "level": 12,
+    "exp": 50499,
+    "level": 14,
     "koin": 13753,
     "saldo": 0,
     "unlockedFeatures": [],
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-18T03:39:01.825Z",
+    "lastSeen": "2026-07-19T08:41:13.635Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -66,23 +66,31 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "level": 12,
-      "maxHealth": 130,
-      "maxMana": 115,
-      "maxStamina": 115,
-      "health": 130,
-      "mana": 115,
-      "stamina": 40
+      "level": 14,
+      "maxHealth": 230,
+      "maxMana": 165,
+      "maxStamina": 165,
+      "health": 230,
+      "mana": 165,
+      "stamina": 165
     },
     "inventory": {
-      "kelinci": 0,
-      "rusa": 1,
-      "tupai": 1,
-      "landak": 1,
-      "bebekhutan": 2
+      "kelinci": 4,
+      "rusa": 0,
+      "tupai": 11,
+      "landak": 0,
+      "bebekhutan": 2,
+      "berangberang": 1,
+      "ularpiton": 1,
+      "lutungemas": 1,
+      "terwelu": 1,
+      "kudaliar": 1,
+      "kadal": 1,
+      "musang": 1,
+      "kalkun": 2
     },
     "access": [],
-    "uang": 0
+    "uang": 36190
   },
   "6289667923162": {
     "jid": "6289667923162",
@@ -91,7 +99,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 18850,
+    "exp": 22949,
     "level": 10,
     "koin": 1000,
     "saldo": 0,
@@ -101,7 +109,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-18T04:05:00.725Z",
+    "lastSeen": "2026-07-19T08:37:06.292Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -124,13 +132,13 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 80,
-      "maxStamina": 105,
-      "health": 110,
-      "maxHealth": 110,
-      "mana": 105,
-      "maxMana": 105,
-      "level": 2
+      "stamina": 150,
+      "maxStamina": 150,
+      "health": 200,
+      "maxHealth": 200,
+      "mana": 150,
+      "maxMana": 150,
+      "level": 11
     },
     "inventory": {
       "kelinci": 9,
@@ -140,10 +148,14 @@
       "beruang": 2,
       "ayamhutan": 1,
       "kanguru": 1,
-      "bebekhutan": 1
+      "bebekhutan": 1,
+      "elang": 1,
+      "monyet": 2,
+      "tupai": 2
     },
     "access": [],
-    "uang": 0
+    "uang": 1114,
+    "tradeData": {}
   },
   "6282139672290": {
     "jid": "6282139672290",
@@ -266,7 +278,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 19455,
+    "exp": 19725,
     "level": 1,
     "koin": 14500,
     "saldo": 0,
@@ -276,7 +288,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-16T15:30:45.370Z",
+    "lastSeen": "2026-07-19T07:20:53.398Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -345,10 +357,11 @@
       "kadal": 1,
       "ayamhutan": 0,
       "cumi": 1,
-      "banteng": 0
+      "banteng": 0,
+      "singa": 0
     },
     "access": [],
-    "uang": 269510
+    "uang": 369953
   },
   "6281319859673": {
     "jid": "6281319859673",

@@ -393,7 +393,8 @@ async function checkAndNotifyLevelUp(sock, m, db, user, oldExp, newExp) {
       return { leveledUp: true, notified: false, oldLevel, newLevel };
     }
 
-    const role = getRole(newLevel);
+    const role    = getRole(newLevel);
+    const oldRole = getRole(oldLevel);
     const botName = config.bot?.name || "Ourin-AI";
     const saluranId = config.saluran?.id || "120363400911374213@newsletter";
     const saluranName = config.saluran?.name || botName;
@@ -404,19 +405,45 @@ async function checkAndNotifyLevelUp(sock, m, db, user, oldExp, newExp) {
     } catch {}
 
     const levelsGained = newLevel - oldLevel;
-    const txt = `🎊 *SELAMAT @${m.sender.split("@")[0]}!*
 
-✨ Level naik${levelsGained > 1 ? ` *${levelsGained}x sekaligus*` : ""} → *Level ${newLevel}*
-🏅 Rank : *${role}*
+    // ── EXP Progress akurat ─────────────────────────────────────────
+    const expGained      = newExp - oldExp;   // EXP dari aktivitas (sebelum bonus)
+    // user.exp sudah termasuk levelUpExp (bonus naik level)
+    const expInNewLevel  = Math.max(0, user.exp - totalExpForLevel(newLevel));
+    const expToNext      = expToNextLevel(newLevel);
+    const expRemaining   = Math.max(0, expToNext - expInNewLevel);
+    const progressPct    = expToNext > 0
+      ? Math.min(100, Math.floor((expInNewLevel / expToNext) * 100))
+      : 100;
+    // Progress bar visual (10 blok)
+    const filled         = Math.round(progressPct / 10);
+    const progressBar    = "▰".repeat(filled) + "▱".repeat(10 - filled);
+    const isMaxLevel     = newLevel >= MAX_LEVEL;
+
+    const txt =
+`🎊 *SELAMAT @${m.sender.split("@")[0]}!*
+━━━━━━━━━━━━━━━━━━━━
+
+🏆 *LEVEL UP!*${levelsGained > 1 ? ` _(+${levelsGained} level sekaligus!)_` : ""}
+
+📍 *Level Sebelumnya:*
+> 🎖️ Level *${oldLevel}*  ·  ${oldRole}
+> ⚡ EXP didapat  : *+${expGained.toLocaleString("id-ID")} EXP*
+
+⬆️ *Level Sekarang:*
+> ✨ Level *${newLevel}*  ·  *${role}*
+> 📊 ${expInNewLevel.toLocaleString("id-ID")} / ${expToNext.toLocaleString("id-ID")} EXP
+> 📶 [${progressBar}] *${progressPct}%*
+> 🎯 ${isMaxLevel ? "*MAX LEVEL TERCAPAI!* 🏆" : `Butuh *${expRemaining.toLocaleString("id-ID")} EXP* lagi → Lv ${newLevel + 1}`}
 
 🎁 *Hadiah Naik Level ${newLevel}:*
-💰 Uang   : *+Rp ${levelUpUang.toLocaleString("id-ID")}*
-📈 EXP    : *+${levelUpExp.toLocaleString("id-ID")} EXP*
-❤️ HP Maks : *${user.rpg.maxHealth}*  (+${hpGainPerLevel}/lv, restore ✅)
-⚡ St Maks : *${user.rpg.maxStamina}*  (+${stGainPerLevel}/lv, restore ✅)
+> 💰 Uang       : *+Rp ${levelUpUang.toLocaleString("id-ID")}*
+> 📈 EXP Bonus  : *+${levelUpExp.toLocaleString("id-ID")} EXP*
+> ❤️ HP Maks     : *${user.rpg.maxHealth}*  _(+${hpGainPerLevel}/lv ✅ restore)_
+> ⚡ St Maks     : *${user.rpg.maxStamina}*  _(+${stGainPerLevel}/lv ✅ restore)_
 
-📌 Ketik _${m.prefix}inv_ buat lihat status!
-🔥 Terus aktif biar makin cepat naik level!`;
+📌 Ketik *${m.prefix}inv* buat lihat status!
+🔥 *Terus aktif biar makin cepat naik level!*`;
 
     const contextInfo = {
       mentionedJid: [m.sender],

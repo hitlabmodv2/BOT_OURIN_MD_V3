@@ -16,39 +16,60 @@ let hydroThumbBuffer = null;
 
 const HYDRO_THUMB_URL = "https://i.ibb.co.com/0jmhwVK3/365077.jpg";
 
+// Helper: resize buffer ke JPEG kecil agar WA render dengan benar
+async function _resizeThumb(raw, w = 200, h = 200) {
+  if (!raw) return null;
+  try {
+    return await sharp(raw)
+      .resize(w, h, { fit: "cover" })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+  } catch {
+    return raw; // fallback: pakai raw kalau sharp gagal
+  }
+}
+
+// Load & resize semua thumbnail aset secara async
+// Dipanggil saat modul ini dipakai agar preloadAssets sudah jalan duluan
+async function _initThumbBuffers() {
   const keys = [
-    ["ourin-games", (buf) => { gameThumbBuffer = buf; }],
-    ["ourin-rpg", (buf) => { rpgThumbBuffer = buf; }],
-    ["ourin-winner", (buf) => { winnerThumbBuffer = buf; }],
+    ["ourin-games",  (buf) => { gameThumbBuffer   = buf; }],
+    ["ourin-rpg",    (buf) => { rpgThumbBuffer     = buf; }],
+    ["ourin-winner", (buf) => { winnerThumbBuffer  = buf; }],
   ];
   for (const [key, setter] of keys) {
-    const buf = getAssetBuffer(key);
-    if (buf) setter(buf);
+    const raw = getAssetBuffer(key);
+    if (raw) setter(await _resizeThumb(raw));
   }
+}
 
-  // Pre-fetch hydro thumbnail once at startup — resize ke JPEG kecil agar WA render
-  axios.get(HYDRO_THUMB_URL, { responseType: "arraybuffer", timeout: 10000 })
-    .then(async (res) => {
+// Jalankan async tanpa blocking agar import tetap cepat.
+// Jika dipanggil sebelum preloadAssets selesai, getter lazy akan tangani.
+_initThumbBuffers().catch(() => {});
+
+// Pre-fetch hydro thumbnail once at startup — resize ke JPEG kecil agar WA render
+axios.get(HYDRO_THUMB_URL, { responseType: "arraybuffer", timeout: 10000 })
+  .then(async (res) => {
+    try {
+      hydroThumbBuffer = await sharp(Buffer.from(res.data))
+        .resize(100, 100, { fit: "cover" })
+        .jpeg({ quality: 70 })
+        .toBuffer();
+    } catch {
+      hydroThumbBuffer = Buffer.from(res.data);
+    }
+  })
+  .catch(async () => {
+    const fallback = getAssetBuffer("ourin") || getAssetBuffer("ourin2");
+    if (fallback) {
       try {
-        hydroThumbBuffer = await sharp(Buffer.from(res.data))
+        hydroThumbBuffer = await sharp(fallback)
           .resize(100, 100, { fit: "cover" })
           .jpeg({ quality: 70 })
           .toBuffer();
-      } catch {
-        hydroThumbBuffer = Buffer.from(res.data);
-      }
-    })
-    .catch(async () => {
-      const fallback = getAssetBuffer("ourin") || getAssetBuffer("ourin2");
-      if (fallback) {
-        try {
-          hydroThumbBuffer = await sharp(fallback)
-            .resize(100, 100, { fit: "cover" })
-            .jpeg({ quality: 70 })
-            .toBuffer();
-        } catch { hydroThumbBuffer = fallback; }
-      }
-    });
+      } catch { hydroThumbBuffer = fallback; }
+    }
+  });
 
 const FAST_ANSWER_PRAISES = [
   "⚡ Kilat banget! Kamu jenius!",
@@ -146,6 +167,11 @@ async function sendWinnerPreview(sock, jid, text, title, body, options) {
 }
 
 async function sendRpgPreview(sock, jid, text, title, body, options) {
+  // Lazy-load: kalau buffer belum siap saat modul diimport, coba load sekarang
+  if (!rpgThumbBuffer) {
+    const raw = getAssetBuffer("ourin-rpg");
+    if (raw) rpgThumbBuffer = await _resizeThumb(raw);
+  }
   const msgId = await sock.sendPreview(
     jid,
     {

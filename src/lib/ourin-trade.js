@@ -2,7 +2,6 @@
 // Harga deterministik per menit: semua user lihat harga yang sama
 
 export const TRADE_ASSETS = {
-  // inputKey → data aset
   naga: {
     inventoryKey: "nagahutan",
     label:        "🐉 Naga",
@@ -35,29 +34,27 @@ export const TRADE_ASSETS = {
   },
 };
 
+// Urutan tetap nomor item di .trade — 1=naga, 2=fenix, dst.
+export const TRADE_INDEX = ["naga", "fenix", "rubah", "singa", "beruang"];
+
 // Alias input pengguna → key aset resmi
 export const TRADE_ALIASES = {
-  naga:    "naga",
+  naga:      "naga",
   nagahutan: "naga",
-  fenix:   "fenix",
-  peonix:  "fenix",
-  phoenix: "fenix",
-  rubah:   "rubah",
-  singa:   "singa",
-  beruang: "beruang",
-  bear:    "beruang",
-  fox:     "rubah",
-  lion:    "singa",
-  dragon:  "naga",
+  fenix:     "fenix",
+  peonix:    "fenix",
+  phoenix:   "fenix",
+  rubah:     "rubah",
+  singa:     "singa",
+  beruang:   "beruang",
+  bear:      "beruang",
+  fox:       "rubah",
+  lion:      "singa",
+  dragon:    "naga",
 };
 
 /**
  * Hitung harga aset pada menit tertentu.
- * Menggunakan 3 gelombang sinus dengan frekuensi berbeda
- * supaya pergerakan harga terasa natural dan tidak seragam.
- * @param {string} assetKey - key aset (naga/fenix/rubah/singa/beruang)
- * @param {number} minuteOffset - 0 = sekarang, -1 = menit lalu
- * @returns {number|null} harga dalam Rupiah
  */
 export function getTradePrice(assetKey, minuteOffset = 0) {
   const asset = TRADE_ASSETS[assetKey];
@@ -65,36 +62,57 @@ export function getTradePrice(assetKey, minuteOffset = 0) {
 
   const minute = Math.floor(Date.now() / 60_000) + minuteOffset;
 
-  // Seed unik per aset supaya pergerakannya beda-beda
   const nameCode = assetKey.split("").reduce((acc, c, i) => acc + c.charCodeAt(0) * (i + 1), 0);
   const t = (minute + nameCode) * 0.17;
 
-  // 3 gelombang: cepat (volatilitas harian), sedang (tren), lambat (siklus panjang)
   const w1 = Math.sin(t * 7.31  + nameCode * 0.009) * 0.40;
   const w2 = Math.sin(t * 2.13  + nameCode * 0.004) * 0.35;
   const w3 = Math.sin(t * 0.47  + nameCode * 0.013) * 0.25;
 
-  // Gabungkan, normalisasi ke 0–1
   const normalized = (w1 + w2 + w3 + 1) / 2;
 
   return Math.floor(asset.min + normalized * (asset.max - asset.min));
 }
 
 /**
- * Resolve input nama hewan dari pengguna → key aset resmi.
- * @param {string} input
- * @returns {{ assetKey: string, asset: object }|null}
+ * Resolve input nama atau nomor → { assetKey, asset }.
+ * Support: nama ("naga"), alias ("dragon"), nomor ("1"–"5")
  */
 export function resolveAsset(input) {
-  const key = TRADE_ALIASES[input?.toLowerCase()?.trim()];
+  const trimmed = input?.toLowerCase()?.trim();
+  if (!trimmed) return null;
+
+  // Support nomor langsung: "1" → naga, "2" → fenix, dst.
+  if (/^\d+$/.test(trimmed)) {
+    const idx = parseInt(trimmed, 10);
+    if (idx >= 1 && idx <= TRADE_INDEX.length) {
+      const assetKey = TRADE_INDEX[idx - 1];
+      return { assetKey, asset: TRADE_ASSETS[assetKey] };
+    }
+    return null;
+  }
+
+  const key = TRADE_ALIASES[trimmed];
   if (!key) return null;
   return { assetKey: key, asset: TRADE_ASSETS[key] };
 }
 
-/** Format rupiah */
-export const fmtRp = (n) => `Rp ${n.toLocaleString("id-ID")}`;
+/** Format rupiah singkat */
+export const fmtRp = (n) => `Rp ${Math.round(n).toLocaleString("id-ID")}`;
 
 /** Detik tersisa sampai menit berikutnya */
 export function secondsToNextMinute() {
   return 60 - (Math.floor(Date.now() / 1_000) % 60);
+}
+
+/**
+ * Hitung rata-rata harga beli tertimbang setelah beli tambahan.
+ * @param {number} oldQty  - stok lama
+ * @param {number} oldAvg  - harga rata-rata lama
+ * @param {number} addQty  - jumlah beli baru
+ * @param {number} buyPrice - harga beli baru
+ */
+export function calcNewAvg(oldQty, oldAvg, addQty, buyPrice) {
+  if (oldQty <= 0) return buyPrice;
+  return Math.round((oldAvg * oldQty + buyPrice * addQty) / (oldQty + addQty));
 }
