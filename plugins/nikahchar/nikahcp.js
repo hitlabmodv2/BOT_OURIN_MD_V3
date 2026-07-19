@@ -10,6 +10,7 @@ import {
   findRingTier,
   RING_TIERS,
   STATUS_MENIKAH,
+  LOVE_TO_MARRY,
 } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
@@ -50,7 +51,7 @@ async function handler(m, { sock }) {
     if (!ringKey) {
       let txt = `💍 *ʟᴀᴍᴀʀ ɴɪᴋᴀʜ*\n\n`;
       txt += `Syarat naik status ke *menikah*:\n`;
-      txt += `1. Love minimal *500* (sekarang: ${spouse.love || 0})\n`;
+      txt += `1. Love minimal *${LOVE_TO_MARRY.toLocaleString("id-ID")}* (sekarang: ${(spouse.love || 0).toLocaleString("id-ID")})\n`;
       txt += `2. Sudah punya rumah (\`${m.prefix}rumah\`)\n`;
       txt += `3. Beli cincin buat lamaran:\n\n`;
       for (const r of RING_TIERS) {

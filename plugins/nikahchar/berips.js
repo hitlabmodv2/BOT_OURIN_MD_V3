@@ -203,10 +203,11 @@ async function handler(m) {
     txt += `💰 Saldo pasangan: *${fmtRp(walletAfter)}*\n`;
     txt += `🕐 Aman selama: *${jamAmanAfter > 0 ? `≈${jamAmanAfter} jam` : "-"}* tanpa kamu kasih makan\n`;
 
+    const fmtL = n => n >= MAX_LOVE ? "∞ Infinity 🌟" : `${n.toLocaleString("id-ID")} / ${MAX_LOVE.toLocaleString("id-ID")}`;
     if (loveGain > 0) {
-      txt += `💕 Tingkat hubungan: *${loveBefore}* → *${loveAfter}/${MAX_LOVE}* *(+${loveGain})*\n`;
+      txt += `💕 Tingkat hubungan: *${fmtL(loveBefore)}* → *${fmtL(loveAfter)}* *(+${loveGain})*\n`;
     } else {
-      txt += `💕 Tingkat hubungan: *${loveAfter}/${MAX_LOVE}* _(perlu min Rp 1.000 buat nambah love)_\n`;
+      txt += `💕 Tingkat hubungan: *${fmtL(loveAfter)}* _(perlu min Rp 1.000 buat nambah love)_\n`;
     }
 
     txt += `💰 Sisa uang kamu: *${fmtRp(saldoAfter)}*\n\n`;

@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 56501,
+    "exp": 56516,
     "level": 15,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T14:48:28.559Z",
+    "lastSeen": "2026-07-19T15:49:25.594Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -106,7 +106,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 27919,
+    "exp": 28324,
     "level": 10,
     "koin": 1000,
     "saldo": 0,
@@ -116,7 +116,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T15:42:05.569Z",
+    "lastSeen": "2026-07-19T16:16:43.670Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -287,7 +287,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 24645,
+    "exp": 25470,
     "level": 11,
     "koin": 14500,
     "saldo": 0,
@@ -297,7 +297,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T15:43:32.384Z",
+    "lastSeen": "2026-07-19T16:16:14.206Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -333,11 +333,11 @@
         "image": "https://cdn.myanimelist.net/images/characters/15/222641.jpg",
         "url": "https://myanimelist.net/character/35551",
         "nickname": null,
-        "love": 1300,
+        "love": 1000000,
         "status": "menikah",
-        "hunger": 82,
-        "hungerAt": 1784473642177,
-        "wallet": 1005000000,
+        "hunger": 100,
+        "hungerAt": 1784477242177,
+        "wallet": 101004998500,
         "ring": "berlian",
         "jadianAt": 1784452042177,
         "marriedAt": 1784475464539
@@ -349,11 +349,21 @@
       "maxMana": 150,
       "maxStamina": 150,
       "bank": 0,
-      "children": [],
+      "children": [
+        {
+          "id": "1784477548180206",
+          "name": "Yuki",
+          "happiness": 50,
+          "bornAt": 1784477548180
+        }
+      ],
       "house": {
         "key": "istana",
         "buyAt": 1784475812385,
         "lastPaidAt": 1784475812385
+      },
+      "cooldowns": {
+        "buatanak": 1784477548180
       }
     },
     "inventory": {
@@ -375,10 +385,10 @@
       "banteng": 0,
       "singa": 0,
       "beruang": 0,
-      "nagahutan": 0
+      "nagahutan": 236380
     },
     "access": [],
-    "uang": 52161061957,
+    "uang": 176957,
     "tradeData": {
       "rubah": {
         "qty": 0,
@@ -389,8 +399,8 @@
         "avgPrice": 0
       },
       "naga": {
-        "qty": 0,
-        "avgPrice": 0
+        "qty": 236380,
+        "avgPrice": 300000
       }
     }
   },

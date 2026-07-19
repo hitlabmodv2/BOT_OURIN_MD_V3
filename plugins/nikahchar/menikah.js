@@ -31,7 +31,11 @@ async function handler(m, { sock }) {
       const status = getStatus(spouse);
       txt += `💑 *Pasangan:* ${spouse.nickname || spouse.name}\n`;
       txt += `• 💍 *Status:* ${status === STATUS_MENIKAH ? "Menikah" : "Pacaran"}\n`;
-      txt += `• 💕 *Love:* ${(spouse.love || 0).toLocaleString("id-ID")} _(tak terbatas)_\n`;
+      const loveNow = spouse.love || 0;
+      const loveDisplay = loveNow >= MAX_LOVE
+        ? "∞ Infinity 🌟"
+        : `${loveNow.toLocaleString("id-ID")} / ${MAX_LOVE.toLocaleString("id-ID")}`;
+      txt += `• 💕 *Love:* ${loveDisplay}\n`;
       txt += `• 👶 *Anak:* ${getChildren(user).length}\n`;
       txt += `• 📋 *Wishlist:* ${getWishlist(user).length}\n`;
       txt += `• 🔐 *Mode privasi:* ${getPasMode(user)}\n`;
