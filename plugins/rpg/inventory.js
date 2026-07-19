@@ -1,5 +1,6 @@
 import { getDatabase } from "../../src/lib/ourin-database.js";
 import { getRole, calculateLevel, totalExpForLevel, expToNextLevel, MAX_LEVEL, getWealthTier, fmtUangBesar } from "../../src/lib/ourin-level.js";
+import config from "../../config.js";
 
 const pluginConfig = {
   name: "inventory",
@@ -331,6 +332,26 @@ const HUNT_PRICES = {
   taring_singa:   350000,
 };
 
+// ── Harga jual hasil kebun (sinkron dengan sell.js & garden.js) ──────
+const KEBUN_PRICES = {
+  // berladang.js (key Indonesia)
+  padi:       100,
+  jagung:     150,
+  tomat:      200,
+  wortel:     250,
+  strawberry: 500,
+  melon:      1000,
+  apple:      50,
+  // garden.js (key Inggris)
+  carrot:     250,
+  tomato:     200,
+  corn:       150,
+  potato:     100,
+  watermelon: 1000,
+  pumpkin:    500,
+  herb:       120,
+};
+
 function makeBar(current, max, len = 10) {
   const ratio  = Math.min(Math.max(current / max, 0), 1);
   const filled = Math.round(ratio * len);
@@ -351,6 +372,9 @@ async function handler(m, { sock }) {
   const uang      = user.uang  ?? 0;
   const exp       = user.exp   ?? 0;
   const energi    = user.energi ?? 0;
+  // Max energi sesuai tipe user
+  const isOwner   = (config.owner?.number || []).includes(m.sender.replace("@s.whatsapp.net", ""));
+  const maxEnergi = isOwner ? -1 : (user.isPremium ? (config.energi?.premium ?? -1) : (config.energi?.default ?? 100));
 
   // Level dihitung dari EXP (akurat, bukan dari field yg bisa out-of-sync)
   // Sekalian self-heal jika user.level belum di-set
@@ -401,12 +425,17 @@ async function handler(m, { sock }) {
   invText += `┃   ${wealthTier}\n`;
   invText += `┃\n`;
   invText += `┃ ❤️ HP      : *${hp}/${maxHp}*${hpBonus > 0 ? `  🔺+${hpBonus} (Tier ${hpTier})` : ""}\n`;
-  invText += `┃   [${hpBar}] ${hpStatus}\n`;
-  invText += `┃\n`;
+  invText += `┃   [${hpBar}]\n`;
   invText += `┃ ⚡ Stamina : *${stamina}/${maxSt}*${stBonus > 0 ? `  🔺+${stBonus} (Tier ${stTier})` : ""}\n`;
-  invText += `┃   [${stBar}] ${stStatus}\n`;
+  invText += `┃   [${stBar}]\n`;
   invText += `┃\n`;
-  invText += `┃ 🔋 Energi  : *${energi === -1 ? "∞ (Unlimited)" : energi}*\n`;
+  if (energi === -1 || maxEnergi === -1) {
+    invText += `┃ 🔋 Energi  : *∞ (Unlimited)*\n`;
+  } else {
+    const energiBar = makeBar(energi, maxEnergi);
+    invText += `┃ 🔋 Energi  : *${energi}/${maxEnergi}*\n`;
+    invText += `┃   [${energiBar}]\n`;
+  }
   invText += `╰┈┈⬡\n\n`;
 
   let hasItem = false;
@@ -519,13 +548,15 @@ async function handler(m, { sock }) {
     ],
   };
 
-  const HUNT_CAT = "🏹 *Hasil Buruan*";
-  const FISH_CAT = "🎣 *Hasil Mancing*";
+  const HUNT_CAT  = "🏹 *Hasil Buruan*";
+  const FISH_CAT  = "🎣 *Hasil Mancing*";
+  const KEBUN_CAT = "🌾 *Hasil Panen*";
 
   for (const [catName, items] of Object.entries(categories)) {
     const isHunt  = catName === HUNT_CAT;
     const isFish  = catName === FISH_CAT;
-    const priceMap = isHunt ? HUNT_PRICES : isFish ? FISH_PRICES : null;
+    const isKebun = catName === KEBUN_CAT;
+    const priceMap = isHunt ? HUNT_PRICES : isFish ? FISH_PRICES : isKebun ? KEBUN_PRICES : null;
 
     // Kumpulkan item yang qty > 0
     let rows = [];
@@ -538,9 +569,9 @@ async function handler(m, { sock }) {
     }
     if (rows.length === 0) continue;
 
-    // ── Buruan & Mancing: sort harga jual tertinggi di atas ──
+    // ── Buruan & Mancing: sort jumlah tangkapan terbanyak di atas ──
     if (priceMap) {
-      rows.sort((a, b) => (priceMap[b.itemKey] || 0) - (priceMap[a.itemKey] || 0));
+      rows.sort((a, b) => b.count - a.count);
     }
 
     let catText  = "";
@@ -564,7 +595,7 @@ async function handler(m, { sock }) {
     invText += `${catName}\n`;
     invText += catText;
     if (priceMap && catTotal > 0) {
-      const label = isHunt ? "buruan" : "ikan";
+      const label = isHunt ? "buruan" : isFish ? "ikan" : "panen";
       invText += `💰 *Total nilai ${label}: Rp ${catTotal.toLocaleString("id-ID")}*\n`;
     }
     invText += `\n`;

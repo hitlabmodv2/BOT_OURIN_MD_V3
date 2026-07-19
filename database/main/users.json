@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 56034,
+    "exp": 56471,
     "level": 15,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T10:03:04.965Z",
+    "lastSeen": "2026-07-19T13:48:16.319Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -72,7 +72,7 @@
       "maxStamina": 165,
       "health": 230,
       "mana": 165,
-      "stamina": 130
+      "stamina": 110
     },
     "inventory": {
       "kelinci": 4,
@@ -91,7 +91,10 @@
       "kanguru": 1,
       "monyet": 2,
       "serigala": 1,
-      "nila": 1
+      "nila": 1,
+      "jagung": 5,
+      "tomat": 1,
+      "wortel": 2
     },
     "access": [],
     "uang": 36190
@@ -103,7 +106,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 23054,
+    "exp": 27229,
     "level": 10,
     "koin": 1000,
     "saldo": 0,
@@ -113,7 +116,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T09:51:26.618Z",
+    "lastSeen": "2026-07-19T14:39:01.644Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -136,7 +139,7 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 150,
+      "stamina": 125,
       "maxStamina": 150,
       "health": 200,
       "maxHealth": 200,
@@ -154,8 +157,10 @@
       "kanguru": 1,
       "bebekhutan": 1,
       "elang": 1,
-      "monyet": 2,
-      "tupai": 2
+      "monyet": 4,
+      "tupai": 2,
+      "terwelu": 1,
+      "bangau": 2
     },
     "access": [],
     "uang": 1114,
@@ -282,8 +287,8 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 20535,
-    "level": 1,
+    "exp": 23010,
+    "level": 11,
     "koin": 14500,
     "saldo": 0,
     "unlockedFeatures": [],
@@ -292,7 +297,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T09:47:26.613Z",
+    "lastSeen": "2026-07-19T14:38:53.694Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -321,7 +326,7 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 35,
+      "stamina": 150,
       "charSpouse": {
         "id": 35551,
         "name": "Ada Wong",
@@ -330,19 +335,19 @@
         "nickname": null,
         "love": 0,
         "status": "pacaran",
-        "hunger": 100,
-        "hungerAt": 1784452042177,
+        "hunger": 85,
+        "hungerAt": 1784470042177,
         "wallet": 0,
         "ring": null,
         "jadianAt": 1784452042177,
         "marriedAt": null
       },
-      "level": 2,
-      "health": 110,
-      "maxHealth": 110,
-      "mana": 105,
-      "maxMana": 105,
-      "maxStamina": 105,
+      "level": 11,
+      "health": 200,
+      "maxHealth": 200,
+      "mana": 150,
+      "maxMana": 150,
+      "maxStamina": 150,
       "bank": 0,
       "children": []
     },
@@ -364,16 +369,21 @@
       "cumi": 1,
       "banteng": 0,
       "singa": 0,
-      "beruang": 0
+      "beruang": 0,
+      "nagahutan": 0
     },
     "access": [],
-    "uang": 547957,
+    "uang": 720143957,
     "tradeData": {
       "rubah": {
         "qty": 0,
         "avgPrice": 0
       },
       "beruang": {
+        "qty": 0,
+        "avgPrice": 0
+      },
+      "naga": {
         "qty": 0,
         "avgPrice": 0
       }

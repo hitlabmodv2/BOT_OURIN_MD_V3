@@ -1,6 +1,11 @@
 import { getDatabase } from "../../src/lib/ourin-database.js";
-
-const EXP_PER_LEVEL = 10000;
+import {
+  calculateLevel,
+  totalExpForLevel,
+  expToNextLevel,
+  getRole,
+  MAX_LEVEL,
+} from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "level",
@@ -17,30 +22,6 @@ const pluginConfig = {
   energi: 0,
   isEnabled: true,
 };
-
-function calculateLevel(exp) {
-  return Math.floor(exp / EXP_PER_LEVEL) + 1;
-}
-
-function expForLevel(level) {
-  return (level - 1) * EXP_PER_LEVEL;
-}
-
-function expToNextLevel(exp) {
-  const currentLevel = calculateLevel(exp);
-  const nextLevelExp = expForLevel(currentLevel + 1);
-  return nextLevelExp - exp;
-}
-
-function getRole(level) {
-  if (level >= 100) return "🐉 Mythic";
-  if (level >= 80) return "⚔️ Legend";
-  if (level >= 60) return "💜 Epic";
-  if (level >= 40) return "💪 Grandmaster";
-  if (level >= 20) return "🎖️ Master";
-  if (level >= 10) return "⭐ Elite";
-  return "🛡️ Warrior";
-}
 
 function getLevelBar(current, target) {
   const totalBars = 10;
@@ -69,14 +50,15 @@ async function handler(m, { sock }) {
   const user = db.getUser(targetJid) || db.setUser(targetJid);
   if (!user.rpg) user.rpg = {};
 
-  const exp = user.exp || 0;
-  const level = calculateLevel(exp);
-  const role = getRole(level);
-  const currentLevelExp = expForLevel(level);
-  const nextLevelExp = expForLevel(level + 1);
-  const expInLevel = exp - currentLevelExp;
-  const expNeeded = nextLevelExp - currentLevelExp;
-  const progress = getLevelBar(expInLevel, expNeeded);
+  const exp         = user.exp || 0;
+  const level       = calculateLevel(exp);           // ✅ rumus kuadratik (sinkron dengan .inv)
+  const role        = getRole(level);
+  const expBase     = totalExpForLevel(level);       // EXP awal level ini
+  const expNeeded   = expToNextLevel(level);         // EXP dibutuhkan level ini → berikutnya
+  const expInLevel  = exp - expBase;                 // EXP sudah terkumpul di level ini
+  const expRemaining = expNeeded - expInLevel;       // Sisa ke level berikutnya
+  const isMaxLevel  = level >= MAX_LEVEL;
+  const progress    = getLevelBar(expInLevel, expNeeded);
 
   let txt = `╭━━━━━━━━━━━━━━━━━╮\n`;
   txt += `┃ 📊 *ʟᴇᴠᴇʟ ɪɴꜰᴏ*\n`;
@@ -88,24 +70,27 @@ async function handler(m, { sock }) {
   txt += `╰┈┈┈┈┈┈┈┈⬡\n\n`;
 
   txt += `╭┈┈⬡「 📈 *sᴛᴀᴛs* 」\n`;
-  txt += `┃ 📊 Level: *${level}*\n`;
+  txt += `┃ 📊 Level: *${level}*${isMaxLevel ? " 🏆 MAX" : ""}\n`;
   txt += `┃ ${role}\n`;
-  txt += `┃ 🚄 Exp: *${exp.toLocaleString("id-ID")}*\n`;
+  txt += `┃ 🚄 Total EXP: *${exp.toLocaleString("id-ID")}*\n`;
   txt += `┃ 📊 Progress:\n`;
   txt += `┃ ${progress}\n`;
   txt += `┃ ${expInLevel.toLocaleString("id-ID")} / ${expNeeded.toLocaleString("id-ID")}\n`;
   txt += `╰┈┈┈┈┈┈┈┈⬡\n\n`;
 
-  txt += `> Next level: *${expToNextLevel(exp).toLocaleString("id-ID")} exp* lagi!`;
+  if (isMaxLevel) {
+    txt += `> 🏆 *MAX LEVEL tercapai!* Luar biasa!`;
+  } else {
+    txt += `> Next level: *${expRemaining.toLocaleString("id-ID")} exp* lagi!`;
+  }
 
   await m.reply(txt, { mentions: [targetJid] });
 }
 
+// Ekspor fungsi dari ourin-level.js agar plugin lain yang import dari sini tetap bisa pakai
 export {
   pluginConfig as config,
   handler,
   calculateLevel,
-  expForLevel,
-  expToNextLevel,
   getRole,
 };

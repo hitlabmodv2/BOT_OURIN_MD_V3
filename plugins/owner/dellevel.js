@@ -1,7 +1,9 @@
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { calculateLevel, getRole } from "../user/level.js";
-
-const EXP_PER_LEVEL = 10000;
+import {
+  calculateLevel,
+  getRole,
+  totalExpForLevel,
+} from "../../src/lib/ourin-level.js";
 
 const pluginConfig = {
   name: "dellevel",
@@ -52,8 +54,16 @@ async function handler(m, { sock }) {
   const user = db.getUser(targetJid) || db.setUser(targetJid);
 
   const oldLevel = calculateLevel(user.exp || 0);
-  const expToRemove = levels * EXP_PER_LEVEL;
-  user.exp = Math.max(0, (user.exp || 0) - expToRemove);
+  // Hitung EXP yang sesuai dengan target level setelah dikurangi
+  const targetLevel = Math.max(1, oldLevel - levels);
+  const newExp = totalExpForLevel(targetLevel);  // ✅ EXP tepat di awal target level
+  const expRemoved = (user.exp || 0) - newExp;
+  user.exp = newExp;
+
+  // Sync field level agar tidak out-of-sync
+  user.level = targetLevel;
+  if (user.rpg) user.rpg.level = targetLevel;
+
   const newLevel = calculateLevel(user.exp);
 
   db.save();
@@ -64,7 +74,7 @@ async function handler(m, { sock }) {
       `╭┈┈⬡「 📋 *ᴅᴇᴛᴀɪʟ* 」\n` +
       `┃ 👤 User: @${targetJid.split("@")[0]}\n` +
       `┃ ➖ Kurang: *-${levels} Level*\n` +
-      `┃ 🚄 Exp Removed: *-${expToRemove.toLocaleString("id-ID")}*\n` +
+      `┃ 🚄 Exp Removed: *-${expRemoved.toLocaleString("id-ID")}*\n` +
       `┃ 📊 Level: *${oldLevel} → ${newLevel}*\n` +
       `┃ ${getRole(newLevel)}\n` +
       `╰┈┈┈┈┈┈┈┈⬡`,

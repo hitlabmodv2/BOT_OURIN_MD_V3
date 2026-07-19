@@ -131,8 +131,8 @@ async function handler(m, { sock }) {
             uang:   u.uang   ?? 0,
             exp,
             energi: u.energi ?? 0,
-            // Level selalu dihitung dari exp — data level di DB bisa basi/tidak sinkron
-            level:  Math.floor(exp / 10000) + 1,
+            // Level selalu dihitung dari exp pakai rumus resmi — sinkron dengan .inv
+            level:  calculateLevel(exp),
             name:   u.name  || jid.split('@')[0]
         })
     }
@@ -185,7 +185,7 @@ async function handler(m, { sock }) {
                 `┃ 🆔 Tag  : @${senderNum}\n\n` +
                 `📌 *Statistik Kamu:*\n` +
                 `┃ 💰 Uang   : *Rp ${fmtNum(myUser.uang)}*  _— ${myRankUang   ? `Rank #${myRankUang} dari ${byUang.length}`   : 'belum punya saldo'}_\n` +
-                `┃ ✨ Level  : *Lv ${Math.floor(myUser.exp / 10000) + 1}*  \`${fmtNum(myUser.exp)} EXP\`  _— ${myRankExp ? `Rank #${myRankExp} dari ${byExp.length}` : 'belum punya EXP'}_\n` +
+                `┃ ✨ Level  : *Lv ${calculateLevel(myUser.exp)}*  \`${fmtNum(myUser.exp)} EXP\`  _— ${myRankExp ? `Rank #${myRankExp} dari ${byExp.length}` : 'belum punya EXP'}_\n` +
                 `┃ ⚡ Energi : *${fmtNum(myUser.energi)} Energi*  _— ${myRankEnergi ? `Rank #${myRankEnergi} dari ${byEnergi.length}` : 'belum aktif'}_\n\n` +
                 `🏅 *Raja Saat Ini:*\n` +
                 `1. 💰 Sultan Terkaya — *@${kingUang}*\n` +
@@ -236,7 +236,7 @@ async function handler(m, { sock }) {
             `💰 *TOP ${byUang.length} UANG*\n` +
             compactRows(byUang,   u => `Rp ${fmtNum(u.uang)}`,                'Belum ada user punya saldo') + `\n\n` +
             `✨ *TOP ${byExp.length} EXP & LEVEL*\n` +
-            compactRows(byExp,    u => `Lv ${Math.floor(u.exp / 10000) + 1} · ${fmtNum(u.exp)} EXP`, 'Belum ada user punya EXP') + `\n\n` +
+            compactRows(byExp,    u => `Lv ${calculateLevel(u.exp)} · ${fmtNum(u.exp)} EXP`, 'Belum ada user punya EXP') + `\n\n` +
             `⚡ *TOP ${byEnergi.length} ENERGI*\n` +
             compactRows(byEnergi, u => `${fmtNum(u.energi)} Energi`,          'Belum ada user punya energi') + `\n\n` +
             `> _Gunakan tombol di bawah untuk lihat detail per kategori_`
@@ -258,8 +258,8 @@ async function handler(m, { sock }) {
         title       = 'TOP GRINDER — LEVEL & EXP'
         emoji       = '✨'
         field       = 'exp'
-        // Hitung level dari EXP — jangan pakai u.level (bisa basi di DB)
-        formatValue = u => `Lv ${Math.floor(u.exp / 10000) + 1}  (${fmtNum(u.exp)} EXP)`
+        // Hitung level dari EXP — rumus resmi ourin-level.js (sinkron dengan .inv)
+        formatValue = u => `Lv ${calculateLevel(u.exp)}  (${fmtNum(u.exp)} EXP)`
     } else {
         title       = 'TOP AKTIF — ENERGI'
         emoji       = '⚡'

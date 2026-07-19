@@ -2,6 +2,7 @@ import { getDatabase } from "../../src/lib/ourin-database.js";
 import {
   resolveAsset,
   getTradePrice,
+  getSortedKeys,
   fmtRp,
   secondsToNextMinute,
   TRADE_INDEX,
@@ -51,14 +52,15 @@ async function handler(m) {
   // Format: .tsell <nama/nomor> <jumlah/all>
   const inputRaw  = args[0].toLowerCase().trim();
   const amountArg = (args[1] || "all").toLowerCase().trim();
-  const resolved  = resolveAsset(inputRaw);
+  const sortedKeys = getSortedKeys();                 // urutan sama dengan tampilan .trade
+  const resolved  = resolveAsset(inputRaw, sortedKeys);
 
   if (!resolved) {
     return m.reply(
       `❌ *${args[0]}* tidak dikenal kak!\n\n` +
-      `Gunakan nomor (1–${TRADE_INDEX.length}) atau nama:\n` +
-      TRADE_INDEX.map((k, i) => `  ${i + 1}. ${TRADE_ASSETS[k].label}`).join("\n") +
-      `\n\nKetik \`.trade\` buat lihat daftar.`
+      `Gunakan nomor (1–${sortedKeys.length}) atau nama:\n` +
+      sortedKeys.map((k, i) => `  ${i + 1}. ${TRADE_ASSETS[k].label}`).join("\n") +
+      `\n\nKetik \`.trade\` buat lihat daftar + harga sekarang.`
     );
   }
 

@@ -377,12 +377,19 @@ async function checkAndNotifyLevelUp(sock, m, db, user, oldExp, newExp) {
     user.uang      = (user.uang || 0) + levelUpUang;
     user.exp       = (user.exp  || 0) + levelUpExp;   // bonus EXP langsung
 
-    // Recalculate maxHealth & maxStamina dengan gain yang sudah disesuaikan
+    // ── Re-sync level setelah bonus EXP ditambah ──────────────────────
+    // Bonus EXP bisa mendorong melewati level berikutnya (terutama Lv 1-2)
+    // Selalu pakai calculateLevel(user.exp) agar level di DB tidak out-of-sync
+    const actualLevel = calculateLevel(user.exp);
+    user.level     = actualLevel;
+    user.rpg.level = actualLevel;
+
+    // Recalculate maxHealth & maxStamina berdasarkan actualLevel (akurat)
     const hpUpgBonus2 = (user.rpg.hpUpgrade      || 0) * 10;
     const stUpgBonus2 = (user.rpg.staminaUpgrade || 0) * 10;
-    user.rpg.maxHealth  = 100 + (newLevel - 1) * hpGainPerLevel + hpUpgBonus2;
-    user.rpg.maxMana    = 100 + (newLevel - 1) * 5;
-    user.rpg.maxStamina = 100 + (newLevel - 1) * stGainPerLevel + stUpgBonus2;
+    user.rpg.maxHealth  = 100 + (actualLevel - 1) * hpGainPerLevel + hpUpgBonus2;
+    user.rpg.maxMana    = 100 + (actualLevel - 1) * 5;
+    user.rpg.maxStamina = 100 + (actualLevel - 1) * stGainPerLevel + stUpgBonus2;
     user.rpg.health     = user.rpg.maxHealth;
     user.rpg.mana       = user.rpg.maxMana;
     user.rpg.stamina    = user.rpg.maxStamina;
