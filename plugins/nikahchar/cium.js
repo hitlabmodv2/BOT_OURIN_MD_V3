@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, tickRelationship, addLove, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, tickRelationship, addLove } from "../../src/lib/ourin-waifu.js";
 
 const LOVE_GAIN = 8;
 
@@ -50,7 +50,7 @@ async function handler(m, { sock }) {
 
     const line = LINES[Math.floor(Math.random() * LINES.length)];
     await m.react("😘");
-    await m.reply(`${line}\n\n💕 Love: *+${LOVE_GAIN}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})`);
+    await m.reply(`${line}\n\n💕 Love: *+${LOVE_GAIN}* → *${spouse.love.toLocaleString("id-ID")}*`);
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

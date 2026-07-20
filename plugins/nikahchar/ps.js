@@ -11,7 +11,6 @@ import {
   findHouseTier,
   STATUS_MENIKAH,
   HUNGER_MAX,
-  MAX_LOVE,
   LOVE_TO_MARRY,
 } from "../../src/lib/ourin-waifu.js";
 import {
@@ -44,11 +43,10 @@ function fmtUang(n) {
   return `Rp ${n.toLocaleString("id-ID")}`;
 }
 
-// Format love — kalau sudah capai MAX_LOVE tampil ∞ Infinity, kalau belum tampil angka/MAX_LOVE
+// Format love — angka realtime dari DB
 function fmtLove(n) {
   n = Math.round(n || 0);
-  if (n >= MAX_LOVE) return "∞ Infinity";
-  return `${n.toLocaleString("id-ID")} / ${MAX_LOVE.toLocaleString("id-ID")}`;
+  return n.toLocaleString("id-ID");
 }
 
 // ── Sistem Mood Pasangan — dihitung realtime, tidak disimpan ke DB ────────────
@@ -117,22 +115,43 @@ function getMood(love, hunger, wallet, isMenikah, childCount) {
 
 function formatDuration(ms) {
   if (ms < 0) ms = 0;
-  const totalMinutes = Math.floor(ms / 60000);
-  const totalHours   = Math.floor(ms / 3600000);
-  const days         = Math.floor(ms / 86400000);
-  const years        = Math.floor(days / 365);
-  const remDays      = days % 365;
+  if (ms < 60_000)   return "baru saja dimulai ✨";
 
-  if (ms < 60000)   return "baru saja dimulai ✨";
-  if (ms < 3600000) return `${totalMinutes} menit`;
-  if (ms < 86400000) {
+  const totalMinutes = Math.floor(ms / 60_000);
+  const totalHours   = Math.floor(ms / 3_600_000);
+  const totalDays    = Math.floor(ms / 86_400_000);
+
+  // < 1 jam → menit
+  if (ms < 3_600_000) return `${totalMinutes} menit`;
+
+  // < 1 hari → jam menit
+  if (ms < 86_400_000) {
     const remMin = totalMinutes % 60;
     return remMin > 0 ? `${totalHours} jam ${remMin} menit` : `${totalHours} jam`;
   }
-  if (years > 0) {
-    return remDays > 0 ? `${years} tahun ${remDays} hari` : `${years} tahun`;
+
+  // >= 1 hari → hitung tahun, bulan, hari pakai tanggal nyata
+  const now   = new Date();
+  const start = new Date(now.getTime() - ms);
+
+  let years  = now.getFullYear() - start.getFullYear();
+  let months = now.getMonth()    - start.getMonth();
+  let days   = now.getDate()     - start.getDate();
+
+  if (days < 0) {
+    months--;
+    // ambil jumlah hari di bulan sebelumnya
+    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    days += prevMonth.getDate();
   }
-  return `${days} hari`;
+  if (months < 0) { years--; months += 12; }
+
+  const parts = [];
+  if (years  > 0) parts.push(`${years} tahun`);
+  if (months > 0) parts.push(`${months} bulan`);
+  if (days   > 0) parts.push(`${days} hari`);
+
+  return parts.length > 0 ? parts.join(" ") : `${totalDays} hari`;
 }
 
 async function handler(m, { sock }) {
@@ -205,7 +224,8 @@ async function handler(m, { sock }) {
     // ── Header ────────────────────────────────────────────────────────────────
     let txt = `💑 *sᴛᴀᴛᴜs ᴘᴀsᴀɴɢᴀɴ*\n\n`;
     txt += `👤 *${m.pushName || "Kamu"}* 💞 *${spouseName}*\n`;
-    txt += `📅 _Jadian sejak_ *${tanggal}* _— ${durasi}_\n`;
+    txt += `📅 Tgl jadian: *${tanggal}*\n`;
+    txt += `⏳ Hubungan berjalan: *${durasi}*\n`;
     txt += `💍 Status: *${isMenikah ? "Menikah 💒" : "Pacaran 💕"}*\n\n`;
 
     // ── Mood pasangan — realtime dari love/hunger/wallet/status ──────────────
@@ -216,7 +236,7 @@ async function handler(m, { sock }) {
     txt += `- 🎭 Mood: *${mood.label}* ${mood.emoji}\n`;
     txt += `  ${mood.desc}\n`;
     txt += `- 🍗 Hunger: *${hunger}/${HUNGER_MAX}*${hungerWarn ? " — ~hampir lapar!~" : ""}\n`;
-    txt += `- 💕 Love: *${fmtLove(love)}*${love >= MAX_LOVE ? " 🌟" : ""}${loveWarn ? " — ~kritis, bisa kabur!~" : ""}\n`;
+    txt += `- 💕 Love: *${fmtLove(love)}*${loveWarn ? " — ~kritis, bisa kabur!~" : ""}\n`;
     txt += `- 💰 Uang jajan: *${fmtUang(wallet)}*\n\n`;
 
     // ── Info kamu (bullet list) ───────────────────────────────────────────────

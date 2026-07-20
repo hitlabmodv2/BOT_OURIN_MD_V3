@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, tickRelationship, addLove, feedSpouseDirectly, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, tickRelationship, addLove, feedSpouseDirectly } from "../../src/lib/ourin-waifu.js";
 
 const JALAN_COST = 15000;
 const LOVE_GAIN = 25;
@@ -53,7 +53,7 @@ async function handler(m, { sock }) {
       `🚶‍♂️🚶‍♀️ *JALAN-JALAN BARENG*\n\n` +
         `Kamu ngajak *${spouse.nickname || spouse.name}* jalan-jalan keliling kota, ngobrol santai sambil jajan pinggir jalan.\n\n` +
         `💸 Biaya: *-Rp ${JALAN_COST.toLocaleString("id-ID")}*\n` +
-        `💕 Love: *+${LOVE_GAIN}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})\n` +
+        `💕 Love: *+${LOVE_GAIN}* → *${spouse.love.toLocaleString("id-ID")}*\n` +
         `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );
   } catch (error) {

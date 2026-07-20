@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, tickRelationship, addLove, feedSpouseDirectly, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, tickRelationship, addLove, feedSpouseDirectly } from "../../src/lib/ourin-waifu.js";
 
 const TIERS = {
   murah: { name: "Warteg", cost: 20000, love: 15, hunger: 40 },
@@ -68,7 +68,7 @@ async function handler(m, { sock }) {
       `🍽️ *MAKAN BERDUA DI ${tier.name.toUpperCase()}*\n\n` +
         `Kamu dan *${spouse.nickname || spouse.name}* makan malam romantis. 🕯️\n\n` +
         `💸 Biaya: *-Rp ${tier.cost.toLocaleString("id-ID")}*\n` +
-        `💕 Love: *+${tier.love}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})\n` +
+        `💕 Love: *+${tier.love}* → *${spouse.love.toLocaleString("id-ID")}*\n` +
         `🍗 Hunger: sekarang kenyang!\n` +
         `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`,
     );

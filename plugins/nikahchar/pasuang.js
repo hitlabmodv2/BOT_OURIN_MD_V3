@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
   name: "pasuang",
@@ -44,7 +44,7 @@ async function handler(m, { sock }) {
       const winnings = Math.floor(amount * 1.8);
       const loveBefore = spouse.love || 0;
       user.uang += winnings;
-      spouse.love = Math.min(MAX_LOVE, loveBefore + 20);
+      spouse.love = loveBefore + 20;
       db.save();
       await m.react("🎉");
       return m.reply(

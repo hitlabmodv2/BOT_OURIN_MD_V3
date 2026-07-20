@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, getStatus, tickRelationship, addLove, STATUS_MENIKAH, CHILD_COOLDOWN_MS, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, getStatus, tickRelationship, addLove, STATUS_MENIKAH, CHILD_COOLDOWN_MS } from "../../src/lib/ourin-waifu.js";
 
 const LOVE_GAIN = 10;
 
@@ -95,7 +95,7 @@ async function handler(m, { sock }) {
     await m.react("👶");
     await m.reply(
       `👶 Tampaknya *${spouse.nickname || spouse.name}* hamil!\n\n` +
-        `💕 Hubunganmu: ~${loveBefore}~ → *${loveAfter}*/${MAX_LOVE}\n\n` +
+        `💕 Hubunganmu: ~${loveBefore.toLocaleString("id-ID")}~ → *${loveAfter.toLocaleString("id-ID")}*\n\n` +
         `👶 *sᴇʟᴀᴍᴀᴛ!* Kamu dan *${spouse.nickname || spouse.name}* dikaruniai anak bernama *${childName}*!\n\n` +
         `• *ID Anak:* ${child.id}\n` +
         `• *Kebahagiaan awal:* ${child.happiness}/100\n\n` +

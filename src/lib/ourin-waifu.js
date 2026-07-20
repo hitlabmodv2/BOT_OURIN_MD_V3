@@ -12,12 +12,11 @@ const MAL_HEADERS = {
 };
 const REGISTRY_KEY = "charRegistry";
 const CHILD_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6 jam
-const MAX_LOVE = 1_000_000; // cap love: capai 1 juta = status ∞ Infinity
 
 // ===== Sistem pacaran -> nikah, rumah, & uang jajan pasangan =====
 const STATUS_PACARAN = "pacaran";
 const STATUS_MENIKAH = "menikah";
-const LOVE_TO_MARRY = 10_000; // minimal love buat naik status ke menikah (1% dari ∞ Infinity)
+const LOVE_TO_MARRY = 10_000; // minimal love buat naik status ke menikah
 const HUNGER_MAX = 100;
 const HUNGER_DECAY_PER_HOUR = 3; // hunger turun 3 poin / jam kalau gak diurus
 const NEGLECT_LOVE_DECAY_PER_HOUR = 4; // love turun kalau hunger di titik 0 kelamaan
@@ -255,7 +254,7 @@ function addWallet(spouse, amount) {
 }
 
 function addLove(spouse, amount) {
-  spouse.love = Math.max(0, Math.min(MAX_LOVE, (spouse.love || 0) + amount));
+  spouse.love = Math.max(0, (spouse.love || 0) + amount); // tidak ada cap — love bisa naik bebas
   return spouse.love;
 }
 
@@ -497,7 +496,6 @@ export {
   WaifuServiceError,
   JIKAN_BASE,
   CHILD_COOLDOWN_MS,
-  MAX_LOVE,
   ensureRpg,
   getRegistry,
   setRegistryEntry,

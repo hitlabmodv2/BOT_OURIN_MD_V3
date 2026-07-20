@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, getChildren, getWishlist, getPasMode, getStatus, STATUS_MENIKAH, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, getChildren, getWishlist, getPasMode, getStatus, STATUS_MENIKAH } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
   name: "menikah",
@@ -32,9 +32,7 @@ async function handler(m, { sock }) {
       txt += `💑 *Pasangan:* ${spouse.nickname || spouse.name}\n`;
       txt += `• 💍 *Status:* ${status === STATUS_MENIKAH ? "Menikah" : "Pacaran"}\n`;
       const loveNow = spouse.love || 0;
-      const loveDisplay = loveNow >= MAX_LOVE
-        ? "∞ Infinity 🌟"
-        : `${loveNow.toLocaleString("id-ID")} / ${MAX_LOVE.toLocaleString("id-ID")}`;
+      const loveDisplay = loveNow.toLocaleString("id-ID");
       txt += `• 💕 *Love:* ${loveDisplay}\n`;
       txt += `• 👶 *Anak:* ${getChildren(user).length}\n`;
       txt += `• 📋 *Wishlist:* ${getWishlist(user).length}\n`;

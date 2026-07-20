@@ -6,7 +6,6 @@ import {
   addWallet,
   addLove,
   getWallet,
-  MAX_LOVE,
   WALLET_FOOD_COST_PER_HOUR,
 } from "../../src/lib/ourin-waifu.js";
 import {
@@ -203,7 +202,7 @@ async function handler(m) {
     txt += `💰 Saldo pasangan: *${fmtRp(walletAfter)}*\n`;
     txt += `🕐 Aman selama: *${jamAmanAfter > 0 ? `≈${jamAmanAfter} jam` : "-"}* tanpa kamu kasih makan\n`;
 
-    const fmtL = n => n >= MAX_LOVE ? "∞ Infinity 🌟" : `${n.toLocaleString("id-ID")} / ${MAX_LOVE.toLocaleString("id-ID")}`;
+    const fmtL = n => n.toLocaleString("id-ID");
     if (loveGain > 0) {
       txt += `💕 Tingkat hubungan: *${fmtL(loveBefore)}* → *${fmtL(loveAfter)}* *(+${loveGain})*\n`;
     } else {

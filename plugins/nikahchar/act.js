@@ -10,7 +10,6 @@ import {
   getHunger,
   STATUS_MENIKAH,
   CHILD_COOLDOWN_MS,
-  MAX_LOVE,
   HUNGER_MAX,
 } from "../../src/lib/ourin-waifu.js";
 import {
@@ -284,7 +283,7 @@ async function handler(m) {
     }
     recap += `  ─────────────────\n`;
     const totalLove = loveTotalGain + (eweResult?.success ? EWE_LOVE_GAIN : 0);
-    recap += `  Total love    : *+${totalLove}* → ${loveAfter}/${MAX_LOVE}\n\n`;
+    recap += `  Total love    : *+${totalLove}* → *${loveAfter.toLocaleString("id-ID")}*\n\n`;
 
     recap += `🍗 Hunger pasangan : *${hungerAfter}/${HUNGER_MAX}* [${hungerBar(hungerAfter)}]\n`;
     recap += `💰 Sisa uang kamu  : *${fmtRp(saldoAfter)}*\n`;

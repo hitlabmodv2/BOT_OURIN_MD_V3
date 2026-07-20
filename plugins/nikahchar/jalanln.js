@@ -1,6 +1,6 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getSpouse, tickRelationship, addLove, feedSpouseDirectly, getChildren, STATUS_MENIKAH, getStatus, MAX_LOVE } from "../../src/lib/ourin-waifu.js";
+import { getSpouse, tickRelationship, addLove, feedSpouseDirectly, getChildren, STATUS_MENIKAH, getStatus } from "../../src/lib/ourin-waifu.js";
 
 const TRIP_COST = 500000;
 const LOVE_GAIN = 80;
@@ -59,7 +59,7 @@ async function handler(m, { sock }) {
     let txt = `✈️ *LIBURAN LUAR NEGERI!*\n\n`;
     txt += `Kamu ngajak *${spouse.nickname || spouse.name}*${bringKids ? ` dan ${children.length} anak kalian` : ""} liburan ke luar negeri. Seru banget! 🌍\n\n`;
     txt += `💸 Total biaya: *-Rp ${totalCost.toLocaleString("id-ID")}*\n`;
-    txt += `💕 Love: *+${LOVE_GAIN}* (${Math.min(spouse.love, MAX_LOVE)}/${MAX_LOVE})\n`;
+    txt += `💕 Love: *+${LOVE_GAIN}* → *${spouse.love.toLocaleString("id-ID")}*\n`;
     if (bringKids) txt += `😄 Kebahagiaan semua anak: *+20*\n`;
     txt += `💰 Sisa uang kamu: *Rp ${(user.uang || 0).toLocaleString("id-ID")}*`;
     await m.reply(txt);

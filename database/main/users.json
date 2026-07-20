@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 56516,
+    "exp": 57266,
     "level": 15,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T15:49:25.594Z",
+    "lastSeen": "2026-07-20T02:49:10.577Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -106,7 +106,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 28324,
+    "exp": 28339,
     "level": 10,
     "koin": 1000,
     "saldo": 0,
@@ -116,7 +116,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T16:16:43.670Z",
+    "lastSeen": "2026-07-20T02:48:46.512Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -287,7 +287,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 25470,
+    "exp": 26520,
     "level": 11,
     "koin": 14500,
     "saldo": 0,
@@ -297,7 +297,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-19T16:16:14.206Z",
+    "lastSeen": "2026-07-20T01:24:44.598Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -333,11 +333,11 @@
         "image": "https://cdn.myanimelist.net/images/characters/15/222641.jpg",
         "url": "https://myanimelist.net/character/35551",
         "nickname": null,
-        "love": 1000000,
+        "love": 1000100,
         "status": "menikah",
         "hunger": 100,
-        "hungerAt": 1784477242177,
-        "wallet": 101004998500,
+        "hungerAt": 1784509642177,
+        "wallet": 101009985000,
         "ring": "berlian",
         "jadianAt": 1784452042177,
         "marriedAt": 1784475464539
@@ -385,10 +385,11 @@
       "banteng": 0,
       "singa": 0,
       "beruang": 0,
-      "nagahutan": 236380
+      "nagahutan": 1201895415,
+      "fenix": 0
     },
     "access": [],
-    "uang": 176957,
+    "uang": 256957,
     "tradeData": {
       "rubah": {
         "qty": 0,
@@ -399,8 +400,16 @@
         "avgPrice": 0
       },
       "naga": {
-        "qty": 236380,
+        "qty": 1201895415,
         "avgPrice": 300000
+      },
+      "fenix": {
+        "qty": 0,
+        "avgPrice": 0
+      },
+      "singa": {
+        "qty": 0,
+        "avgPrice": 0
       }
     }
   },
