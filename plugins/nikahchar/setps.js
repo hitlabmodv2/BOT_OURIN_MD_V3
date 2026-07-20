@@ -18,38 +18,88 @@ function fmtUang(n) {
   return `Rp ${Math.round(n || 0).toLocaleString("id-ID")}`;
 }
 
-// ── Upload media ke catbox, fallback ke telegraph ─────────────────────────────
+// ── Helper: buat form + headers dengan Content-Length ────────────────────────
+function buildForm(fields) {
+  const form = new FormData();
+  for (const [key, val, opts] of fields) form.append(key, val, opts);
+  let len;
+  try { len = form.getLengthSync(); } catch (_) { len = null; }
+  const headers = form.getHeaders();
+  if (len !== null) headers["content-length"] = len;
+  return { form, headers };
+}
+
+// ── Upload media: coba 4 server, fallback terakhir simpan base64 (image only)
 async function uploadMedia(buffer, ext = "jpg") {
   const filename = `setps_pp_${Date.now()}.${ext}`;
   const mimeType = mime.lookup(filename) || "image/jpeg";
+  const isVideo  = ext === "mp4";
 
-  // ── Coba catbox dulu ──────────────────────────────────────────────────────
+  // 1. Litterbox (paling stabil)
   try {
-    const form = new FormData();
-    form.append("reqtype", "fileupload");
-    form.append("fileToUpload", buffer, { filename, contentType: mimeType });
-    const res = await fetch("https://catbox.moe/user/api.php", {
-      method: "POST", body: form, headers: form.getHeaders(), timeout: 25000,
+    const { form, headers } = buildForm([
+      ["reqtype",       "fileupload", undefined],
+      ["time",          "72h",        undefined],
+      ["fileToUpload",  buffer, { filename, contentType: mimeType }],
+    ]);
+    const res = await fetch("https://litterbox.catbox.moe/resources/internals/api.php", {
+      method: "POST", body: form, headers, timeout: 25000,
     });
     if (res.ok) {
       const url = (await res.text()).trim();
-      if (url.startsWith("http")) return { url, type: ext === "mp4" ? "video" : "image" };
+      if (url.startsWith("http")) return { url, type: isVideo ? "video" : "image" };
     }
-  } catch (_) { /* lanjut ke fallback */ }
+  } catch (_) { /* lanjut */ }
 
-  // ── Fallback: telegraph (image only) ─────────────────────────────────────
-  if (ext !== "mp4") {
+  // 2. Catbox
+  try {
+    const { form, headers } = buildForm([
+      ["reqtype",       "fileupload", undefined],
+      ["fileToUpload",  buffer, { filename, contentType: mimeType }],
+    ]);
+    const res = await fetch("https://catbox.moe/user/api.php", {
+      method: "POST", body: form, headers, timeout: 25000,
+    });
+    if (res.ok) {
+      const url = (await res.text()).trim();
+      if (url.startsWith("http")) return { url, type: isVideo ? "video" : "image" };
+    }
+  } catch (_) { /* lanjut */ }
+
+  // 3. 0x0.st (image & video)
+  try {
+    const { form, headers } = buildForm([
+      ["file", buffer, { filename, contentType: mimeType }],
+    ]);
+    const res = await fetch("https://0x0.st", {
+      method: "POST", body: form, headers, timeout: 25000,
+    });
+    if (res.ok) {
+      const url = (await res.text()).trim();
+      if (url.startsWith("http")) return { url, type: isVideo ? "video" : "image" };
+    }
+  } catch (_) { /* lanjut */ }
+
+  // 4. Telegraph (image only)
+  if (!isVideo) {
     try {
-      const form2 = new FormData();
-      form2.append("file", buffer, { filename, contentType: mimeType });
-      const res2 = await fetch("https://telegra.ph/upload", {
-        method: "POST", body: form2, headers: form2.getHeaders(), timeout: 20000,
+      const { form, headers } = buildForm([
+        ["file", buffer, { filename, contentType: mimeType }],
+      ]);
+      const res = await fetch("https://telegra.ph/upload", {
+        method: "POST", body: form, headers, timeout: 20000,
       });
-      if (res2.ok) {
-        const data = await res2.json();
+      if (res.ok) {
+        const data = await res.json();
         if (data?.[0]?.src) return { url: "https://telegra.ph" + data[0].src, type: "image" };
       }
-    } catch (_) { /* gagal */ }
+    } catch (_) { /* lanjut */ }
+  }
+
+  // 5. Fallback akhir: simpan base64 di DB (image only, maks 3 MB)
+  if (!isVideo && buffer.length <= 3 * 1024 * 1024) {
+    const b64 = `data:${mimeType};base64,${buffer.toString("base64")}`;
+    return { url: b64, type: "image", isBase64: true };
   }
 
   throw new Error("Semua server upload gagal. Coba lagi nanti.");
@@ -258,36 +308,56 @@ async function handler(m, { sock }) {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // SUB-COMMAND: pp — set foto/video pasangan dari pesan yang di-reply
+    // SUB-COMMAND: pp — set foto/video pasangan
+    // Bisa lewat: (1) kirim gambar/video dengan caption .setps pp
+    //             (2) reply ke gambar/video lalu ketik .setps pp
     // ─────────────────────────────────────────────────────────────────────────
     if (subCmd === "pp") {
-      // Harus ada pesan yang di-reply
-      if (!m.quoted) {
+
+      // ── Deteksi sumber media ──────────────────────────────────────────────
+      // Prioritas: pesan itu sendiri (caption) → quoted (reply)
+      let mediaSource = null;
+      let isImage     = false;
+      let isVideo     = false;
+
+      // Cek pesan itu sendiri dulu (cara 1: kirim gambar/video + caption .setps pp)
+      const selfMsg  = m.message || {};
+      const selfType = getContentType(selfMsg);
+      if (selfType === "imageMessage" || m.isImage || m.type === "imageMessage") {
+        mediaSource = m;
+        isImage     = true;
+      } else if (selfType === "videoMessage" || m.isVideo || m.type === "videoMessage") {
+        mediaSource = m;
+        isVideo     = true;
+      }
+
+      // Kalau tidak ada di pesan sendiri, cek quoted (cara 2: reply)
+      if (!mediaSource && m.quoted) {
+        const quotedMsg   = m.quoted.message || {};
+        const contentType = getContentType(quotedMsg);
+        if (contentType === "imageMessage" || m.quoted.isImage || m.quoted.type === "imageMessage") {
+          mediaSource = m.quoted;
+          isImage     = true;
+        } else if (contentType === "videoMessage" || m.quoted.isVideo || m.quoted.type === "videoMessage") {
+          mediaSource = m.quoted;
+          isVideo     = true;
+        }
+      }
+
+      // Tidak ada media sama sekali → tampilkan panduan
+      if (!mediaSource) {
         return m.reply(
           `📸 *Set Foto/Video Pasangan*\n\n` +
-          `Cara pakai:\n` +
-          `1. Kirim atau forward foto/video pasanganmu\n` +
-          `2. Reply pesan itu dengan \`${m.prefix}setps pp\`\n\n` +
-          `> Foto/video ini akan tampil saat kamu atau orang lain ketik \`${m.prefix}ps\`.`,
+          `*Cara 1* — Kirim langsung:\n` +
+          `  Kirim foto/video dengan caption \`${m.prefix}setps pp\`\n\n` +
+          `*Cara 2* — Reply:\n` +
+          `  Reply ke foto/video lalu ketik \`${m.prefix}setps pp\`\n\n` +
+          `> Hasilnya bisa dilihat dengan \`${m.prefix}ps\`.`,
         );
       }
 
-      // Deteksi tipe media dari quoted message
-      const quotedMsg   = m.quoted.message || {};
-      const contentType = getContentType(quotedMsg);
-
-      const isImage = contentType === "imageMessage" ||
-                      m.quoted.isImage ||
-                      m.quoted.type === "imageMessage";
-      const isVideo = contentType === "videoMessage" ||
-                      m.quoted.isVideo ||
-                      m.quoted.type === "videoMessage";
-
       if (!isImage && !isVideo) {
-        return m.reply(
-          `❌ Hanya bisa set dari *foto* atau *video*.\n\n` +
-          `> Reply ke gambar/video pasanganmu, lalu ketik \`${m.prefix}setps pp\`.`,
-        );
+        return m.reply(`❌ Hanya bisa set dari *foto* atau *video*.`);
       }
 
       const user = db.getUser(m.sender);
@@ -305,10 +375,10 @@ async function handler(m, { sock }) {
 
       await m.react("⏳");
 
-      // Download media buffer
+      // Download media buffer dari sumber yang terdeteksi
       let mediaBuffer;
       try {
-        mediaBuffer = await downloadMediaMessage(m.quoted, "buffer", {});
+        mediaBuffer = await downloadMediaMessage(mediaSource, "buffer", {});
       } catch (dlErr) {
         await m.react("❌");
         return m.reply(`❌ Gagal mengunduh media. Coba lagi atau kirim ulang foto/videonya.`);
@@ -321,7 +391,7 @@ async function handler(m, { sock }) {
 
       const ext = isVideo ? "mp4" : "jpg";
 
-      // Upload ke catbox / telegraph
+      // Upload
       let uploadResult;
       try {
         uploadResult = await uploadMedia(mediaBuffer, ext);
@@ -332,17 +402,14 @@ async function handler(m, { sock }) {
 
       const spouseName = spouse.nickname || spouse.name;
       const mediaLabel = isVideo ? "video" : "foto";
-      const oldImage   = spouse.image || null;
-      const oldVideo   = spouse.video || null;
 
-      // Simpan ke spouse — pisahkan image & video agar ps.js bisa memilih
+      // Ganti satu, hapus yang lain — selalu realtime tanpa sisa lama
       if (isVideo) {
         spouse.video = uploadResult.url;
-        // Hapus pp lama berbeda tipe kalau ada
-        spouse.image = oldImage; // tetap simpan gambar lama kalau ada
+        delete spouse.image;
       } else {
         spouse.image = uploadResult.url;
-        spouse.video = oldVideo;
+        delete spouse.video;
       }
       db.save();
 
@@ -351,8 +418,7 @@ async function handler(m, { sock }) {
         `✅ *${mediaLabel.charAt(0).toUpperCase() + mediaLabel.slice(1)} pasangan berhasil diperbarui!*\n\n` +
         `👤 Pasangan : *${spouseName}*\n` +
         `📎 Tipe     : ${isVideo ? "🎬 Video" : "🖼️ Gambar"}\n\n` +
-        `_Sekarang ketik \`${m.prefix}ps\` untuk lihat hasilnya._\n` +
-        `_Orang lain juga bisa lihat dengan \`${m.prefix}ps @kamu\`._`,
+        `_Sekarang ketik \`${m.prefix}ps\` untuk lihat hasilnya._`,
       );
       return;
     }

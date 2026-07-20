@@ -232,11 +232,12 @@ async function handler(m, { sock }) {
           { quoted: m },
         );
       } else if (targetSpouse.image) {
-        await sock.sendMessage(
-          m.chat,
-          { image: { url: targetSpouse.image }, caption: txt },
-          { quoted: m },
-        );
+        // Dukung URL biasa maupun base64 data URI (fallback upload gagal)
+        const imgSrc = targetSpouse.image;
+        const payload = imgSrc.startsWith("data:")
+          ? { image: Buffer.from(imgSrc.split(",")[1], "base64"), caption: txt }
+          : { image: { url: imgSrc }, caption: txt };
+        await sock.sendMessage(m.chat, payload, { quoted: m });
       } else {
         await m.reply(txt, { mentions: [targetJid] });
       }

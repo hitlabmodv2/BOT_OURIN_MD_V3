@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 57401,
+    "exp": 57926,
     "level": 15,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-20T08:04:52.038Z",
+    "lastSeen": "2026-07-20T13:07:45.983Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -101,12 +101,12 @@
   },
   "6289667923162": {
     "jid": "6289667923162",
-    "name": "Hen V2",
+    "name": "Channel",
     "number": "6289667923162",
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 29734,
+    "exp": 47119,
     "level": 12,
     "koin": 1000,
     "saldo": 0,
@@ -116,7 +116,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-20T09:15:44.415Z",
+    "lastSeen": "2026-07-20T13:29:34.817Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -139,20 +139,20 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 155,
-      "maxStamina": 155,
-      "health": 210,
-      "maxHealth": 210,
-      "mana": 155,
-      "maxMana": 155,
-      "level": 12,
+      "stamina": 165,
+      "maxStamina": 165,
+      "health": 230,
+      "maxHealth": 230,
+      "mana": 165,
+      "maxMana": 165,
+      "level": 14,
       "charSpouse": {
         "id": 195230,
         "name": "Alisa Mikhailovna Kujou",
         "image": "https://cdn.myanimelist.net/images/characters/5/536830.jpg",
         "url": "https://myanimelist.net/character/195230",
         "nickname": null,
-        "love": 0,
+        "love": 10539,
         "status": "pacaran",
         "hunger": 100,
         "hungerAt": 1784538842120,
@@ -160,7 +160,8 @@
         "ring": null,
         "jadianAt": 1784538842120,
         "marriedAt": null
-      }
+      },
+      "cooldowns": {}
     },
     "inventory": {
       "kelinci": 0,
@@ -175,10 +176,14 @@
       "monyet": 0,
       "tupai": 0,
       "terwelu": 0,
-      "bangau": 0
+      "bangau": 0,
+      "kalajengking": 0,
+      "kadal": 0,
+      "merak": 0,
+      "harimau": 0
     },
     "access": [],
-    "uang": 650114,
+    "uang": 212914,
     "tradeData": {}
   },
   "6282139672290": {
@@ -302,7 +307,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 27675,
+    "exp": 28800,
     "level": 11,
     "koin": 14500,
     "saldo": 0,
@@ -312,7 +317,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-20T09:15:15.815Z",
+    "lastSeen": "2026-07-20T13:36:07.259Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -341,40 +346,33 @@
     "regAge": null,
     "regGender": "Laki-laki",
     "rpg": {
-      "stamina": 150,
+      "stamina": 155,
       "charSpouse": {
         "id": 35551,
         "name": "Ada Wong",
-        "image": "https://cdn.myanimelist.net/images/characters/15/222641.jpg",
         "url": "https://myanimelist.net/character/35551",
         "nickname": null,
-        "love": 1000110,
+        "love": 1001305,
         "status": "menikah",
         "hunger": 100,
-        "hungerAt": 1784538442177,
-        "wallet": 101009973000,
+        "hungerAt": 1784552842177,
+        "wallet": 101009967000,
         "ring": "berlian",
         "jadianAt": 1784452042177,
         "marriedAt": 1784475464539,
         "pregnant": true,
         "pregnantAt": 1784538898552,
-        "pregnantGender": "laki-laki"
+        "pregnantGender": "laki-laki",
+        "video": "https://litter.catbox.moe/bjvo3f.mp4"
       },
-      "level": 11,
-      "health": 200,
-      "maxHealth": 200,
-      "mana": 150,
-      "maxMana": 150,
-      "maxStamina": 150,
+      "level": 12,
+      "health": 210,
+      "maxHealth": 210,
+      "mana": 155,
+      "maxMana": 155,
+      "maxStamina": 155,
       "bank": 0,
-      "children": [
-        {
-          "id": "1784477548180206",
-          "name": "yuki",
-          "happiness": 50,
-          "bornAt": 1784477548180
-        }
-      ],
+      "children": [],
       "house": {
         "key": "istana",
         "buyAt": 1784475812385,
@@ -407,7 +405,7 @@
       "fenix": 0
     },
     "access": [],
-    "uang": 181957,
+    "uang": 71957,
     "tradeData": {
       "rubah": {
         "qty": 0,

@@ -26,16 +26,40 @@ const RESTORAN = {
 };
 const DEFAULT_TIER = "sedang";
 
-// ── Biaya jalan-jalan (sama dengan jalan.js) ─────────────────────────────────
+// ── Biaya jalan-jalan ─────────────────────────────────────────────────────────
 const JALAN_COST   = 15_000;
-const JALAN_LOVE   = 25;
 const JALAN_HUNGER = 5;
 
-// ── Love dari cium/peluk (sama dengan cium.js) ───────────────────────────────
-const CIUM_LOVE = 8;
+// ── Love total: 1.000–10.000, makin tinggi makin langka ──────────────────────
+// Distribusi miring: ambil nilai terkecil dari 3 random → miring ke kiri
+// sehingga 1rb–3rb sering, 8rb–10rb sangat jarang
+function rollTotalLove() {
+  const a = Math.random();
+  const b = Math.random();
+  const c = Math.random();
+  // Ambil minimum dari 3 → distribusi Beta(1,3) → skewed ke nilai rendah
+  const t = Math.min(a, b, c);
+  // Petakan 0–1 ke 1.000–10.000
+  return Math.round(1_000 + t * 9_000);
+}
 
-// ── Love bonus kalau ewe berhasil (sama dengan buatanak.js) ──────────────────
-const EWE_LOVE_GAIN  = 10;
+// Pecah total ke 3 bagian (jalan/makan/cium) — dijamin jalan+makan+cium = total
+function splitLove(total) {
+  const noise  = () => 0.8 + Math.random() * 0.4;
+  const wJalan = 0.25 * noise();
+  const wMakan = 0.55 * noise();
+  const wCium  = 0.20 * noise();
+  const wSum   = wJalan + wMakan + wCium;
+  const jalan  = Math.floor(total * wJalan / wSum);
+  const makan  = Math.floor(total * wMakan / wSum);
+  const cium   = total - jalan - makan; // sisa masuk cium → total selalu pas
+  return { jalan, makan, cium };
+}
+
+// Love ewe bonus: 500–2.000, acak biasa
+function rollEweLove() {
+  return Math.round(500 + Math.random() * 1_500);
+}
 const EWE_CHILD_POOL = ["Yuki","Haru","Sora","Rin","Aoi","Sakura","Kaito","Yui","Ren","Mio"];
 
 // ── Narasi jalan-jalan (acak) ─────────────────────────────────────────────────
@@ -108,7 +132,7 @@ function hungerBar(val, max = HUNGER_MAX) {
   return "█".repeat(filled) + "░".repeat(10 - filled);
 }
 
-async function handler(m) {
+async function handler(m, { sock }) {
   const db = getDatabase();
 
   try {
@@ -151,9 +175,12 @@ async function handler(m) {
       return m.reply(
         `❓ Tier restoran tidak dikenal: *${tierKey}*\n\n` +
         `Pilihan:\n` +
-        Object.entries(RESTORAN).map(([k, v]) =>
-          `• \`${m.prefix}act ${k}\` — ${v.emoji} ${v.name} (${fmtRp(v.cost)}, +${v.love + JALAN_LOVE + CIUM_LOVE} love)`
-        ).join("\n") +
+        Object.entries(RESTORAN).map(([k, v]) => {
+          const r = LOVE_RANGE;
+          const estMin = r.jalan.min + r.makan[k].min + r.cium.min;
+          const estMax = r.jalan.max + r.makan[k].max + r.cium.max;
+          return `• \`${m.prefix}act ${k}\` — ${v.emoji} ${v.name} (${fmtRp(v.cost)}, ~+${estMin}–${estMax} love)`;
+        }).join("\n") +
         `\n\n_Default kalau tanpa argumen: \`sedang\`_`,
       );
     }
@@ -186,27 +213,34 @@ async function handler(m) {
 
     // ════ PROSES SEMUA AKSI ═══════════════════════════════════════════════════
 
+    // Roll total love 1.000–10.000 (skewed: tinggi = langka)
+    const totalRoll = rollTotalLove();
+    const split     = splitLove(totalRoll);
+    const jalanLove = split.jalan;
+    const makanLove = split.makan;
+    const ciumLove  = split.cium;
+
     // 1. Jalan-jalan
     user.uang -= totalCost;
-    addLove(spouse, JALAN_LOVE);
+    addLove(spouse, jalanLove);
     feedSpouseDirectly(spouse, JALAN_HUNGER);
 
     // 2. Makan
-    addLove(spouse, resto.love);
+    addLove(spouse, makanLove);
     feedSpouseDirectly(spouse, resto.hunger);
 
     // 3. Cium/peluk
-    addLove(spouse, CIUM_LOVE);
+    addLove(spouse, ciumLove);
 
-    const loveTotalGain = JALAN_LOVE + resto.love + CIUM_LOVE;
+    const loveTotalGain = jalanLove + makanLove + ciumLove;
 
     // 4. Ewe (kalau menikah & cooldown selesai)
-    let eweResult = null; // { success, childName, childId } | null
+    let eweResult = null;
     if (isMenikah && eweReady) {
       user.rpg.cooldowns[eweCooldownKey] = now;
       const success = Math.random() < 0.6;
       if (success) {
-        const reqName   = ""; // .act tidak minta nama anak — auto random
+        const eweLove   = rollEweLove();
         const childName = EWE_CHILD_POOL[Math.floor(Math.random() * EWE_CHILD_POOL.length)];
         const child = {
           id:        `${now}${Math.floor(Math.random() * 1000)}`,
@@ -216,8 +250,8 @@ async function handler(m) {
         };
         user.rpg.children = user.rpg.children || [];
         user.rpg.children.push(child);
-        addLove(spouse, EWE_LOVE_GAIN);
-        eweResult = { success: true, childName, childId: child.id };
+        addLove(spouse, eweLove);
+        eweResult = { success: true, childName, childId: child.id, eweLove };
       } else {
         eweResult = { success: false };
       }
@@ -225,42 +259,52 @@ async function handler(m) {
 
     db.save();
 
-    // ════ SUSUN PESAN NARATIF ═════════════════════════════════════════════════
+    // ════ SUSUN PESAN NARATIF — EDIT PROGRESIF (1 pesan, tidak spam) ══════════
     const hungerAfter = getHunger(spouse);
     const loveAfter   = spouse.love || 0;
     const saldoAfter  = user.uang || 0;
 
-    // Kirim narasi per babak dengan jeda singkat
+    const makanNarasi = rnd(MAKAN_LINES[usedKey]);
+
+    // Helper: edit pesan yang sudah terkirim
+    const editMsg = async (key, newText) => {
+      try {
+        await sock.sendMessage(m.chat, { edit: key, text: newText });
+      } catch {
+        // fallback: kalau edit gagal (misal WA lama), diam saja — pesan sebelumnya tetap ada
+      }
+    };
+
     await m.react("🌙");
 
-    // Babak 1 — Jalan-jalan
-    await m.reply(
-      `🌙 *MALAM ROMANTIS BERSAMA ${spouseName.toUpperCase()}*\n\n` +
-      `*① Jalan-jalan dulu...*\n` +
-      rnd(JALAN_LINES),
-    );
-    await new Promise(r => setTimeout(r, 1000));
+    // ── Kirim pesan pertama (babak 1) ─────────────────────────────────────────
+    const header  = `🌙 *MALAM ROMANTIS BERSAMA ${spouseName.toUpperCase()}*\n\n`;
+    const babak1  = `*① Jalan-jalan dulu...*\n${rnd(JALAN_LINES)}`;
+    const babak2  = `*② Makan malam di ${resto.emoji} ${resto.name}*\n${makanNarasi}`;
+    const babak3  = `*③ Cium & peluk...*\n${rnd(CIUM_LINES)}`;
 
-    // Babak 2 — Makan
-    const makanNarasi = rnd(MAKAN_LINES[usedKey]);
-    await m.reply(
-      `*② Makan malam di ${resto.emoji} ${resto.name}*\n\n` +
-      makanNarasi,
-    );
-    await new Promise(r => setTimeout(r, 1000));
+    let teks = header + babak1;
+    const sentMsg = await m.reply(teks);
+    const editKey = sentMsg?.key;
 
-    // Babak 3 — Cium/peluk
-    await m.reply(
-      `*③ Cium & peluk...*\n\n` +
-      rnd(CIUM_LINES),
-    );
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 3000));
 
-    // Babak 4 — Ewe (kalau menikah & cooldown ok)
+    // ── Edit: tambah babak 2 ──────────────────────────────────────────────────
+    teks += `\n\n${babak2}`;
+    if (editKey) await editMsg(editKey, teks);
+    await new Promise(r => setTimeout(r, 3000));
+
+    // ── Edit: tambah babak 3 ──────────────────────────────────────────────────
+    teks += `\n\n${babak3}`;
+    if (editKey) await editMsg(editKey, teks);
+    await new Promise(r => setTimeout(r, 3000));
+
+    // ── Edit: tambah narasi ewe (kalau menikah & cooldown ok) ────────────────
     if (isMenikah && eweReady) {
       for (const line of EWE_TEASER) {
-        await m.reply(line);
-        await new Promise(r => setTimeout(r, 1200));
+        teks += `\n\n${line}`;
+        if (editKey) await editMsg(editKey, teks);
+        await new Promise(r => setTimeout(r, 3000));
       }
     }
 
@@ -275,15 +319,15 @@ async function handler(m) {
     recap += `  Total         : *-${fmtRp(totalCost)}*\n\n`;
 
     recap += `💕 *Love bertambah:*\n`;
-    recap += `  🚶 Jalan       : +${JALAN_LOVE}\n`;
-    recap += `  ${resto.emoji} Makan        : +${resto.love}\n`;
-    recap += `  💋 Cium        : +${CIUM_LOVE}\n`;
+    recap += `  🚶 Jalan       : +${jalanLove.toLocaleString("id-ID")}\n`;
+    recap += `  ${resto.emoji} Makan        : +${makanLove.toLocaleString("id-ID")}\n`;
+    recap += `  💋 Cium        : +${ciumLove.toLocaleString("id-ID")}\n`;
     if (eweResult?.success) {
-      recap += `  🔥 Ewe (bonus) : +${EWE_LOVE_GAIN}\n`;
+      recap += `  🔥 Ewe (bonus) : +${eweResult.eweLove.toLocaleString("id-ID")}\n`;
     }
     recap += `  ─────────────────\n`;
-    const totalLove = loveTotalGain + (eweResult?.success ? EWE_LOVE_GAIN : 0);
-    recap += `  Total love    : *+${totalLove}* → *${loveAfter.toLocaleString("id-ID")}*\n\n`;
+    const totalLove = loveTotalGain + (eweResult?.success ? eweResult.eweLove : 0);
+    recap += `  Total love    : *+${totalLove.toLocaleString("id-ID")}* → *${loveAfter.toLocaleString("id-ID")}*\n\n`;
 
     recap += `🍗 Hunger pasangan : *${hungerAfter}/${HUNGER_MAX}* [${hungerBar(hungerAfter)}]\n`;
     recap += `💰 Sisa uang kamu  : *${fmtRp(saldoAfter)}*\n`;
@@ -306,8 +350,13 @@ async function handler(m) {
       recap += `\n> 💍 _Nikahi ${spouseName} dulu (\`${m.prefix}nikahcp\`) biar bisa ewe dan punya anak!_`;
     }
 
+    // ── Edit final: ganti seluruh pesan dengan rekap ─────────────────────────
     await m.react("❤️");
-    await m.reply(recap);
+    if (editKey) {
+      await editMsg(editKey, recap);
+    } else {
+      await m.reply(recap);
+    }
 
   } catch (error) {
     await m.react("☢");

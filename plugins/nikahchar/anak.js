@@ -1,14 +1,14 @@
 import te from "../../src/lib/ourin-error.js";
 import { getDatabase } from "../../src/lib/ourin-database.js";
-import { getChildren, getSpouse } from "../../src/lib/ourin-waifu.js";
+import { getChildren, getSpouse, ensureRpg } from "../../src/lib/ourin-waifu.js";
 
 const pluginConfig = {
   name: "anak",
   alias: ["anaksaya", "listanak"],
   category: "nikahchar",
-  description: "Lihat daftar anak kamu",
-  usage: ".anak",
-  example: ".anak",
+  description: "Lihat daftar anak kamu, atau hapus anak berdasarkan nomor urut",
+  usage: ".anak | .anak hapus <no urut>",
+  example: ".anak\n.anak hapus 1",
   isOwner: false,
   isPremium: false,
   isGroup: false,
@@ -23,10 +23,10 @@ function resolveGender(raw) {
   const g = String(raw).toLowerCase().trim();
   if (["laki-laki","laki","l","male","m","cowo","cowok","cwo"].includes(g)) return "laki-laki";
   if (["perempuan","p","female","f","cewek","cewe","cwe"].includes(g))       return "perempuan";
-  return raw; // kembalikan apa adanya kalau tidak dikenal
+  return raw;
 }
-const GENDER_EMOJI  = { "laki-laki": "👦", "perempuan": "👧" };
 
+// ── Bangun teks daftar anak ───────────────────────────────────────────────────
 async function buildAnakText(m, targetJid, isOther) {
   const db       = getDatabase();
   const user     = db.getUser(targetJid);
@@ -55,7 +55,6 @@ async function buildAnakText(m, targetJid, isOther) {
   }
 
   const belumNama = children.filter((c) => c.unnamed === true);
-  const sudahNama = children.filter((c) => !c.unnamed);
 
   let txt = isOther
     ? `*ᴅᴀꜰᴛᴀʀ ᴀɴᴀᴋ @${targetJid.split("@")[0]}* (${children.length})\n\n`
@@ -94,14 +93,89 @@ async function buildAnakText(m, targetJid, isOther) {
     txt += `\n`;
     txt += `✏️ *Ganti nama anak:*\n`;
     txt += `\`${m.prefix}setps rk <no urut> <nama baru>\`\n`;
-    txt += `_Contoh: \`${m.prefix}setps rk 1 Haruki\`_`;
+    txt += `_Contoh: \`${m.prefix}setps rk 1 Haruki\`_\n\n`;
+    txt += `🗑️ *Hapus anak:*\n`;
+    txt += `\`${m.prefix}anak hapus <no urut>\`\n`;
+    txt += `_Contoh: \`${m.prefix}anak hapus 1\`_`;
   }
 
   return { txt, mentions: isOther ? [targetJid] : [] };
 }
 
-async function handler(m, { sock }) {
+// ── Handler hapus anak ────────────────────────────────────────────────────────
+async function handleHapus(m, noStr) {
+  const db     = getDatabase();
+  const noUrut = parseInt(noStr, 10);
+
+  if (!noStr || isNaN(noUrut) || !Number.isInteger(noUrut) || noUrut < 1) {
+    return m.reply(
+      `❌ Nomor urut tidak valid: *${noStr || "-"}*\n\n` +
+      `Gunakan:\n\`${m.prefix}anak hapus <no urut>\`\n` +
+      `_Contoh: \`${m.prefix}anak hapus 1\`_\n\n` +
+      `> Lihat nomor urut: \`${m.prefix}anak\``,
+    );
+  }
+
+  const user = db.getUser(m.sender);
+  if (!user) {
+    return m.reply(
+      `❌ Kamu belum punya data game.\n` +
+      `> Mulai dengan \`${m.prefix}lamar <id/nama>\`.`,
+    );
+  }
+
+  const rpg    = ensureRpg(user);
+  rpg.children = rpg.children || [];
+
+  if (rpg.children.length === 0) {
+    return m.reply(
+      `❌ Kamu belum punya anak.\n` +
+      `> Gunakan \`${m.prefix}buatanak\` untuk punya anak.`,
+    );
+  }
+
+  if (noUrut > rpg.children.length) {
+    return m.reply(
+      `❌ Nomor urut *${noUrut}* tidak ada.\n\n` +
+      `Kamu punya *${rpg.children.length}* anak ` +
+      `(no urut 1 – ${rpg.children.length}).\n` +
+      `> Lihat daftar: \`${m.prefix}anak\``,
+    );
+  }
+
+  const idx    = noUrut - 1;
+  const anak   = rpg.children[idx];
+  const nama   = anak.unnamed ? "(belum bernama)" : (anak.name || "(tanpa nama)");
+  const gender = resolveGender(anak.gender);
+  const gEmoji = gender === "laki-laki" ? "👦" : gender === "perempuan" ? "👧" : "👶";
+
+  // Hapus dari array
+  rpg.children.splice(idx, 1);
+  db.save();
+
+  await m.react("🗑️");
+  await m.reply(
+    `🗑️ *Anak berhasil dihapus!*\n\n` +
+    `${gEmoji} *Nama    :* ${nama}\n` +
+    `⚧  *Kelamin :* ${gender || "tidak diketahui"}\n` +
+    `📋 *No Urut :* ${noUrut}\n\n` +
+    `📊 *Sisa anak :* ${rpg.children.length}\n\n` +
+    `> Lihat daftar: \`${m.prefix}anak\``,
+  );
+}
+
+// ── Handler utama ─────────────────────────────────────────────────────────────
+async function handler(m) {
   try {
+    const args    = m.args || [];
+    const subCmd  = (args[0] || "").toLowerCase();
+
+    // Sub-command: .anak hapus <no urut>
+    if (subCmd === "hapus" || subCmd === "delete" || subCmd === "rm") {
+      return await handleHapus(m, args[1]);
+    }
+
+    // Default: tampilkan daftar anak (bisa mention/quote orang lain)
     const targetJid = m.mentionedJid?.[0] || m.quoted?.sender || m.sender;
     const isOther   = targetJid !== m.sender;
 
