@@ -1,6 +1,6 @@
 {
   "commandErrors": 44,
-  "commandsExecuted": 3280,
+  "commandsExecuted": 3288,
   "command_totalchat": 3,
   "command_menu": 310,
   "command_fb": 4,
@@ -252,7 +252,7 @@
   "command_hourly": 1,
   "command_mining": 6,
   "command_dungeon": 11,
-  "command_me": 7,
+  "command_me": 9,
   "command_rest": 2,
   "command_qwa": 17,
   "command_lyrics": 1,
@@ -427,7 +427,7 @@
   "command_menikah": 1,
   "command_pap": 1,
   "command_char": 17,
-  "command_ps": 52,
+  "command_ps": 53,
   "command_m": 2,
   "command_berburu": 32,
   "command_sell": 9,
@@ -464,7 +464,9 @@
   "command_act": 16,
   "command_cekhamil": 6,
   "command_setps": 13,
-  "command_set": 2,
+  "command_set": 3,
   "command_rmanak": 1,
-  "command_jalan": 1
+  "command_jalan": 1,
+  "command_setprofil": 1,
+  "command_setp": 3
 }
