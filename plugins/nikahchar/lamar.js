@@ -49,7 +49,7 @@ async function handler(m, { sock }) {
   }
 
   if ((user.uang || 0) < PDKT_COST) {
-    return m.reply(`❌ Modal PDKT itu *Rp ${PDKT_COST.toLocaleString("id-ID")}* (buat modal jajan/gaya), duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.\n> _Kerja dulu gih, misalnya \`${m.prefix}ngojek\` atau \`${m.prefix}freelance\`._`);
+    return m.reply(`❌ Modal PDKT itu *Rp ${PDKT_COST.toLocaleString("id-ID")}* (buat modal jajan/gaya), duit kamu cuma *Rp ${(user.uang || 0).toLocaleString("id-ID")}*.\n> _Cari uang dulu: \`${m.prefix}berburu\`, \`${m.prefix}mancing\`, \`${m.prefix}berladang\`, \`${m.prefix}ngojek\`, dll._`);
   }
 
   await m.react("💌");

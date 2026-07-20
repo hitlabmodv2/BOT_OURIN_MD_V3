@@ -37,6 +37,14 @@ async function handler(m, { sock }) {
       return m.reply(`❌ Anak dengan id *${childId}* tidak ditemukan.\n> _Cek ID yang benar lewat \`${m.prefix}anak\`._`);
     }
 
+    // Blokir kalau anak belum diberi nama
+    if (child.unnamed === true) {
+      return m.reply(
+        `❌ Anak ini *belum diberi nama* — beri nama dulu sebelum memberikan uang.\n\n` +
+        `> Ketik \`${m.prefix}setps anak <nama>\` untuk memberi nama.`,
+      );
+    }
+
     const balance = user.uang || 0;
     if (balance < amount) {
       return m.reply(`❌ Uang kamu tidak cukup. Saldo: Rp ${balance.toLocaleString("id-ID")}`);

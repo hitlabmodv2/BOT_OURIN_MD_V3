@@ -25,8 +25,8 @@ const pluginConfig = {
   alias: ["pasangan", "statuscouple"],
   category: "nikahchar",
   description: "Lihat status lengkap hubunganmu sama pasangan karakter",
-  usage: ".ps",
-  example: ".ps",
+  usage: ".ps [@user]",
+  example: ".ps\n.ps @user",
   isOwner: false,
   isPremium: false,
   isGroup: false,
@@ -154,10 +154,96 @@ function formatDuration(ms) {
   return parts.length > 0 ? parts.join(" ") : `${totalDays} hari`;
 }
 
+// ── Kirim pesan dengan media (gambar / video) atau teks biasa ─────────────────
+async function sendWithMedia(sock, m, spouse, txt) {
+  const imgUrl   = spouse.image  || null;
+  const videoUrl = spouse.video  || null;
+
+  if (videoUrl) {
+    await sock.sendMessage(
+      m.chat,
+      { video: { url: videoUrl }, caption: txt, gifPlayback: false },
+      { quoted: m },
+    );
+  } else if (imgUrl) {
+    await sock.sendMessage(
+      m.chat,
+      { image: { url: imgUrl }, caption: txt },
+      { quoted: m },
+    );
+  } else {
+    await m.reply(txt);
+  }
+}
+
 async function handler(m, { sock }) {
   const db = getDatabase();
 
   try {
+    // ── Cek apakah ada @mention atau reply → tampilkan data user lain (read-only)
+    const targetJid = m.mentionedJid?.[0] || (m.quoted?.sender ?? null);
+
+    if (targetJid && targetJid !== m.sender) {
+      // ── MODE: lihat ps orang lain ─────────────────────────────────────────
+      const targetUser   = db.getUser(targetJid);
+      const targetSpouse = targetUser ? getSpouse(targetUser) : null;
+
+      if (!targetSpouse) {
+        const targetName = targetJid.split("@")[0];
+        return m.reply(
+          `💔 @${targetName} belum punya pasangan karakter.\n` +
+          `> _Orang ini belum main fitur nikahchar._`,
+          { mentions: [targetJid] },
+        );
+      }
+
+      const tStatus    = getStatus(targetSpouse);
+      const tMenikah   = tStatus === STATUS_MENIKAH;
+      const tStartedAt = targetSpouse.jadianAt || targetSpouse.marriedAt || Date.now();
+      const tChildren  = tMenikah ? getChildren(targetUser) : [];
+      const tSpouseName = targetSpouse.nickname || targetSpouse.name;
+      const tDurasi    = formatDuration(Date.now() - tStartedAt);
+      const tTanggal   = new Date(tStartedAt).toLocaleDateString("id-ID");
+      const targetName = targetJid.split("@")[0];
+
+      let txt = `💑 *ᴘᴀsᴀɴɢᴀɴ @${targetName}*\n\n`;
+      txt += `👤 *@${targetName}* 💞 *${tSpouseName}*\n`;
+      txt += `📅 Tgl jadian   : *${tTanggal}*\n`;
+      txt += `⏳ Lama bersama : *${tDurasi}*\n`;
+      txt += `💍 Status        : *${tMenikah ? "Menikah 💒" : "Pacaran 💕"}*\n`;
+      if (tMenikah) {
+        txt += `👶 Anak          : *${tChildren.length}* orang\n`;
+        if (targetSpouse.pregnant) {
+          const bulanHamil = Math.min(
+            Math.floor((Date.now() - (targetSpouse.pregnantAt || Date.now())) / (60 * 60 * 1000)),
+            9,
+          );
+          txt += `🤰 Kehamilan     : *${bulanHamil}/9 bulan*\n`;
+        }
+      }
+      txt += `\n> _Data ini hanya tampilan publik — detail sensitif disembunyikan._`;
+
+      await m.react("👀");
+
+      if (targetSpouse.video) {
+        await sock.sendMessage(
+          m.chat,
+          { video: { url: targetSpouse.video }, caption: txt, gifPlayback: false },
+          { quoted: m },
+        );
+      } else if (targetSpouse.image) {
+        await sock.sendMessage(
+          m.chat,
+          { image: { url: targetSpouse.image }, caption: txt },
+          { quoted: m },
+        );
+      } else {
+        await m.reply(txt, { mentions: [targetJid] });
+      }
+      return;
+    }
+
+    // ── MODE: lihat ps sendiri ────────────────────────────────────────────────
     const user = db.getUser(m.sender);
     const spouse = user ? getSpouse(user) : null;
 
@@ -179,7 +265,6 @@ async function handler(m, { sock }) {
       const waktu   = formatWaktuSekarang();
       const durasi  = formatDurasiHubungan(spouseMulaiAt);
 
-      // Simpan ke riwayat hubungan user
       addRiwayat(user, {
         tipe        : 'karakter',
         pasanganNama: spouseNamaBefore,
@@ -197,7 +282,7 @@ async function handler(m, { sock }) {
         `📅 *${waktu}*\n` +
         (durasi ? `⏳ Bersama selama: *${durasi}*\n` : '') +
         `\n_"${kata}"_\n\n` +
-        `> Ketik \`${m.prefix}riwayat\` untuk melihat riwayat hubunganmu.`
+        `> Ketik \`${m.prefix}riwayat\` untuk melihat riwayat hubunganmu.`,
       );
     }
     db.save();
@@ -227,6 +312,15 @@ async function handler(m, { sock }) {
     txt += `📅 Tgl jadian: *${tanggal}*\n`;
     txt += `⏳ Hubungan berjalan: *${durasi}*\n`;
     txt += `💍 Status: *${isMenikah ? "Menikah 💒" : "Pacaran 💕"}*\n\n`;
+
+    // ── Kehamilan (kalau lagi hamil) ──────────────────────────────────────────
+    if (isMenikah && spouse.pregnant) {
+      const bulanHamil = Math.min(
+        Math.floor((Date.now() - (spouse.pregnantAt || Date.now())) / (60 * 60 * 1000)),
+        9,
+      );
+      txt += `🤰 Kehamilan: *${bulanHamil}/9 bulan* — \`${m.prefix}cekhamil\` untuk detail\n\n`;
+    }
 
     // ── Mood pasangan — realtime dari love/hunger/wallet/status ──────────────
     const mood = getMood(love, hunger, wallet, isMenikah, children.length);
@@ -265,12 +359,8 @@ async function handler(m, { sock }) {
     }
 
     await m.react("💑");
+    await sendWithMedia(sock, m, spouse, txt);
 
-    if (spouse.image) {
-      await sock.sendMessage(m.chat, { image: { url: spouse.image }, caption: txt }, { quoted: m });
-    } else {
-      await m.reply(txt);
-    }
   } catch (error) {
     await m.react("☢");
     m.reply(te(m.prefix, m.command, m.pushName));

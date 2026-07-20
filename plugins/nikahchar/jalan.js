@@ -7,7 +7,7 @@ const LOVE_GAIN = 25;
 
 const pluginConfig = {
   name: "jalan",
-  alias: ["ajakjalan", "date"],
+  alias: ["ajakjalan"],
   category: "nikahchar",
   description: "Ajak pasangan karakter jalan-jalan (naikkan love)",
   usage: ".jalan",

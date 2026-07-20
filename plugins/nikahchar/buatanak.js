@@ -14,9 +14,9 @@ const pluginConfig = {
   name: "buatanak",
   alias: ["bikinanak", "punyaanak"],
   category: "nikahchar",
-  description: "Coba punya anak dengan pasangan karaktermu",
-  usage: ".buatanak <nama anak>",
-  example: ".buatanak Kaguya",
+  description: "Coba punya anak dengan pasangan karaktermu (istri akan hamil dulu 9 bulan)",
+  usage: ".buatanak",
+  example: ".buatanak",
   isOwner: false,
   isPremium: false,
   isGroup: false,
@@ -61,6 +61,16 @@ async function handler(m, { sock }) {
 
     user.rpg.cooldowns[cooldownKey] = now;
 
+    // ── Cegah buatanak kalau istri sudah hamil ───────────────────────────────
+    if (spouse.pregnant) {
+      const bulanLalu = Math.floor((now - (spouse.pregnantAt || now)) / (60 * 60 * 1000));
+      const bulanGame = Math.min(bulanLalu, 9);
+      return m.reply(
+        `🤰 *${spouse.nickname || spouse.name}* sedang hamil *${bulanGame}/9 bulan*!\n\n` +
+        `> Pantau kehamilannya dulu lewat \`${m.prefix}cekhamil\` sebelum mencoba lagi.`,
+      );
+    }
+
     const success = Math.random() < 0.6;
     if (!success) {
       db.save();
@@ -68,18 +78,11 @@ async function handler(m, { sock }) {
       return m.reply(`😢 Belum berhasil kali ini... Coba lagi nanti ya!\n> _Peluang berhasil sekitar 60% setiap percobaan._`);
     }
 
-    const requestedName = (m.args || []).join(" ").trim();
-    const childName =
-      requestedName || CHILD_NAME_POOL[Math.floor(Math.random() * CHILD_NAME_POOL.length)];
-
-    user.rpg.children = user.rpg.children || [];
-    const child = {
-      id: `${Date.now()}${Math.floor(Math.random() * 1000)}`,
-      name: childName,
-      happiness: 50,
-      bornAt: now,
-    };
-    user.rpg.children.push(child);
+    // ── Sukses → set kehamilan, bukan langsung dapat anak ────────────────────
+    const gender = Math.random() < 0.5 ? "laki-laki" : "perempuan";
+    spouse.pregnant = true;
+    spouse.pregnantAt = now;
+    spouse.pregnantGender = gender;
 
     const loveBefore = spouse.love || 0;
     addLove(spouse, LOVE_GAIN);
@@ -92,16 +95,13 @@ async function handler(m, { sock }) {
       await new Promise((r) => setTimeout(r, 1200));
     }
 
-    await m.react("👶");
+    await m.react("🤰");
     await m.reply(
-      `👶 Tampaknya *${spouse.nickname || spouse.name}* hamil!\n\n` +
-        `💕 Hubunganmu: ~${loveBefore.toLocaleString("id-ID")}~ → *${loveAfter.toLocaleString("id-ID")}*\n\n` +
-        `👶 *sᴇʟᴀᴍᴀᴛ!* Kamu dan *${spouse.nickname || spouse.name}* dikaruniai anak bernama *${childName}*!\n\n` +
-        `• *ID Anak:* ${child.id}\n` +
-        `• *Kebahagiaan awal:* ${child.happiness}/100\n\n` +
-        `_Selanjutnya:_\n` +
-        `1. \`${m.prefix}anak\` — lihat semua anakmu\n` +
-        `2. \`${m.prefix}beri ${child.id} <jumlah>\` — naikkan kebahagiaannya`,
+      `🤰 *${spouse.nickname || spouse.name}* *hamil!*\n\n` +
+        `💕 Love: ~${loveBefore.toLocaleString("id-ID")}~ → *${loveAfter.toLocaleString("id-ID")}*\n\n` +
+        `📅 Masa kehamilan *9 bulan* (1 bulan = 1 jam real).\n\n` +
+        `_Pantau setiap saat dengan:_\n` +
+        `> \`${m.prefix}cekhamil\` — lihat progress kehamilan & proses kelahiran`,
     );
   } catch (error) {
     await m.react("☢");

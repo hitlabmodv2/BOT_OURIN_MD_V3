@@ -302,7 +302,7 @@
     },
     "60176207908@s.whatsapp.net": {
       "jid": "60176207908@s.whatsapp.net",
-      "name": "kyy"
+      "name": "Account not found"
     },
     "6283194481254@s.whatsapp.net": {
       "jid": "6283194481254@s.whatsapp.net",
@@ -499,6 +499,18 @@
     "6282131112590@s.whatsapp.net": {
       "jid": "6282131112590@s.whatsapp.net",
       "name": "🗿☕"
+    },
+    "62895635193022@s.whatsapp.net": {
+      "jid": "62895635193022@s.whatsapp.net",
+      "name": "."
+    },
+    "6285813708397@s.whatsapp.net": {
+      "jid": "6285813708397@s.whatsapp.net",
+      "name": "FallZx Infinity"
+    },
+    "6287717390960@s.whatsapp.net": {
+      "jid": "6287717390960@s.whatsapp.net",
+      "name": "Sprex gell"
     }
   },
   "notiflimit": true,
@@ -507,6 +519,7 @@
   "storeAutoProducts": [],
   "allmenuAudioStyle": 3,
   "charRegistry": {
-    "35551": "6283134844523"
+    "35551": "6283134844523",
+    "195230": "6289667923162"
   }
 }

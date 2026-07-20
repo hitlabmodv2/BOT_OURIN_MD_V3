@@ -166,7 +166,7 @@ async function handler(m) {
         `❌ Uang kamu tidak cukup buat kencan malam ini!\n\n` +
         `💸 Butuh: *${fmtRp(totalCost)}* (jalan ${fmtRp(JALAN_COST)} + makan ${fmtRp(resto.cost)})\n` +
         `💰 Saldo: *${fmtRp(saldo)}*\n\n` +
-        `> Kerja dulu: \`${m.prefix}ngojek\`, \`${m.prefix}freelance\`, atau dungeon.`,
+        `> Cari uang dulu: \`${m.prefix}berburu\`, \`${m.prefix}mancing\`, \`${m.prefix}berladang\`, \`${m.prefix}ngojek\`, dll.`,
       );
     }
 

@@ -17,7 +17,7 @@ import {
 
 const pluginConfig = {
   name:        "berips",
-  alias:       ["beripasangan", "berips", "kasipasangan"],
+  alias:       ["beripasangan", "kasipasangan"],
   category:    "nikahchar",
   description: "Beri uang ke pasangan karakter — makin banyak makin sayang, dan pasangan yang punya saldo sendiri tidak akan kabur!",
   usage:       ".berips <jumlah>",
@@ -157,7 +157,7 @@ async function handler(m) {
         `❌ Uang kamu tidak cukup.\n` +
         `💰 Saldo kamu: *${fmtRp(saldoUser)}*\n` +
         `💸 Yang ingin diberikan: *${fmtRp(amount)}*\n\n` +
-        `> _Kerja dulu yuk: \`${m.prefix}ngojek\`, \`${m.prefix}freelance\`, atau dungeon._`,
+        `> _Cari uang dulu: \`${m.prefix}berburu\`, \`${m.prefix}mancing\`, \`${m.prefix}berladang\`, \`${m.prefix}ngojek\`, dll._`,
       );
     }
 

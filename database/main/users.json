@@ -35,7 +35,7 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 57266,
+    "exp": 57401,
     "level": 15,
     "koin": 13753,
     "saldo": 0,
@@ -45,7 +45,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-20T02:49:10.577Z",
+    "lastSeen": "2026-07-20T08:04:52.038Z",
     "cooldowns": {
       "menu": 1780724642652,
       "hd": 1780726293419,
@@ -106,8 +106,8 @@
     "energi": 100,
     "isPremium": false,
     "isBanned": false,
-    "exp": 28339,
-    "level": 10,
+    "exp": 29734,
+    "level": 12,
     "koin": 1000,
     "saldo": 0,
     "unlockedFeatures": [],
@@ -116,7 +116,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-20T02:48:46.512Z",
+    "lastSeen": "2026-07-20T09:15:44.415Z",
     "cooldowns": {
       "menu": 1781089928259,
       "s": 1781093488196,
@@ -139,31 +139,46 @@
     "regAge": null,
     "regGender": null,
     "rpg": {
-      "stamina": 125,
-      "maxStamina": 150,
-      "health": 200,
-      "maxHealth": 200,
-      "mana": 150,
-      "maxMana": 150,
-      "level": 11
+      "stamina": 155,
+      "maxStamina": 155,
+      "health": 210,
+      "maxHealth": 210,
+      "mana": 155,
+      "maxMana": 155,
+      "level": 12,
+      "charSpouse": {
+        "id": 195230,
+        "name": "Alisa Mikhailovna Kujou",
+        "image": "https://cdn.myanimelist.net/images/characters/5/536830.jpg",
+        "url": "https://myanimelist.net/character/195230",
+        "nickname": null,
+        "love": 0,
+        "status": "pacaran",
+        "hunger": 100,
+        "hungerAt": 1784538842120,
+        "wallet": 0,
+        "ring": null,
+        "jadianAt": 1784538842120,
+        "marriedAt": null
+      }
     },
     "inventory": {
-      "kelinci": 9,
-      "rusa": 4,
-      "babihutan": 3,
-      "rubah": 1,
-      "beruang": 2,
-      "ayamhutan": 1,
-      "kanguru": 1,
-      "bebekhutan": 1,
-      "elang": 1,
-      "monyet": 4,
-      "tupai": 2,
-      "terwelu": 1,
-      "bangau": 2
+      "kelinci": 0,
+      "rusa": 0,
+      "babihutan": 0,
+      "rubah": 0,
+      "beruang": 0,
+      "ayamhutan": 0,
+      "kanguru": 0,
+      "bebekhutan": 0,
+      "elang": 0,
+      "monyet": 0,
+      "tupai": 0,
+      "terwelu": 0,
+      "bangau": 0
     },
     "access": [],
-    "uang": 1114,
+    "uang": 650114,
     "tradeData": {}
   },
   "6282139672290": {
@@ -287,7 +302,7 @@
     "energi": 95,
     "isPremium": false,
     "isBanned": false,
-    "exp": 26520,
+    "exp": 27675,
     "level": 11,
     "koin": 14500,
     "saldo": 0,
@@ -297,7 +312,7 @@
     "registrationCount": 0,
     "hasClaimedRegisterReward": false,
     "unregisteredAt": null,
-    "lastSeen": "2026-07-20T01:24:44.598Z",
+    "lastSeen": "2026-07-20T09:15:15.815Z",
     "cooldowns": {
       "ps": 1784202431090,
       "char": 1784202293651,
@@ -324,7 +339,7 @@
     "isRegistered": false,
     "regName": null,
     "regAge": null,
-    "regGender": null,
+    "regGender": "Laki-laki",
     "rpg": {
       "stamina": 150,
       "charSpouse": {
@@ -333,14 +348,17 @@
         "image": "https://cdn.myanimelist.net/images/characters/15/222641.jpg",
         "url": "https://myanimelist.net/character/35551",
         "nickname": null,
-        "love": 1000100,
+        "love": 1000110,
         "status": "menikah",
         "hunger": 100,
-        "hungerAt": 1784509642177,
-        "wallet": 101009985000,
+        "hungerAt": 1784538442177,
+        "wallet": 101009973000,
         "ring": "berlian",
         "jadianAt": 1784452042177,
-        "marriedAt": 1784475464539
+        "marriedAt": 1784475464539,
+        "pregnant": true,
+        "pregnantAt": 1784538898552,
+        "pregnantGender": "laki-laki"
       },
       "level": 11,
       "health": 200,
@@ -352,7 +370,7 @@
       "children": [
         {
           "id": "1784477548180206",
-          "name": "Yuki",
+          "name": "yuki",
           "happiness": 50,
           "bornAt": 1784477548180
         }
@@ -363,7 +381,7 @@
         "lastPaidAt": 1784475812385
       },
       "cooldowns": {
-        "buatanak": 1784477548180
+        "buatanak": 1784538898552
       }
     },
     "inventory": {
@@ -389,7 +407,7 @@
       "fenix": 0
     },
     "access": [],
-    "uang": 256957,
+    "uang": 181957,
     "tradeData": {
       "rubah": {
         "qty": 0,
